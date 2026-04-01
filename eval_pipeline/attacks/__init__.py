@@ -1,3 +1,3 @@
-from .ora import ORAAttack
+from .ora import ORAAttack, ORAAttackNotebook
 
-__all__ = ["ORAAttack"]
+__all__ = ["ORAAttack", "ORAAttackNotebook"]
