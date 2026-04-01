@@ -127,7 +127,7 @@ def run_experiment(config: ExperimentConfig) -> dict:
 
     if config.detector_type:
         summary["attack_effectiveness"] = eval_results.attack_effectiveness(
-            iou_threshold=config.iou_threshold
+            iou_thresholds=config.iou_thresholds
         )
 
     if config.defense_type:

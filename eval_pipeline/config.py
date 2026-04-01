@@ -50,7 +50,9 @@ class ExperimentConfig:
     defense_params: dict = dataclasses.field(default_factory=dict)
 
     # Evaluation
-    iou_threshold: float = 0.5
+    iou_thresholds: dict = dataclasses.field(
+        default_factory=lambda: {"Car": 0.7, "Pedestrian": 0.5, "Cyclist": 0.5}
+    )
     cache_clean_preds: bool = True
 
     # Output

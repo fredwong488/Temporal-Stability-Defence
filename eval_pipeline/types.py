@@ -148,22 +148,27 @@ class EvalResults:
     """Aggregated results across all frames."""
     frame_results: list[FrameResult]
 
-    def attack_effectiveness(self, iou_threshold: float = 0.5) -> dict:
-        """Compare clean vs attacked mAP.
+    def attack_effectiveness(self, iou_thresholds: dict[str, float] | None = None) -> dict:
+        """Compare clean vs attacked mAP per class and difficulty.
 
-        Returns dict with keys: clean_map, attacked_map, map_degradation (per-class and overall).
-        Requires a detector to have been configured (else returns empty dicts).
+        Returns dict with keys: clean_map, attacked_map, map_degradation.
+        Each is a nested dict: result[class_name][difficulty] = AP float.
+        Difficulty keys are "Easy", "Moderate", "Hard", and "all".
+        Requires a detector to have been configured (else returns empty dict).
         """
         from .metrics import compute_map
 
         if not any(r.attacked_predictions is not None for r in self.frame_results):
             return {}
 
-        clean = compute_map(self.frame_results, iou_threshold=iou_threshold, use_clean=True)
-        attacked = compute_map(self.frame_results, iou_threshold=iou_threshold, use_clean=False)
+        clean = compute_map(self.frame_results, iou_thresholds=iou_thresholds, use_clean=True)
+        attacked = compute_map(self.frame_results, iou_thresholds=iou_thresholds, use_clean=False)
 
         degradation = {
-            cls: clean.get(cls, 0.0) - attacked.get(cls, 0.0)
+            cls: {
+                diff: clean[cls][diff] - attacked[cls].get(diff, 0.0)
+                for diff in clean[cls]
+            }
             for cls in clean
         }
         return {
