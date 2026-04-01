@@ -69,13 +69,23 @@ sed -i '/^torch/d' requirements.txt
 Build `pcdet`:
 
 ```bash
-pip install -e . --no-deps
+python -m pip install -e . --no-deps --no-build-isolation
 ```
 
-or alternatively if for any reason the dependencies are not installed in your pixi environment yet
+> **Note:** Always use `python -m pip` rather than `pip` directly. Inside a pixi shell,
+> bare `pip` may resolve to the system pip, which will refuse to install into the
+> pixi-managed environment. `python -m pip` uses the pip belonging to the active
+> Python interpreter and avoids this.
+>
+> `--no-build-isolation` is required because OpenPCDet's `setup.py` imports `torch`
+> at build time (to detect CUDA version for compiling extensions). Without this flag,
+> pip creates an isolated build environment in `/tmp` that does not have access to the
+> pixi-managed torch, causing a `ModuleNotFoundError: No module named 'torch'` error.
+
+or alternatively if for any reason the dependencies are not installed in your pixi environment yet:
 ```bash
-pip install -r requirements.txt
-python setup.py develop
+python -m pip install -r requirements.txt
+python -m pip install -e . --no-deps --no-build-isolation
 ```
 
 Verify:
@@ -133,11 +143,27 @@ detector_params:
 ## Known Issues and possible fixes
 
 ### numba / llvmlite conflict
-If `pip install -r requirements.txt` fails with numba errors:
+If `python -m pip install -r requirements.txt` fails with numba errors:
 ```bash
-pip uninstall numba llvmlite -y
-pip install llvmlite==0.39.1 numba==0.56.4 --force-reinstall
+python -m pip uninstall numba llvmlite -y
+python -m pip install llvmlite==0.39.1 numba==0.56.4 --force-reinstall
 ```
+
+### GCC version too new for CUDA 12.0
+CUDA 12.0's `nvcc` supports up to GCC 12. If your system GCC is newer you will see:
+```
+error: #error -- unsupported GNU version! gcc versions later than 12 are not supported!
+```
+Fix by pointing the compiler at GCC 12 before building:
+```bash
+ls /usr/bin/gcc-*          # check which versions are installed
+export CC=/usr/bin/gcc-10
+export CXX=/usr/bin/g++-10
+export CUDAHOSTCXX=/usr/bin/g++-10
+python -m pip install -e . --no-deps --no-build-isolation
+```
+These exports only apply to the current shell session — you will need to re-set them
+if you open a new terminal.
 
 ### CUDA environment variables not set
 Before `python setup.py develop`, ensure:
@@ -150,7 +176,7 @@ export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 ### Re-install after any env change
 The OpenPCDet docs explicitly require re-running this after any environment change:
 ```bash
-cd OpenPCDet && python setup.py develop
+cd OpenPCDet && python -m pip install -e . --no-deps --no-build-isolation
 ```
 
 ### spconv v1 vs v2 import clash
