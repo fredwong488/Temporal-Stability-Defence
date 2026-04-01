@@ -26,7 +26,6 @@ pyyaml = "*"
 scikit-image = "*"
 tqdm = "*"
 opencv = "*"
- = "*"
 
 [target.linux-64.dependencies]
 pytorch-cuda = {version = "12.0.*", channel = "pytorch"}
