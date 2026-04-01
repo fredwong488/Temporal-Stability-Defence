@@ -1,6 +1,6 @@
 [workspace]
 authors = ["fredwong488 <67003534+fredwong488@users.noreply.github.com>"]
-channels = ["conda-forge"]
+channels = ["conda-forge", "pytorch"]
 name = "Imperial-paper-implementations"
 platforms = ["linux-64", "osx-arm64"]
 version = "0.1.0"
@@ -8,7 +8,7 @@ version = "0.1.0"
 [tasks]
 
 [dependencies]
-python = ">=3.12.0,<3.13"
+python = ">=3.11.0,<3.12"
 numpy = ">2"
 matplotlib = "*"
 joblib = "*"
@@ -16,4 +16,27 @@ scikit-learn = "*"
 discretize = "*"
 ipykernel = "*"
 llvm-openmp = "*"
-open3d = "*"
+open3d = "*"  
+shapely = "*"
+llvmlite = "*"
+numba = "*"
+tensorboardx = "*"
+easydict = "*"
+pyyaml = "*"
+scikit-image = "*"
+tqdm = "*"
+opencv = "*"
+
+[target.linux-64.dependencies]
+pytorch-cuda = {version = "12.0.*", channel = "pytorch"}
+pytorch = {version = "*", channel = "pytorch"}
+torchvision = {version = "*", channel = "pytorch"}
+
+[target.osx-arm64.dependencies]
+pytorch = {version = "*", channel = "pytorch"}
+torchvision = {version = "*", channel = "pytorch"}
+
+[target.linux-64.pypi-dependencies]
+spconv-cu120 = "*"
+SharedArray = "*"
+pyquaternion = "*"

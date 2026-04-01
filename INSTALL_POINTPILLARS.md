@@ -1,0 +1,160 @@
+# Installing PointPillars via OpenPCDet
+
+This guide covers installing [OpenPCDet](https://github.com/open-mmlab/OpenPCDet) to run PointPillars,
+and integrating it with the `eval_pipeline` in this repo.
+
+---
+
+## Requirements
+
+| Component | Version |
+|-----------|---------|
+| OS        | Linux (tested on Ubuntu 14.04/16.04/18.04/20.04/21.04) |
+| Python    | 3.6+ |
+| PyTorch   | 1.1 or higher (tested on PyTorch 1.1, 1.3, 1.5~1.10) |
+| CUDA      | 9.0 or higher (PyTorch 1.3+ needs CUDA 9.2+) |
+| spconv    | v1.0 (commit 8da6f96) or v1.2 or v2.x |
+
+> **spconv v2.x requires PyTorch >= 1.5.0.** Supported CUDA versions:
+>
+> | CUDA | Install command |
+> |------|----------------|
+> | 10.2 | `pip install spconv-cu102` |
+> | 11.3 | `pip install spconv-cu113` |
+> | 11.4 | `pip install spconv-cu114` |
+> | 11.6 | `pip install spconv-cu116` |
+> | 11.7 | `pip install spconv-cu117` |
+> | 11.8 | `pip install spconv-cu118` |
+> | **12.0** | **`pip install spconv-cu120`** ← recommended |
+
+> **CUDA alignment is critical.** Your system CUDA toolkit (`nvcc --version`), PyTorch's
+> bundled CUDA (`python -c "import torch; print(torch.version.cuda)"`), and your
+> `spconv-cuXXX` pip package must all point at the **same** CUDA version.
+
+---
+
+## Step 1 — Install the pixi Environment
+
+This project uses [pixi](https://prefix.dev/) to manage dependencies. PyTorch (CUDA 12.0)
+and `spconv-cu120` are declared in `pixi.toml` and will be installed automatically.
+
+```bash
+pixi install
+pixi shell
+```
+
+Verify:
+```bash
+python --version
+# Expected: Python 3.11.x
+python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+python -c "import spconv; print('spconv', spconv.__version__)"
+```
+
+---
+
+## Step 2 — Clone and Install OpenPCDet
+
+```bash
+git clone https://github.com/open-mmlab/OpenPCDet.git
+cd OpenPCDet
+```
+
+Remove the `torch>=1.1` line from `requirements.txt` to prevent pip overwriting the
+PyTorch install above:
+```bash
+sed -i '/^torch/d' requirements.txt
+```
+
+Build `pcdet`:
+
+```bash
+pip install -e . --no-deps
+```
+
+or alternatively if for any reason the dependencies are not installed in your pixi environment yet
+```bash
+pip install -r requirements.txt
+python setup.py develop
+```
+
+Verify:
+```bash
+python -c "import pcdet; print('pcdet OK')"
+```
+
+---
+
+## Step 3 — Download Pre-trained PointPillars Weights
+
+The KITTI-trained checkpoint is available from the OpenPCDet model zoo:
+
+- **Config:** `tools/cfgs/kitti_models/pointpillar.yaml`
+- **Checkpoint:** [pointpillar_7728.pth (18 MB) — Google Drive](https://drive.google.com/file/d/1wMxWTpU1qUoY3DsCH31WJmvJxcjFXKlm/view)
+
+Download and place it somewhere accessible, e.g.:
+```
+OpenPCDet/checkpoints/pointpillar_7728.pth
+```
+
+---
+
+## Step 4 — (Optional) Verify with the Built-in Demo
+
+Run OpenPCDet's demo on a single KITTI `.bin` file to confirm the model loads:
+
+```bash
+cd OpenPCDet
+python demo.py \
+    --cfg_file tools/cfgs/kitti_models/pointpillar.yaml \
+    --ckpt checkpoints/pointpillar_7728.pth \
+    --data_path /path/to/kitti/testing/velodyne/000000.bin
+```
+
+---
+
+## Step 5 — Wire into eval_pipeline
+
+In `eval_pipeline/detectors/pointpillars.py`, implement `_load_model()` and
+`_run_inference()`, then point your experiment config at the weights:
+
+```yaml
+# experiment.yaml
+detector_type: pointpillars
+detector_params:
+  config_path: /path/to/OpenPCDet/tools/cfgs/kitti_models/pointpillar.yaml
+  checkpoint_path: /path/to/OpenPCDet/checkpoints/pointpillar_7728.pth
+  score_threshold: 0.3
+  device: cuda:0
+```
+
+---
+
+## Known Issues and possible fixes
+
+### numba / llvmlite conflict
+If `pip install -r requirements.txt` fails with numba errors:
+```bash
+pip uninstall numba llvmlite -y
+pip install llvmlite==0.39.1 numba==0.56.4 --force-reinstall
+```
+
+### CUDA environment variables not set
+Before `python setup.py develop`, ensure:
+```bash
+export CUDA_HOME=/usr/local/cuda
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+```
+
+### Re-install after any env change
+The OpenPCDet docs explicitly require re-running this after any environment change:
+```bash
+cd OpenPCDet && python setup.py develop
+```
+
+### spconv v1 vs v2 import clash
+In spconv v2, the import changed to `import spconv.pytorch as spconv`. OpenPCDet
+handles this internally, but if you see `AttributeError: module 'spconv' has no
+attribute '__version__'`, you have mixed v1/v2 installed — uninstall all spconv
+packages and reinstall only `spconv-cu120`.
