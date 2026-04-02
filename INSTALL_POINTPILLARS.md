@@ -168,7 +168,8 @@ if you open a new terminal.
 ### CUDA environment variables not set
 Before `python setup.py develop`, ensure:
 ```bash
-export CUDA_HOME=/usr/local/cuda
+export CUDA_HOME=/vol/cuda/12.0.0
+export CUDA_PATH=$CUDA_HOME
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 ```
