@@ -114,11 +114,17 @@ OpenPCDet/checkpoints/pointpillar_7728.pth
 Run OpenPCDet's demo on a single KITTI `.bin` file to confirm the model loads:
 
 ```bash
-cd OpenPCDet
+cd OpenPCDet/tools
 python demo.py \
-    --cfg_file tools/cfgs/kitti_models/pointpillar.yaml \
+    --cfg_file cfgs/kitti_models/pointpillar.yaml \
     --ckpt checkpoints/pointpillar_7728.pth \
     --data_path /path/to/kitti/testing/velodyne/000000.bin
+```
+
+For example:
+```bash
+cd tools
+python demo.py --cfg_file cfgs/kitti_models/pointpillar.yaml --ckpt ../../models/openpcdet/pointpillar_7728.pth --data_path /vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/KITTI/data_object_velodyne/testing/velodyne/000000.bin
 ```
 
 ---
@@ -168,7 +174,7 @@ if you open a new terminal.
 ### CUDA environment variables not set
 Before `python setup.py develop`, ensure:
 ```bash
-export CUDA_HOME=/vol/cuda/12.0.0
+export CUDA_HOME=/vol/cuda/11.8.0
 export CUDA_PATH=$CUDA_HOME
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
