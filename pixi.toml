@@ -8,7 +8,7 @@ version = "0.1.0"
 [tasks]
 
 [system-requirements]
-cuda = "12.0"
+cuda = "11.8"
 
 [dependencies]
 python = ">=3.11.0,<3.12"
@@ -32,15 +32,15 @@ opencv = "*"
 pip = "*"
 
 [target.linux-64.dependencies]
-pytorch-cuda = "*"
-pytorch-gpu = ">=2"
-torchvision = "*"
 
-[target.osx-arm64.dependencies]
-pytorch = "*"
+
+[target.osx-arm64.pypi-dependencies]
+torch = "*"
 torchvision = "*"
 
 [target.linux-64.pypi-dependencies]
-spconv-cu120 = "*"
+torch = { version = ">=2", index = "https://download.pytorch.org/whl/cu118" }
+torchvision = { index = "https://download.pytorch.org/whl/cu118" }
+spconv-cu118 = "*"
 SharedArray = "*"
 pyquaternion = "*"
