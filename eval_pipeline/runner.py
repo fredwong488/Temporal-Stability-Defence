@@ -115,7 +115,13 @@ def build_pipeline(config: ExperimentConfig) -> EvalPipeline:
 # ---------------------------------------------------------------------------
 
 def run_experiment(config: ExperimentConfig) -> dict:
-    """Run a full experiment and return a JSON-serialisable results dict."""
+    """Run a full experiment and return a JSON-serialisable results dict.
+
+    Which metrics are computed is controlled by config.metric_types:
+      "ap"         — Attack effectiveness (clean vs attacked mAP per class/difficulty)
+      "pr"         — Precision-Recall curves per class and difficulty
+      "recall_iou" — Recall vs IoU threshold curves per class
+    """
     pipeline = build_pipeline(config)
     eval_results = pipeline.run()
 
@@ -126,9 +132,40 @@ def run_experiment(config: ExperimentConfig) -> dict:
     }
 
     if config.detector_type:
-        summary["attack_effectiveness"] = eval_results.attack_effectiveness(
-            iou_thresholds=config.iou_thresholds
-        )
+        metric_types = set(config.metric_types)
+        frame_results = eval_results.frame_results
+
+        if "ap" in metric_types:
+            summary["attack_effectiveness"] = eval_results.attack_effectiveness(
+                iou_thresholds=config.iou_thresholds
+            )
+
+        if "pr" in metric_types:
+            from .metrics import compute_pr_curve, _DEFAULT_IOU_THRESHOLDS  # noqa: PLC2701
+            classes = sorted({lbl.type for fr in frame_results for lbl in fr.labels})
+            summary["pr_curves"] = {
+                cls: {
+                    diff: compute_pr_curve(
+                        frame_results, cls,
+                        _DEFAULT_IOU_THRESHOLDS.get(cls, 0.5),
+                        use_clean=False, difficulty=diff,
+                    )
+                    for diff in config.difficulties
+                }
+                for cls in classes
+            }
+
+        if "recall_iou" in metric_types:
+            from .metrics import compute_recall_vs_iou
+            classes = sorted({lbl.type for fr in frame_results for lbl in fr.labels})
+            summary["recall_iou_curves"] = {
+                cls: compute_recall_vs_iou(
+                    frame_results, cls,
+                    config.recall_iou_confidence_threshold,
+                    use_clean=False,
+                )
+                for cls in classes
+            }
 
     if config.defense_type:
         summary["defense_effectiveness"] = eval_results.defense_effectiveness()

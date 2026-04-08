@@ -16,6 +16,47 @@ class ExperimentConfig:
     Designed to be serialisable to/from YAML or plain dicts for
     reproducible experiment tracking.
 
+    Fields
+    ------
+    Dataset:
+        kitti_root  : Path to the root KITTI directory.
+        frame_ids   : List of frame ID strings to process (e.g. ["000125", "000070"]).
+                      None = all available frames in the dataset.
+
+    Attack:
+        attack_type   : Attack to apply, e.g. "ora". None = no attack.
+        attack_params : Keyword arguments forwarded to the attack constructor.
+                        ORA example: {"budget": 200, "target_types": ["Car"], "seed": 42}
+
+    Detector:
+        detector_type   : Detector to run, e.g. "pointpillars". None = no detection.
+        detector_params : Keyword arguments forwarded to the detector constructor.
+                          PointPillars example: {"config_path": "...", "checkpoint_path": "..."}
+
+    Defense:
+        defense_type   : Defense to run, e.g. "void_region". None = no defense.
+        defense_params : Keyword arguments forwarded to the defense constructor.
+                         VoidRegion example: {"roi_min": [4.5, -5.0], "roi_max": [30.0, 5.0]}
+
+    Evaluation:
+        iou_thresholds                : Per-class 3D IoU matching thresholds.
+                                        Defaults: Car=0.7, Pedestrian=0.5, Cyclist=0.5.
+        cache_clean_preds             : Cache clean detector predictions by frame ID to
+                                        avoid re-running the detector across experiments.
+        metric_types                  : List of metrics to compute. Options:
+                                          "ap"         — Average Precision per class/difficulty
+                                          "pr"         — Precision-Recall curves per class/difficulty
+                                          "recall_iou" — Recall vs IoU threshold curves per class
+                                        Default: ["ap"]
+        difficulties                  : KITTI difficulty levels to evaluate for AP and PR curves.
+                                        Options: "Easy", "Moderate", "Hard". Default: all three.
+        recall_iou_confidence_threshold: Confidence score threshold applied when computing
+                                        recall-vs-IoU curves. Default: 0.3.
+
+    Output:
+        output_dir      : Directory where per-experiment JSON results are written.
+        experiment_name : Filename stem for the saved JSON (e.g. "ora_budget_200").
+
     Example YAML
     ------------
     kitti_root: data/datasets/KITTI
@@ -29,6 +70,9 @@ class ExperimentConfig:
     defense_params:
       roi_min: [4.5, -5.0]
       roi_max: [30.0, 5.0]
+    metric_types: ["ap", "pr", "recall_iou"]
+    difficulties: ["Easy", "Moderate", "Hard"]
+    recall_iou_confidence_threshold: 0.3
     output_dir: results
     experiment_name: ora_200pt_void_region
     """
@@ -54,6 +98,9 @@ class ExperimentConfig:
         default_factory=lambda: {"Car": 0.7, "Pedestrian": 0.5, "Cyclist": 0.5}
     )
     cache_clean_preds: bool = True
+    metric_types: list = dataclasses.field(default_factory=lambda: ["ap"])
+    difficulties: list = dataclasses.field(default_factory=lambda: ["Easy", "Moderate", "Hard"])
+    recall_iou_confidence_threshold: float = 0.3
 
     # Output
     output_dir: str = "results"
