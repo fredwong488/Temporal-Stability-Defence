@@ -62,7 +62,7 @@ def _defense_registry() -> dict[str, type]:
 # Pipeline builder
 # ---------------------------------------------------------------------------
 
-def build_pipeline(config: ExperimentConfig) -> EvalPipeline:
+def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeline:
     """Instantiate all pipeline components from a config."""
     from .datasets.kitti import KittiObjectDataset
 
@@ -107,6 +107,7 @@ def build_pipeline(config: ExperimentConfig) -> EvalPipeline:
         detector=detector,
         defense=defense,
         cache_clean_preds=config.cache_clean_preds,
+        desc=desc,
     )
 
 
@@ -122,7 +123,8 @@ def run_experiment(config: ExperimentConfig) -> dict:
       "pr"         — Precision-Recall curves per class and difficulty
       "recall_iou" — Recall vs IoU threshold curves per class
     """
-    pipeline = build_pipeline(config)
+    desc = f"Budget {config.attack_params.get('budget', '?')}" if config.attack_type else "Frames"
+    pipeline = build_pipeline(config, desc=desc)
     eval_results = pipeline.run()
 
     summary: dict = {

@@ -9,6 +9,8 @@ from __future__ import annotations
 import logging
 from collections import deque
 
+from tqdm import tqdm
+
 from .base import BaseAttack, BaseDefense, BaseDetector
 from .types import EvalResults, Frame, FrameResult, Prediction
 
@@ -50,12 +52,14 @@ class EvalPipeline:
         detector: BaseDetector | None = None,
         defense: BaseDefense | None = None,
         cache_clean_preds: bool = True,
+        desc: str = "Frames",
     ) -> None:
         self.dataset = dataset
         self.attack = attack
         self.detector = detector
         self.defense = defense
         self.cache_clean_preds = cache_clean_preds
+        self.desc = desc
         self._clean_pred_cache: dict[str, list[Prediction]] = {}
 
     # ------------------------------------------------------------------
@@ -70,7 +74,7 @@ class EvalPipeline:
         frame_results: list[FrameResult] = []
         n = 0
 
-        for frame in self.dataset:
+        for frame in tqdm(self.dataset, desc=self.desc, unit="frame"):
             n += 1
             logger.debug("Processing frame %s", frame.frame_id)
 
