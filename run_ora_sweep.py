@@ -18,13 +18,14 @@ Usage
     python run_ora_sweep.py --classes Car Pedestrian Cyclist
     python run_ora_sweep.py --difficulties Easy Moderate
     python run_ora_sweep.py --metric-types ap pr recall_iou
-    python run_ora_sweep.py --output results/sweep.csv
+    python run_ora_sweep.py --results-dir /path/to/outputs
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import datetime
 import json
 import logging
 import pathlib
@@ -41,7 +42,7 @@ DEFAULT_CLASSES = ["Car", "Pedestrian", "Cyclist"]
 DEFAULT_DIFFICULTIES = ["Easy", "Moderate", "Hard"]
 DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_NUM_FRAMES = 50
-OUTPUT_DEFAULT = "results/ora_ap_sweep.csv"
+DEFAULT_RESULTS_DIR = "results"
 
 VALID_METRIC_TYPES = {"ap", "pr", "recall_iou"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
@@ -143,19 +144,23 @@ def main() -> None:
                             "pr (Precision-Recall curves → JSON), "
                             "recall_iou (Recall vs IoU → JSON)"
                         ))
-    parser.add_argument("--output", type=str, default=OUTPUT_DEFAULT,
-                        help="Path for the AP output CSV (used when ap is in --metric-types)")
-    parser.add_argument("--results-dir", type=str, default="results",
-                        help="Directory for per-experiment JSON outputs")
+    parser.add_argument("--results-dir", type=str, default=DEFAULT_RESULTS_DIR,
+                        help="Base directory for outputs; each run is saved under a "
+                             "timestamped subdirectory (e.g. results/2026-04-08-14-30-00/)")
     parser.add_argument("--confidence-threshold", type=float, default=0.3,
                         help="Confidence threshold used for recall_iou metric")
     args = parser.parse_args()
 
     metric_types: list[str] = args.metric_types
 
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    run_dir = pathlib.Path(args.results_dir) / timestamp
+    run_dir.mkdir(parents=True, exist_ok=True)
+
     # Resolve frame IDs
     frame_ids = args.frames if args.frames else get_frame_ids(args.num_frames)
 
+    logging.info("Run dir     : %s", run_dir)
     logging.info("Frames      : %d  (%s … %s)", len(frame_ids), frame_ids[0], frame_ids[-1])
     logging.info("Budgets     : %s", args.budgets)
     logging.info("Classes     : %s", args.classes)
@@ -170,7 +175,7 @@ def main() -> None:
         logging.info("--- Budget %d ---", budget)
         summary = run_budget(
             frame_ids, budget, args.classes, args.difficulties,
-            metric_types, args.confidence_threshold, args.results_dir,
+            metric_types, args.confidence_threshold, str(run_dir),
         )
 
         if "ap" in metric_types:
@@ -202,9 +207,6 @@ def main() -> None:
                 },
             })
 
-    out_dir = pathlib.Path(args.results_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
-
     # AP → CSV
     if "ap" in metric_types and ap_rows:
         fieldnames = ["budget"] + [
@@ -212,8 +214,7 @@ def main() -> None:
             for cls in args.classes
             for d in args.difficulties
         ]
-        out_path = pathlib.Path(args.output)
-        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path = run_dir / "ora_ap_sweep.csv"
         with open(out_path, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
@@ -231,7 +232,7 @@ def main() -> None:
 
     # PR curves → JSON
     if "pr" in metric_types and pr_all:
-        pr_path = out_dir / "ora_pr_curves.json"
+        pr_path = run_dir / "ora_pr_curves.json"
         with open(pr_path, "w") as f:
             json.dump(pr_all, f, indent=2)
         logging.info("PR curves written to %s", pr_path)
@@ -239,7 +240,7 @@ def main() -> None:
 
     # Recall-IoU curves → JSON
     if "recall_iou" in metric_types and recall_iou_all:
-        riou_path = out_dir / "ora_recall_iou_curves.json"
+        riou_path = run_dir / "ora_recall_iou_curves.json"
         with open(riou_path, "w") as f:
             json.dump(recall_iou_all, f, indent=2)
         logging.info("Recall-IoU curves written to %s", riou_path)
