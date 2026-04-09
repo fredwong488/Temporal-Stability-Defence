@@ -39,11 +39,9 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
-# Paths — adjust if your layout differs
 KITTI_ROOT = "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/KITTI"
-CONFIG_PATH = "OpenPCDet/tools/cfgs/kitti_models/pointpillar.yaml"
-CHECKPOINT_PATH = "models/openpcdet/pointpillar_7728.pth"
 
+DEFAULT_DETECTOR = "pointrcnn"
 DEFAULT_BUDGETS = [0, 10, 20, 40, 60, 100, 150, 200]
 DEFAULT_CLASSES = ["Car", "Pedestrian", "Cyclist"]
 DEFAULT_DIFFICULTIES = ["Easy", "Moderate", "Hard"]
@@ -78,6 +76,7 @@ def run_budget(
     metric_types: list[str],
     confidence_threshold: float,
     output_dir: str,
+    detector_type: str = DEFAULT_DETECTOR,
 ) -> dict:
     """Run one experiment for the given budget and return the summary dict.
 
@@ -92,11 +91,7 @@ def run_budget(
         frame_ids=frame_ids,
         attack_type="ora",
         attack_params={"budget": budget, "target_types": classes},
-        detector_type="pointpillars",
-        detector_params={
-            "config_path": CONFIG_PATH,
-            "checkpoint_path": CHECKPOINT_PATH,
-        },
+        detector_type=detector_type,
         output_dir=output_dir,
         experiment_name=f"ora_budget_{budget}",
         metric_types=metric_types,
@@ -154,6 +149,8 @@ def main() -> None:
     parser.add_argument("--results-dir", type=str, default=DEFAULT_RESULTS_DIR,
                         help="Base directory for outputs; each run is saved under a "
                              "timestamped subdirectory (e.g. results/2026-04-08-14-30-00/)")
+    parser.add_argument("--detector", type=str, default=DEFAULT_DETECTOR,
+                        help="Detector type to use (e.g. pointrcnn, pointpillars)")
     parser.add_argument("--confidence-threshold", type=float, default=0.3,
                         help="Confidence threshold used for recall_iou metric")
     args = parser.parse_args()
@@ -168,6 +165,7 @@ def main() -> None:
     frame_ids = args.frames if args.frames else get_frame_ids(args.num_frames)
 
     logging.info("Run dir     : %s", run_dir)
+    logging.info("Detector    : %s", args.detector)
     logging.info("Frames      : %d  (%s … %s)", len(frame_ids), frame_ids[0], frame_ids[-1])
     logging.info("Budgets     : %s", args.budgets)
     logging.info("Classes     : %s", args.classes)
@@ -183,6 +181,7 @@ def main() -> None:
         summary = run_budget(
             frame_ids, budget, args.classes, args.difficulties,
             metric_types, args.confidence_threshold, str(run_dir),
+            detector_type=args.detector,
         )
 
         if "ap" in metric_types:
