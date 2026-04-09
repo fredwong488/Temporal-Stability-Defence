@@ -1,7 +1,7 @@
 """
-detectors/pointpillars.py
--------------------------
-PointPillars detector backed by OpenPCDet.
+detectors/pointrcnn.py
+----------------------
+PointRCNN detector backed by OpenPCDet.
 """
 
 from __future__ import annotations
@@ -16,13 +16,13 @@ from ..base import BaseDetector
 from ..types import Frame, Prediction
 
 
-class PointPillarsDetector(BaseDetector):
-    """Wraps OpenPCDet's PointPillars model for 3D object detection.
+class PointRCNNDetector(BaseDetector):
+    """Wraps OpenPCDet's PointRCNN model for 3D object detection.
 
     Parameters
     ----------
     config_path
-        Path to the OpenPCDet YAML config (e.g. cfgs/kitti_models/pointpillar.yaml).
+        Path to the OpenPCDet YAML config (e.g. cfgs/kitti_models/pointrcnn.yaml).
     checkpoint_path
         Path to trained model weights (.pth).
     score_threshold
@@ -33,8 +33,8 @@ class PointPillarsDetector(BaseDetector):
 
     def __init__(
         self,
-        config_path: str = "OpenPCDet/tools/cfgs/kitti_models/pointpillar.yaml",
-        checkpoint_path: str = "models/openpcdet/pointpillar_7728.pth",
+        config_path: str = "OpenPCDet/tools/cfgs/kitti_models/pointrcnn.yaml",
+        checkpoint_path: str = "models/openpcdet/pointrcnn_7870.pth",
         score_threshold: float = 0.3,
         device: str = "cuda:0",
     ) -> None:
@@ -103,7 +103,7 @@ class PointPillarsDetector(BaseDetector):
         return results
 
     def predict(self, frame: Frame) -> list[Prediction]:
-        """Run PointPillars on the frame and return filtered predictions."""
+        """Run PointRCNN on the frame and return filtered predictions."""
         raw = self._run_inference(frame.lidar)
         predictions: list[Prediction] = []
         for r in raw:

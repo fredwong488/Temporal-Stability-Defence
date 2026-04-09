@@ -50,7 +50,8 @@ def _attack_registry() -> dict[str, type]:
 
 def _detector_registry() -> dict[str, type]:
     from .detectors.pointpillars import PointPillarsDetector
-    return {"pointpillars": PointPillarsDetector}
+    from .detectors.pointrcnn import PointRCNNDetector
+    return {"pointpillars": PointPillarsDetector, "pointrcnn": PointRCNNDetector}
 
 
 def _defense_registry() -> dict[str, type]:
