@@ -161,8 +161,8 @@ class EvalResults:
         if not any(r.attacked_predictions is not None for r in self.frame_results):
             return {}
 
-        clean = compute_map(self.frame_results, iou_thresholds=iou_thresholds, use_clean=True)
-        attacked = compute_map(self.frame_results, iou_thresholds=iou_thresholds, use_clean=False)
+        clean = compute_map(self.frame_results, iou_thresholds=iou_thresholds, use_clean=True, desc="AP (clean)")
+        attacked = compute_map(self.frame_results, iou_thresholds=iou_thresholds, use_clean=False, desc="AP (attacked)")
 
         degradation = {
             cls: {

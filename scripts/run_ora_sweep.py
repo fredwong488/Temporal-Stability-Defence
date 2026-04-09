@@ -1,6 +1,6 @@
 """
-run_ora_sweep.py
-----------------
+scripts/run_ora_sweep.py
+------------------------
 Run ORA attack sweep on a subset of KITTI velodyne data using PointPillars
 and export results to CSV/JSON.
 
@@ -11,14 +11,14 @@ Three metric types are available (controlled via --metric-types):
 
 Usage
 -----
-    python run_ora_sweep.py                                         # defaults
-    python run_ora_sweep.py --num-frames 20
-    python run_ora_sweep.py --frames 000125 000070
-    python run_ora_sweep.py --budgets 0 40 200
-    python run_ora_sweep.py --classes Car Pedestrian Cyclist
-    python run_ora_sweep.py --difficulties Easy Moderate
-    python run_ora_sweep.py --metric-types ap pr recall_iou
-    python run_ora_sweep.py --results-dir /path/to/outputs
+    python scripts/run_ora_sweep.py                                         # defaults
+    python scripts/run_ora_sweep.py --num-frames 20
+    python scripts/run_ora_sweep.py --frames 000125 000070
+    python scripts/run_ora_sweep.py --budgets 0 40 200
+    python scripts/run_ora_sweep.py --classes Car Pedestrian Cyclist
+    python scripts/run_ora_sweep.py --difficulties Easy Moderate
+    python scripts/run_ora_sweep.py --metric-types ap pr recall_iou
+    python scripts/run_ora_sweep.py --results-dir /path/to/outputs
 """
 
 from __future__ import annotations
@@ -29,6 +29,13 @@ import datetime
 import json
 import logging
 import pathlib
+import sys
+
+# Ensure the project root (parent of scripts/) is on sys.path so that
+# eval_pipeline and other project modules can be imported.
+_PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 

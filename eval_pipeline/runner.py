@@ -143,19 +143,19 @@ def run_experiment(config: ExperimentConfig) -> dict:
             )
 
         if "pr" in metric_types:
+            from itertools import product
+            from tqdm import tqdm
             from .metrics import compute_pr_curve, _DEFAULT_IOU_THRESHOLDS  # noqa: PLC2701
             classes = sorted({lbl.type for fr in frame_results for lbl in fr.labels})
-            summary["pr_curves"] = {
-                cls: {
-                    diff: compute_pr_curve(
-                        frame_results, cls,
-                        _DEFAULT_IOU_THRESHOLDS.get(cls, 0.5),
-                        use_clean=False, difficulty=diff,
-                    )
-                    for diff in config.difficulties
-                }
-                for cls in classes
-            }
+            pr_curves: dict = {}
+            combos = list(product(classes, config.difficulties))
+            for cls, diff in tqdm(combos, desc="PR curves", unit="curve"):
+                pr_curves.setdefault(cls, {})[diff] = compute_pr_curve(
+                    frame_results, cls,
+                    _DEFAULT_IOU_THRESHOLDS.get(cls, 0.5),
+                    use_clean=False, difficulty=diff,
+                )
+            summary["pr_curves"] = pr_curves
 
         if "recall_iou" in metric_types:
             from .metrics import compute_recall_vs_iou

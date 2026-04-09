@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import numpy as np
 from shapely.geometry import Polygon
+from tqdm import tqdm
 
 from .types import FrameResult, ObjectLabel, Prediction
 
@@ -278,6 +279,7 @@ def compute_map(
     iou_thresholds: dict[str, float] | None = None,
     use_clean: bool = True,
     difficulties: tuple[str, ...] = DIFFICULTIES,
+    desc: str = "AP",
 ) -> dict[str, dict[str, float]]:
     """Compute AP (R40) per class and difficulty level.
 
@@ -314,7 +316,7 @@ def compute_map(
             all_classes.add(lbl.type)
 
     result: dict[str, dict[str, float]] = {}
-    for cls in sorted(all_classes):
+    for cls in tqdm(sorted(all_classes), desc=desc, unit="class"):
         threshold = iou_thresholds.get(cls, 0.5)
         cls_ap: dict[str, float] = {}
         for diff in difficulties:
@@ -455,7 +457,7 @@ def compute_recall_vs_iou(
     )
 
     recalls: list[float] = []
-    for iou_thresh in iou_values:
+    for iou_thresh in tqdm(iou_values, desc=f"Recall-IoU ({class_name})", unit="thresh"):
         tp_total = 0
         for fr in frame_results:
             preds = fr.clean_predictions if use_clean else (fr.attacked_predictions or [])
