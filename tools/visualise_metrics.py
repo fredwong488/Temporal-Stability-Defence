@@ -75,6 +75,25 @@ def list_run_dirs(results_dir: pathlib.Path) -> list[pathlib.Path]:
     return dirs
 
 
+def load_run_metadata(run_dir: pathlib.Path) -> dict:
+    """Read num_frames, attack_type, detector_type from the lowest-budget JSON file."""
+    budget_files = sorted(run_dir.glob("ora_budget_*.json"),
+                          key=lambda p: int(re.search(r"(\d+)", p.stem).group(1)))
+    if not budget_files:
+        return {}
+    try:
+        with open(budget_files[0]) as f:
+            data = json.load(f)
+        cfg = data.get("config", {})
+        return {
+            "num_frames":    data.get("num_frames"),
+            "attack_type":   cfg.get("attack_type"),
+            "detector_type": cfg.get("detector_type"),
+        }
+    except Exception:
+        return {}
+
+
 def pick_run_dir(results_dir: pathlib.Path, run_name: str | None) -> pathlib.Path:
     dirs = list_run_dirs(results_dir)
     if not dirs:
@@ -95,7 +114,16 @@ def pick_run_dir(results_dir: pathlib.Path, run_name: str | None) -> pathlib.Pat
             tags.append("pr")
         if (d / "ora_recall_iou_curves.json").exists():
             tags.append("recall_iou")
-        print(f"  [{i}] {d.name}  ({', '.join(tags)})")
+        meta = load_run_metadata(d)
+        meta_parts = []
+        if meta.get("detector_type"):
+            meta_parts.append(meta["detector_type"])
+        if meta.get("attack_type"):
+            meta_parts.append(meta["attack_type"])
+        if meta.get("num_frames") is not None:
+            meta_parts.append(f"{meta['num_frames']} frames")
+        meta_str = f"  [{', '.join(meta_parts)}]" if meta_parts else ""
+        print(f"  [{i}] {d.name}  ({', '.join(tags)}){meta_str}")
 
     while True:
         raw = input(f"\nChoose a directory [1-{len(dirs)}]: ").strip()
