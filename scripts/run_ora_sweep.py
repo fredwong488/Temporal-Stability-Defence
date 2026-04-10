@@ -77,6 +77,7 @@ def run_budget(
     confidence_threshold: float,
     output_dir: str,
     detector_type: str = DEFAULT_DETECTOR,
+    score_threshold: float | None = None,
 ) -> dict:
     """Run one experiment for the given budget and return the summary dict.
 
@@ -86,12 +87,17 @@ def run_budget(
     from eval_pipeline.config import ExperimentConfig
     from eval_pipeline.runner import run_experiment
 
+    detector_params: dict = {}
+    if score_threshold is not None:
+        detector_params["score_threshold"] = score_threshold
+
     config = ExperimentConfig(
         kitti_root=KITTI_ROOT,
         frame_ids=frame_ids,
         attack_type="ora",
         attack_params={"budget": budget, "target_types": classes},
         detector_type=detector_type,
+        detector_params=detector_params,
         output_dir=output_dir,
         experiment_name=f"ora_budget_{budget}",
         metric_types=metric_types,
@@ -182,6 +188,7 @@ def main() -> None:
             frame_ids, budget, args.classes, args.difficulties,
             metric_types, args.confidence_threshold, str(run_dir),
             detector_type=args.detector,
+            score_threshold=args.confidence_threshold,
         )
 
         if "ap" in metric_types:
