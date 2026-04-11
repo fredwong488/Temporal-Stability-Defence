@@ -9,11 +9,14 @@ them into the pipeline's Frame / ObjectLabel / Calibration dataclasses.
 
 from __future__ import annotations
 
+import logging
 import pathlib
 import sys
 from typing import Iterator
 
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Ensure project root is on sys.path so detection_v2_1 can be imported
@@ -168,6 +171,20 @@ class KittiObjectDataset:
         self._calib_dir = self.root / "data_object_calib" / "training" / "calib"
         self._velo_dir  = self.root / "data_object_velodyne" / "training" / "velodyne"
         self._img_dir   = self.root / "data_object_image_2" / "training" / "image_2"
+
+        for name, path in [("label", self._label_dir), ("calib", self._calib_dir),
+                           ("velodyne", self._velo_dir)]:
+            if not path.exists():
+                raise FileNotFoundError(
+                    f"Required {name} directory not found: {path}"
+                )
+
+        if not self._img_dir.exists():
+            logger.warning(
+                "Image directory not found: %s — FOV filtering will be "
+                "disabled. Point-based detectors (e.g. PointRCNN) may "
+                "produce degraded results.", self._img_dir,
+            )
 
         if frame_ids is None:
             self.frame_ids: list[str] = sorted(
