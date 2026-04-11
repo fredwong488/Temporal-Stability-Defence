@@ -10,6 +10,8 @@ from __future__ import annotations
 import abc
 from collections import deque
 
+import numpy as np
+
 from .types import DetectionResult, Frame, Prediction
 
 

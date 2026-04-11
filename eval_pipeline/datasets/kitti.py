@@ -55,15 +55,30 @@ def _kitti_object_to_label(obj: KittiObject, corners_velo: np.ndarray) -> Object
     )
 
 
+def _get_image_shape(img_file: pathlib.Path) -> tuple[int, int] | None:
+    """Read (H, W) from a KITTI image file, or None if it doesn't exist."""
+    if not img_file.exists():
+        return None
+    from PIL import Image
+    with Image.open(img_file) as img:
+        w, h = img.size
+    return (h, w)
+
+
 def _load_labels_and_calib(
     label_file: pathlib.Path,
     calib_file: pathlib.Path,
+    img_file: pathlib.Path | None = None,
 ) -> tuple[list[ObjectLabel], Calibration]:
     """Parse a KITTI label file and calibration file into pipeline types."""
     kitti_objects = _parse_label_file(str(label_file))
-    R0_rect, Tr_velo_to_cam = _parse_calib_file(str(calib_file))
+    R0_rect, Tr_velo_to_cam, P2 = _parse_calib_file(str(calib_file))
 
-    calib = Calibration(R0_rect=R0_rect, Tr_velo_to_cam=Tr_velo_to_cam)
+    image_shape = _get_image_shape(img_file) if img_file is not None else None
+    calib = Calibration(
+        R0_rect=R0_rect, Tr_velo_to_cam=Tr_velo_to_cam,
+        P2=P2, image_shape=image_shape,
+    )
 
     labels: list[ObjectLabel] = []
     for obj in kitti_objects:
@@ -77,6 +92,43 @@ def _load_labels_and_calib(
 def _load_velodyne(lidar_file: pathlib.Path) -> np.ndarray:
     """Load a KITTI .bin file as a raw (N, 4) float32 numpy array."""
     return np.fromfile(lidar_file, dtype=np.float32).reshape(-1, 4)
+
+
+def _filter_fov(lidar: np.ndarray, calib: Calibration) -> np.ndarray:
+    """Keep only LiDAR points visible in the camera FOV.
+
+    Replicates OpenPCDet's FOV_POINTS_ONLY filtering (kitti_dataset.yaml).
+    KITTI only labels objects within the cam2 image, so points outside the
+    FOV would produce false positives and dilute point-based sampling.
+    """
+    P2 = calib.P2
+    if P2 is None or calib.image_shape is None:
+        return lidar
+
+    R0 = calib.R0_rect          # (3, 3)
+    Tr = calib.Tr_velo_to_cam   # (3, 4)
+
+    # velodyne → rectified camera coordinates
+    pts = lidar[:, :3]
+    N = pts.shape[0]
+    pts_h = np.hstack([pts, np.ones((N, 1), dtype=pts.dtype)])  # (N, 4)
+    pts_cam = (Tr @ pts_h.T).T            # (N, 3)
+    pts_rect = (R0 @ pts_cam.T).T         # (N, 3)
+
+    # rectified camera → image pixel coordinates
+    pts_rect_h = np.hstack([pts_rect, np.ones((N, 1), dtype=pts.dtype)])
+    pts_img = (P2 @ pts_rect_h.T).T       # (N, 3)
+    depth = pts_img[:, 2]
+    pts_img[:, 0] /= depth
+    pts_img[:, 1] /= depth
+
+    img_h, img_w = calib.image_shape
+    mask = (
+        (depth > 0)
+        & (pts_img[:, 0] >= 0) & (pts_img[:, 0] < img_w)
+        & (pts_img[:, 1] >= 0) & (pts_img[:, 1] < img_h)
+    )
+    return lidar[mask]
 
 
 # ---------------------------------------------------------------------------
@@ -115,6 +167,7 @@ class KittiObjectDataset:
         self._label_dir = self.root / "training_labels" / "label_2"
         self._calib_dir = self.root / "data_object_calib" / "training" / "calib"
         self._velo_dir  = self.root / "data_object_velodyne" / "training" / "velodyne"
+        self._img_dir   = self.root / "data_object_image_2" / "training" / "image_2"
 
         if frame_ids is None:
             self.frame_ids: list[str] = sorted(
@@ -146,9 +199,10 @@ class KittiObjectDataset:
         label_file = self._label_dir / f"{frame_id}.txt"
         calib_file = self._calib_dir / f"{frame_id}.txt"
         lidar_file = self._velo_dir  / f"{frame_id}.bin"
+        img_file   = self._img_dir   / f"{frame_id}.png"
 
-        labels, calib = _load_labels_and_calib(label_file, calib_file)
-        lidar = _load_velodyne(lidar_file)
+        labels, calib = _load_labels_and_calib(label_file, calib_file, img_file)
+        lidar = _filter_fov(_load_velodyne(lidar_file), calib)
 
         return Frame(
             frame_id=frame_id,

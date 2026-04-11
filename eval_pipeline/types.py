@@ -22,6 +22,7 @@ class Calibration:
     R0_rect: np.ndarray          # (3, 3) rectification matrix
     Tr_velo_to_cam: np.ndarray   # (3, 4) velodyne-to-camera transform
     P2: np.ndarray | None = None # (3, 4) projection matrix (optional)
+    image_shape: tuple[int, int] | None = None  # (H, W) of the reference camera image
 
 
 # ---------------------------------------------------------------------------

@@ -69,7 +69,8 @@ def _parse_calib_file(calib_file):
 
     R0_rect = data['R0_rect'].reshape(3, 3)
     Tr_velo_to_cam = data['Tr_velo_to_cam'].reshape(3, 4)
-    return R0_rect, Tr_velo_to_cam
+    P2 = data['P2'].reshape(3, 4) if 'P2' in data else None
+    return R0_rect, Tr_velo_to_cam, P2
 
 
 def _load_velodyne_bin(lidar_file):
@@ -153,7 +154,7 @@ def get_obj_data_intensity(label_file, calib_file, lidar_file, show_plots=False)
     pcd_intensity : ndarray (N,)
     """
     objects = _parse_label_file(label_file)
-    R0_rect, Tr_velo_to_cam = _parse_calib_file(calib_file)
+    R0_rect, Tr_velo_to_cam, _P2 = _parse_calib_file(calib_file)
     pcd, pcd_intensity = _load_velodyne_bin(lidar_file)
 
     obj_coords = []
