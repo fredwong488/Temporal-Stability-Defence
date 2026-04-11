@@ -11,8 +11,8 @@ Three metric types are available (controlled via --metric-types):
 
 Usage
 -----
-    python scripts/run_ora_sweep.py                                         # defaults
-    python scripts/run_ora_sweep.py --num-frames 20
+    python scripts/run_ora_sweep.py                                         # defaults (val split)
+    python scripts/run_ora_sweep.py --split train --num-frames 20
     python scripts/run_ora_sweep.py --frames 000125 000070
     python scripts/run_ora_sweep.py --budgets 0 40 200
     python scripts/run_ora_sweep.py --classes Car Pedestrian Cyclist
@@ -48,24 +48,35 @@ DEFAULT_DIFFICULTIES = ["Easy", "Moderate", "Hard"]
 DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_NUM_FRAMES = 50
 DEFAULT_RESULTS_DIR = "results"
+DEFAULT_SPLIT = "val"
 
 VALID_METRIC_TYPES = {"ap", "pr", "recall_iou"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
+VALID_SPLITS = {"train", "val", "test"}
+
+IMAGESETS_DIR = _PROJECT_ROOT / "OpenPCDet" / "data" / "kitti" / "ImageSets"
 
 
-def get_frame_ids(num_frames: int) -> list[str]:
-    """Return the first `num_frames` frame IDs from the velodyne training split."""
-    velodyne_dir = pathlib.Path(KITTI_ROOT) / "data_object_velodyne" / "training" / "velodyne"
-    if not velodyne_dir.exists():
+def get_split_frame_ids(split: str, num_frames: int | None = None) -> list[str]:
+    """Return frame IDs from an OpenPCDet ImageSets split file.
+
+    Parameters
+    ----------
+    split
+        One of "train", "val", or "test".
+    num_frames
+        If given, return only the first *num_frames* IDs from the split.
+    """
+    split_file = IMAGESETS_DIR / f"{split}.txt"
+    if not split_file.exists():
         raise FileNotFoundError(
-            f"Velodyne directory not found: {velodyne_dir.resolve()}\n"
-            f"Set KITTI_ROOT at the top of the script (currently: '{KITTI_ROOT}') "
-            f"or pass explicit frame IDs with --frames."
+            f"Split file not found: {split_file}\n"
+            f"Expected OpenPCDet ImageSets at {IMAGESETS_DIR}"
         )
-    bins = sorted(velodyne_dir.glob("*.bin"))
-    if not bins:
-        raise FileNotFoundError(f"No .bin files found in {velodyne_dir.resolve()}")
-    return [p.stem for p in bins[:num_frames]]
+    frame_ids = [line.strip() for line in split_file.read_text().splitlines() if line.strip()]
+    if num_frames is not None:
+        frame_ids = frame_ids[:num_frames]
+    return frame_ids
 
 
 def run_budget(
@@ -132,10 +143,13 @@ def main() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("--num-frames", type=int, default=DEFAULT_NUM_FRAMES,
-                       help="Number of frames to sample from the training split")
+    group.add_argument("--num-frames", type=int, default=None,
+                       help="Use the first N frames from the split (default: all)")
     group.add_argument("--frames", nargs="+", metavar="ID",
                        help="Explicit frame IDs, e.g. 000125 000070")
+    parser.add_argument("--split", type=str, default=DEFAULT_SPLIT,
+                        choices=sorted(VALID_SPLITS),
+                        help="KITTI split to use (reads from OpenPCDet ImageSets/)")
     parser.add_argument("--budgets", type=int, nargs="+", default=DEFAULT_BUDGETS,
                         metavar="N", help="Attack budgets to sweep")
     parser.add_argument("--classes", nargs="+", default=DEFAULT_CLASSES,
@@ -168,10 +182,14 @@ def main() -> None:
     run_dir.mkdir(parents=True, exist_ok=True)
 
     # Resolve frame IDs
-    frame_ids = args.frames if args.frames else get_frame_ids(args.num_frames)
+    if args.frames:
+        frame_ids = args.frames
+    else:
+        frame_ids = get_split_frame_ids(args.split, args.num_frames)
 
     logging.info("Run dir     : %s", run_dir)
     logging.info("Detector    : %s", args.detector)
+    logging.info("Split       : %s", args.split if not args.frames else "custom")
     logging.info("Frames      : %d  (%s … %s)", len(frame_ids), frame_ids[0], frame_ids[-1])
     logging.info("Budgets     : %s", args.budgets)
     logging.info("Classes     : %s", args.classes)
