@@ -3,7 +3,7 @@ datasets/kitti.py
 -----------------
 KITTI Object Detection split dataset loader.
 
-Wraps the parsing utilities in detection_v2_1.py (project root) and converts
+Wraps the parsing utilities in kitti_utils.py and converts
 them into the pipeline's Frame / ObjectLabel / Calibration dataclasses.
 """
 
@@ -19,13 +19,13 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Ensure project root is on sys.path so detection_v2_1 can be imported
+# Ensure project root is on sys.path so kitti_utils can be imported
 # ---------------------------------------------------------------------------
 _PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[2]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from detection_v2_1 import (  # noqa: E402
+from ..utils.kitti_utils import (  # noqa: E402
     KittiObject,
     _cam_corners_to_velo,
     _compute_3d_bbox_corners_cam,

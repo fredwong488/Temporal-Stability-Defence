@@ -33,7 +33,7 @@ _PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[2]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from utils_3d import Face, Vector, isInPoly  # noqa: E402
+from ..utils.utils_3d import Face, Vector, isInPoly  # noqa: E402
 
 from ..base import BaseDefense
 from ..types import DetectionResult, Frame, ObjectLabel

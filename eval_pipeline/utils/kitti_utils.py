@@ -1,7 +1,7 @@
 """
-detection_v2_1.py
------------------
-KITTI label/calibration/velodyne loading utilities used by the ORA notebook.
+kitti_utils.py
+--------------
+KITTI label/calibration/velodyne loading utilities.
 
 Provides:
   KittiObject              -- parsed representation of a KITTI label line
