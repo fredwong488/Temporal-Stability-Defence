@@ -108,6 +108,8 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
         detector=detector,
         defense=defense,
         cache_clean_preds=config.cache_clean_preds,
+        attack_fraction=config.attack_fraction,
+        attack_fraction_seed=config.attack_fraction_seed,
         desc=desc,
     )
 

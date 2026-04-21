@@ -88,6 +88,8 @@ def run_single(
     confidence_threshold: float,
     output_dir: str,
     experiment_name: str,
+    attack_fraction: float = 1.0,
+    attack_fraction_seed: int = 0,
 ) -> dict:
     """Run one experiment and return the summary dict."""
     from eval_pipeline.config import ExperimentConfig
@@ -107,6 +109,8 @@ def run_single(
         metric_types=metric_types,
         difficulties=difficulties,
         recall_iou_confidence_threshold=confidence_threshold,
+        attack_fraction=attack_fraction,
+        attack_fraction_seed=attack_fraction_seed,
     )
     return run_experiment(config)
 
@@ -160,6 +164,11 @@ def main() -> None:
     # Components (all optional, but at least one required)
     parser.add_argument("--attack", type=str, default=None,
                         help="Attack type to apply (e.g. ora)")
+    parser.add_argument("--attack-fraction", type=float, default=1.0,
+                        metavar="F",
+                        help="Fraction of frames to attack, chosen randomly (0.0–1.0)")
+    parser.add_argument("--attack-fraction-seed", type=int, default=0,
+                        help="RNG seed for attack frame sampling")
     parser.add_argument("--defense", type=str, default=None,
                         help="Defense type to apply (e.g. void_region)")
     parser.add_argument("--detector", type=str, default=None,
@@ -252,6 +261,8 @@ def main() -> None:
 
     logging.info("Run dir      : %s", run_dir)
     logging.info("Attack       : %s", args.attack or "(none)")
+    if args.attack and args.attack_fraction < 1.0:
+        logging.info("Atk fraction : %.2f (seed=%d)", args.attack_fraction, args.attack_fraction_seed)
     logging.info("Defense      : %s", args.defense or "(none)")
     logging.info("Detector     : %s", args.detector or "(none)")
     logging.info("Sweep target : %s", args.sweep_target)
@@ -297,6 +308,8 @@ def main() -> None:
             confidence_threshold=args.confidence_threshold,
             output_dir=str(run_dir),
             experiment_name=experiment_name,
+            attack_fraction=args.attack_fraction,
+            attack_fraction_seed=args.attack_fraction_seed,
         )
 
         if "ap" in args.metric_types:

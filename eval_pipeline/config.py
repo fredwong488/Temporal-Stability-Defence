@@ -84,6 +84,8 @@ class ExperimentConfig:
     # Attack
     attack_type: str | None = None              # "ora" | None
     attack_params: dict = dataclasses.field(default_factory=dict)
+    attack_fraction: float = 1.0                # fraction of frames to attack (0.0–1.0)
+    attack_fraction_seed: int = 0               # RNG seed for frame sampling
 
     # Detector
     detector_type: str | None = None            # "pointpillars" | None

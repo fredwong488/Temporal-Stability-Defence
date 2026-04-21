@@ -9,6 +9,7 @@ from __future__ import annotations
 import logging
 from collections import deque
 
+import numpy as np
 from tqdm import tqdm
 
 from .base import BaseAttack, BaseDefense, BaseDetector
@@ -52,6 +53,8 @@ class EvalPipeline:
         detector: BaseDetector | None = None,
         defense: BaseDefense | None = None,
         cache_clean_preds: bool = True,
+        attack_fraction: float = 1.0,
+        attack_fraction_seed: int = 0,
         desc: str = "Frames",
     ) -> None:
         self.dataset = dataset
@@ -59,6 +62,8 @@ class EvalPipeline:
         self.detector = detector
         self.defense = defense
         self.cache_clean_preds = cache_clean_preds
+        self.attack_fraction = attack_fraction
+        self._attack_rng = np.random.default_rng(attack_fraction_seed)
         self.desc = desc
         self._clean_pred_cache: dict[str, list[Prediction]] = {}
 
@@ -85,7 +90,7 @@ class EvalPipeline:
             attacked_frame: Frame | None = None
             attacked_preds: list[Prediction] | None = None
 
-            if self.attack is not None:
+            if self.attack is not None and self._attack_rng.random() < self.attack_fraction:
                 attacked_frame = self.attack.apply(frame)
                 if self.detector is not None:
                     attacked_preds = self.detector.predict(attacked_frame)
