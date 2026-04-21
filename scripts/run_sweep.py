@@ -4,8 +4,8 @@ scripts/run_sweep.py
 Generalised parameter sweep runner.
 
 Iterates one attack or defense parameter over a list of values and collects
-AP / PR / recall-IoU metrics.  At least one of --attack, --defense, --detector
-must be supplied.
+AP / PR / recall-IoU / defense metrics.  At least one of --attack, --defense,
+--detector must be supplied.
 
 Usage
 -----
@@ -52,7 +52,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
@@ -114,6 +114,21 @@ def run_single(
 # ---------------------------------------------------------------------------
 # Per-metric extractors
 # ---------------------------------------------------------------------------
+
+def extract_detection_rate_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+) -> dict:
+    """Extract defense F1, precision and recall into a flat dict for the CSV."""
+    de = summary.get("defense_effectiveness", {})
+    return {
+        sweep_param: sweep_val,
+        "detection_f1": de.get("f1", float("nan")),
+        "detection_precision": de.get("precision", float("nan")),
+        "detection_recall": de.get("recall", float("nan")),
+    }
+
 
 def extract_ap_row(
     summary: dict,
@@ -185,7 +200,8 @@ def main() -> None:
                             "Metric types to compute: "
                             "ap (Average Precision → CSV), "
                             "pr (Precision-Recall curves → JSON), "
-                            "recall_iou (Recall vs IoU → JSON)"
+                            "recall_iou (Recall vs IoU → JSON), "
+                            "detection_rate (defense F1/precision/recall → CSV)"
                         ))
     parser.add_argument("--confidence-threshold", type=float, default=0.3,
                         help="Confidence threshold used for recall_iou metric and detector scoring")
@@ -250,6 +266,7 @@ def main() -> None:
     ap_rows: list[dict] = []
     pr_all: list[dict] = []
     recall_iou_all: list[dict] = []
+    detection_rate_rows: list[dict] = []
 
     base_attack_params: dict = {"target_types": args.classes} if args.attack else {}
     base_defense_params: dict = {}
@@ -311,6 +328,14 @@ def main() -> None:
                 },
             })
 
+        if "detection_rate" in args.metric_types:
+            row = extract_detection_rate_row(summary, args.sweep_param, val)
+            detection_rate_rows.append(row)
+            logging.info(
+                "  Detection  F1=%.3f  precision=%.3f  recall=%.3f",
+                row["detection_f1"], row["detection_precision"], row["detection_recall"],
+            )
+
     sweep_tag = f"{args.sweep_target}_{args.sweep_param}"
 
     # AP → CSV
@@ -351,6 +376,25 @@ def main() -> None:
             json.dump(recall_iou_all, f, indent=2)
         logging.info("Recall-IoU curves written to %s", riou_path)
         print(f"\nRecall-IoU: {riou_path}")
+
+    # Detection rate → CSV
+    if "detection_rate" in args.metric_types and detection_rate_rows:
+        fieldnames = [args.sweep_param, "detection_f1", "detection_precision", "detection_recall"]
+        out_path = run_dir / f"sweep_{sweep_tag}_detection_rate.csv"
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(detection_rate_rows)
+        logging.info("Detection rate CSV written to %s", out_path)
+        print(f"\nDetection rate: {out_path}")
+        print(",".join(fieldnames))
+        for row in detection_rate_rows:
+            print(",".join([
+                str(row[args.sweep_param]),
+                f"{row['detection_f1']:.4f}",
+                f"{row['detection_precision']:.4f}",
+                f"{row['detection_recall']:.4f}",
+            ]))
 
 
 if __name__ == "__main__":

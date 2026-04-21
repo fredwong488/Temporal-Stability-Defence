@@ -7,8 +7,9 @@ version = "0.1.0"
 
 [tasks]
 l-ora = {cmd = "python scripts/run_ora_sweep.py --classes Car Pedestrian Cyclist --difficulties Easy Moderate Hard --metric-types ap pr recall_iou --budgets 0 10 20 40 60 100 150 200"}
-l-ora-vr = {cmd = "python scripts/run_sweep.py --attack ora --defense void_region --classes Car Pedestrian Cyclist --difficulties Easy Moderate Hard --metric-types ap pr recall_iou --sweep-param budget --sweep-values 0 10 20 40 60 100 150 200"}
+l-ora-vr = {cmd = "python scripts/run_sweep.py --attack ora --defense void_region --classes Car Pedestrian Cyclist --difficulties Easy Moderate Hard --metric-types ap pr recall_iou detection_rate --sweep-param budget --sweep-values 0 10 20 40 60 100 150 200"}
 s-ora = {cmd = "python scripts/run_ora_sweep.py --num-frames 50 --classes Car Pedestrian Cyclist --difficulties Easy Moderate Hard --metric-types ap pr recall_iou --budgets 0 10 20 40 60 100 150 200"}
+s-ora-vr = {cmd = "python scripts/run_sweep.py --attack ora --defense void_region --num-frames 50 --classes Car Pedestrian Cyclist --difficulties Easy Moderate Hard --metric-types ap pr recall_iou detection_rate --sweep-param budget --sweep-values 0 10 20 40 60 100 150 200"}
 t-ora = {cmd = "python scripts/run_ora_sweep.py --num-frames 50 --classes Car Pedestrian Cyclist --difficulties Easy Moderate Hard --metric-types ap pr recall_iou --budgets 0 40 100 200"}
 fm = {cmd = "python tools/format_metrics.py"}
 vm = {cmd = "python tools/visualise_metrics.py"}
