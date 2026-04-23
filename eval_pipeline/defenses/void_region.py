@@ -3,6 +3,26 @@ defenses/void_region.py
 -----------------------
 Void-region attack detector.
 
+Reference
+---------
+Hau, Z., Demetriou, S., & Lupu, E. C. (2022).
+Using 3D Shadows to Detect Object Hiding Attacks on Autonomous Vehicle Perception.
+IEEE Security and Privacy Workshops (SPW), pp. 229–235.
+https://doi.org/10.1109/SPW54247.2022.9833890
+
+BibTeX::
+
+    @inproceedings{Hau2022using,
+      author    = {Hau, Zhongyuan and Demetriou, Soteris and Lupu, Emil C.},
+      booktitle = {2022 IEEE Security and Privacy Workshops (SPW)},
+      title     = {Using 3D Shadows to Detect Object Hiding Attacks on Autonomous Vehicle Perception},
+      year      = {2022},
+      pages     = {229--235},
+      doi       = {10.1109/SPW54247.2022.9833890},
+      publisher = {IEEE Computer Society},
+      month     = {May}
+    }
+
 Adapted from detection_void_region-Copy1.ipynb.
 
 Algorithm
@@ -11,11 +31,11 @@ Algorithm
 2. Build a 2D occupancy grid over a region of interest (ROI).
 3. Identify empty (unoccupied) grid cells.
 4. Cluster empty cells with DBSCAN.
-5. For each cluster centroid, backtrace a frustum from the sensor origin
-   through the void region.
-6. Count lidar points inside the frustum.
-7. Check whether those points overlap any ground-truth bounding box.
-8. If a void region's frustum intersects a labelled object, flag an attack.
+5. For each cluster, backtrace one frustum per cell centre (not per-cluster
+   centroid) and union the resulting point indices across the cluster.
+6. Exclude frustum points already inside a detector-predicted bounding box.
+7. DBSCAN the remaining (unidentified) points into obstacle clusters.
+8. If any obstacle cluster survives, flag an attack.
 """
 
 from __future__ import annotations
@@ -36,7 +56,7 @@ if str(_PROJECT_ROOT) not in sys.path:
 from ..utils.utils_3d import Face, Vector, isInPoly  # noqa: E402
 
 from ..base import BaseDefense
-from ..types import DetectionResult, Frame, ObjectLabel
+from ..types import DetectionResult, Frame, ObjectLabel, Prediction
 
 
 class VoidRegionDefense(BaseDefense):
@@ -47,6 +67,7 @@ class VoidRegionDefense(BaseDefense):
     ----------
     roi_min
         (x_min, y_min) of the region of interest in velodyne metres.
+        Paper specifies a 10 m × 30 m front-near region starting at x=0.
     roi_max
         (x_max, y_max) of the region of interest.
     ground_height
@@ -54,26 +75,34 @@ class VoidRegionDefense(BaseDefense):
     ground_delta
         Half-thickness of the ground-plane slice to extract.
     grid_stride
-        Occupancy grid cell size in metres.
+        Occupancy grid cell size in metres. Paper specifies 0.3 m.
     dbscan_eps
-        DBSCAN neighbourhood radius.
+        DBSCAN neighbourhood radius for shadow (empty-cell) clustering.
     dbscan_min_samples
-        DBSCAN minimum cluster size.
+        DBSCAN minimum cluster size for shadow clustering.
     min_frustum_points
-        Minimum number of lidar points inside a frustum to consider it
-        non-empty (frustums with fewer points are ignored).
+        Minimum lidar points in a single cell's frustum for that cell to
+        contribute to the cluster aggregate.  Cells below this threshold
+        are skipped.
+    obstacle_dbscan_eps
+        DBSCAN neighbourhood radius for the second-pass obstacle clustering
+        (applied to frustum points not explained by detector predictions).
+    obstacle_dbscan_min_samples
+        DBSCAN minimum cluster size for the second-pass obstacle clustering.
     """
 
     def __init__(
         self,
-        roi_min: tuple[float, float] = (4.5, -5.0),
+        roi_min: tuple[float, float] = (0.0, -5.0),
         roi_max: tuple[float, float] = (30.0, 5.0),
         ground_height: float = -1.73,
         ground_delta: float = 0.2,
-        grid_stride: float = 0.6,
+        grid_stride: float = 0.3,
         dbscan_eps: float = 0.8,
         dbscan_min_samples: int = 5,
         min_frustum_points: int = 0,
+        obstacle_dbscan_eps: float = 0.5,
+        obstacle_dbscan_min_samples: int = 10,
     ) -> None:
         self.roi_min = roi_min
         self.roi_max = roi_max
@@ -83,6 +112,8 @@ class VoidRegionDefense(BaseDefense):
         self.dbscan_eps = dbscan_eps
         self.dbscan_min_samples = dbscan_min_samples
         self.min_frustum_points = min_frustum_points
+        self.obstacle_dbscan_eps = obstacle_dbscan_eps
+        self.obstacle_dbscan_min_samples = obstacle_dbscan_min_samples
 
     @property
     def temporal_window(self) -> int:
@@ -94,7 +125,8 @@ class VoidRegionDefense(BaseDefense):
 
     def detect(self, frame: Frame, history: deque[Frame]) -> DetectionResult:
         """Determine whether the frame contains an adversarial void region."""
-        lidar = frame.lidar  # (N, 4)
+        lidar = frame.lidar       # (N, 4)
+        pts_xyz = lidar[:, :3]    # (N, 3)
 
         # 1. Ground slice
         ground_pts = self._extract_ground_points(lidar)
@@ -109,7 +141,7 @@ class VoidRegionDefense(BaseDefense):
                 metadata={"reason": "no_empty_cells"},
             )
 
-        # 3. DBSCAN clustering of empty cells
+        # 3. DBSCAN clustering of empty cells into shadow clusters
         pts_2d = empty_centers[:, :2]
         labels = DBSCAN(
             eps=self.dbscan_eps, min_samples=self.dbscan_min_samples
@@ -124,36 +156,79 @@ class VoidRegionDefense(BaseDefense):
                 metadata={"n_clusters": 0, "reason": "no_clusters"},
             )
 
-        # 4. For each cluster — backtrace frustum, check GT labels
+        # 4. For each shadow cluster, backtrace one frustum per cell centre
+        #    Union point indices across all cells; skip cells whose frustum
+        #    has fewer than min_frustum_points hits
         clusters = self._get_clusters(empty_centers, labels, n_clusters)
-        matched_obj_indices: list[int] = []
+        all_frustum_indices: set[int] = set()
         cluster_details: list[dict] = []
 
         for cluster in clusters:
-            centroid = np.mean(cluster, axis=0)
-            frustum_result = self._backtrace_frustum(centroid, lidar[:, :3])
-            pts_in = frustum_result["pts"]
-
-            matched = self._check_frustum_vs_labels(pts_in, frame.labels)
-            matched_obj_indices.extend(matched)
-
+            cluster_indices: set[int] = set()
+            valid_cells = 0
+            for cell_center in cluster:
+                result = self._backtrace_frustum(cell_center, pts_xyz)
+                if result["count"] < self.min_frustum_points:
+                    continue
+                valid_cells += 1
+                cluster_indices.update(result["indices"])
+            all_frustum_indices.update(cluster_indices)
             cluster_details.append({
-                "centroid": centroid.tolist(),
+                "centroid": np.mean(cluster, axis=0).tolist(),
                 "cluster_size": len(cluster),
-                "frustum_pt_count": frustum_result["count"],
-                "matched_objects": matched,
+                "valid_cells": valid_cells,
+                "frustum_pt_count": len(cluster_indices),
             })
 
-        attack_detected = len(matched_obj_indices) > 0
-        confidence = float(len(set(matched_obj_indices))) / max(len(frame.labels), 1)
+        # Materialise the deduplicated frustum points.
+        if all_frustum_indices:
+            frustum_pts = pts_xyz[sorted(all_frustum_indices)]
+        else:
+            frustum_pts = np.empty((0, 3))
+
+        # 5. Exclude points inside any detector-predicted bounding box
+        unidentified_pts = self._exclude_predicted_boxes(frustum_pts, frame.predictions)
+
+        # 6. Second DBSCAN on the remaining unidentified points
+        n_obstacle_clusters = 0
+        obstacle_centroids: list[list[float]] = []
+        obstacle_sizes: list[int] = []
+        obs_labels_arr: np.ndarray | None = None
+
+        if len(unidentified_pts) >= self.obstacle_dbscan_min_samples:
+            obs_labels_arr = DBSCAN(
+                eps=self.obstacle_dbscan_eps,
+                min_samples=self.obstacle_dbscan_min_samples,
+            ).fit_predict(unidentified_pts)
+            n_obstacle_clusters = (
+                len(set(obs_labels_arr)) - (1 if -1 in obs_labels_arr else 0)
+            )
+            for i in range(n_obstacle_clusters):
+                pts_i = unidentified_pts[obs_labels_arr == i]
+                obstacle_centroids.append(pts_i.mean(axis=0).tolist())
+                obstacle_sizes.append(len(pts_i))
+
+        attack_detected = n_obstacle_clusters > 0
+        confidence = 1.0 if attack_detected else 0.0
+
+        # GT matching for evaluation metadata only — not used in the decision.
+        gt_matches = (
+            self._match_clusters_to_gt(
+                unidentified_pts, obs_labels_arr, n_obstacle_clusters, frame.labels
+            )
+            if n_obstacle_clusters > 0 else []
+        )
 
         return DetectionResult(
             is_attack_detected=attack_detected,
-            confidence=min(confidence, 1.0),
+            confidence=confidence,
             metadata={
                 "n_clusters": n_clusters,
                 "n_empty_cells": len(empty_centers),
-                "matched_obj_indices": list(set(matched_obj_indices)),
+                "n_obstacle_clusters": n_obstacle_clusters,
+                "obstacle_centroids": obstacle_centroids,
+                "obstacle_cluster_sizes": obstacle_sizes,
+                "obstacle_matches_gt": gt_matches,
                 "cluster_details": cluster_details,
             },
         )
@@ -183,7 +258,6 @@ class VoidRegionDefense(BaseDefense):
         y_centers = np.arange(y_min, y_max, stride)
 
         if len(ground_pts) == 0:
-            # All cells empty if no ground points
             centers = [
                 [x, y, self.ground_height]
                 for x in x_centers
@@ -194,19 +268,16 @@ class VoidRegionDefense(BaseDefense):
         pts_x = ground_pts[:, 0]
         pts_y = ground_pts[:, 1]
 
-        # Bin each ground point into the grid (vectorized)
         half = stride / 2.0
-        xi = np.digitize(pts_x, x_centers + half)  # which x-cell
-        yi = np.digitize(pts_y, y_centers + half)  # which y-cell
+        xi = np.digitize(pts_x, x_centers + half)
+        yi = np.digitize(pts_y, y_centers + half)
 
-        # Build occupied set
         occupied: set[tuple[int, int]] = set(zip(xi.tolist(), yi.tolist()))
 
         empty: list[list[float]] = []
         for ix, x in enumerate(x_centers):
             for iy, y in enumerate(y_centers):
                 if (ix, iy) not in occupied:
-                    # Additionally check points are in ROI
                     if x_min <= x <= x_max and y_min <= y <= y_max:
                         empty.append([x, y, self.ground_height])
 
@@ -235,12 +306,14 @@ class VoidRegionDefense(BaseDefense):
     def _backtrace_frustum(
         self, centroid: np.ndarray, pts_xyz: np.ndarray
     ) -> dict:
-        """Construct a frustum from the sensor origin through the void centroid
-        and return the lidar points inside it.
+        """Construct a frustum from the sensor origin through the given cell
+        centre and return the indices of lidar points inside it.
 
         Adapted directly from backtrace_shadow_from_pt() in the notebook.
         The frustum is a small wedge-shaped volume defined by 8 vertices;
         we pre-filter with an AABB and then apply the exact isInPoly test.
+
+        Returns {"count": int, "indices": list[int]} — indices into pts_xyz.
         """
         cx, cy, cz = float(centroid[0]), float(centroid[1]), float(centroid[2])
 
@@ -294,37 +367,64 @@ class VoidRegionDefense(BaseDefense):
         aabb_min = arr.min(axis=0)
         aabb_max = arr.max(axis=0)
         pre_mask = np.all((pts_xyz >= aabb_min) & (pts_xyz <= aabb_max), axis=1)
-        candidates = pts_xyz[pre_mask]
+        candidate_indices = np.where(pre_mask)[0]
+        candidates = pts_xyz[candidate_indices]
 
-        pts_in: list[np.ndarray] = []
-        for pt in candidates:
+        in_indices: list[int] = []
+        for local_i, pt in enumerate(candidates):
             if isInPoly(pt.tolist(), poly):
-                pts_in.append(pt)
+                in_indices.append(int(candidate_indices[local_i]))
 
-        return {"count": len(pts_in), "pts": pts_in}
+        return {"count": len(in_indices), "indices": in_indices}
 
     # ------------------------------------------------------------------
-    # Label intersection check
+    # Prediction-based exclusion filter (paper step 6)
     # ------------------------------------------------------------------
 
     @staticmethod
-    def _check_frustum_vs_labels(
-        pts_in_frustum: list[np.ndarray],
-        labels: list[ObjectLabel],
-    ) -> list[int]:
-        """Return indices of labels whose AABB contains at least one frustum point."""
-        if not pts_in_frustum:
-            return []
-
-        pts = np.array(pts_in_frustum)          # (K, 3)
-        matched: list[int] = []
-
-        for i, label in enumerate(labels):
-            corners = label.corners_velo         # (8, 3)
+    def _exclude_predicted_boxes(
+        pts: np.ndarray,
+        predictions: list[Prediction],
+    ) -> np.ndarray:
+        """Return only those points that do not fall inside any predicted
+        bounding-box AABB.  Points inside a detected object's box are already
+        explained by the detector and are not indicative of a hidden obstacle.
+        """
+        if len(pts) == 0 or not predictions:
+            return pts
+        mask = np.ones(len(pts), dtype=bool)
+        for pred in predictions:
+            corners = pred.corners_velo    # (8, 3)
             mins = corners.min(axis=0)
             maxs = corners.max(axis=0)
             in_box = np.all((pts >= mins) & (pts <= maxs), axis=1)
-            if in_box.any():
-                matched.append(i)
+            mask &= ~in_box
+        return pts[mask]
 
-        return matched
+    # ------------------------------------------------------------------
+    # GT matching — evaluation metadata only, not used in decision
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _match_clusters_to_gt(
+        unidentified_pts: np.ndarray,
+        obs_labels_arr: np.ndarray,
+        n_obstacle_clusters: int,
+        gt_labels: list[ObjectLabel],
+    ) -> list[list[int]]:
+        """For each obstacle cluster, return the GT label indices whose AABB
+        contains at least one cluster point.  Used only for TPR/FPR reporting
+        in metadata — the attack decision does not depend on this.
+        """
+        matches: list[list[int]] = []
+        for i in range(n_obstacle_clusters):
+            cluster_pts = unidentified_pts[obs_labels_arr == i]
+            matched_gt: list[int] = []
+            for j, label in enumerate(gt_labels):
+                corners = label.corners_velo    # (8, 3)
+                mins = corners.min(axis=0)
+                maxs = corners.max(axis=0)
+                if np.all((cluster_pts >= mins) & (cluster_pts <= maxs), axis=1).any():
+                    matched_gt.append(j)
+            matches.append(matched_gt)
+        return matches
