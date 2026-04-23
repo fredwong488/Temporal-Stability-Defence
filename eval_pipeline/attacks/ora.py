@@ -3,6 +3,21 @@ attacks/ora.py
 --------------
 Object Removal Attack (ORA) for LiDAR point clouds.
 
+Reference
+---------
+Hau, Z., Co, K. T., Demetriou, S., & Lupu, E. C. (2021).
+Object Removal Attacks on LiDAR-based 3D Object Detectors.
+arXiv preprint. https://arxiv.org/abs/2102.03722
+
+BibTeX::
+
+    @inproceedings{hau2021object,
+      title={Object Removal Attacks on LiDAR-based 3D Object Detectors},
+      author={Hau, Zhongyuan and Co, Kenneth T and Demetriou, Soteris and Lupu, Emil C},
+      journal={arXiv preprint},
+      year={2021}
+    }
+
 Two implementations are provided:
 
 ORAAttack
