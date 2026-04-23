@@ -61,6 +61,8 @@ class Frame:
 
     lidar is (N, 4): columns are x, y, z, intensity in velodyne frame.
     image is (H, W, 3) or None for lidar-only pipelines.
+    predictions holds the detector output for this frame (populated by the
+    pipeline before the defense stage so defenses can inspect predicted labels).
     """
     frame_id: str
     sequence_id: str
@@ -72,6 +74,11 @@ class Frame:
     is_attacked: bool = False
     attacked_modalities: frozenset[str] = dataclasses.field(default_factory=frozenset)
     attack_metadata: dict = dataclasses.field(default_factory=dict)
+    predictions: list[Prediction] = dataclasses.field(default_factory=list)
+
+    def with_predictions(self, predictions: list[Prediction]) -> Frame:
+        """Return a new Frame with predictions attached."""
+        return dataclasses.replace(self, predictions=predictions)
 
     def with_lidar(
         self,

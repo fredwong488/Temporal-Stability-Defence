@@ -97,6 +97,9 @@ class EvalPipeline:
 
             # Stage 3: Defense — operates on what the vehicle actually received
             current_frame = attacked_frame if attacked_frame is not None else frame
+            current_preds = attacked_preds if attacked_preds is not None else clean_preds
+            current_frame = current_frame.with_predictions(current_preds)
+
             defense_result = None
             if self.defense is not None:
                 defense_result = self.defense.detect(current_frame, history)
