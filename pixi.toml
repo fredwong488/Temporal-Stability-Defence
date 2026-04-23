@@ -13,7 +13,8 @@ s-ora-vr = {cmd = "python scripts/run_sweep.py --attack ora --attack-fraction 0.
 s-ora-vr-min-samples = {cmd = "python scripts/run_sweep.py --attack ora --attack-fraction 0.5 --defense void_region --detector pointrcnn --num-frames 50 --metric-types detection_rate --sweep-target defense --sweep-param obstacle_dbscan_min_samples --sweep-values 10 25 50 75 100 150 200"}
 s-ora-vr-min-frustum = {cmd = "python scripts/run_sweep.py --attack ora --attack-fraction 0.5 --defense void_region --detector pointrcnn --num-frames 50 --metric-types detection_rate --sweep-target defense --sweep-param min_frustum_points --sweep-values 0 1 3 5 10 20"}
 t-ora = {cmd = "python scripts/run_ora_sweep.py --num-frames 50 --classes Car Pedestrian Cyclist --difficulties Easy Moderate Hard --metric-types ap pr recall_iou --budgets 0 40 100 200"}
-tmux = {cmd = "tmux new-session -s"}
+tmux-create = {cmd = "tmux new-session -s"}
+tmux-reattach = {cmd = "tmux attach -t"}
 fm = {cmd = "python tools/format_metrics.py"}
 vm = {cmd = "python tools/visualise_metrics.py"}
 
