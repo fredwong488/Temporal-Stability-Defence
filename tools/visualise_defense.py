@@ -546,6 +546,7 @@ def main() -> None:
         sys.exit(f"Failed to open KITTI dataset at '{kitti_root}': {e}")
 
     for frame_data, kitti_frame in tqdm(zip(frames, dataset), total=len(frames), desc="Rendering", unit="frame"):
+        frame_id = frame_data["frame_id"]
         render_frame(
             frame_data, kitti_frame,
             show_gt=args.show_gt,
