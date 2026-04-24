@@ -138,7 +138,11 @@ class VoidRegionDefense(BaseDefense):
             return DetectionResult(
                 is_attack_detected=False,
                 confidence=0.0,
-                metadata={"reason": "no_empty_cells"},
+                metadata={
+                    "reason": "no_empty_cells",
+                    "empty_cell_positions": [],
+                    "empty_cell_cluster_labels": [],
+                },
             )
 
         # 3. DBSCAN clustering of empty cells into shadow clusters
@@ -153,7 +157,12 @@ class VoidRegionDefense(BaseDefense):
             return DetectionResult(
                 is_attack_detected=False,
                 confidence=0.0,
-                metadata={"n_clusters": 0, "reason": "no_clusters"},
+                metadata={
+                    "n_clusters": 0,
+                    "reason": "no_clusters",
+                    "empty_cell_positions": empty_centers[:, :2].tolist(),
+                    "empty_cell_cluster_labels": labels.tolist(),
+                },
             )
 
         # 4. For each shadow cluster, backtrace one frustum per cell centre
@@ -195,6 +204,7 @@ class VoidRegionDefense(BaseDefense):
         obstacle_sizes: list[int] = []
         obs_labels_arr: np.ndarray | None = None
 
+        obstacle_aabbs: list[list] = []
         if len(unidentified_pts) >= self.obstacle_dbscan_min_samples:
             obs_labels_arr = DBSCAN(
                 eps=self.obstacle_dbscan_eps,
@@ -207,6 +217,10 @@ class VoidRegionDefense(BaseDefense):
                 pts_i = unidentified_pts[obs_labels_arr == i]
                 obstacle_centroids.append(pts_i.mean(axis=0).tolist())
                 obstacle_sizes.append(len(pts_i))
+                obstacle_aabbs.append([
+                    pts_i.min(axis=0).tolist(),
+                    pts_i.max(axis=0).tolist(),
+                ])
 
         attack_detected = n_obstacle_clusters > 0
         confidence = 1.0 if attack_detected else 0.0
@@ -228,8 +242,11 @@ class VoidRegionDefense(BaseDefense):
                 "n_obstacle_clusters": n_obstacle_clusters,
                 "obstacle_centroids": obstacle_centroids,
                 "obstacle_cluster_sizes": obstacle_sizes,
+                "obstacle_cluster_aabbs": obstacle_aabbs,
                 "obstacle_matches_gt": gt_matches,
                 "cluster_details": cluster_details,
+                "empty_cell_positions": empty_centers[:, :2].tolist(),
+                "empty_cell_cluster_labels": labels.tolist(),
             },
         )
 

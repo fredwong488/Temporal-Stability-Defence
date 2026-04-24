@@ -107,6 +107,7 @@ class ExperimentConfig:
     # Output
     output_dir: str = "results"
     experiment_name: str = "default"
+    save_frame_results: bool = False   # write per-frame JSONL alongside results JSON
 
     # ---------------------------------------------------------------------------
     # Constructors

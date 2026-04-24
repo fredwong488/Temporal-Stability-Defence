@@ -35,8 +35,45 @@ import pathlib
 
 from .config import ExperimentConfig
 from .pipeline import EvalPipeline
+from .types import FrameResult, Prediction
 
 logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Per-frame serialisation helpers
+# ---------------------------------------------------------------------------
+
+def _serialise_prediction(p: Prediction) -> dict:
+    return {
+        "type": p.type,
+        "score": p.score,
+        "x": p.x, "y": p.y, "z": p.z,
+        "height": p.height, "width": p.width, "length": p.length,
+        "rotation_y": p.rotation_y,
+        "corners_velo": p.corners_velo.tolist(),
+    }
+
+
+def _serialise_frame_result(fr: FrameResult) -> dict:
+    result: dict = {
+        "frame_id": fr.frame_id,
+        "is_attacked": fr.is_attacked,
+        "clean_predictions": [_serialise_prediction(p) for p in fr.clean_predictions],
+        "attacked_predictions": (
+            [_serialise_prediction(p) for p in fr.attacked_predictions]
+            if fr.attacked_predictions is not None else None
+        ),
+    }
+    if fr.defense_result is not None:
+        result["defense_result"] = {
+            "is_attack_detected": fr.defense_result.is_attack_detected,
+            "confidence": fr.defense_result.confidence,
+            "metadata": fr.defense_result.metadata,
+        }
+    else:
+        result["defense_result"] = None
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -118,7 +155,7 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
 # Experiment runner
 # ---------------------------------------------------------------------------
 
-def run_experiment(config: ExperimentConfig) -> dict:
+def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:
     """Run a full experiment and return a JSON-serialisable results dict.
 
     Which metrics are computed is controlled by config.metric_types:
@@ -126,7 +163,8 @@ def run_experiment(config: ExperimentConfig) -> dict:
       "pr"         — Precision-Recall curves per class and difficulty
       "recall_iou" — Recall vs IoU threshold curves per class
     """
-    desc = f"Budget {config.attack_params.get('budget', '?')}" if config.attack_type else "Frames"
+    if desc is None:
+        desc = f"Budget {config.attack_params.get('budget', '?')}" if config.attack_type else "Frames"
     pipeline = build_pipeline(config, desc=desc)
     eval_results = pipeline.run()
 
@@ -184,6 +222,13 @@ def run_experiment(config: ExperimentConfig) -> dict:
             json.dump(summary, f, indent=2, default=str)
         logger.info("Results saved to %s", out_path)
 
+        if config.save_frame_results:
+            frames_path = out_dir / f"{config.experiment_name}_frames.jsonl"
+            with open(frames_path, "w") as f:
+                for fr in eval_results.frame_results:
+                    f.write(json.dumps(_serialise_frame_result(fr)) + "\n")
+            logger.info("Per-frame results saved to %s", frames_path)
+
     return summary
 
 
@@ -213,6 +258,8 @@ def main() -> None:
                         help="ORA attack point budget (shortcut for --attack ora)")
     parser.add_argument("--experiment-name", type=str, default="default")
     parser.add_argument("--output-dir", type=str, default="results")
+    parser.add_argument("--save-frames", action="store_true", default=False,
+                        help="Save per-frame JSONL alongside results JSON for visualisation")
     args = parser.parse_args()
 
     # Base config from YAML or defaults
@@ -239,6 +286,8 @@ def main() -> None:
         overrides["output_dir"] = args.output_dir
     if args.budget is not None:
         overrides["attack_params"] = {**config.attack_params, "budget": args.budget}
+    if args.save_frames:
+        overrides["save_frame_results"] = True
 
     if overrides:
         config = dataclasses.replace(config, **overrides)

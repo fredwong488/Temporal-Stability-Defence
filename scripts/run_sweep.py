@@ -90,6 +90,8 @@ def run_single(
     experiment_name: str,
     attack_fraction: float = 1.0,
     attack_fraction_seed: int = 0,
+    save_frame_results: bool = False,
+    desc: str | None = None,
 ) -> dict:
     """Run one experiment and return the summary dict."""
     from eval_pipeline.config import ExperimentConfig
@@ -111,8 +113,9 @@ def run_single(
         recall_iou_confidence_threshold=confidence_threshold,
         attack_fraction=attack_fraction,
         attack_fraction_seed=attack_fraction_seed,
+        save_frame_results=save_frame_results,
     )
-    return run_experiment(config)
+    return run_experiment(config, desc=desc)
 
 
 # ---------------------------------------------------------------------------
@@ -218,6 +221,8 @@ def main() -> None:
     parser.add_argument("--results-dir", type=str, default=DEFAULT_RESULTS_DIR,
                         help="Base directory for outputs; each run is saved under a "
                              "timestamped subdirectory")
+    parser.add_argument("--save-frames", action="store_true", default=False,
+                        help="Save per-frame JSONL alongside each experiment's results JSON")
     args = parser.parse_args()
 
     # Validate: at least one component must be specified
@@ -310,6 +315,8 @@ def main() -> None:
             experiment_name=experiment_name,
             attack_fraction=args.attack_fraction,
             attack_fraction_seed=args.attack_fraction_seed,
+            save_frame_results=args.save_frames,
+            desc=f"{args.sweep_param}={val}",
         )
 
         if "ap" in args.metric_types:
