@@ -35,7 +35,6 @@ try:
     import matplotlib.pyplot as plt
     import matplotlib.gridspec as gridspec
     import matplotlib.patches as mpatches
-    import matplotlib.cm as cm
     import numpy as np
     from tqdm import tqdm
     HAS_MPL = True
@@ -54,18 +53,16 @@ VALID_FILTERS = {"all", "tp", "tn", "fp", "fn"}
 # Interactive pickers (mirror visualise_metrics.py pattern)
 # ---------------------------------------------------------------------------
 
-def _pick_from_list(label: str, options: list[str]) -> str:
-    if len(options) == 1:
-        print(f"  (Auto-selected {label}: {options[0]})")
-        return options[0]
-    print(f"\n{label}:")
-    for i, o in enumerate(options, 1):
-        print(f"  [{i}] {o}")
+def _get_int_choice(n: int, *, allow_empty: bool = False) -> int | None:
+    """Prompt until the user enters a valid integer in [1, n]. Returns None if allow_empty and input is blank."""
+    prompt = f"Choose [1-{n}]{' (Enter to skip)' if allow_empty else ''}: "
     while True:
-        raw = input(f"Choose [1-{len(options)}]: ").strip()
-        if raw.isdigit() and 1 <= int(raw) <= len(options):
-            return options[int(raw) - 1]
-        print(f"  Please enter a number between 1 and {len(options)}.")
+        raw = input(prompt).strip()
+        if allow_empty and not raw:
+            return None
+        if raw.isdigit() and 1 <= int(raw) <= n:
+            return int(raw)
+        print(f"  Please enter a number between 1 and {n}.")
 
 
 def list_run_dirs(results_dir: pathlib.Path) -> list[pathlib.Path]:
@@ -126,11 +123,8 @@ def pick_run_dir(results_dir: pathlib.Path, run_name: str | None) -> pathlib.Pat
         meta_str = f"  [{', '.join(parts)}]" if parts else ""
         print(f"  [{i}] {d.name}  ({n_experiments} experiment(s)){meta_str}")
 
-    while True:
-        raw = input(f"\nChoose a directory [1-{len(dirs)}]: ").strip()
-        if raw.isdigit() and 1 <= int(raw) <= len(dirs):
-            return dirs[int(raw) - 1]
-        print(f"  Please enter a number between 1 and {len(dirs)}.")
+    print()
+    return dirs[_get_int_choice(len(dirs)) - 1]
 
 
 def pick_experiment(run_dir: pathlib.Path, experiment_name: str | None) -> str:
@@ -166,11 +160,8 @@ def pick_experiment(run_dir: pathlib.Path, experiment_name: str | None) -> str:
                 pass
         print(f"  [{i}] {name}  (frames={n_frames}, attacked={n_attacked}, detected={n_detected})")
 
-    while True:
-        raw = input(f"\nChoose an experiment [1-{len(names)}]: ").strip()
-        if raw.isdigit() and 1 <= int(raw) <= len(names):
-            return names[int(raw) - 1]
-        print(f"  Please enter a number between 1 and {len(names)}.")
+    print()
+    return names[_get_int_choice(len(names)) - 1]
 
 
 def pick_filter(current: str) -> str:
@@ -187,12 +178,8 @@ def pick_filter(current: str) -> str:
     print("\nFilter frames by outcome:")
     for i, lbl in enumerate(labels, 1):
         print(f"  [{i}] {lbl}")
-    raw = input(f"Choose [1-{len(options)}] (Enter = all): ").strip()
-    if not raw:
-        return "all"
-    if raw.isdigit() and 1 <= int(raw) <= len(options):
-        return options[int(raw) - 1]
-    return "all"
+    choice = _get_int_choice(len(options), allow_empty=True)
+    return options[choice - 1] if choice is not None else "all"
 
 
 def _frame_outcome(frame_data: dict) -> str:
@@ -227,10 +214,10 @@ def load_experiment(run_dir: pathlib.Path, experiment_name: str) -> tuple[dict, 
     return results, frames
 
 
-def load_kitti_frame(kitti_root: str, frame_id: str):
+def open_kitti_dataset(kitti_root: str, frame_ids: list[str]):
+    """Instantiate KittiObjectDataset once for the given frame IDs (lazy iterator)."""
     from eval_pipeline.datasets.kitti import KittiObjectDataset
-    dataset = KittiObjectDataset(root=kitti_root, frame_ids=[frame_id])
-    return next(iter(dataset))
+    return KittiObjectDataset(root=kitti_root, frame_ids=frame_ids)
 
 
 # ---------------------------------------------------------------------------
@@ -359,12 +346,12 @@ def draw_occupancy_grid(
         ax.scatter(positions[noise_mask, 0], positions[noise_mask, 1],
                    c="#d1d5db", s=3, alpha=0.5, zorder=1, label="empty (noise)")
 
-    palette = cm.get_cmap("tab10", max(n_clusters, 1))
+    _tab10 = matplotlib.colormaps["tab10"].colors  # 10 distinct RGB tuples
     for i in range(n_clusters):
         mask = cluster_labels == i
         if mask.any():
             ax.scatter(positions[mask, 0], positions[mask, 1],
-                       c=[palette(i)], s=8, zorder=2, label=f"shadow {i}")
+                       c=[_tab10[i % len(_tab10)]], s=8, zorder=2, label=f"shadow {i}")
 
     ax.add_patch(mpatches.Rectangle(
         (roi_min[0], roi_min[1]),
@@ -450,8 +437,10 @@ def render_frame(
     lidar     = kitti_frame.lidar
     dr        = frame_data.get("defense_result") or {}
     meta      = dr.get("metadata", {})
+    is_attacked = frame_data.get("is_attacked", False)
     clean_preds = frame_data.get("clean_predictions") or []
-    atk_preds   = frame_data.get("attacked_predictions") or clean_preds
+    raw_atk_preds = frame_data.get("attacked_predictions")
+    atk_preds = raw_atk_preds if raw_atk_preds is not None else clean_preds
 
     draw_bev(
         ax_clean, lidar, clean_preds,
@@ -471,9 +460,10 @@ def render_frame(
         ),
         roi_min=roi_min, roi_max=roi_max,
         title=(
-            f"Attacked BEV  |  {len(atk_preds)} prediction(s)"
+            f"{'Attacked' if is_attacked else 'Clean (no attack)'} BEV"
+            f"  |  {len(atk_preds)} prediction(s)"
             f"  |  detected={'yes' if dr.get('is_attack_detected') else 'no'}"
-            f"\n(lidar shown is clean — attacked lidar not stored)"
+            + ("\n(lidar shown is clean — attacked lidar not stored)" if is_attacked else "")
         ),
     )
     draw_occupancy_grid(ax_grid, meta, roi_min=roi_min, roi_max=roi_max)
@@ -549,13 +539,13 @@ def main() -> None:
     vis_dir.mkdir(parents=True, exist_ok=True)
     print(f"Saving figures to {vis_dir}\n")
 
-    for frame_data in tqdm(frames, desc="Rendering", unit="frame"):
-        frame_id = frame_data["frame_id"]
-        try:
-            kitti_frame = load_kitti_frame(kitti_root, frame_id)
-        except Exception as e:
-            print(f"  Warning: could not load frame {frame_id}: {e}")
-            continue
+    frame_ids = [f["frame_id"] for f in frames]
+    try:
+        dataset = open_kitti_dataset(kitti_root, frame_ids)
+    except Exception as e:
+        sys.exit(f"Failed to open KITTI dataset at '{kitti_root}': {e}")
+
+    for frame_data, kitti_frame in tqdm(zip(frames, dataset), total=len(frames), desc="Rendering", unit="frame"):
         render_frame(
             frame_data, kitti_frame,
             show_gt=args.show_gt,
