@@ -1,24 +1,32 @@
 """
-tools/visualise_defense.py
---------------------------
-Interactive CLI to visualise void-region defense results produced by
+tools/visualise_frames.py
+-------------------------
+Interactive CLI to visualise per-frame attack / defense results produced by
 scripts/run_sweep.py --save-frames.
 
-Layout per frame (2 × 2 grid):
+Works with any defense (or no defense at all).  The bottom-left panel
+auto-detects what to show:
+  • VoidRegionDefense  → occupancy grid with shadow-cluster colouring
+  • any other defense  → generic key/value dump of defense metadata
+  • no defense         → "No defense metadata" placeholder
+
+Layout per frame (2 × 2 grid, or 3 × 2 with --isometric):
   Top-left:     Clean BEV   — lidar z-coloured, clean predictions, optional GT
   Top-right:    Attacked BEV — lidar z-coloured, attacked predictions,
                                obstacle cluster AABBs / centroids, optional GT
                                (lidar shown is clean — attacked lidar not stored)
-  Bottom-left:  Occupancy grid — empty cells coloured by shadow-cluster label
+  [Iso row]:    Clean / attacked isometric 3-D views (--isometric only)
+  Bottom-left:  Defense-specific panel (occupancy grid or metadata dump)
   Bottom-right: Frame statistics
 
 Usage
 -----
-    python tools/visualise_defense.py
-    python tools/visualise_defense.py --results-dir /path/to/results
-    python tools/visualise_defense.py --run 2026-04-23-12-00-00
-    python tools/visualise_defense.py --run 2026-04-23-12-00-00 --experiment ora_budget_40
-    python tools/visualise_defense.py --run 2026-04-23-12-00-00 --filter fp
+    python tools/visualise_frames.py
+    python tools/visualise_frames.py --results-dir /path/to/results
+    python tools/visualise_frames.py --run 2026-04-23-12-00-00
+    python tools/visualise_frames.py --run 2026-04-23-12-00-00 --experiment ora_budget_40
+    python tools/visualise_frames.py --run 2026-04-23-12-00-00 --filter fp
+    python tools/visualise_frames.py --isometric
 """
 
 from __future__ import annotations
@@ -47,6 +55,17 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 DEFAULT_RESULTS_DIR = "results"
 VALID_FILTERS = {"all", "tp", "tn", "fp", "fn"}
+
+# Keys that identify void-region defense metadata
+_VOID_REGION_KEY = "empty_cell_positions"
+
+# Metadata keys already rendered verbatim in draw_stats — omit from generic dump
+_STATS_SHOWN_META_KEYS = {
+    "n_empty_cells", "n_clusters", "n_obstacle_clusters",
+    "obstacle_centroids", "obstacle_cluster_aabbs", "obstacle_cluster_sizes",
+    "obstacle_matches_gt", "empty_cell_positions", "empty_cell_cluster_labels",
+    "reason", "cluster_details",
+}
 
 
 # ---------------------------------------------------------------------------
@@ -98,7 +117,7 @@ def load_run_metadata(run_dir: pathlib.Path) -> dict:
 def pick_run_dir(results_dir: pathlib.Path, run_name: str | None) -> pathlib.Path:
     dirs = list_run_dirs(results_dir)
     if not dirs:
-        sys.exit(f"No defense result directories found under '{results_dir}'.\n"
+        sys.exit(f"No result directories found under '{results_dir}'.\n"
                  "Re-run experiments with --save-frames to generate per-frame data.")
 
     if run_name:
@@ -127,8 +146,13 @@ def pick_run_dir(results_dir: pathlib.Path, run_name: str | None) -> pathlib.Pat
     return dirs[_get_int_choice(len(dirs)) - 1]
 
 
-def pick_experiment(run_dir: pathlib.Path, experiment_name: str | None) -> str:
-    """Return the stem of an experiment that has a matching _frames.jsonl."""
+def pick_experiment(run_dir: pathlib.Path, experiment_name: str | None) -> list[str]:
+    """Return a list of experiment stems to render.
+
+    Returns all experiments if the user selects the 'all' option, or a
+    single-element list otherwise.  The --experiment CLI arg always returns
+    a single-element list.
+    """
     jsonl_files = sorted(run_dir.glob("*_frames.jsonl"))
     names = [p.stem.removesuffix("_frames") for p in jsonl_files]
 
@@ -138,9 +162,10 @@ def pick_experiment(run_dir: pathlib.Path, experiment_name: str | None) -> str:
     if experiment_name:
         if experiment_name not in names:
             sys.exit(f"Experiment '{experiment_name}' not found. Available: {names}")
-        return experiment_name
+        return [experiment_name]
 
     print(f"\nAvailable experiments in '{run_dir.name}':")
+    print(f"  [1] all experiments")
     for i, name in enumerate(names, 1):
         results_path = run_dir / f"{name}.json"
         n_frames, n_attacked, n_detected = "?", "?", "?"
@@ -158,10 +183,11 @@ def pick_experiment(run_dir: pathlib.Path, experiment_name: str | None) -> str:
                 n_detected = tp + fp
             except Exception:
                 pass
-        print(f"  [{i}] {name}  (frames={n_frames}, attacked={n_attacked}, detected={n_detected})")
+        print(f"  [{i + 1}] {name}  (frames={n_frames}, attacked={n_attacked}, detected={n_detected})")
 
     print()
-    return names[_get_int_choice(len(names)) - 1]
+    choice = _get_int_choice(len(names) + 1)
+    return names if choice == 1 else [names[choice - 2]]
 
 
 def pick_filter(current: str) -> str:
@@ -221,24 +247,38 @@ def open_kitti_dataset(kitti_root: str, frame_ids: list[str]):
 
 
 # ---------------------------------------------------------------------------
-# BEV drawing helpers
+# Drawing helpers — 3-D
 # ---------------------------------------------------------------------------
 
 def _draw_box_3d(ax: Any, corners_velo: Any, color: str, linewidth: float = 1.0) -> None:
-    from itertools import combinations
     corners = np.asarray(corners_velo)  # (8, 3)
-    pairs = list(combinations(range(8), 2))
-    dists = np.array([np.linalg.norm(corners[i] - corners[j]) for i, j in pairs])
-    # 12 shortest pairwise distances are edges (excludes face/space diagonals)
-    threshold = np.sort(dists)[11]
-    for (i, j), d in zip(pairs, dists):
-        if d <= threshold + 1e-3:
-            ax.plot(
-                [corners[i, 0], corners[j, 0]],
-                [corners[i, 1], corners[j, 1]],
-                [corners[i, 2], corners[j, 2]],
-                color=color, linewidth=linewidth, alpha=0.85,
-            )
+    z_mid  = corners[:, 2].mean()
+    bottom = corners[corners[:, 2] <  z_mid]
+    top    = corners[corners[:, 2] >= z_mid]
+
+    def _sort_by_angle(pts: np.ndarray) -> np.ndarray:
+        c = pts[:, :2].mean(axis=0)
+        return pts[np.argsort(np.arctan2(pts[:, 1] - c[1], pts[:, 0] - c[0]))]
+
+    bottom = _sort_by_angle(bottom)
+    top    = _sort_by_angle(top)
+
+    def _draw_face(pts: np.ndarray) -> None:
+        for i in range(len(pts)):
+            j = (i + 1) % len(pts)
+            ax.plot([pts[i, 0], pts[j, 0]],
+                    [pts[i, 1], pts[j, 1]],
+                    [pts[i, 2], pts[j, 2]],
+                    color=color, linewidth=linewidth, alpha=0.85)
+
+    _draw_face(bottom)
+    _draw_face(top)
+
+    # Vertical edges: pair each bottom corner with its nearest top corner by XY
+    for b in bottom:
+        t = top[np.argmin(np.linalg.norm(top[:, :2] - b[:2], axis=1))]
+        ax.plot([b[0], t[0]], [b[1], t[1]], [b[2], t[2]],
+                color=color, linewidth=linewidth, alpha=0.85)
 
 
 def _draw_aabb_3d(
@@ -304,17 +344,26 @@ def draw_isometric(
             ax.scatter([c[0]], [c[1]], [c[2]], marker="x",
                        color="#ef4444", s=80, zorder=5, depthshade=False)
 
+    x_span = roi_max[0] + 6
+    y_span = roi_max[1] - roi_min[1] + 6
+    z_span = 6.0
     ax.set_xlim(-3, roi_max[0] + 3)
     ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
+    ax.set_zlim(-3.0, 3.0)
+    ax.set_box_aspect([x_span, y_span, z_span])
     ax.set_xlabel("x (m)", fontsize=7, color="white")
     ax.set_ylabel("y (m)", fontsize=7, color="white")
     ax.set_zlabel("z (m)", fontsize=7, color="white")
     ax.tick_params(colors="white", labelsize=6)
     ax.set_title(title, fontsize=8, color="white", pad=4)
-    ax.view_init(elev=25, azim=-60)
+    ax.view_init(elev=25, azim=215)
 
     from mpl_toolkits.mplot3d.art3d import Line3DCollection  # noqa: F401 — ensures 3d is registered
 
+
+# ---------------------------------------------------------------------------
+# Drawing helpers — BEV
+# ---------------------------------------------------------------------------
 
 def _draw_box_bev(ax: "plt.Axes", corners_velo: Any, color: str, linewidth: float = 1.5) -> None:
     xy = np.asarray(corners_velo)[:, :2]
@@ -412,23 +461,21 @@ def draw_bev(
               facecolor="#1f2937", labelcolor="white", framealpha=0.7)
 
 
+# ---------------------------------------------------------------------------
+# Drawing helpers — bottom-left panel
+# ---------------------------------------------------------------------------
+
 def draw_occupancy_grid(
     ax: "plt.Axes",
     metadata: dict,
     roi_min: tuple[float, float] = (0.0, -5.0),
     roi_max: tuple[float, float] = (30.0, 5.0),
 ) -> None:
+    """VoidRegionDefense-specific panel: empty cells coloured by shadow-cluster label."""
     ax.set_facecolor("#f9fafb")
 
-    positions = metadata.get("empty_cell_positions", [])
+    positions      = metadata.get("empty_cell_positions", [])
     cluster_labels = metadata.get("empty_cell_cluster_labels", [])
-
-    if not positions:
-        ax.text(0.5, 0.5, "No occupancy data\n(re-run with --save-frames)",
-                ha="center", va="center", transform=ax.transAxes, fontsize=8)
-        ax.set_title("Occupancy Grid", fontsize=8, pad=4)
-        return
-
     positions      = np.array(positions)
     cluster_labels = np.array(cluster_labels)
     n_clusters     = metadata.get("n_clusters", 0)
@@ -438,7 +485,7 @@ def draw_occupancy_grid(
         ax.scatter(positions[noise_mask, 0], positions[noise_mask, 1],
                    c="#d1d5db", s=3, alpha=0.5, zorder=1, label="empty (noise)")
 
-    _tab10 = matplotlib.colormaps["tab10"].colors  # 10 distinct RGB tuples
+    _tab10 = matplotlib.colormaps["tab10"].colors
     for i in range(n_clusters):
         mask = cluster_labels == i
         if mask.any():
@@ -465,6 +512,59 @@ def draw_occupancy_grid(
         ax.legend(fontsize=6, loc="upper right", framealpha=0.7)
 
 
+def draw_defense_metadata(ax: "plt.Axes", metadata: dict) -> None:
+    """Generic bottom-left panel: key/value dump of defense metadata."""
+    ax.axis("off")
+    ax.set_facecolor("#f9fafb")
+
+    if not metadata:
+        ax.text(0.5, 0.5, "No defense metadata",
+                ha="center", va="center", transform=ax.transAxes, fontsize=8)
+        ax.set_title("Defense Metadata", fontsize=8, pad=4)
+        return
+
+    lines: list[str] = []
+    for k, v in metadata.items():
+        if k in _STATS_SHOWN_META_KEYS:
+            continue
+        if isinstance(v, list):
+            lines.append(f"{k}: [{len(v)} items]")
+        elif isinstance(v, dict):
+            lines.append(f"{k}:")
+            for kk, vv in list(v.items())[:6]:
+                lines.append(f"  {kk}: {vv}")
+        else:
+            lines.append(f"{k}: {v}")
+
+    if not lines:
+        lines = ["(all fields shown in stats panel)"]
+
+    ax.text(
+        0.05, 0.95, "\n".join(lines),
+        transform=ax.transAxes, fontsize=7.5,
+        verticalalignment="top", fontfamily="monospace",
+        bbox=dict(boxstyle="round,pad=0.5", facecolor="#f0f9ff", alpha=0.8),
+    )
+    ax.set_title("Defense Metadata", fontsize=8, pad=4)
+
+
+def _draw_bottom_left(
+    ax: "plt.Axes",
+    metadata: dict,
+    roi_min: tuple[float, float],
+    roi_max: tuple[float, float],
+) -> None:
+    """Dispatch to the appropriate bottom-left panel based on metadata content."""
+    if _VOID_REGION_KEY in metadata:
+        draw_occupancy_grid(ax, metadata, roi_min=roi_min, roi_max=roi_max)
+    else:
+        draw_defense_metadata(ax, metadata)
+
+
+# ---------------------------------------------------------------------------
+# Drawing helpers — stats panel
+# ---------------------------------------------------------------------------
+
 def draw_stats(ax: "plt.Axes", frame_data: dict) -> None:
     ax.axis("off")
     ax.set_facecolor("#f9fafb")
@@ -482,13 +582,30 @@ def draw_stats(ax: "plt.Axes", frame_data: dict) -> None:
         f"Outcome          : {outcome}",
         f"Confidence       : {dr.get('confidence', 'N/A')}",
         "",
-        f"Empty cells      : {meta.get('n_empty_cells', 'N/A')}",
-        f"Shadow clusters  : {meta.get('n_clusters', 'N/A')}",
-        f"Obstacle clusters: {meta.get('n_obstacle_clusters', 'N/A')}",
-        "",
         f"Clean preds      : {len(frame_data.get('clean_predictions') or [])}",
         f"Attacked preds   : {len(frame_data.get('attacked_predictions') or [])}",
     ]
+
+    # Void-region specific block — only shown when those keys are present
+    void_keys = {"n_empty_cells", "n_clusters", "n_obstacle_clusters"}
+    if any(k in meta for k in void_keys):
+        lines += [
+            "",
+            f"Empty cells      : {meta.get('n_empty_cells', 'N/A')}",
+            f"Shadow clusters  : {meta.get('n_clusters', 'N/A')}",
+            f"Obstacle clusters: {meta.get('n_obstacle_clusters', 'N/A')}",
+        ]
+    else:
+        # Generic: show scalar metadata fields not already in the dedicated panel
+        scalars = [
+            (k, v) for k, v in meta.items()
+            if k not in _STATS_SHOWN_META_KEYS and not isinstance(v, (list, dict))
+        ]
+        if scalars:
+            lines.append("")
+            for k, v in scalars[:8]:
+                lines.append(f"{k:<17}: {v}")
+
     if meta.get("obstacle_centroids"):
         lines += ["", "Obstacle centroids (x, y, z):"]
         for i, c in enumerate(meta["obstacle_centroids"][:5]):
@@ -540,13 +657,13 @@ def render_frame(
         ax_grid  = fig.add_subplot(gs[1, 0])
         ax_stats = fig.add_subplot(gs[1, 1])
 
-    lidar     = kitti_frame.lidar
-    dr        = frame_data.get("defense_result") or {}
-    meta      = dr.get("metadata", {})
+    lidar       = kitti_frame.lidar
+    dr          = frame_data.get("defense_result") or {}
+    meta        = dr.get("metadata", {})
     is_attacked = frame_data.get("is_attacked", False)
     clean_preds = frame_data.get("clean_predictions") or []
     raw_atk_preds = frame_data.get("attacked_predictions")
-    atk_preds = raw_atk_preds if raw_atk_preds is not None else clean_preds
+    atk_preds   = raw_atk_preds if raw_atk_preds is not None else clean_preds
 
     obstacle_aabbs = meta.get("obstacle_cluster_aabbs") or None
     obstacle_centroids = (
@@ -595,7 +712,7 @@ def render_frame(
             title=atk_title.replace("BEV", "isometric"),
         )
 
-    draw_occupancy_grid(ax_grid, meta, roi_min=roi_min, roi_max=roi_max)
+    _draw_bottom_left(ax_grid, meta, roi_min=roi_min, roi_max=roi_max)
     draw_stats(ax_stats, frame_data)
 
     fig.savefig(output_path, dpi=110, bbox_inches="tight",
@@ -609,7 +726,7 @@ def render_frame(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Visualise void-region defense results frame by frame",
+        description="Visualise per-frame attack / defense results",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("--results-dir", default=DEFAULT_RESULTS_DIR,
@@ -626,6 +743,8 @@ def main() -> None:
                         help="Overlay ground-truth bounding boxes")
     parser.add_argument("--isometric", action="store_true", default=False,
                         help="Add isometric 3D views below the BEV panels")
+    parser.add_argument("--kitti-root", default=None, metavar="PATH",
+                        help="Override the KITTI dataset root from the experiment config")
     parser.add_argument("--backend", default="matplotlib",
                         choices=["matplotlib", "plotly"],
                         help="Rendering backend (plotly not yet implemented)")
@@ -644,49 +763,68 @@ def main() -> None:
     run_dir = pick_run_dir(results_dir, args.run)
     print(f"\nSelected run: {run_dir.name}")
 
-    experiment_name = pick_experiment(run_dir, args.experiment)
-    print(f"Selected experiment: {experiment_name}")
+    experiment_names = pick_experiment(run_dir, args.experiment)
+    if len(experiment_names) > 1:
+        print(f"Selected experiments: all ({len(experiment_names)})")
+    else:
+        print(f"Selected experiment: {experiment_names[0]}")
 
     frame_filter = pick_filter(args.filter)
     print(f"Frame filter: {frame_filter}")
 
-    results, frames = load_experiment(run_dir, experiment_name)
-    config       = results.get("config", {})
-    kitti_root   = config.get("kitti_root", "data/datasets/KITTI")
-    defense_params = config.get("defense_params", {})
-    roi_min = tuple(defense_params.get("roi_min", [0.0, -5.0]))
-    roi_max = tuple(defense_params.get("roi_max", [30.0, 5.0]))
+    total_saved = 0
+    for experiment_name in experiment_names:
+        if len(experiment_names) > 1:
+            print(f"\n--- {experiment_name} ---")
 
-    if frame_filter != "all":
-        frames = [f for f in frames if _frame_outcome(f) == frame_filter]
-        print(f"  {len(frames)} frame(s) match filter '{frame_filter}'")
-        if not frames:
-            print("Nothing to render.")
-            sys.exit(0)
+        results, frames = load_experiment(run_dir, experiment_name)
+        config = results.get("config", {})
+        kitti_root = args.kitti_root or config.get("kitti_root", "data/datasets/KITTI")
 
-    vis_dir = run_dir / f"{experiment_name}_vis"
-    if frame_filter != "all":
-        vis_dir = vis_dir / frame_filter
-    vis_dir.mkdir(parents=True, exist_ok=True)
-    print(f"Saving figures to {vis_dir}\n")
-
-    frame_ids = [f["frame_id"] for f in frames]
-    try:
-        dataset = open_kitti_dataset(kitti_root, frame_ids)
-    except Exception as e:
-        sys.exit(f"Failed to open KITTI dataset at '{kitti_root}': {e}")
-
-    for frame_data, kitti_frame in tqdm(zip(frames, dataset), total=len(frames), desc="Rendering", unit="frame"):
-        frame_id = frame_data["frame_id"]
-        render_frame(
-            frame_data, kitti_frame,
-            show_gt=args.show_gt,
-            show_isometric=args.isometric,
-            roi_min=roi_min, roi_max=roi_max,
-            output_path=vis_dir / f"{frame_id}.png",
+        # ROI: check defense_params first, then top-level config, then defaults
+        defense_params = config.get("defense_params", {})
+        roi_min = tuple(
+            defense_params.get("roi_min")
+            or config.get("roi_min")
+            or [0.0, -5.0]
+        )
+        roi_max = tuple(
+            defense_params.get("roi_max")
+            or config.get("roi_max")
+            or [30.0, 5.0]
         )
 
-    print(f"\nDone. {len(frames)} figure(s) saved to {vis_dir}")
+        if frame_filter != "all":
+            frames = [f for f in frames if _frame_outcome(f) == frame_filter]
+            print(f"  {len(frames)} frame(s) match filter '{frame_filter}'")
+            if not frames:
+                print("  Nothing to render.")
+                continue
+
+        vis_dir = run_dir / f"{experiment_name}_vis"
+        if frame_filter != "all":
+            vis_dir = vis_dir / frame_filter
+        vis_dir.mkdir(parents=True, exist_ok=True)
+        print(f"Saving figures to {vis_dir}")
+
+        frame_ids = [f["frame_id"] for f in frames]
+        try:
+            dataset = open_kitti_dataset(kitti_root, frame_ids)
+        except Exception as e:
+            sys.exit(f"Failed to open KITTI dataset at '{kitti_root}': {e}")
+
+        for frame_data, kitti_frame in tqdm(zip(frames, dataset), total=len(frames), desc="Rendering", unit="frame"):
+            frame_id = frame_data["frame_id"]
+            render_frame(
+                frame_data, kitti_frame,
+                show_gt=args.show_gt,
+                show_isometric=args.isometric,
+                roi_min=roi_min, roi_max=roi_max,
+                output_path=vis_dir / f"{frame_id}.png",
+            )
+        total_saved += len(frames)
+
+    print(f"\nDone. {total_saved} figure(s) saved.")
 
 
 if __name__ == "__main__":
