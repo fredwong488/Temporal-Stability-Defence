@@ -1,0 +1,107 @@
+{
+  "experiment_name": "ora_grid_stride_0.7",
+  "config": {
+    "kitti_root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/KITTI",
+    "frame_ids": [
+      "000001",
+      "000002",
+      "000004",
+      "000005",
+      "000006",
+      "000008",
+      "000015",
+      "000019",
+      "000020",
+      "000021",
+      "000023",
+      "000024",
+      "000025",
+      "000027",
+      "000028",
+      "000031",
+      "000033",
+      "000035",
+      "000037",
+      "000039",
+      "000040",
+      "000042",
+      "000047",
+      "000048",
+      "000050",
+      "000052",
+      "000053",
+      "000058",
+      "000059",
+      "000061",
+      "000062",
+      "000063",
+      "000065",
+      "000066",
+      "000076",
+      "000077",
+      "000078",
+      "000081",
+      "000089",
+      "000090",
+      "000093",
+      "000094",
+      "000098",
+      "000102",
+      "000104",
+      "000106",
+      "000107",
+      "000108",
+      "000116",
+      "000117"
+    ],
+    "attack_type": "ora",
+    "attack_params": {
+      "target_types": [
+        "Car",
+        "Pedestrian",
+        "Cyclist"
+      ]
+    },
+    "attack_fraction": 0.5,
+    "attack_fraction_seed": 0,
+    "detector_type": "pointrcnn",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "void_region",
+    "defense_params": {
+      "grid_stride": 0.7
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "detection_rate"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-04-27-23-22-18",
+    "experiment_name": "ora_grid_stride_0.7",
+    "save_frame_results": true
+  },
+  "num_frames": 50,
+  "defense_effectiveness": {
+    "tp": 19,
+    "fp": 27,
+    "tn": 2,
+    "fn": 2,
+    "tpr": 0.9047619047619048,
+    "fpr": 0.9310344827586207,
+    "accuracy": 0.42,
+    "precision": 0.41304347826086957,
+    "recall": 0.9047619047619048,
+    "f1": 0.5671641791044776
+  }
+}
