@@ -18,7 +18,7 @@ tmux-create = {cmd = "tmux new-session -s"}
 tmux-ls = {cmd = "tmux attach -t $(tmux ls | fzf | cut -d: -f1)"}
 fm = {cmd = "python tools/format_metrics.py"}
 vm = {cmd = "python tools/visualise_metrics.py"}
-vd = {cmd = "python tools/visualise_defense.py"}
+vd = {cmd = "python tools/visualise_defense.py --isometric"}
 
 [system-requirements]
 cuda = "11.8"

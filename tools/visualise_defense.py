@@ -224,6 +224,98 @@ def open_kitti_dataset(kitti_root: str, frame_ids: list[str]):
 # BEV drawing helpers
 # ---------------------------------------------------------------------------
 
+def _draw_box_3d(ax: Any, corners_velo: Any, color: str, linewidth: float = 1.0) -> None:
+    from itertools import combinations
+    corners = np.asarray(corners_velo)  # (8, 3)
+    pairs = list(combinations(range(8), 2))
+    dists = np.array([np.linalg.norm(corners[i] - corners[j]) for i, j in pairs])
+    # 12 shortest pairwise distances are edges (excludes face/space diagonals)
+    threshold = np.sort(dists)[11]
+    for (i, j), d in zip(pairs, dists):
+        if d <= threshold + 1e-3:
+            ax.plot(
+                [corners[i, 0], corners[j, 0]],
+                [corners[i, 1], corners[j, 1]],
+                [corners[i, 2], corners[j, 2]],
+                color=color, linewidth=linewidth, alpha=0.85,
+            )
+
+
+def _draw_aabb_3d(
+    ax: Any,
+    aabb_min: list[float],
+    aabb_max: list[float],
+    color: str,
+    linewidth: float = 1.5,
+    alpha: float = 0.6,
+) -> None:
+    x0, y0, z0 = aabb_min
+    x1, y1, z1 = aabb_max
+    edges = [
+        ((x0,y0,z0),(x1,y0,z0)), ((x1,y0,z0),(x1,y1,z0)),
+        ((x1,y1,z0),(x0,y1,z0)), ((x0,y1,z0),(x0,y0,z0)),
+        ((x0,y0,z1),(x1,y0,z1)), ((x1,y0,z1),(x1,y1,z1)),
+        ((x1,y1,z1),(x0,y1,z1)), ((x0,y1,z1),(x0,y0,z1)),
+        ((x0,y0,z0),(x0,y0,z1)), ((x1,y0,z0),(x1,y0,z1)),
+        ((x1,y1,z0),(x1,y1,z1)), ((x0,y1,z0),(x0,y1,z1)),
+    ]
+    for a, b in edges:
+        ax.plot([a[0],b[0]], [a[1],b[1]], [a[2],b[2]],
+                color=color, linewidth=linewidth, alpha=alpha)
+
+
+def draw_isometric(
+    ax: Any,
+    lidar: "np.ndarray",
+    predictions: list[dict],
+    gt_labels: Any = None,
+    show_gt: bool = True,
+    obstacle_aabbs: list | None = None,
+    obstacle_centroids: list | None = None,
+    roi_min: tuple[float, float] = (0.0, -5.0),
+    roi_max: tuple[float, float] = (30.0, 5.0),
+    title: str = "",
+) -> None:
+    ax.set_facecolor("#111827")
+    for pane in (ax.xaxis.pane, ax.yaxis.pane, ax.zaxis.pane):
+        pane.set_facecolor("#111827")
+        pane.set_edgecolor("#374151")
+
+    pts = lidar
+    if len(pts) > 15_000:
+        pts = pts[np.random.default_rng(0).choice(len(pts), 15_000, replace=False)]
+    z_norm = np.clip(pts[:, 2], -3.0, 1.5)
+    ax.scatter(pts[:, 0], pts[:, 1], pts[:, 2], c=z_norm,
+               s=0.3, cmap="viridis", alpha=0.6, rasterized=True, zorder=1,
+               vmin=-3.0, vmax=1.5)
+
+    if show_gt and gt_labels:
+        for label in gt_labels:
+            _draw_box_3d(ax, label.corners_velo, color="#22c55e", linewidth=1.0)
+
+    for pred in predictions:
+        _draw_box_3d(ax, pred["corners_velo"], color="#60a5fa", linewidth=1.0)
+
+    if obstacle_aabbs:
+        for aabb in obstacle_aabbs:
+            _draw_aabb_3d(ax, aabb[0], aabb[1], color="#ef4444")
+    elif obstacle_centroids:
+        for c in obstacle_centroids:
+            ax.scatter([c[0]], [c[1]], [c[2]], marker="x",
+                       color="#ef4444", s=80, zorder=5, depthshade=False)
+
+    ax.set_xlim(-3, roi_max[0] + 3)
+    ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
+    ax.set_xlabel("x (m)", fontsize=7, color="white")
+    ax.set_ylabel("y (m)", fontsize=7, color="white")
+    ax.set_zlabel("z (m)", fontsize=7, color="white")
+    ax.tick_params(colors="white", labelsize=6)
+    ax.set_title(title, fontsize=8, color="white", pad=4)
+    ax.view_init(elev=25, azim=-60)
+
+    from mpl_toolkits.mplot3d.art3d import Line3DCollection  # noqa: F401 — ensures 3d is registered
+
+
 def _draw_box_bev(ax: "plt.Axes", corners_velo: Any, color: str, linewidth: float = 1.5) -> None:
     xy = np.asarray(corners_velo)[:, :2]
     _, idx = np.unique(np.round(xy, 3), axis=0, return_index=True)
@@ -419,20 +511,34 @@ def render_frame(
     frame_data: dict,
     kitti_frame: Any,
     show_gt: bool,
+    show_isometric: bool,
     roi_min: tuple[float, float],
     roi_max: tuple[float, float],
     output_path: pathlib.Path,
 ) -> None:
-    fig = plt.figure(figsize=(18, 12))
+    fig_height = 20 if show_isometric else 12
+    fig = plt.figure(figsize=(18, fig_height))
     fig.patch.set_facecolor("#0d1117")
 
-    gs = gridspec.GridSpec(2, 2, figure=fig,
-                           height_ratios=[2.5, 1.2],
-                           hspace=0.38, wspace=0.22)
+    if show_isometric:
+        gs = gridspec.GridSpec(3, 2, figure=fig,
+                               height_ratios=[2.5, 2.5, 1.2],
+                               hspace=0.42, wspace=0.22)
+    else:
+        gs = gridspec.GridSpec(2, 2, figure=fig,
+                               height_ratios=[2.5, 1.2],
+                               hspace=0.38, wspace=0.22)
+
     ax_clean = fig.add_subplot(gs[0, 0])
     ax_atk   = fig.add_subplot(gs[0, 1])
-    ax_grid  = fig.add_subplot(gs[1, 0])
-    ax_stats = fig.add_subplot(gs[1, 1])
+    if show_isometric:
+        ax_iso_clean = fig.add_subplot(gs[1, 0], projection="3d")
+        ax_iso_atk   = fig.add_subplot(gs[1, 1], projection="3d")
+        ax_grid  = fig.add_subplot(gs[2, 0])
+        ax_stats = fig.add_subplot(gs[2, 1])
+    else:
+        ax_grid  = fig.add_subplot(gs[1, 0])
+        ax_stats = fig.add_subplot(gs[1, 1])
 
     lidar     = kitti_frame.lidar
     dr        = frame_data.get("defense_result") or {}
@@ -441,6 +547,18 @@ def render_frame(
     clean_preds = frame_data.get("clean_predictions") or []
     raw_atk_preds = frame_data.get("attacked_predictions")
     atk_preds = raw_atk_preds if raw_atk_preds is not None else clean_preds
+
+    obstacle_aabbs = meta.get("obstacle_cluster_aabbs") or None
+    obstacle_centroids = (
+        meta.get("obstacle_centroids")
+        if not meta.get("obstacle_cluster_aabbs") else None
+    )
+    atk_title = (
+        f"{'Attacked' if is_attacked else 'Clean (no attack)'} BEV"
+        f"  |  {len(atk_preds)} prediction(s)"
+        f"  |  detected={'yes' if dr.get('is_attack_detected') else 'no'}"
+        + ("\n(lidar shown is clean — attacked lidar not stored)" if is_attacked else "")
+    )
 
     draw_bev(
         ax_clean, lidar, clean_preds,
@@ -453,19 +571,30 @@ def render_frame(
         ax_atk, lidar, atk_preds,
         gt_labels=kitti_frame.labels if show_gt else None,
         show_gt=show_gt,
-        obstacle_aabbs=meta.get("obstacle_cluster_aabbs") or None,
-        obstacle_centroids=(
-            meta.get("obstacle_centroids")
-            if not meta.get("obstacle_cluster_aabbs") else None
-        ),
+        obstacle_aabbs=obstacle_aabbs,
+        obstacle_centroids=obstacle_centroids,
         roi_min=roi_min, roi_max=roi_max,
-        title=(
-            f"{'Attacked' if is_attacked else 'Clean (no attack)'} BEV"
-            f"  |  {len(atk_preds)} prediction(s)"
-            f"  |  detected={'yes' if dr.get('is_attack_detected') else 'no'}"
-            + ("\n(lidar shown is clean — attacked lidar not stored)" if is_attacked else "")
-        ),
+        title=atk_title,
     )
+
+    if show_isometric:
+        draw_isometric(
+            ax_iso_clean, lidar, clean_preds,
+            gt_labels=kitti_frame.labels if show_gt else None,
+            show_gt=show_gt,
+            roi_min=roi_min, roi_max=roi_max,
+            title=f"Clean isometric  |  {len(clean_preds)} prediction(s)",
+        )
+        draw_isometric(
+            ax_iso_atk, lidar, atk_preds,
+            gt_labels=kitti_frame.labels if show_gt else None,
+            show_gt=show_gt,
+            obstacle_aabbs=obstacle_aabbs,
+            obstacle_centroids=obstacle_centroids,
+            roi_min=roi_min, roi_max=roi_max,
+            title=atk_title.replace("BEV", "isometric"),
+        )
+
     draw_occupancy_grid(ax_grid, meta, roi_min=roi_min, roi_max=roi_max)
     draw_stats(ax_stats, frame_data)
 
@@ -495,6 +624,8 @@ def main() -> None:
                              "all | tp | tn | fp | fn")
     parser.add_argument("--show-gt", action="store_true", default=False,
                         help="Overlay ground-truth bounding boxes")
+    parser.add_argument("--isometric", action="store_true", default=False,
+                        help="Add isometric 3D views below the BEV panels")
     parser.add_argument("--backend", default="matplotlib",
                         choices=["matplotlib", "plotly"],
                         help="Rendering backend (plotly not yet implemented)")
@@ -550,6 +681,7 @@ def main() -> None:
         render_frame(
             frame_data, kitti_frame,
             show_gt=args.show_gt,
+            show_isometric=args.isometric,
             roi_min=roi_min, roi_max=roi_max,
             output_path=vis_dir / f"{frame_id}.png",
         )
