@@ -31,8 +31,10 @@ Algorithm
 2. Build a 2D occupancy grid over a region of interest (ROI).
 3. Identify empty (unoccupied) grid cells.
 4. Cluster empty cells with DBSCAN.
-5. For each cluster, backtrace one frustum per cell centre (not per-cluster
-   centroid) and union the resulting point indices across the cluster.
+5. For each cluster, for every cell centre, collect lidar points lying inside
+   the square shadow pyramid with apex at the sensor and base equal to the cell
+   footprint (side = grid_stride) at the cell distance. Union the resulting
+   point indices across the cluster.
 6. Exclude frustum points already inside a detector-predicted bounding box.
 7. DBSCAN the remaining (unidentified) points into obstacle clusters.
 8. If any obstacle cluster survives, flag an attack.
@@ -40,20 +42,10 @@ Algorithm
 
 from __future__ import annotations
 
-import math
-import pathlib
-import sys
 from collections import deque
 
 import numpy as np
 from sklearn.cluster import DBSCAN
-
-# Geometry primitives from project root
-_PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[2]
-if str(_PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(_PROJECT_ROOT))
-
-from ..utils.utils_3d import Face, Vector, isInPoly  # noqa: E402
 
 from ..base import BaseDefense
 from ..types import DetectionResult, Frame, ObjectLabel, Prediction
@@ -97,7 +89,7 @@ class VoidRegionDefense(BaseDefense):
         roi_max: tuple[float, float] = (30.0, 5.0),
         ground_height: float = -1.73,
         ground_delta: float = 0.2,
-        grid_stride: float = 0.3,
+        grid_stride: float = 0.6,
         dbscan_eps: float = 0.8,
         dbscan_min_samples: int = 5,
         min_frustum_points: int = 0,
@@ -274,6 +266,12 @@ class VoidRegionDefense(BaseDefense):
         x_centers = np.arange(x_min, x_max, stride)
         y_centers = np.arange(y_min, y_max, stride)
 
+        roi_mask = (
+            (ground_pts[:, 0] >= x_min) & (ground_pts[:, 0] < x_max) &
+            (ground_pts[:, 1] >= y_min) & (ground_pts[:, 1] < y_max)
+        )
+        ground_pts = ground_pts[roi_mask]
+
         if len(ground_pts) == 0:
             centers = [
                 [x, y, self.ground_height]
@@ -323,76 +321,45 @@ class VoidRegionDefense(BaseDefense):
     def _backtrace_frustum(
         self, centroid: np.ndarray, pts_xyz: np.ndarray
     ) -> dict:
-        """Construct a frustum from the sensor origin through the given cell
-        centre and return the indices of lidar points inside it.
-
-        Adapted directly from backtrace_shadow_from_pt() in the notebook.
-        The frustum is a small wedge-shaped volume defined by 8 vertices;
-        we pre-filter with an AABB and then apply the exact isInPoly test.
-
-        Returns {"count": int, "indices": list[int]} — indices into pts_xyz.
+        """Collect lidar points lying inside the square pyramid with apex at
+        the sensor origin and base equal to the cell footprint at the cell
+        distance.  The cross-section tapers linearly from a point at the
+        sensor to ``grid_stride × grid_stride`` at the cell.
+        Returns {"count": int, "indices": list[int]}.
         """
-        cx, cy, cz = float(centroid[0]), float(centroid[1]), float(centroid[2])
+        cell_vec = np.asarray(centroid, dtype=float)
+        cell_dist = float(np.linalg.norm(cell_vec))
+        if cell_dist < 1e-6:
+            return {"count": 0, "indices": []}
+        cell_dir = cell_vec / cell_dist
 
-        angle_rad = np.arctan(abs(cy) / abs(cx)) if cx != 0 else math.pi / 2
-        angle_new = (math.pi / 2) - angle_rad
-        delta_y = 0.1 * math.sin(angle_new)
-        delta_x = 0.1 * math.cos(angle_new)
+        # Orthonormal basis perpendicular to the ray.  `up` is replaced when
+        # the ray is near-vertical to keep the cross product non-degenerate.
+        up = np.array([0.0, 0.0, 1.0])
+        if abs(float(cell_dir @ up)) > 0.999:
+            up = np.array([1.0, 0.0, 0.0])
+        u = np.cross(up, cell_dir)
+        u /= np.linalg.norm(u)
+        v = np.cross(cell_dir, u)
 
-        points_top = [
-            [-0.1,  0.0,  0.0],
-            [-0.1,  0.0, -0.1],
-            [ 0.1,  0.0,  0.0],
-            [ 0.1,  0.0, -0.1],
-            [cx - delta_x, cy - delta_y, cz + 0.1 + 0.5],
-            [cx - delta_x, cy - delta_y, cz + 0.1],
-            [cx + delta_x, cy + delta_y, cz + 0.1 + 0.5],
-            [cx + delta_x, cy + delta_y, cz + 0.1],
-        ]
-        points_bot = [
-            [-0.1,  0.0,  0.0],
-            [-0.1,  0.0, -0.1],
-            [ 0.1,  0.0,  0.0],
-            [ 0.1,  0.0, -0.1],
-            [cx + delta_x, cy + delta_y, cz + 0.1 + 0.5],
-            [cx + delta_x, cy + delta_y, cz + 0.1],
-            [cx - delta_x, cy - delta_y, cz + 0.1 + 0.5],
-            [cx - delta_x, cy - delta_y, cz + 0.1],
-        ]
+        half_at_base = self.grid_stride / 2.0
 
-        if math.atan2(cy, cx) <= 0:
-            points = points_top
-            f1 = Face([Vector(points[0]), Vector(points[2]), Vector(points[3]), Vector(points[1])])
-            f2 = Face([Vector(points[5]), Vector(points[7]), Vector(points[6]), Vector(points[4])])
-            f3 = Face([Vector(points[0]), Vector(points[4]), Vector(points[6]), Vector(points[2])])
-            f4 = Face([Vector(points[7]), Vector(points[5]), Vector(points[1]), Vector(points[3])])
-            f5 = Face([Vector(points[6]), Vector(points[7]), Vector(points[3]), Vector(points[2])])
-            f6 = Face([Vector(points[0]), Vector(points[1]), Vector(points[5]), Vector(points[4])])
-        else:
-            points = points_bot
-            f1 = Face([Vector(points[1]), Vector(points[3]), Vector(points[2]), Vector(points[0])])
-            f2 = Face([Vector(points[4]), Vector(points[6]), Vector(points[7]), Vector(points[5])])
-            f3 = Face([Vector(points[2]), Vector(points[6]), Vector(points[4]), Vector(points[0])])
-            f4 = Face([Vector(points[3]), Vector(points[1]), Vector(points[5]), Vector(points[7])])
-            f5 = Face([Vector(points[2]), Vector(points[3]), Vector(points[7]), Vector(points[6])])
-            f6 = Face([Vector(points[4]), Vector(points[5]), Vector(points[1]), Vector(points[0])])
+        t  = pts_xyz @ cell_dir          # along-ray distance from sensor
+        du = pts_xyz @ u                 # lateral component 1
+        dv = pts_xyz @ v                 # lateral component 2
 
-        poly = [f1, f2, f3, f4, f5, f6]
+        # Cross-section half-width tapers from 0 at the sensor to
+        # half_at_base at the cell.
+        half_t = np.where(t > 0.0, half_at_base * t / cell_dist, 0.0)
 
-        # AABB pre-filter for speed
-        arr = np.array(points)
-        aabb_min = arr.min(axis=0)
-        aabb_max = arr.max(axis=0)
-        pre_mask = np.all((pts_xyz >= aabb_min) & (pts_xyz <= aabb_max), axis=1)
-        candidate_indices = np.where(pre_mask)[0]
-        candidates = pts_xyz[candidate_indices]
-
-        in_indices: list[int] = []
-        for local_i, pt in enumerate(candidates):
-            if isInPoly(pt.tolist(), poly):
-                in_indices.append(int(candidate_indices[local_i]))
-
-        return {"count": len(in_indices), "indices": in_indices}
+        in_pyr = (
+            (t > 0.0)
+            & (t < cell_dist)
+            & (np.abs(du) < half_t)
+            & (np.abs(dv) < half_t)
+        )
+        indices = np.flatnonzero(in_pyr).tolist()
+        return {"count": len(indices), "indices": indices}
 
     # ------------------------------------------------------------------
     # Prediction-based exclusion filter (paper step 6)
