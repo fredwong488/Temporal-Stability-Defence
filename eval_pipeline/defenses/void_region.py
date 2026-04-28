@@ -35,9 +35,13 @@ Algorithm
    the square shadow pyramid with apex at the sensor and base equal to the cell
    footprint (side = grid_stride) at the cell distance. Union the resulting
    point indices across the cluster.
-6. Exclude frustum points already inside a detector-predicted bounding box.
-7. DBSCAN the remaining (unidentified) points into obstacle clusters.
-8. If any obstacle cluster survives, flag an attack.
+6. Drop frustum points within ground_delta of the ground plane — the pyramid
+   grazes the ground near its base, so inter-ring gaps at long range fake a
+   shadow and the frustum sweeps up legitimate ground points from the inner
+   ring.
+7. Exclude frustum points already inside a detector-predicted bounding box.
+8. DBSCAN the remaining (unidentified) points into obstacle clusters.
+9. If any obstacle cluster survives, flag an attack.
 """
 
 from __future__ import annotations
@@ -67,7 +71,8 @@ class VoidRegionDefense(BaseDefense):
     ground_delta
         Half-thickness of the ground-plane slice to extract.
     grid_stride
-        Occupancy grid cell size in metres. Paper specifies 0.3 m.
+        Occupancy grid cell size in metres. Paper specifies 0.3 m but 0.6m 
+        was identified as more suitable during hyperparameter tuning.
     dbscan_eps
         DBSCAN neighbourhood radius for shadow (empty-cell) clustering.
     dbscan_min_samples
@@ -186,6 +191,18 @@ class VoidRegionDefense(BaseDefense):
             frustum_pts = pts_xyz[sorted(all_frustum_indices)]
         else:
             frustum_pts = np.empty((0, 3))
+
+        # Drop ground-altitude points: the pyramid grazes the ground plane near
+        # its base, so inter-ring gaps masquerade as shadows and the frustum
+        # picks up legitimate ground points from the next-closer ring. These
+        # are not hidden-obstacle candidates.
+        if len(frustum_pts) > 0:
+            z = frustum_pts[:, 2]
+            non_ground = (
+                (z < self.ground_height - self.ground_delta)
+                | (z > self.ground_height + self.ground_delta)
+            )
+            frustum_pts = frustum_pts[non_ground]
 
         # 5. Exclude points inside any detector-predicted bounding box
         unidentified_pts = self._exclude_predicted_boxes(frustum_pts, frame.predictions)
