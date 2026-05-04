@@ -113,7 +113,7 @@ ExperimentConfig (YAML / CLI)
 
 ### Install
 
-1. Install Python dependencies by running `pixi install`
+1. The necessary project dependencies can be found in the [pixi.toml](pixi.toml) file. Install by running `pixi install`
 
 2. Clone and install [OpenPCDet](https://github.com/open-mmlab/OpenPCDet) into the project root (see the [pointpillars installation guide](pointpillars_installation_guide.md) for full instructions)
 
