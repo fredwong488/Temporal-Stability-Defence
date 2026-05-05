@@ -87,10 +87,12 @@ def _attack_registry() -> dict[str, type]:
 
 def _detector_registry() -> dict[str, type]:
     from .detectors.pointpillars import PointPillarsDetector
+    from .detectors.pointpillars_nuscenes import PointPillarsNuScenesDetector
     from .detectors.pointrcnn import PointRCNNDetector
     from .detectors.precomputed import PrecomputedDetector
     return {
         "pointpillars": PointPillarsDetector,
+        "pointpillars_nuscenes": PointPillarsNuScenesDetector,
         "pointrcnn": PointRCNNDetector,
         "precomputed": PrecomputedDetector,
     }
