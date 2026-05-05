@@ -46,13 +46,11 @@ Algorithm
 
 from __future__ import annotations
 
-from collections import deque
-
 import numpy as np
 from sklearn.cluster import DBSCAN
 
 from ..base import BaseDefense
-from ..types import DetectionResult, Frame, ObjectLabel, Prediction
+from ..types import DetectionResult, Frame, FrameHistory, ObjectLabel, Prediction
 
 
 class VoidRegionDefense(BaseDefense):
@@ -120,7 +118,7 @@ class VoidRegionDefense(BaseDefense):
     # Public API
     # ------------------------------------------------------------------
 
-    def detect(self, frame: Frame, history: deque[Frame]) -> DetectionResult:
+    def detect(self, frame: Frame, history: FrameHistory) -> DetectionResult:
         """Determine whether the frame contains an adversarial void region."""
         lidar = frame.lidar       # (N, 4)
         pts_xyz = lidar[:, :3]    # (N, 3)

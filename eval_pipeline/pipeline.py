@@ -7,13 +7,15 @@ EvalPipeline — orchestrates attack, detection, and defense over a dataset.
 from __future__ import annotations
 
 import logging
+import pathlib
+import pickle
 from collections import deque
 
 import numpy as np
 from tqdm import tqdm
 
 from .base import BaseAttack, BaseDefense, BaseDetector
-from .types import EvalResults, Frame, FrameResult, Prediction
+from .types import EvalResults, Frame, FrameCacheEntry, FrameHistory, FrameResult, Prediction
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +58,7 @@ class EvalPipeline:
         attack_fraction: float = 1.0,
         attack_fraction_seed: int = 0,
         desc: str = "Frames",
+        precomputed_cache_path: str | None = None,
     ) -> None:
         self.dataset = dataset
         self.attack = attack
@@ -67,6 +70,22 @@ class EvalPipeline:
         self.desc = desc
         self._clean_pred_cache: dict[str, list[Prediction]] = {}
 
+        # Precomputed cache: load if the file exists; save after run() if it doesn't.
+        self._precomputed_cache: dict[str, FrameCacheEntry] | None = None
+        self._precomputed_save_path: str | None = None
+        if precomputed_cache_path is not None:
+            p = pathlib.Path(precomputed_cache_path)
+            if p.exists():
+                with open(p, "rb") as f:
+                    self._precomputed_cache = pickle.load(f)
+                logger.info(
+                    "Loaded precomputed cache: %d frame entries from %s",
+                    len(self._precomputed_cache), p,
+                )
+            else:
+                self._precomputed_save_path = str(p)
+                logger.info("Will save precomputed cache to: %s", p)
+
     # ------------------------------------------------------------------
     # Main entry point
     # ------------------------------------------------------------------
@@ -74,26 +93,63 @@ class EvalPipeline:
     def run(self) -> EvalResults:
         """Execute the pipeline over all frames and return aggregated results."""
         max_window = self.defense.temporal_window if self.defense else 1
-        history: deque[Frame] = deque(maxlen=max_window)
+        # Two parallel histories: clean (pre-attack) and dirty (post-attack).
+        # Sized to temporal_window - 1 so the defense sees prior frames only.
+        clean_history: deque[Frame] = deque(maxlen=max(0, max_window - 1))
+        dirty_history: deque[Frame] = deque(maxlen=max(0, max_window - 1))
+        last_sequence_id: str | None = None
 
         frame_results: list[FrameResult] = []
+        accumulator: dict[str, FrameCacheEntry] = {}  # built when saving cache
         n = 0
 
         for frame in tqdm(self.dataset, desc=self.desc, unit="frame"):
             n += 1
             logger.debug("Processing frame %s", frame.frame_id)
 
-            # Stage 1: Clean detection (cached)
-            clean_preds = self._get_clean_preds(frame)
+            # Reset history at scene boundaries so temporal defenses never read
+            # across a discontinuity between unrelated scenes.
+            if frame.sequence_id != last_sequence_id:
+                clean_history.clear()
+                dirty_history.clear()
+                last_sequence_id = frame.sequence_id
 
-            # Stage 2: Attack
-            attacked_frame: Frame | None = None
-            attacked_preds: list[Prediction] | None = None
+            if self._precomputed_cache is not None:
+                # -------------------------------------------------------
+                # Replay mode: use cached predictions and attack decisions.
+                # The attack is re-applied for is_attacked frames so that
+                # defenses that inspect raw lidar receive the modified cloud.
+                # -------------------------------------------------------
+                entry = self._precomputed_cache.get(frame.frame_id)
+                if entry is None:
+                    logger.warning(
+                        "Frame %s not found in precomputed cache — running live.",
+                        frame.frame_id,
+                    )
+                    clean_preds, attacked_frame, attacked_preds = self._run_live(frame)
+                else:
+                    clean_preds = entry.clean_predictions
+                    attacked_preds = entry.attacked_predictions
+                    if entry.is_attacked and self.attack is not None:
+                        attacked_frame = self.attack.apply(frame)
+                    else:
+                        attacked_frame = None
+            else:
+                # -------------------------------------------------------
+                # Live mode: run attack + detector, accumulate cache entry.
+                # -------------------------------------------------------
+                clean_preds, attacked_frame, attacked_preds = self._run_live(frame)
 
-            if self.attack is not None and self._attack_rng.random() < self.attack_fraction:
-                attacked_frame = self.attack.apply(frame)
-                if self.detector is not None:
-                    attacked_preds = self.detector.predict(attacked_frame)
+                if self._precomputed_save_path is not None:
+                    accumulator[frame.frame_id] = FrameCacheEntry(
+                        clean_predictions=clean_preds,
+                        attacked_predictions=attacked_preds,
+                        is_attacked=attacked_frame is not None,
+                        attack_metadata=(
+                            dict(attacked_frame.attack_metadata)
+                            if attacked_frame is not None else {}
+                        ),
+                    )
 
             # Stage 3: Defense — operates on what the vehicle actually received
             current_frame = attacked_frame if attacked_frame is not None else frame
@@ -102,10 +158,14 @@ class EvalPipeline:
 
             defense_result = None
             if self.defense is not None:
-                defense_result = self.defense.detect(current_frame, history)
+                defense_result = self.defense.detect(
+                    current_frame,
+                    FrameHistory(clean=clean_history, dirty=dirty_history),
+                )
 
-            # Update rolling history with the frame the vehicle received
-            history.append(current_frame)
+            # Update both histories after the defense has been called.
+            clean_history.append(frame)          # pre-attack, as yielded by dataset
+            dirty_history.append(current_frame)  # post-attack, what the vehicle received
 
             frame_results.append(FrameResult(
                 frame_id=frame.frame_id,
@@ -117,11 +177,34 @@ class EvalPipeline:
             ))
 
         logger.info("Pipeline complete: %d frames processed.", n)
+
+        if self._precomputed_save_path is not None and accumulator:
+            self._save_cache(accumulator)
+
         return EvalResults(frame_results=frame_results)
 
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    def _run_live(
+        self, frame: Frame
+    ) -> tuple[list[Prediction], Frame | None, list[Prediction] | None]:
+        """Run attack + detection for one frame without consulting the cache.
+
+        Returns (clean_preds, attacked_frame_or_None, attacked_preds_or_None).
+        """
+        clean_preds = self._get_clean_preds(frame)
+
+        attacked_frame: Frame | None = None
+        attacked_preds: list[Prediction] | None = None
+
+        if self.attack is not None and self._attack_rng.random() < self.attack_fraction:
+            attacked_frame = self.attack.apply(frame)
+            if self.detector is not None:
+                attacked_preds = self.detector.predict(attacked_frame)
+
+        return clean_preds, attacked_frame, attacked_preds
 
     def _get_clean_preds(self, frame: Frame) -> list[Prediction]:
         if self.detector is None:
@@ -132,3 +215,12 @@ class EvalPipeline:
         if self.cache_clean_preds:
             self._clean_pred_cache[frame.frame_id] = preds
         return preds
+
+    def _save_cache(self, accumulator: dict[str, FrameCacheEntry]) -> None:
+        path = pathlib.Path(self._precomputed_save_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "wb") as f:
+            pickle.dump(accumulator, f, protocol=pickle.HIGHEST_PROTOCOL)
+        logger.info(
+            "Saved precomputed cache: %d frame entries → %s", len(accumulator), path
+        )

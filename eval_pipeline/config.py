@@ -19,8 +19,11 @@ class ExperimentConfig:
     Fields
     ------
     Dataset:
-        kitti_root  : Path to the root KITTI directory.
-        frame_ids   : List of frame ID strings to process (e.g. ["000125", "000070"]).
+        dataset_type  : Dataset backend: "kitti" (default) or "nuscenes".
+        dataset_params: Keyword arguments forwarded to the dataset constructor.
+                        NuScenes example: {"root": "data/datasets/nuscenes", "version": "v1.0-mini"}
+        kitti_root  : Backward-compat shortcut for KITTI root path (merged into dataset_params).
+        frame_ids   : Backward-compat shortcut for KITTI frame list (merged into dataset_params).
                       None = all available frames in the dataset.
 
     Attack:
@@ -78,8 +81,10 @@ class ExperimentConfig:
     """
 
     # Dataset
-    kitti_root: str = "data/datasets/KITTI"
-    frame_ids: list[str] | None = None          # None = all available frames
+    dataset_type: str = "kitti"                 # "kitti" | "nuscenes"
+    dataset_params: dict = dataclasses.field(default_factory=dict)
+    kitti_root: str = "data/datasets/KITTI"     # backward compat; prefer dataset_params["root"]
+    frame_ids: list[str] | None = None          # backward compat; prefer dataset_params["frame_ids"]
 
     # Attack
     attack_type: str | None = None              # "ora" | None
@@ -108,6 +113,11 @@ class ExperimentConfig:
     output_dir: str = "results"
     experiment_name: str = "default"
     save_frame_results: bool = False   # write per-frame JSONL alongside results JSON
+
+    # Precomputed cache
+    # If the path does not exist the pipeline runs live and saves a cache there.
+    # If the path exists the pipeline loads the cache and skips detector inference.
+    precomputed_cache_path: str | None = None
 
     # ---------------------------------------------------------------------------
     # Constructors

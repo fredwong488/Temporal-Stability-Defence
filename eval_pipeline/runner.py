@@ -88,12 +88,24 @@ def _attack_registry() -> dict[str, type]:
 def _detector_registry() -> dict[str, type]:
     from .detectors.pointpillars import PointPillarsDetector
     from .detectors.pointrcnn import PointRCNNDetector
-    return {"pointpillars": PointPillarsDetector, "pointrcnn": PointRCNNDetector}
+    from .detectors.precomputed import PrecomputedDetector
+    return {
+        "pointpillars": PointPillarsDetector,
+        "pointrcnn": PointRCNNDetector,
+        "precomputed": PrecomputedDetector,
+    }
 
 
 def _defense_registry() -> dict[str, type]:
     from .defenses.void_region import VoidRegionDefense
-    return {"void_region": VoidRegionDefense}
+    from .defenses.tc2 import TC2Defense
+    return {"void_region": VoidRegionDefense, "tc2": TC2Defense}
+
+
+def _dataset_registry() -> dict[str, type]:
+    from .datasets.kitti import KittiObjectDataset
+    from .datasets.nuscenes import NuScenesDataset
+    return {"kitti": KittiObjectDataset, "nuscenes": NuScenesDataset}
 
 
 # ---------------------------------------------------------------------------
@@ -102,12 +114,20 @@ def _defense_registry() -> dict[str, type]:
 
 def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeline:
     """Instantiate all pipeline components from a config."""
-    from .datasets.kitti import KittiObjectDataset
-
-    dataset = KittiObjectDataset(
-        root=config.kitti_root,
-        frame_ids=config.frame_ids,
-    )
+    dataset_cls = _dataset_registry().get(config.dataset_type)
+    if dataset_cls is None:
+        raise ValueError(
+            f"Unknown dataset_type '{config.dataset_type}'. "
+            f"Available: {list(_dataset_registry())}"
+        )
+    # Backward-compat: merge kitti_root / frame_ids into dataset_params for KITTI
+    dataset_params = dict(config.dataset_params)
+    if config.dataset_type == "kitti":
+        if "root" not in dataset_params and config.kitti_root:
+            dataset_params["root"] = config.kitti_root
+        if "frame_ids" not in dataset_params and config.frame_ids is not None:
+            dataset_params["frame_ids"] = config.frame_ids
+    dataset = dataset_cls(**dataset_params)
 
     attack = None
     if config.attack_type:
@@ -148,6 +168,7 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
         attack_fraction=config.attack_fraction,
         attack_fraction_seed=config.attack_fraction_seed,
         desc=desc,
+        precomputed_cache_path=config.precomputed_cache_path,
     )
 
 
@@ -178,12 +199,23 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:
         metric_types = set(config.metric_types)
         frame_results = eval_results.frame_results
 
-        if "ap" in metric_types:
-            summary["attack_effectiveness"] = eval_results.attack_effectiveness(
-                iou_thresholds=config.iou_thresholds
-            )
+        # KITTI-specific metrics are not applicable to NuScenes (different class set,
+        # no Easy/Moderate/Hard difficulty, no bbox_2d pixel-height filter).
+        _kitti_metrics_available = config.dataset_type == "kitti"
 
-        if "pr" in metric_types:
+        if "ap" in metric_types:
+            if _kitti_metrics_available:
+                summary["attack_effectiveness"] = eval_results.attack_effectiveness(
+                    iou_thresholds=config.iou_thresholds
+                )
+            else:
+                logger.info(
+                    "AP metrics skipped for dataset_type='%s' (KITTI-specific). "
+                    "Only defense_effectiveness is computed for NuScenes.",
+                    config.dataset_type,
+                )
+
+        if "pr" in metric_types and _kitti_metrics_available:
             from itertools import product
             from tqdm import tqdm
             from .metrics import compute_pr_curve, _DEFAULT_IOU_THRESHOLDS  # noqa: PLC2701
@@ -198,7 +230,7 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:
                 )
             summary["pr_curves"] = pr_curves
 
-        if "recall_iou" in metric_types:
+        if "recall_iou" in metric_types and _kitti_metrics_available:
             from .metrics import compute_recall_vs_iou
             classes = sorted({lbl.type for fr in frame_results for lbl in fr.labels})
             summary["recall_iou_curves"] = {
@@ -245,7 +277,12 @@ def main() -> None:
     )
     parser.add_argument("--config", type=str, default=None,
                         help="Path to YAML config file")
-    parser.add_argument("--kitti-root", type=str, default=None)
+    parser.add_argument("--dataset", type=str, default=None,
+                        help="Dataset type (e.g. kitti, nuscenes)")
+    parser.add_argument("--dataset-root", type=str, default=None,
+                        help="Root path for the dataset (sets dataset_params['root'])")
+    parser.add_argument("--kitti-root", type=str, default=None,
+                        help="KITTI root path (backward compat; prefer --dataset-root)")
     parser.add_argument("--attack", type=str, default=None,
                         help="Attack type (e.g. ora)")
     parser.add_argument("--detector", type=str, default=None,
@@ -270,6 +307,10 @@ def main() -> None:
 
     # CLI overrides
     overrides: dict = {}
+    if args.dataset:
+        overrides["dataset_type"] = args.dataset
+    if args.dataset_root:
+        overrides["dataset_params"] = {**config.dataset_params, "root": args.dataset_root}
     if args.kitti_root:
         overrides["kitti_root"] = args.kitti_root
     if args.attack:

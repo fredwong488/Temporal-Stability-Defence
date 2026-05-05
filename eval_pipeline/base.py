@@ -12,7 +12,7 @@ from collections import deque
 
 import numpy as np
 
-from .types import DetectionResult, Frame, Prediction
+from .types import DetectionResult, Frame, FrameHistory, Prediction
 
 
 class BaseAttack(abc.ABC):
@@ -77,14 +77,16 @@ class BaseDefense(abc.ABC):
         return 1
 
     @abc.abstractmethod
-    def detect(self, frame: Frame, history: deque[Frame]) -> DetectionResult:
+    def detect(self, frame: Frame, history: FrameHistory) -> DetectionResult:
         """Determine whether the frame has been attacked.
 
         Parameters
         ----------
         frame   : the current (possibly attacked) frame
-        history : deque of up to (temporal_window - 1) preceding frames,
-                  ordered oldest-first
+        history : FrameHistory containing two deques, each with up to
+                  (temporal_window - 1) preceding frames (oldest-first):
+                    history.clean    — pre-attack frames as yielded by dataset
+                    history.dirty — post-attack frames the vehicle
         """
         ...
 

@@ -42,7 +42,11 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
-KITTI_ROOT = "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/KITTI"
+_DATASETS_BASE = "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets"
+KITTI_ROOT = f"{_DATASETS_BASE}/KITTI"
+DEFAULT_NUSCENES_ROOT = f"{_DATASETS_BASE}/nuscenes-v1.0-mini"
+DEFAULT_NUSCENES_VERSION = "v1.0-mini"
+DEFAULT_NUSCENES_SPLIT = "mini_val"
 
 DEFAULT_SWEEP_PARAM = "budget"
 DEFAULT_SWEEP_VALUES = [0, 10, 20, 40, 60, 100, 150, 200]
@@ -75,7 +79,7 @@ def get_split_frame_ids(split: str, num_frames: int | None = None) -> list[str]:
 
 
 def run_single(
-    frame_ids: list[str],
+    frame_ids: list[str] | None,
     attack_type: str | None,
     attack_params: dict,
     defense_type: str | None,
@@ -92,12 +96,17 @@ def run_single(
     attack_fraction_seed: int = 0,
     save_frame_results: bool = False,
     desc: str | None = None,
+    dataset_type: str = "kitti",
+    dataset_params: dict | None = None,
+    precomputed_cache_path: str | None = None,
 ) -> dict:
     """Run one experiment and return the summary dict."""
     from eval_pipeline.config import ExperimentConfig
     from eval_pipeline.runner import run_experiment
 
     config = ExperimentConfig(
+        dataset_type=dataset_type,
+        dataset_params=dataset_params or {},
         kitti_root=KITTI_ROOT,
         frame_ids=frame_ids,
         attack_type=attack_type,
@@ -114,6 +123,7 @@ def run_single(
         attack_fraction=attack_fraction,
         attack_fraction_seed=attack_fraction_seed,
         save_frame_results=save_frame_results,
+        precomputed_cache_path=precomputed_cache_path,
     )
     return run_experiment(config, desc=desc)
 
@@ -164,6 +174,17 @@ def main() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
+    # Dataset
+    parser.add_argument("--dataset", type=str, default="kitti",
+                        choices=["kitti", "nuscenes"],
+                        help="Dataset backend to use")
+    parser.add_argument("--nuscenes-root", type=str, default=DEFAULT_NUSCENES_ROOT,
+                        help="NuScenes dataset root directory")
+    parser.add_argument("--nuscenes-version", type=str, default=DEFAULT_NUSCENES_VERSION,
+                        help="NuScenes version string (must match the metadata folder name)")
+    parser.add_argument("--nuscenes-split", type=str, default=DEFAULT_NUSCENES_SPLIT,
+                        help="NuScenes split (e.g. mini_val, mini_train, val, train)")
+
     # Components (all optional, but at least one required)
     parser.add_argument("--attack", type=str, default=None,
                         help="Attack type to apply (e.g. ora)")
@@ -189,12 +210,12 @@ def main() -> None:
                         help=f"Values to sweep. Defaults to {DEFAULT_SWEEP_VALUES} "
                              "when sweep-param is 'budget'")
 
-    # Frames
+    # Frames (KITTI-only)
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--num-frames", type=int, default=None,
-                       help="Use the first N frames from the split (default: all)")
+                       help="Use the first N frames from the KITTI split (default: all)")
     group.add_argument("--frames", nargs="+", metavar="ID",
-                       help="Explicit frame IDs, e.g. 000125 000070")
+                       help="Explicit KITTI frame IDs, e.g. 000125 000070")
     parser.add_argument("--split", type=str, default=DEFAULT_SPLIT,
                         choices=sorted(VALID_SPLITS),
                         help="KITTI split to use (reads from OpenPCDet ImageSets/)")
@@ -223,6 +244,15 @@ def main() -> None:
                              "timestamped subdirectory")
     parser.add_argument("--save-frames", action="store_true", default=False,
                         help="Save per-frame JSONL alongside each experiment's results JSON")
+    parser.add_argument(
+        "--precomputed-cache-dir", type=str, default=None, metavar="DIR",
+        help=(
+            "Directory for precomputed prediction caches.  For each sweep value "
+            "a file named '<sweep-param>_<value>.pkl' is written (if absent) or "
+            "read (if present), allowing detector inference to be skipped on "
+            "subsequent runs with the same configuration."
+        ),
+    )
     args = parser.parse_args()
 
     # Validate: at least one component must be specified
@@ -254,17 +284,33 @@ def main() -> None:
     run_dir = pathlib.Path(args.results_dir) / timestamp
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    # Resolve frame IDs
-    if args.frames:
-        frame_ids = args.frames
-    else:
-        frame_ids = get_split_frame_ids(args.split, args.num_frames)
-
     detector_params: dict = {}
     if args.detector is not None:
         detector_params["score_threshold"] = args.confidence_threshold
 
+    # Build dataset_params; frame_ids only used for KITTI
+    dataset_type = args.dataset
+    dataset_params: dict = {}
+    if dataset_type == "nuscenes":
+        dataset_params = {
+            "root": args.nuscenes_root,
+            "version": args.nuscenes_version,
+            "split": args.nuscenes_split,
+        }
+
+    # Resolve frame IDs (KITTI only; NuScenes handles splits internally)
+    frame_ids: list[str] | None = None
+    if dataset_type == "kitti":
+        if args.frames:
+            frame_ids = args.frames
+        else:
+            frame_ids = get_split_frame_ids(args.split, args.num_frames)
+
     logging.info("Run dir      : %s", run_dir)
+    logging.info("Dataset      : %s", dataset_type)
+    if dataset_type == "nuscenes":
+        logging.info("NuScenes     : %s  version=%s  split=%s",
+                     args.nuscenes_root, args.nuscenes_version, args.nuscenes_split)
     logging.info("Attack       : %s", args.attack or "(none)")
     if args.attack and args.attack_fraction < 1.0:
         logging.info("Atk fraction : %.2f (seed=%d)", args.attack_fraction, args.attack_fraction_seed)
@@ -273,8 +319,9 @@ def main() -> None:
     logging.info("Sweep target : %s", args.sweep_target)
     logging.info("Sweep param  : %s", args.sweep_param)
     logging.info("Sweep values : %s", sweep_values)
-    logging.info("Split        : %s", args.split if not args.frames else "custom")
-    logging.info("Frames       : %d  (%s … %s)", len(frame_ids), frame_ids[0], frame_ids[-1])
+    if dataset_type == "kitti":
+        logging.info("Split        : %s", args.split if not args.frames else "custom")
+        logging.info("Frames       : %d  (%s … %s)", len(frame_ids), frame_ids[0], frame_ids[-1])
     logging.info("Classes      : %s", args.classes)
     logging.info("Difficulties : %s", args.difficulties)
     logging.info("Metrics      : %s", sorted(args.metric_types))
@@ -299,6 +346,14 @@ def main() -> None:
 
         experiment_name = f"{args.attack or args.defense}_{args.sweep_param}_{val}"
 
+        # Compute per-value cache path: <dir>/<sweep_param>_<val>.pkl
+        val_cache_path: str | None = None
+        if args.precomputed_cache_dir is not None:
+            val_str = str(int(val)) if val == int(val) else str(val)
+            val_cache_path = str(
+                pathlib.Path(args.precomputed_cache_dir) / f"{args.sweep_param}_{val_str}.pkl"
+            )
+
         summary = run_single(
             frame_ids=frame_ids,
             attack_type=args.attack,
@@ -317,6 +372,9 @@ def main() -> None:
             attack_fraction_seed=args.attack_fraction_seed,
             save_frame_results=args.save_frames,
             desc=f"{args.sweep_param}={val}",
+            dataset_type=dataset_type,
+            dataset_params=dataset_params,
+            precomputed_cache_path=val_cache_path,
         )
 
         if "ap" in args.metric_types:

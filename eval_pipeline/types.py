@@ -7,6 +7,7 @@ Core dataclasses that flow through the evaluation pipeline.
 from __future__ import annotations
 
 import dataclasses
+from collections import deque
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -70,7 +71,8 @@ class Frame:
     lidar: np.ndarray                                 # (N, 4) — x, y, z, intensity
     image: np.ndarray | None
     labels: list[ObjectLabel]
-    calib: Calibration
+    kitti_calib: Calibration | None = None            # None for datasets without KITTI-style calib
+    nuscenes_ego_pose: np.ndarray | None = None       # (4, 4) sensor-to-global; None for KITTI Object
     is_attacked: bool = False
     attacked_modalities: frozenset[str] = dataclasses.field(default_factory=frozenset)
     attack_metadata: dict = dataclasses.field(default_factory=dict)
@@ -196,3 +198,52 @@ class EvalResults:
             return {}
 
         return compute_defense_metrics(self.frame_results)
+
+
+# ---------------------------------------------------------------------------
+# FrameCacheEntry
+# ---------------------------------------------------------------------------
+
+@dataclasses.dataclass
+class FrameCacheEntry:
+    """Persisted detector outputs for a single frame.
+
+    Stored by EvalPipeline when ``precomputed_cache_path`` points to a
+    non-existent file; loaded on subsequent runs to skip detector inference.
+
+    clean_predictions
+        Detector output on the unmodified frame lidar.
+    attacked_predictions
+        Detector output on the attacked frame lidar, or None when the frame
+        was not selected by the attack-fraction sampler.
+    is_attacked
+        Whether the attack-fraction sampler chose to attack this frame.
+        Stored so replay can reconstruct the same attack/no-attack decisions
+        without re-rolling the RNG.
+    attack_metadata
+        Copy of ``Frame.attack_metadata`` after the attack was applied.
+        Forwarded to the reconstructed attacked frame during replay so that
+        defenses receive consistent metadata.
+    """
+    clean_predictions: list[Prediction]
+    attacked_predictions: list[Prediction] | None
+    is_attacked: bool
+    attack_metadata: dict = dataclasses.field(default_factory=dict)
+
+
+# ---------------------------------------------------------------------------
+# FrameHistory
+# ---------------------------------------------------------------------------
+
+@dataclasses.dataclass
+class FrameHistory:
+    """Pair of rolling history deques passed to BaseDefense.detect.
+
+    clean    — frames as yielded by the dataset (pre-attack stage).
+    dirty — frames as the vehicle received them (post-attack stage).
+
+    Both are oldest-first and sized to temporal_window - 1.
+    Defenses should only read these; the pipeline owns them.
+    """
+    clean: deque[Frame]
+    dirty: deque[Frame]

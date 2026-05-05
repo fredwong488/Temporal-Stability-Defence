@@ -228,7 +228,8 @@ class KittiObjectDataset:
             lidar=lidar,
             image=None,              # camera images not loaded by default
             labels=labels,
-            calib=calib,
+            kitti_calib=calib,
+            nuscenes_ego_pose=None,  # no ego pose in KITTI Object split
         )
 
     # ------------------------------------------------------------------
