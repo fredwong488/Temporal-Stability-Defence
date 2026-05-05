@@ -212,11 +212,11 @@ def main() -> None:
 
     # Frames (KITTI-only)
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("--num-frames", type=int, default=None,
+    group.add_argument("--kitti-num-frames", type=int, default=None,
                        help="Use the first N frames from the KITTI split (default: all)")
-    group.add_argument("--frames", nargs="+", metavar="ID",
+    group.add_argument("--kitti-frames", nargs="+", metavar="ID",
                        help="Explicit KITTI frame IDs, e.g. 000125 000070")
-    parser.add_argument("--split", type=str, default=DEFAULT_SPLIT,
+    parser.add_argument("--kitti-split", type=str, default=DEFAULT_SPLIT,
                         choices=sorted(VALID_SPLITS),
                         help="KITTI split to use (reads from OpenPCDet ImageSets/)")
 
@@ -301,10 +301,10 @@ def main() -> None:
     # Resolve frame IDs (KITTI only; NuScenes handles splits internally)
     frame_ids: list[str] | None = None
     if dataset_type == "kitti":
-        if args.frames:
-            frame_ids = args.frames
+        if args.kitti_frames:
+            frame_ids = args.kitti_frames
         else:
-            frame_ids = get_split_frame_ids(args.split, args.num_frames)
+            frame_ids = get_split_frame_ids(args.kitti_split, args.kitti_num_frames)
 
     logging.info("Run dir      : %s", run_dir)
     logging.info("Dataset      : %s", dataset_type)
@@ -320,7 +320,7 @@ def main() -> None:
     logging.info("Sweep param  : %s", args.sweep_param)
     logging.info("Sweep values : %s", sweep_values)
     if dataset_type == "kitti":
-        logging.info("Split        : %s", args.split if not args.frames else "custom")
+        logging.info("Split        : %s", args.kitti_split if not args.kitti_frames else "custom")
         logging.info("Frames       : %d  (%s … %s)", len(frame_ids), frame_ids[0], frame_ids[-1])
     logging.info("Classes      : %s", args.classes)
     logging.info("Difficulties : %s", args.difficulties)

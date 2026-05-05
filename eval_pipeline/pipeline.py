@@ -102,6 +102,7 @@ class EvalPipeline:
         frame_results: list[FrameResult] = []
         accumulator: dict[str, FrameCacheEntry] = {}  # built when saving cache
         n = 0
+        live_run_frames = []
 
         for frame in tqdm(self.dataset, desc=self.desc, unit="frame"):
             n += 1
@@ -122,10 +123,7 @@ class EvalPipeline:
                 # -------------------------------------------------------
                 entry = self._precomputed_cache.get(frame.frame_id)
                 if entry is None:
-                    logger.warning(
-                        "Frame %s not found in precomputed cache — running live.",
-                        frame.frame_id,
-                    )
+                    live_run_frames.append(frame.frame_id)
                     clean_preds, attacked_frame, attacked_preds = self._run_live(frame)
                 else:
                     clean_preds = entry.clean_predictions
@@ -176,7 +174,7 @@ class EvalPipeline:
                 defense_result=defense_result,
             ))
 
-        logger.info("Pipeline complete: %d frames processed.", n)
+        logger.info("Pipeline complete: %d frames processed. %d frames processed live as they were not found in precomputed cache", n, len(live_run_frames))
 
         if self._precomputed_save_path is not None and accumulator:
             self._save_cache(accumulator)
