@@ -130,7 +130,7 @@ def _compute_ap_class(
     n_gt_total = 0
 
     for fr in frame_results:
-        preds = fr.clean_predictions if use_clean else (fr.attacked_predictions or [])
+        preds = fr.clean_predictions if (use_clean or fr.attacked_predictions is None) else fr.attacked_predictions
         detections, n_gt = _match_frame_kitti(
             preds, fr.labels, class_name, iou_threshold, difficulty=difficulty
         )
@@ -148,7 +148,7 @@ def _compute_ap_class(
     fp_arr = np.zeros(len(thresholds))
 
     for fr in frame_results:
-        preds = fr.clean_predictions if use_clean else (fr.attacked_predictions or [])
+        preds = fr.clean_predictions if (use_clean or fr.attacked_predictions is None) else fr.attacked_predictions
         for t_idx, thresh in enumerate(thresholds):
             detections, _ = _match_frame_kitti(
                 preds, fr.labels, class_name, iou_threshold,
@@ -261,7 +261,7 @@ def compute_pr_curve(
     n_gt_total = 0
 
     for fr in frame_results:
-        preds = fr.clean_predictions if use_clean else (fr.attacked_predictions or [])
+        preds = fr.clean_predictions if (use_clean or fr.attacked_predictions is None) else fr.attacked_predictions
         detections, n_gt = _match_frame_kitti(
             preds, fr.labels, class_name, iou_threshold, difficulty=difficulty
         )
@@ -279,7 +279,7 @@ def compute_pr_curve(
     fp_arr = np.zeros(len(thresholds))
 
     for fr in frame_results:
-        preds = fr.clean_predictions if use_clean else (fr.attacked_predictions or [])
+        preds = fr.clean_predictions if (use_clean or fr.attacked_predictions is None) else fr.attacked_predictions
         for t_idx, thresh in enumerate(thresholds):
             detections, _ = _match_frame_kitti(
                 preds, fr.labels, class_name, iou_threshold,
@@ -345,7 +345,7 @@ def compute_recall_vs_iou(
     for iou_thresh in tqdm(iou_values, desc=f"Recall-IoU ({class_name})", unit="thresh"):
         tp_total = 0
         for fr in frame_results:
-            preds = fr.clean_predictions if use_clean else (fr.attacked_predictions or [])
+            preds = fr.clean_predictions if (use_clean or fr.attacked_predictions is None) else fr.attacked_predictions
             detections, _ = _match_frame_kitti(
                 preds, fr.labels, class_name, iou_thresh,
                 score_threshold=confidence_threshold,
