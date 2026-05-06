@@ -89,7 +89,7 @@ class TC2Defense(BaseDefense):
     def __init__(
         self,
         model_path: str = "models/merl/motionnet_MGDA.pth",
-        net: str = "MotionNet",
+        net: str = "MotionNetMGDA",
         device: str = "cuda",
         nsweeps_back: int = 20,
         frame_skip: int = 3,
