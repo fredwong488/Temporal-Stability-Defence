@@ -304,23 +304,30 @@ class TC2Defense(BaseDefense):
 
         return disp_np, cat_t, motion_t
 
+    @staticmethod
+    def _strip_module_prefix(state_dict: dict) -> dict:
+        """Remove 'module.' prefix added by DataParallel when saving checkpoints."""
+        if all(k.startswith("module.") for k in state_dict):
+            return {k[len("module."):]: v for k, v in state_dict.items()}
+        return state_dict
+
     def _load_model(self):
         from .motionnet import FeatEncoder, MotionNet, MotionNetMGDA
+        checkpoint = torch.load(self.model_path, map_location=self.device)
         if self.net == "MotionNet":
             model = MotionNet(out_seq_len=20, motion_category_num=2, height_feat_size=13)
-            checkpoint = torch.load(self.model_path, map_location=self.device)
-            # Handle both raw state_dict and wrapped checkpoints
             state = checkpoint.get("model_state_dict", checkpoint)
-            model.load_state_dict(state)
+            model.load_state_dict(self._strip_module_prefix(state))
             model.to(self.device)
             logger.info("TC2Defense: loaded MotionNet from %s", self.model_path)
             return model
         elif self.net == "MotionNetMGDA":
             encoder = FeatEncoder(height_feat_size=13)
             head = MotionNetMGDA(out_seq_len=20, motion_category_num=2)
-            checkpoint = torch.load(self.model_path, map_location=self.device)
-            encoder.load_state_dict(checkpoint.get("encoder_state_dict", checkpoint))
-            head.load_state_dict(checkpoint.get("head_state_dict", checkpoint))
+            enc_state = checkpoint.get("encoder_state_dict", checkpoint)
+            head_state = checkpoint.get("head_state_dict", checkpoint)
+            encoder.load_state_dict(self._strip_module_prefix(enc_state))
+            head.load_state_dict(self._strip_module_prefix(head_state))
             encoder.to(self.device); head.to(self.device)
             logger.info("TC2Defense: loaded MotionNetMGDA from %s", self.model_path)
             return encoder, head
