@@ -171,6 +171,7 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
         attack_fraction_seed=config.attack_fraction_seed,
         desc=desc,
         precomputed_cache_path=config.precomputed_cache_path,
+        use_cached_attacks=config.use_cached_attacks,
     )
 
 

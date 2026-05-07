@@ -118,6 +118,10 @@ class ExperimentConfig:
     # If the path does not exist the pipeline runs live and saves a cache there.
     # If the path exists the pipeline loads the cache and skips detector inference.
     precomputed_cache_path: str | None = None
+    # If True, cached attacked_predictions and attack_metadata are used directly
+    # and the attack is not re-applied.  If False (default), the attack is re-run
+    # live for each flagged frame and the detector is re-run on the new lidar.
+    use_cached_attacks: bool = False
 
     # ---------------------------------------------------------------------------
     # Constructors

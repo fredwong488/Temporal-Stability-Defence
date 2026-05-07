@@ -99,6 +99,7 @@ def run_single(
     dataset_type: str = "kitti",
     dataset_params: dict | None = None,
     precomputed_cache_path: str | None = None,
+    use_cached_attacks: bool = False,
 ) -> dict:
     """Run one experiment and return the summary dict."""
     from eval_pipeline.config import ExperimentConfig
@@ -124,6 +125,7 @@ def run_single(
         attack_fraction_seed=attack_fraction_seed,
         save_frame_results=save_frame_results,
         precomputed_cache_path=precomputed_cache_path,
+        use_cached_attacks=use_cached_attacks,
     )
     return run_experiment(config, desc=desc)
 
@@ -255,6 +257,15 @@ def main() -> None:
             "subsequent runs with the same configuration."
         ),
     )
+    parser.add_argument(
+        "--use-cached-attacks", action="store_true", default=False,
+        help=(
+            "When a precomputed cache is loaded, use cached attacked predictions "
+            "and attack_metadata directly instead of re-applying the attack live. "
+            "Guarantees consistency between predictions and metadata but the "
+            "defense sees clean lidar rather than the original attacked cloud."
+        ),
+    )
     args = parser.parse_args()
 
     # Validate: at least one component must be specified
@@ -381,6 +392,7 @@ def main() -> None:
             dataset_type=dataset_type,
             dataset_params=dataset_params,
             precomputed_cache_path=val_cache_path,
+            use_cached_attacks=args.use_cached_attacks,
         )
 
         if "ap" in args.metric_types:

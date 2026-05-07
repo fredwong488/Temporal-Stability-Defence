@@ -6,6 +6,7 @@ EvalPipeline — orchestrates attack, detection, and defense over a dataset.
 
 from __future__ import annotations
 
+import dataclasses
 import logging
 import pathlib
 import pickle
@@ -46,6 +47,13 @@ class EvalPipeline:
     cache_clean_preds
         Cache clean detector predictions keyed by ``frame_id``.  Saves compute
         when the same dataset is used across multiple experiments.
+    use_cached_attacks
+        Only meaningful when a precomputed cache is loaded.  If False (default),
+        the attack is re-applied live for each cache-flagged frame and the
+        detector is re-run on the new lidar; the fresh result is not written back
+        to the cache.  If True, cached ``attacked_predictions`` and
+        ``attack_metadata`` are used directly and the attack is not re-applied —
+        guarantees consistency between predictions and metadata.
     """
 
     def __init__(
@@ -59,6 +67,7 @@ class EvalPipeline:
         attack_fraction_seed: int = 0,
         desc: str = "Frames",
         precomputed_cache_path: str | None = None,
+        use_cached_attacks: bool = False,
     ) -> None:
         self.dataset = dataset
         self.attack = attack
@@ -67,6 +76,7 @@ class EvalPipeline:
         self.cache_clean_preds = cache_clean_preds
         self.attack_fraction = attack_fraction
         self._attack_rng = np.random.default_rng(attack_fraction_seed)
+        self.use_cached_attacks = use_cached_attacks
         self.desc = desc
         self._clean_pred_cache: dict[str, list[Prediction]] = {}
 
@@ -117,9 +127,7 @@ class EvalPipeline:
 
             if self._precomputed_cache is not None:
                 # -------------------------------------------------------
-                # Replay mode: use cached predictions and attack decisions.
-                # The attack is re-applied for is_attacked frames so that
-                # defenses that inspect raw lidar receive the modified cloud.
+                # Replay mode: use cached clean predictions and attack decisions.
                 # -------------------------------------------------------
                 entry = self._precomputed_cache.get(frame.frame_id)
                 if entry is None:
@@ -127,11 +135,28 @@ class EvalPipeline:
                     clean_preds, attacked_frame, attacked_preds = self._run_live(frame)
                 else:
                     clean_preds = entry.clean_predictions
-                    attacked_preds = entry.attacked_predictions
                     if entry.is_attacked and self.attack is not None:
-                        attacked_frame = self.attack.apply(frame)
+                        if self.use_cached_attacks:
+                            # Use cached predictions + metadata; don't re-run the
+                            # attack so predictions and metadata are consistent.
+                            attacked_preds = entry.attacked_predictions
+                            attacked_frame = dataclasses.replace(
+                                frame,
+                                is_attacked=True,
+                                attacked_modalities=frozenset({"lidar"}),
+                                attack_metadata=entry.attack_metadata,
+                            )
+                        else:
+                            # Re-run the attack live for a fresh lidar and fresh
+                            # predictions; the new result is not saved to cache.
+                            attacked_frame = self.attack.apply(frame)
+                            attacked_preds = (
+                                self.detector.predict(attacked_frame)
+                                if self.detector is not None else None
+                            )
                     else:
                         attacked_frame = None
+                        attacked_preds = None
             else:
                 # -------------------------------------------------------
                 # Live mode: run attack + detector, accumulate cache entry.
