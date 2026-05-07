@@ -1,0 +1,62 @@
+{
+  "experiment_name": "ora_budget_150",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+      "version": "v1.0-mini",
+      "split": "mini_val"
+    },
+    "kitti_root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/KITTI",
+    "frame_ids": null,
+    "attack_type": "ora",
+    "attack_params": {
+      "target_types": [
+        "Car",
+        "Pedestrian",
+        "Cyclist"
+      ],
+      "budget": 150
+    },
+    "attack_fraction": 0.5,
+    "attack_fraction_seed": 0,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "tc2",
+    "defense_params": {},
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "detection_rate"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-05-07-19-17-03",
+    "experiment_name": "ora_budget_150",
+    "save_frame_results": false,
+    "precomputed_cache_path": "precomputed/nuscenes-pointpillars-ora-0.5/budget_150.pkl"
+  },
+  "num_frames": 788,
+  "defense_effectiveness": {
+    "tp": 315,
+    "fp": 332,
+    "tn": 81,
+    "fn": 60,
+    "tpr": 0.84,
+    "fpr": 0.8038740920096852,
+    "accuracy": 0.5025380710659898,
+    "precision": 0.4868624420401855,
+    "recall": 0.84,
+    "f1": 0.6164383561643836
+  }
+}

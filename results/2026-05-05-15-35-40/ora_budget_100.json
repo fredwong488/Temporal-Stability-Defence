@@ -1,0 +1,285 @@
+{
+  "experiment_name": "ora_budget_100",
+  "config": {
+    "dataset_type": "kitti",
+    "dataset_params": {},
+    "kitti_root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/KITTI",
+    "frame_ids": [
+      "000001",
+      "000002",
+      "000004",
+      "000005",
+      "000006",
+      "000008",
+      "000015",
+      "000019",
+      "000020",
+      "000021",
+      "000023",
+      "000024",
+      "000025",
+      "000027",
+      "000028",
+      "000031",
+      "000033",
+      "000035",
+      "000037",
+      "000039",
+      "000040",
+      "000042",
+      "000047",
+      "000048",
+      "000050",
+      "000052",
+      "000053",
+      "000058",
+      "000059",
+      "000061",
+      "000062",
+      "000063",
+      "000065",
+      "000066",
+      "000076",
+      "000077",
+      "000078",
+      "000081",
+      "000089",
+      "000090",
+      "000093",
+      "000094",
+      "000098",
+      "000102",
+      "000104",
+      "000106",
+      "000107",
+      "000108",
+      "000116",
+      "000117"
+    ],
+    "attack_type": "ora",
+    "attack_params": {
+      "target_types": [
+        "Car",
+        "Pedestrian",
+        "Cyclist"
+      ],
+      "budget": 100
+    },
+    "attack_fraction": 0.3,
+    "attack_fraction_seed": 0,
+    "detector_type": "pointrcnn",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": null,
+    "defense_params": {},
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "ap"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-05-05-15-35-40",
+    "experiment_name": "ora_budget_100",
+    "save_frame_results": false,
+    "precomputed_cache_path": "precomputed/kitti-pointrcnn-ora-0.3/budget_100.pkl"
+  },
+  "num_frames": 50,
+  "attack_effectiveness": {
+    "clean_map": {
+      "Car": {
+        "Easy": 0.9593926241786045,
+        "Moderate": 0.8295437495830326,
+        "Hard": 0.7992648649649118,
+        "all": 0.7387667641806657
+      },
+      "Cyclist": {
+        "Easy": 0.07317073168292683,
+        "Moderate": 0.07317073168292683,
+        "Hard": 0.07317073168292683,
+        "all": 0.11111111108521529
+      },
+      "DontCare": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Misc": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Pedestrian": {
+        "Easy": 0.2492450638429769,
+        "Moderate": 0.2863977485544313,
+        "Hard": 0.2863977485544313,
+        "all": 0.2863977485544313
+      },
+      "Person_sitting": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Tram": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Truck": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Van": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "mAP": {
+        "Easy": 0.14242315774494535,
+        "Moderate": 0.13212358109115452,
+        "Hard": 0.12875926057803,
+        "all": 0.12625284709114581
+      }
+    },
+    "attacked_map": {
+      "Car": {
+        "Easy": 0.15708478510500318,
+        "Moderate": 0.11324041810340967,
+        "Hard": 0.10569105689620595,
+        "all": 0.08993902437874292
+      },
+      "Cyclist": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "DontCare": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Misc": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Pedestrian": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Person_sitting": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Tram": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Truck": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Van": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "mAP": {
+        "Easy": 0.01745386501166702,
+        "Moderate": 0.012582268678156629,
+        "Hard": 0.011743450766245105,
+        "all": 0.009993224930971436
+      }
+    },
+    "map_degradation": {
+      "Car": {
+        "Easy": 0.8023078390736014,
+        "Moderate": 0.7163033314796229,
+        "Hard": 0.6935738080687058,
+        "all": 0.6488277398019228
+      },
+      "Cyclist": {
+        "Easy": 0.07317073168292683,
+        "Moderate": 0.07317073168292683,
+        "Hard": 0.07317073168292683,
+        "all": 0.11111111108521529
+      },
+      "DontCare": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Misc": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Pedestrian": {
+        "Easy": 0.2492450638429769,
+        "Moderate": 0.2863977485544313,
+        "Hard": 0.2863977485544313,
+        "all": 0.2863977485544313
+      },
+      "Person_sitting": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Tram": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Truck": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "Van": {
+        "Easy": 0.0,
+        "Moderate": 0.0,
+        "Hard": 0.0,
+        "all": 0.0
+      },
+      "mAP": {
+        "Easy": 0.12496929273327834,
+        "Moderate": 0.1195413124129979,
+        "Hard": 0.11701580981178489,
+        "all": 0.11625962216017438
+      }
+    }
+  }
+}
