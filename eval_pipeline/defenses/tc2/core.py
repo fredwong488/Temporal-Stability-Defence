@@ -235,10 +235,13 @@ def build_bev_stack(
                         [bev_extents[2][0], bev_extents[2][1]]], dtype=np.float32)
     vsize = np.array(voxel_size, dtype=np.float32)
 
-    # Expected grid shape from extents
-    nx = int(round((bev_extents[0][1] - bev_extents[0][0]) / voxel_size[0]))  # 256
-    ny = int(round((bev_extents[1][1] - bev_extents[1][0]) / voxel_size[1]))  # 256
-    nz = int(round((bev_extents[2][1] - bev_extents[2][0]) / voxel_size[2]))  # 13
+    # Expected grid shape — use floor/ceil to match voxelize_occupy's own bin counting.
+    # (round() gives wrong answers for non-integer spans, e.g. 5.0/0.4=12.5 → round=12 ≠ 13)
+    def _nbins(lo, hi, v):
+        return int(np.ceil(hi / v) - np.floor(lo / v))
+    nx = _nbins(bev_extents[0][0], bev_extents[0][1], voxel_size[0])  # 256
+    ny = _nbins(bev_extents[1][0], bev_extents[1][1], voxel_size[1])  # 256
+    nz = _nbins(bev_extents[2][0], bev_extents[2][1], voxel_size[2])  # 13
 
     frames = []
     for pts in sweep_lidar_list:
