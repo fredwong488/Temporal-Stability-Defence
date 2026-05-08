@@ -351,29 +351,50 @@ def main() -> None:
     base_attack_params: dict = {"target_types": args.classes} if args.attack else {}
     base_defense_params: dict = {}
 
-    for val in sweep_values:
+    # Build the iteration list: when sweeping attack, prepend a no-attack baseline
+    # represented by the sentinel string "no_attack" in the sweep_param column.
+    sweep_iter: list[float | int | str] = list(sweep_values)
+    if args.sweep_target == "attack":
+        sweep_iter = ["no_attack"] + sweep_iter
+
+    for val in sweep_iter:
+        is_baseline = val == "no_attack"
         logging.info("--- %s=%s ---", args.sweep_param, val)
 
         if args.sweep_target == "attack":
-            attack_params = base_attack_params | {args.sweep_param: val}
+            if is_baseline:
+                attack_params = {}
+                active_attack_type: str | None = None
+            else:
+                attack_params = base_attack_params | {args.sweep_param: val}
+                active_attack_type = args.attack
             defense_params = base_defense_params
         else:
+            active_attack_type = args.attack
             attack_params = base_attack_params
             defense_params = base_defense_params | {args.sweep_param: val}
 
-        experiment_name = f"{args.attack or args.defense}_{args.sweep_param}_{val}"
+        if is_baseline:
+            experiment_name = f"baseline_no_attack"
+        else:
+            experiment_name = f"{args.attack or args.defense}_{args.sweep_param}_{val}"
 
         # Compute per-value cache path: <dir>/<sweep_param>_<val>.pkl
         val_cache_path: str | None = None
         if args.precomputed_cache_dir is not None:
-            val_str = str(int(val)) if val == int(val) else str(val)
-            val_cache_path = str(
-                pathlib.Path(args.precomputed_cache_dir) / f"{args.sweep_param}_{val_str}.pkl"
-            )
+            if is_baseline:
+                val_cache_path = str(
+                    pathlib.Path(args.precomputed_cache_dir) / "baseline_no_attack.pkl"
+                )
+            else:
+                val_str = str(int(val)) if val == int(val) else str(val)
+                val_cache_path = str(
+                    pathlib.Path(args.precomputed_cache_dir) / f"{args.sweep_param}_{val_str}.pkl"
+                )
 
         summary = run_single(
             frame_ids=frame_ids,
-            attack_type=args.attack,
+            attack_type=active_attack_type,
             attack_params=attack_params,
             defense_type=args.defense,
             defense_params=defense_params,
@@ -388,11 +409,11 @@ def main() -> None:
             attack_fraction=args.attack_fraction,
             attack_fraction_seed=args.attack_fraction_seed,
             save_frame_results=args.save_frames,
-            desc=f"{args.sweep_param}={val}",
+            desc="no_attack (baseline)" if is_baseline else f"{args.sweep_param}={val}",
             dataset_type=dataset_type,
             dataset_params=dataset_params,
             precomputed_cache_path=val_cache_path,
-            use_cached_attacks=args.use_cached_attacks,
+            use_cached_attacks=False if is_baseline else args.use_cached_attacks,
         )
 
         if "ap" in args.metric_types:
