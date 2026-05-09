@@ -101,7 +101,8 @@ def _detector_registry() -> dict[str, type]:
 def _defense_registry() -> dict[str, type]:
     from .defenses.void_region import VoidRegionDefense
     from .defenses.tc2 import TC2Defense
-    return {"void_region": VoidRegionDefense, "tc2": TC2Defense}
+    from .defenses.fsd import FSDDefense
+    return {"void_region": VoidRegionDefense, "tc2": TC2Defense, "fsd": FSDDefense}
 
 
 def _dataset_registry() -> dict[str, type]:
