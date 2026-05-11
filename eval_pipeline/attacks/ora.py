@@ -42,6 +42,7 @@ import numpy as np
 
 from ..base import BaseAttack
 from ..types import Frame, ObjectLabel
+from ..utils.spoofing_noise import SpoofingNoiseModel
 
 
 class ORAAttack(BaseAttack):
@@ -61,6 +62,11 @@ class ORAAttack(BaseAttack):
     reinject_distance_range
         (min, max) extra distance in metres added to the radial distance when
         re-injecting points behind the object.
+    noise_model
+        Optional :class:`SpoofingNoiseModel` applied to re-injected points.
+        Models timing-randomization, inner-frame, and inter-frame errors.
+        ``begin_frame()`` is called once per frame so all objects within a
+        frame share the same δinter sample.
     seed
         Random seed for reproducibility.  None = non-deterministic.
     """
@@ -71,12 +77,14 @@ class ORAAttack(BaseAttack):
         target_types: set[str] | None = None,
         azimuth_constraint_deg: float = 10.0,
         reinject_distance_range: tuple[float, float] = (2.0, 3.0),
+        noise_model: SpoofingNoiseModel | None = None,
         seed: int | None = None,
     ) -> None:
         self.budget = budget
         self.target_types = target_types if target_types is not None else {"Car"}
         self.azimuth_constraint_deg = azimuth_constraint_deg
         self.reinject_distance_range = reinject_distance_range
+        self.noise_model = noise_model
         self._rng = random.Random(seed)
         self._np_rng = np.random.default_rng(seed)
 
@@ -92,6 +100,9 @@ class ORAAttack(BaseAttack):
         """Return a new attacked Frame with object points pruned and re-injected."""
         pts = frame.lidar.copy()          # (N, 4) — will be modified in place on the copy
         removed_per_obj: list[dict] = []
+
+        if self.noise_model is not None:
+            self.noise_model.begin_frame()
 
         for label in frame.labels:
             if label.type not in self.target_types:
@@ -202,6 +213,8 @@ class ORAAttack(BaseAttack):
         )
         new_xyz = pts_xyz + unit_vecs * extra                         # (n, 3)
         new_pts = np.hstack([new_xyz, intensity.reshape(-1, 1)])      # (n, 4)
+        if self.noise_model is not None:
+            new_pts = self.noise_model.apply(new_pts)
         return new_pts.astype(np.float32)
 
 
@@ -221,6 +234,9 @@ class ORAAttackNotebook(BaseAttack):
     budget, target_types, reinject_distance_range, seed
         Same as ORAAttack.  azimuth_constraint_deg is fixed at 10° to match
         the notebook.
+    noise_model
+        Optional :class:`SpoofingNoiseModel` applied to re-injected points.
+        ``begin_frame()`` is called once per frame.
     """
 
     def __init__(
@@ -228,11 +244,13 @@ class ORAAttackNotebook(BaseAttack):
         budget: int = 200,
         target_types: set[str] | None = None,
         reinject_distance_range: tuple[float, float] = (2.0, 3.0),
+        noise_model: SpoofingNoiseModel | None = None,
         seed: int | None = None,
     ) -> None:
         self.budget = budget
         self.target_types = target_types if target_types is not None else {"Car"}
         self.reinject_distance_range = reinject_distance_range
+        self.noise_model = noise_model
         self._rng = random.Random(seed)
         self._np_rng = np.random.default_rng(seed)
 
@@ -250,6 +268,9 @@ class ORAAttackNotebook(BaseAttack):
         fall inside another object's bounding box.
         """
         pts = frame.lidar.copy()
+
+        if self.noise_model is not None:
+            self.noise_model.begin_frame()
 
         # Pass 1 — plan every attack against the ORIGINAL point cloud.
         plans: list[dict] = []
@@ -375,4 +396,6 @@ class ORAAttackNotebook(BaseAttack):
         )
         new_xyz = pts_xyz + unit_vecs * extra
         new_pts = np.hstack([new_xyz, intensity.reshape(-1, 1)])
+        if self.noise_model is not None:
+            new_pts = self.noise_model.apply(new_pts)
         return new_pts.astype(np.float32)

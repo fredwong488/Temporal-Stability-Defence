@@ -16,7 +16,26 @@ import numpy as np
 from tqdm import tqdm
 
 from .base import BaseAttack, BaseDefense, BaseDetector
-from .types import EvalResults, Frame, FrameCacheEntry, FrameHistory, FrameResult, Prediction
+from .types import EvalResults, Frame, FrameCacheEntry, FrameHistory, FrameResult, ObjectLabel, Prediction
+
+
+def _prediction_to_label(pred: Prediction) -> ObjectLabel:
+    """Convert a detector Prediction to an ObjectLabel for use as attack input."""
+    return ObjectLabel(
+        type=pred.type,
+        truncated=None,
+        occluded=None,
+        alpha=None,
+        bbox_2d=None,
+        height=pred.height,
+        width=pred.width,
+        length=pred.length,
+        x=pred.x,
+        y=pred.y,
+        z=pred.z,
+        rotation_y=pred.rotation_y,
+        corners_velo=pred.corners_velo,
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +73,16 @@ class EvalPipeline:
         to the cache.  If True, cached ``attacked_predictions`` and
         ``attack_metadata`` are used directly and the attack is not re-applied —
         guarantees consistency between predictions and metadata.
+    use_predicted_labels
+        When True, the attack receives clean detector predictions converted to
+        labels rather than the ground-truth ``frame.labels``.  Use this for
+        datasets where not every frame is annotated (e.g. NuScenes at 10 Hz,
+        where only 2 Hz keyframes carry ground-truth labels) so that the attack
+        fires on every frame rather than only on annotated ones.  Requires a
+        detector to be configured.
+    pred_label_score_threshold
+        Minimum detection score for a prediction to be included as an attack
+        label when ``use_predicted_labels`` is True.  Default 0.5.
     """
 
     def __init__(
@@ -68,6 +97,8 @@ class EvalPipeline:
         desc: str = "Frames",
         precomputed_cache_path: str | None = None,
         use_cached_attacks: bool = False,
+        use_predicted_labels: bool = False,
+        pred_label_score_threshold: float = 0.5,
     ) -> None:
         self.dataset = dataset
         self.attack = attack
@@ -77,6 +108,8 @@ class EvalPipeline:
         self.attack_fraction = attack_fraction
         self._attack_rng = np.random.default_rng(attack_fraction_seed)
         self.use_cached_attacks = use_cached_attacks
+        self.use_predicted_labels = use_predicted_labels
+        self.pred_label_score_threshold = pred_label_score_threshold
         self.desc = desc
         self._clean_pred_cache: dict[str, list[Prediction]] = {}
 
@@ -134,6 +167,8 @@ class EvalPipeline:
                     live_run_frames.append(frame.frame_id)
                     clean_preds, attacked_frame, attacked_preds = self._run_live(frame)
                 else:
+                    attacked_frame: Frame | None = None
+                    attacked_preds: list[Prediction] | None = None
                     clean_preds = entry.clean_predictions
                     if entry.is_attacked and self.attack is not None:
                         if self.use_cached_attacks:
@@ -149,14 +184,11 @@ class EvalPipeline:
                         else:
                             # Re-run the attack live for a fresh lidar and fresh
                             # predictions; the new result is not saved to cache.
-                            attacked_frame = self.attack.apply(frame)
-                            attacked_preds = (
-                                self.detector.predict(attacked_frame)
-                                if self.detector is not None else None
+                            attacked_frame = self.attack.apply(
+                                self._get_attack_frame(frame, clean_preds)
                             )
-                    else:
-                        attacked_frame = None
-                        attacked_preds = None
+                            if self.detector is not None:
+                                attacked_preds = self.detector.predict(attacked_frame)
             else:
                 # -------------------------------------------------------
                 # Live mode: run attack + detector, accumulate cache entry.
@@ -210,6 +242,21 @@ class EvalPipeline:
     # Internal helpers
     # ------------------------------------------------------------------
 
+    def _get_attack_frame(self, frame: Frame, preds: list[Prediction]) -> Frame:
+        """Return frame for attack. When self.use_predicted_labels is True,
+        labels are replaced by filtered clean predictions.
+
+        Predictions below pred_label_score_threshold are dropped before substitution.
+        """
+        if not self.use_predicted_labels:
+            return frame
+        labels = [
+            _prediction_to_label(p)
+            for p in preds
+            if p.score >= self.pred_label_score_threshold
+        ]
+        return dataclasses.replace(frame, labels=labels)
+
     def _run_live(
         self, frame: Frame
     ) -> tuple[list[Prediction], Frame | None, list[Prediction] | None]:
@@ -223,7 +270,9 @@ class EvalPipeline:
         attacked_preds: list[Prediction] | None = None
 
         if self.attack is not None and self._attack_rng.random() < self.attack_fraction:
-            attacked_frame = self.attack.apply(frame)
+            attacked_frame = self.attack.apply(
+                self._get_attack_frame(frame, clean_preds)
+            )
             if self.detector is not None:
                 attacked_preds = self.detector.predict(attacked_frame)
 

@@ -100,6 +100,8 @@ def run_single(
     dataset_params: dict | None = None,
     precomputed_cache_path: str | None = None,
     use_cached_attacks: bool = False,
+    use_predicted_labels: bool = False,
+    pred_label_score_threshold: float = 0.5,
 ) -> dict:
     """Run one experiment and return the summary dict."""
     from eval_pipeline.config import ExperimentConfig
@@ -126,6 +128,8 @@ def run_single(
         save_frame_results=save_frame_results,
         precomputed_cache_path=precomputed_cache_path,
         use_cached_attacks=use_cached_attacks,
+        use_predicted_labels=use_predicted_labels,
+        pred_label_score_threshold=pred_label_score_threshold,
     )
     return run_experiment(config, desc=desc)
 
@@ -265,6 +269,19 @@ def main() -> None:
             "Guarantees consistency between predictions and metadata but the "
             "defense sees clean lidar rather than the original attacked cloud."
         ),
+    )
+    parser.add_argument(
+        "--use-predicted-labels", action="store_true", default=False,
+        help=(
+            "Use clean detector predictions as attack labels instead of ground-truth "
+            "annotations. Use for datasets where not every frame is labeled "
+            "(e.g. NuScenes at 10 Hz) so the attack fires on every frame."
+        ),
+    )
+    parser.add_argument(
+        "--pred-label-score-threshold", type=float, default=0.5,
+        help="Minimum detection score for a prediction to be used as an attack label "
+             "when --use-predicted-labels is set.",
     )
     args = parser.parse_args()
 
@@ -414,6 +431,8 @@ def main() -> None:
             dataset_params=dataset_params,
             precomputed_cache_path=val_cache_path,
             use_cached_attacks=False if is_baseline else args.use_cached_attacks,
+            use_predicted_labels=args.use_predicted_labels,
+            pred_label_score_threshold=args.pred_label_score_threshold,
         )
 
         if "ap" in args.metric_types:

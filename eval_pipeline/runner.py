@@ -179,6 +179,8 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
         desc=desc,
         precomputed_cache_path=config.precomputed_cache_path,
         use_cached_attacks=config.use_cached_attacks,
+        use_predicted_labels=config.use_predicted_labels,
+        pred_label_score_threshold=config.pred_label_score_threshold,
     )
 
 
@@ -307,6 +309,13 @@ def main() -> None:
     parser.add_argument("--output-dir", type=str, default="results")
     parser.add_argument("--save-frames", action="store_true", default=False,
                         help="Save per-frame JSONL alongside results JSON for visualisation")
+    parser.add_argument("--use-predicted-labels", action="store_true", default=False,
+                        help="Use clean detector predictions as attack labels instead of "
+                             "ground-truth annotations. Use for datasets where not every "
+                             "frame is labeled (e.g. NuScenes at 10 Hz).")
+    parser.add_argument("--pred-label-score-threshold", type=float, default=None,
+                        help="Minimum detection score for a prediction to be used as an "
+                             "attack label when --use-predicted-labels is set (default 0.5).")
     args = parser.parse_args()
 
     # Base config from YAML or defaults
@@ -339,6 +348,10 @@ def main() -> None:
         overrides["attack_params"] = {**config.attack_params, "budget": args.budget}
     if args.save_frames:
         overrides["save_frame_results"] = True
+    if args.use_predicted_labels:
+        overrides["use_predicted_labels"] = True
+    if args.pred_label_score_threshold is not None:
+        overrides["pred_label_score_threshold"] = args.pred_label_score_threshold
 
     if overrides:
         config = dataclasses.replace(config, **overrides)

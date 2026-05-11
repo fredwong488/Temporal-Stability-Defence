@@ -51,7 +51,13 @@ _DIFFICULTY_CRITERIA: dict[str, dict] = {
 # ---------------------------------------------------------------------------
 
 def _label_passes_difficulty(label: ObjectLabel, difficulty: str) -> bool:
-    """Return True if *label* meets the devkit criteria for *difficulty*."""
+    """Return True if *label* meets the devkit criteria for *difficulty*.
+
+    Labels without KITTI metadata (bbox_2d/occluded/truncated are None) always
+    pass — difficulty filtering is a KITTI-only concept.
+    """
+    if label.bbox_2d is None or label.occluded is None or label.truncated is None:
+        return True
     c = _DIFFICULTY_CRITERIA[difficulty]
     height = label.bbox_2d[3] - label.bbox_2d[1]   # y2 − y1 in image pixels
     return (

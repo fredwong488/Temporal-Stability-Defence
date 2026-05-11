@@ -46,6 +46,14 @@ class ExperimentConfig:
                                         Defaults: Car=0.7, Pedestrian=0.5, Cyclist=0.5.
         cache_clean_preds             : Cache clean detector predictions by frame ID to
                                         avoid re-running the detector across experiments.
+        use_predicted_labels          : When True, the attack receives clean detector
+                                        predictions as labels rather than frame.labels.
+                                        Use for datasets where not every frame is annotated
+                                        (e.g. NuScenes at 10 Hz) so the attack fires on
+                                        every frame. Requires a detector.
+        pred_label_score_threshold    : Minimum detection score for a prediction to be
+                                        used as an attack label when use_predicted_labels
+                                        is True. Default: 0.5.
         metric_types                  : List of metrics to compute. Options:
                                           "ap"         — Average Precision per class/difficulty
                                           "pr"         — Precision-Recall curves per class/difficulty
@@ -122,6 +130,12 @@ class ExperimentConfig:
     # and the attack is not re-applied.  If False (default), the attack is re-run
     # live for each flagged frame and the detector is re-run on the new lidar.
     use_cached_attacks: bool = False
+
+    # When True, the attack receives clean detector predictions as labels rather
+    # than frame.labels.  Use for datasets where not every frame is annotated
+    # (e.g. NuScenes at 10 Hz) so the attack fires on every frame.
+    use_predicted_labels: bool = False
+    pred_label_score_threshold: float = 0.5
 
     # ---------------------------------------------------------------------------
     # Constructors

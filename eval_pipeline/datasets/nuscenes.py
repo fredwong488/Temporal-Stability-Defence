@@ -116,10 +116,10 @@ def _annotation_to_label(nusc, ann_token: str, ego_pose: np.ndarray) -> ObjectLa
 
     return ObjectLabel(
         type=det_name,
-        truncated=0.0,          # not defined in NuScenes
-        occluded=0,             # visibility handled separately
-        alpha=0.0,
-        bbox_2d=(0.0, 0.0, 0.0, 0.0),  # no 2D bbox; disables KITTI difficulty filter
+        truncated=None,
+        occluded=None,
+        alpha=None,
+        bbox_2d=None,
         height=float(h),
         width=float(w),
         length=float(l),

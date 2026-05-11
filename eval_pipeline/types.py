@@ -32,24 +32,29 @@ class Calibration:
 
 @dataclasses.dataclass(frozen=True)
 class ObjectLabel:
-    """Ground-truth annotation for a single KITTI object.
+    """Ground-truth annotation for a single object.
 
-    Coordinates (x, y, z) and corners_velo are in the velodyne frame.
+    Coordinates (x, y, z) and corners_velo are in the velodyne/sensor frame.
     Dimensions (height, width, length) are in metres.
+
+    truncated, occluded, alpha, bbox_2d are KITTI-specific fields and may be
+    None when the label originates from a non-KITTI source (e.g. nuScenes
+    annotations or detector predictions).  Code that requires these fields
+    (e.g. KITTI difficulty filtering) must guard against None.
     """
     type: str                                         # "Car", "Pedestrian", "Cyclist", ...
-    truncated: float
-    occluded: int
-    alpha: float
-    bbox_2d: tuple[float, float, float, float]        # (x1, y1, x2, y2) image pixels
+    truncated: float | None
+    occluded: int | None
+    alpha: float | None
+    bbox_2d: tuple[float, float, float, float] | None  # (x1, y1, x2, y2) image pixels
     height: float
     width: float
     length: float
-    x: float                                          # camera-frame 3D location
+    x: float                                          # sensor-frame 3D location
     y: float
     z: float
     rotation_y: float
-    corners_velo: np.ndarray                          # (8, 3) bbox corners in velodyne frame
+    corners_velo: np.ndarray                          # (8, 3) bbox corners in sensor frame
 
 
 # ---------------------------------------------------------------------------
