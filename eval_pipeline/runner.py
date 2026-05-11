@@ -102,7 +102,13 @@ def _defense_registry() -> dict[str, type]:
     from .defenses.void_region import VoidRegionDefense
     from .defenses.tc2 import TC2Defense
     from .defenses.fsd import FSDDefense
-    return {"void_region": VoidRegionDefense, "tc2": TC2Defense, "fsd": FSDDefense}
+    from .defenses.carlo import CARLODefense
+    return {
+        "void_region": VoidRegionDefense,
+        "tc2": TC2Defense,
+        "fsd": FSDDefense,
+        "carlo": CARLODefense,
+    }
 
 
 def _dataset_registry() -> dict[str, type]:
