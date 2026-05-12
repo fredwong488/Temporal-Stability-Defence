@@ -5,8 +5,7 @@ Spoofing noise model for LiDAR point injection attacks.
 
 Models the three error sources from:
 
-    Tu et al. (2023). Transflash: Attacking Autonomous Driving with
-    Point Injection via Transient Radar Cross-Section Fluctuation.
+    Sato et al. (2024). LiDAR Spoofing Meets the New-Gen: Capability Improvements, Broken Assumptions, and New Attack Strategies
 
 The injection model (Eq. 1):
 
