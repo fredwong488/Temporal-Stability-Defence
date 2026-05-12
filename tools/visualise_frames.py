@@ -240,10 +240,13 @@ def load_experiment(run_dir: pathlib.Path, experiment_name: str) -> tuple[dict, 
     return results, frames
 
 
-def open_kitti_dataset(kitti_root: str, frame_ids: list[str]):
-    """Instantiate KittiObjectDataset once for the given frame IDs (lazy iterator)."""
-    from eval_pipeline.datasets.kitti import KittiObjectDataset
-    return KittiObjectDataset(root=kitti_root, frame_ids=frame_ids)
+def open_dataset(dataset_type: str, dataset_params: dict):
+    """Instantiate the appropriate dataset class from type and params."""
+    from eval_pipeline.runner import _dataset_registry
+    dataset_cls = _dataset_registry().get(dataset_type)
+    if dataset_cls is None:
+        raise ValueError(f"Unknown dataset_type '{dataset_type}'")
+    return dataset_cls(**dataset_params)
 
 
 # ---------------------------------------------------------------------------
@@ -743,8 +746,10 @@ def main() -> None:
                         help="Overlay ground-truth bounding boxes")
     parser.add_argument("--isometric", action="store_true", default=False,
                         help="Add isometric 3D views below the BEV panels")
-    parser.add_argument("--kitti-root", default=None, metavar="PATH",
-                        help="Override the KITTI dataset root from the experiment config")
+    parser.add_argument("--dataset", default=None, metavar="TYPE",
+                        help="Override dataset type from the experiment config (e.g. kitti, nuscenes)")
+    parser.add_argument("--dataset-root", default=None, metavar="PATH",
+                        help="Override dataset root from the experiment config")
     parser.add_argument("--backend", default="matplotlib",
                         choices=["matplotlib", "plotly"],
                         help="Rendering backend (plotly not yet implemented)")
@@ -779,7 +784,11 @@ def main() -> None:
 
         results, frames = load_experiment(run_dir, experiment_name)
         config = results.get("config", {})
-        kitti_root = args.kitti_root or config.get("kitti_root", "data/datasets/KITTI")
+        dataset_type = args.dataset or config.get("dataset_type", "kitti")
+        dataset_params = dict(config.get("dataset_params", {}))
+        if args.dataset_root:
+            dataset_params["root"] = args.dataset_root
+        dataset_params.setdefault("root", "data/datasets/KITTI")
 
         # ROI: check defense_params first, then top-level config, then defaults
         defense_params = config.get("defense_params", {})
@@ -808,10 +817,11 @@ def main() -> None:
         print(f"Saving figures to {vis_dir}")
 
         frame_ids = [f["frame_id"] for f in frames]
+        dataset_params["frame_ids"] = frame_ids
         try:
-            dataset = open_kitti_dataset(kitti_root, frame_ids)
+            dataset = open_dataset(dataset_type, dataset_params)
         except Exception as e:
-            sys.exit(f"Failed to open KITTI dataset at '{kitti_root}': {e}")
+            sys.exit(f"Failed to open {dataset_type} dataset: {e}")
 
         for frame_data, kitti_frame in tqdm(zip(frames, dataset), total=len(frames), desc="Rendering", unit="frame"):
             frame_id = frame_data["frame_id"]

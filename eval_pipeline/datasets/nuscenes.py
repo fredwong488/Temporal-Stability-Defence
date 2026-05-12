@@ -112,6 +112,7 @@ def _annotation_to_label(nusc, ann_token: str, ego_pose: np.ndarray) -> ObjectLa
     # Heading angle (yaw) in sensor frame — approximate via rotation matrix
     fwd_global = R_global[:, 0]  # forward direction in global
     fwd_sensor = global_to_sensor[:3, :3] @ fwd_global
+    fwd_sensor[2] = 0.0  # project onto ground plane before computing yaw
     rotation_y = float(np.arctan2(fwd_sensor[1], fwd_sensor[0]))
 
     return ObjectLabel(
@@ -269,5 +270,5 @@ class NuScenesDataset:
             image=None,
             labels=labels,
             kitti_calib=None,  # NuScenes has no KITTI-style calibration matrices
-            nuscenes_ego_pose=ego_pose.astype(np.float32),
+            nuscenes_ego_pose=ego_pose,
         )

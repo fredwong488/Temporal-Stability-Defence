@@ -22,9 +22,6 @@ class ExperimentConfig:
         dataset_type  : Dataset backend: "kitti" (default) or "nuscenes".
         dataset_params: Keyword arguments forwarded to the dataset constructor.
                         NuScenes example: {"root": "data/datasets/nuscenes", "version": "v1.0-mini"}
-        kitti_root  : Backward-compat shortcut for KITTI root path (merged into dataset_params).
-        frame_ids   : Backward-compat shortcut for KITTI frame list (merged into dataset_params).
-                      None = all available frames in the dataset.
 
     Attack:
         attack_type   : Attack to apply, e.g. "ora". None = no attack.
@@ -70,8 +67,9 @@ class ExperimentConfig:
 
     Example YAML
     ------------
-    kitti_root: data/datasets/KITTI
-    frame_ids: ["000125", "000070", "002612"]
+    dataset_params:
+        root: data/datasets/KITTI
+        frame_ids: ["000125", "000070", "002612"]
     attack_type: ora
     attack_params:
       budget: 200
@@ -91,8 +89,8 @@ class ExperimentConfig:
     # Dataset
     dataset_type: str = "kitti"                 # "kitti" | "nuscenes"
     dataset_params: dict = dataclasses.field(default_factory=dict)
-    kitti_root: str = "data/datasets/KITTI"     # backward compat; prefer dataset_params["root"]
-    frame_ids: list[str] | None = None          # backward compat; prefer dataset_params["frame_ids"]
+    # kitti_root: str = "data/datasets/KITTI"     # backward compat; prefer dataset_params["root"]
+    # frame_ids: list[str] | None = None          # backward compat; prefer dataset_params["frame_ids"]
 
     # Attack
     attack_type: str | None = None              # "ora" | None

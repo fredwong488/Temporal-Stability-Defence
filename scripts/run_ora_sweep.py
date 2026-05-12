@@ -103,8 +103,7 @@ def run_budget(
         detector_params["score_threshold"] = score_threshold
 
     config = ExperimentConfig(
-        kitti_root=KITTI_ROOT,
-        frame_ids=frame_ids,
+        dataset_params={"root": KITTI_ROOT, "frame_ids": frame_ids},
         attack_type="ora",
         attack_params={"budget": budget, "target_types": classes},
         detector_type=detector_type,

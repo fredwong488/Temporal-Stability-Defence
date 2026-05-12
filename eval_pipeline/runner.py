@@ -15,8 +15,6 @@ Usage (programmatic)
     from eval_pipeline.config import ExperimentConfig
 
     config = ExperimentConfig(
-        kitti_root="data/datasets/KITTI",
-        frame_ids=["000125"],
         attack_type="ora",
         attack_params={"budget": 200, "seed": 42},
         defense_type="void_region",
@@ -103,11 +101,13 @@ def _defense_registry() -> dict[str, type]:
     from .defenses.tc2 import TC2Defense
     from .defenses.fsd import FSDDefense
     from .defenses.carlo import CARLODefense
+    from .defenses.radial_jitter import RadialJitterDefense
     return {
         "void_region": VoidRegionDefense,
         "tc2": TC2Defense,
         "fsd": FSDDefense,
         "carlo": CARLODefense,
+        "radial_jitter": RadialJitterDefense,
     }
 
 
@@ -129,13 +129,7 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
             f"Unknown dataset_type '{config.dataset_type}'. "
             f"Available: {list(_dataset_registry())}"
         )
-    # Backward-compat: merge kitti_root / frame_ids into dataset_params for KITTI
     dataset_params = dict(config.dataset_params)
-    if config.dataset_type == "kitti":
-        if "root" not in dataset_params and config.kitti_root:
-            dataset_params["root"] = config.kitti_root
-        if "frame_ids" not in dataset_params and config.frame_ids is not None:
-            dataset_params["frame_ids"] = config.frame_ids
     dataset = dataset_cls(**dataset_params)
 
     attack = None
@@ -293,8 +287,7 @@ def main() -> None:
                         help="Dataset type (e.g. kitti, nuscenes)")
     parser.add_argument("--dataset-root", type=str, default=None,
                         help="Root path for the dataset (sets dataset_params['root'])")
-    parser.add_argument("--kitti-root", type=str, default=None,
-                        help="KITTI root path (backward compat; prefer --dataset-root)")
+
     parser.add_argument("--attack", type=str, default=None,
                         help="Attack type (e.g. ora)")
     parser.add_argument("--detector", type=str, default=None,
@@ -330,8 +323,6 @@ def main() -> None:
         overrides["dataset_type"] = args.dataset
     if args.dataset_root:
         overrides["dataset_params"] = {**config.dataset_params, "root": args.dataset_root}
-    if args.kitti_root:
-        overrides["kitti_root"] = args.kitti_root
     if args.attack:
         overrides["attack_type"] = args.attack
     if args.detector:
@@ -339,7 +330,7 @@ def main() -> None:
     if args.defense:
         overrides["defense_type"] = args.defense
     if args.frames:
-        overrides["frame_ids"] = args.frames
+        overrides["dataset_params"] = {**config.dataset_params, **overrides.get("dataset_params", {}), "frame_ids": args.frames}
     if args.experiment_name != "default":
         overrides["experiment_name"] = args.experiment_name
     if args.output_dir != "results":

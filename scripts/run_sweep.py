@@ -79,7 +79,6 @@ def get_split_frame_ids(split: str, num_frames: int | None = None) -> list[str]:
 
 
 def run_single(
-    frame_ids: list[str] | None,
     attack_type: str | None,
     attack_params: dict,
     defense_type: str | None,
@@ -110,8 +109,6 @@ def run_single(
     config = ExperimentConfig(
         dataset_type=dataset_type,
         dataset_params=dataset_params or {},
-        kitti_root=KITTI_ROOT,
-        frame_ids=frame_ids,
         attack_type=attack_type,
         attack_params=attack_params,
         defense_type=defense_type,
@@ -318,25 +315,23 @@ def main() -> None:
     if args.detector is not None:
         detector_params["score_threshold"] = args.confidence_threshold
 
-    # Build dataset_params; frame_ids only used for KITTI
+    # Build dataset_params for the chosen dataset backend
     dataset_type = args.dataset
     dataset_params: dict = {}
     if dataset_type == "nuscenes":
-        dataset_params = {
-            "root": args.nuscenes_root,
-            "version": args.nuscenes_version,
-            "split": args.nuscenes_split,
-        }
+        dataset_params["root"] = args.nuscenes_root
+        dataset_params["version"] = args.nuscenes_version
+        dataset_params["split"] = args.nuscenes_split
         if args.nuscenes_scene_names is not None:
             dataset_params["scene_names"] = args.nuscenes_scene_names
-
-    # Resolve frame IDs (KITTI only; NuScenes handles splits internally)
-    frame_ids: list[str] | None = None
-    if dataset_type == "kitti":
-        if args.kitti_frames:
-            frame_ids = args.kitti_frames
-        else:
-            frame_ids = get_split_frame_ids(args.kitti_split, args.kitti_num_frames)
+    elif dataset_type == "kitti":
+        frame_ids = (
+            args.kitti_frames
+            if args.kitti_frames
+            else get_split_frame_ids(args.kitti_split, args.kitti_num_frames)
+        )
+        dataset_params["root"] = KITTI_ROOT
+        dataset_params["frame_ids"] = frame_ids
 
     logging.info("Run dir      : %s", run_dir)
     logging.info("Dataset      : %s", dataset_type)
@@ -410,7 +405,6 @@ def main() -> None:
                 )
 
         summary = run_single(
-            frame_ids=frame_ids,
             attack_type=active_attack_type,
             attack_params=attack_params,
             defense_type=args.defense,
