@@ -30,12 +30,11 @@ from __future__ import annotations
 
 import argparse
 import csv
-import datetime
+from datetime import datetime
 import json
 import logging
 import pathlib
 import sys
-from datetime import datetime
 
 _PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
@@ -310,7 +309,7 @@ def main() -> None:
     if all(v == int(v) for v in sweep_values):
         sweep_values = [int(v) for v in sweep_values]
 
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     run_dir = pathlib.Path(args.results_dir) / timestamp
     run_dir.mkdir(parents=True, exist_ok=True)
 
