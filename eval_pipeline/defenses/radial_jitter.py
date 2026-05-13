@@ -112,7 +112,7 @@ class RadialJitterDefense(BaseDefense):
 
     def __init__(
         self,
-        temporal_window: int = 10,
+        temporal_window: int = 6,
         min_history_frames: int = 5,
         ground_z_max: float = -1.65,
         dbscan_eps: float = 0.25,

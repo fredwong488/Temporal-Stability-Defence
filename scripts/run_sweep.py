@@ -35,6 +35,7 @@ import json
 import logging
 import pathlib
 import sys
+from datetime import datetime
 
 _PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
@@ -282,6 +283,8 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    start_time = datetime.now()
+
     # Validate: at least one component must be specified
     if not any([args.attack, args.defense, args.detector]):
         parser.error("At least one of --attack, --defense, --detector must be supplied.")
@@ -333,6 +336,7 @@ def main() -> None:
         dataset_params["root"] = KITTI_ROOT
         dataset_params["frame_ids"] = frame_ids
 
+    logging.info("Start time      : %s", start_time)
     logging.info("Run dir      : %s", run_dir)
     logging.info("Dataset      : %s", dataset_type)
     if dataset_type == "nuscenes":
@@ -525,6 +529,11 @@ def main() -> None:
                 f"{row['detection_precision']:.4f}",
                 f"{row['detection_recall']:.4f}",
             ]))
+
+    end_time = datetime.now()
+    logging.info(f"Start time: {start_time}")
+    logging.info(f"End time:   {end_time}")
+    logging.info(f"Total time: {end_time - start_time}")
 
 
 if __name__ == "__main__":
