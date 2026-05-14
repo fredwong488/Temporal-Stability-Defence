@@ -19,17 +19,25 @@ radially offset by fresh δ_inter each frame.
 
 Two complementary statistics capture this:
 
-    σ_centroid  — std of per-frame cluster-centroid radial distance after
-                  removing a linear motion trend.  Captures δ_inter (~35 cm).
+    σ_centroid  — std of consecutive first-differences of the per-frame cluster-
+                  centroid radial distance.  Captures δ_inter (~35 cm).
+                  Using first-differences rather than a detrended series removes
+                  all smooth motion components without consuming degrees of freedom,
+                  so it is effective even on short chains (K=2 → 1 difference).
+                  For δ_inter i.i.d. N(0, 0.35 m), consecutive differences are
+                  N(0, 0.35√2 ≈ 0.50 m); for real clusters, Δr reflects only
+                  sensor noise + residual acceleration (~2–5 cm).
 
-    σ_point     — std of per-point radial deviations from the cluster centroid,
-                  pooled across frames after ICP-aligning each past-frame cluster
-                  to the current one.  Captures δ_inner + δ_rand; δ_inter is
-                  absorbed by the ICP translation.
+    σ_point     — std of per-correspondence ICP radial residuals pooled across
+                  frames.  For each past-frame cluster, ICP gives explicit
+                  matched point pairs (src → tgt).  The residual of each pair
+                  projected onto the radial direction at the target point measures
+                  δ_inner + δ_rand directly without shape contribution.  δ_inter
+                  is absorbed by the ICP translation.
 
 A frame is flagged as attacked when any cluster satisfies:
 
-    σ_centroid > centroid_threshold  (default 0.30 m)
+    σ_centroid > centroid_threshold  (default 0.25 m)
     OR σ_point  > point_threshold    (default 0.08 m)
 
 Past-frame association
@@ -100,7 +108,9 @@ class RadialJitterDefense(BaseDefense):
         Maximum point-to-point correspondence distance in metres for ICP.
     centroid_threshold
         σ_centroid (metres) above which a cluster is flagged as spoofed.
-        Default 0.30 m — just below δ_inter's std of ~35 cm.  Sweep target.
+        Default 0.25 m — well below the expected first-difference std of
+        ~0.50 m for δ_inter, with headroom above real cluster motion noise.
+        Sweep target.
     point_threshold
         σ_point (metres) above which a cluster is flagged as spoofed.
         Default 0.08 m — just below δ_inner's std of ~10 cm.  Sweep target.
@@ -122,7 +132,7 @@ class RadialJitterDefense(BaseDefense):
         min_frames_associated: int = 2,
         icp_max_iter: int = 30,
         icp_max_correspondence_dist: float = 1.0,
-        centroid_threshold: float = 0.30,
+        centroid_threshold: float = 0.25,
         point_threshold: float = 0.08,
         history_source: Literal["clean", "dirty"] = "dirty",
     ) -> None:
@@ -263,14 +273,14 @@ class RadialJitterDefense(BaseDefense):
             n_tested += 1
 
             # --- σ_centroid: captures δ_inter --------------------------------
-            # Per-frame centroid radial distances (valid past, oldest first → current last)
+            # First-differences of per-frame centroid radial distances.
+            # Avoids the degree-of-freedom collapse that affects linear detrending
+            # on short chains (2 frames → detrended residuals are identically 0).
             all_centroids = np.array(
                 [p.mean(axis=0) for p in valid_past] + [centroid_cur]
             )  # (K+1, 3)
             r_c = np.linalg.norm(all_centroids, axis=1)  # (K+1,)
-            t_idx = np.arange(len(r_c), dtype=float)
-            trend = np.polyval(np.polyfit(t_idx, r_c, 1), t_idx)
-            sigma_centroid = float(np.std(r_c - trend))
+            sigma_centroid = float(np.std(np.diff(r_c)))
 
             # --- σ_point: captures δ_inner + δ_rand --------------------------
             sigma_point = self._compute_sigma_point(pts_cur, valid_past)
@@ -342,16 +352,19 @@ class RadialJitterDefense(BaseDefense):
         pts_cur: np.ndarray,
         valid_past: list[np.ndarray],
     ) -> float:
-        """Compute σ_point via ICP-aligned per-point radial deviations.
+        """Compute σ_point via ICP correspondence radial residuals.
 
-        For each past-frame cluster, run ICP to align it to pts_cur (absorbing
-        rigid object motion).  Project all points — current and each aligned
-        past batch — onto the radial direction from the sensor origin, then
-        return the std of per-point deviations from the cluster centroid along
-        that axis.
+        For each past-frame cluster, run ICP against pts_cur to obtain explicit
+        matched point pairs (src_idx → tgt_idx).  For each pair, project the
+        residual vector (aligned_src − tgt) onto the radial direction at the
+        target point.  Pool these residuals across all frames and return their std.
 
-        δ_inter (a rigid per-frame radial shift) is absorbed by ICP translation,
-        leaving residuals due to δ_inner + δ_rand.
+        This measures δ_inner + δ_rand directly: ICP absorbs the rigid per-frame
+        δ_inter translation, and the correspondence residuals reflect only the
+        per-point noise that cannot be explained by a rigid alignment.  Crucially,
+        this avoids the cluster-depth bias of the previous centroid-deviation
+        approach — residuals are ~1–3 cm for real rigid clusters and ~10–33 cm
+        for spoofed clusters (depending on LiDAR δ_inner / δ_rand std).
         """
         try:
             import open3d as o3d
@@ -359,14 +372,10 @@ class RadialJitterDefense(BaseDefense):
             logger.warning("open3d not available; σ_point will be 0")
             return 0.0
 
-        centroid_cur = pts_cur.mean(axis=0)
-        g = centroid_cur / (np.linalg.norm(centroid_cur) + 1e-9)
-
-        dev_cur = ((pts_cur - centroid_cur) * g).sum(axis=1)
-        all_devs: list[np.ndarray] = [dev_cur]
-
         tgt_pcd = o3d.geometry.PointCloud()
         tgt_pcd.points = o3d.utility.Vector3dVector(pts_cur.astype(np.float64))
+
+        all_residuals: list[np.ndarray] = []
 
         for pts_past in valid_past:
             src_pcd = o3d.geometry.PointCloud()
@@ -384,11 +393,26 @@ class RadialJitterDefense(BaseDefense):
                     max_iteration=self.icp_max_iter
                 ),
             )
+            corrs = np.asarray(reg.correspondence_set)  # (M, 2): (src_idx, tgt_idx)
+            if len(corrs) == 0:
+                continue
+
             T = np.asarray(reg.transformation)
-            aligned = (T[:3, :3] @ pts_past.T + T[:3, 3:4]).T.astype(np.float32)
+            aligned_corr = (
+                T[:3, :3] @ pts_past[corrs[:, 0]].T + T[:3, 3:4]
+            ).T  # (M, 3)
+            tgt_corr = pts_cur[corrs[:, 1]]  # (M, 3)
 
-            centroid_aligned = aligned.mean(axis=0)
-            dev_past = ((aligned - centroid_aligned) * g).sum(axis=1)
-            all_devs.append(dev_past)
+            # Radial unit direction at each target point
+            tgt_g = tgt_corr / (
+                np.linalg.norm(tgt_corr, axis=1, keepdims=True) + 1e-9
+            )  # (M, 3)
 
-        return float(np.std(np.concatenate(all_devs)))
+            # Signed radial residual: positive = aligned point is farther from sensor
+            residuals = ((aligned_corr - tgt_corr) * tgt_g).sum(axis=1)  # (M,)
+            all_residuals.append(residuals)
+
+        if not all_residuals:
+            return 0.0
+
+        return float(np.std(np.concatenate(all_residuals)))
