@@ -207,6 +207,10 @@ class KittiObjectDataset:
         for fid in self.frame_ids:
             yield self._load_frame(fid)
 
+    def scene_lengths(self) -> dict[str, int]:
+        """Return mapping from sequence_id to frame count."""
+        return {self.sequence_id: len(self.frame_ids)}
+
     # ------------------------------------------------------------------
     # Internal loading
     # ------------------------------------------------------------------

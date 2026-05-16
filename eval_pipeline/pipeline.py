@@ -39,6 +39,21 @@ def _prediction_to_label(pred: Prediction) -> ObjectLabel:
 
 logger = logging.getLogger(__name__)
 
+# Maps dataset class name → attack granularity.  Unknown datasets fall back to "frame".
+_DATASET_GRANULARITY: dict[str, str] = {
+    "NuScenesDataset": "scene",
+    "KittiObjectDataset": "frame",
+}
+
+
+@dataclasses.dataclass
+class _SceneAttackPlan:
+    """Per-scene attack decision, computed once before iteration begins."""
+    attack: bool
+    prefix: int          # randomized frames to leave unattacked at scene start
+    scene_length: int
+    attack_start_frame_id: str | None = None  # set when the first attacked frame is seen
+
 
 class EvalPipeline:
     """Run adversarial evaluation over an iterable of Frame objects.
@@ -83,6 +98,16 @@ class EvalPipeline:
     pred_label_score_threshold
         Minimum detection score for a prediction to be included as an attack
         label when ``use_predicted_labels`` is True.  Default 0.5.
+    min_unattacked_frames
+        For scene-granularity datasets (e.g. NuScenes): minimum number of frames
+        left unattacked at the start of each attacked scene.  The actual prefix
+        is randomised uniformly in [min_unattacked_frames,
+        scene_length - min_attacked_frames].  Ignored in frame-granularity mode.
+    min_attacked_frames
+        For scene-granularity datasets: minimum number of frames that must be
+        attacked in a chosen scene.  Scenes where
+        scene_length < min_unattacked_frames + min_attacked_frames revert to
+        fully unattacked.  Ignored in frame-granularity mode.
     """
 
     def __init__(
@@ -99,6 +124,8 @@ class EvalPipeline:
         use_cached_attacks: bool = False,
         use_predicted_labels: bool = False,
         pred_label_score_threshold: float = 0.5,
+        min_unattacked_frames: int = 0,
+        min_attacked_frames: int = 1,
     ) -> None:
         self.dataset = dataset
         self.attack = attack
@@ -110,8 +137,13 @@ class EvalPipeline:
         self.use_cached_attacks = use_cached_attacks
         self.use_predicted_labels = use_predicted_labels
         self.pred_label_score_threshold = pred_label_score_threshold
+        self.min_unattacked_frames = min_unattacked_frames
+        self.min_attacked_frames = min_attacked_frames
         self.desc = desc
         self._clean_pred_cache: dict[str, list[Prediction]] = {}
+
+        self._granularity: str = _DATASET_GRANULARITY.get(type(dataset).__name__, "frame")
+        self._scene_plan: dict[str, _SceneAttackPlan] | None = None
 
         # Precomputed cache: load if the file exists; save after run() if it doesn't.
         self._precomputed_cache: dict[str, FrameCacheEntry] | None = None
@@ -146,6 +178,16 @@ class EvalPipeline:
         accumulator: dict[str, FrameCacheEntry] = {}  # built when saving cache
         n = 0
         live_run_frames = []
+        frame_index_in_scene = 0
+
+        # Pre-compute scene plans (scene mode) or just scene lengths (frame mode).
+        if self._granularity == "scene":
+            self._scene_plan = self._plan_scene_attacks()
+            scene_lengths = {sid: p.scene_length for sid, p in self._scene_plan.items()}
+        elif hasattr(self.dataset, "scene_lengths"):
+            scene_lengths = self.dataset.scene_lengths()
+        else:
+            scene_lengths = {}
 
         for frame in tqdm(self.dataset, desc=self.desc, unit="frame"):
             n += 1
@@ -156,7 +198,20 @@ class EvalPipeline:
             if frame.sequence_id != last_sequence_id:
                 clean_history.clear()
                 dirty_history.clear()
+                frame_index_in_scene = 0
                 last_sequence_id = frame.sequence_id
+            else:
+                frame_index_in_scene += 1
+
+            # Determine per-frame attack decision.
+            # Scene mode: use precomputed plan (bool).
+            # Frame mode: None — _run_live uses the per-frame RNG.
+            do_attack: bool | None
+            if self._granularity == "scene":
+                plan_entry = self._scene_plan[frame.sequence_id]
+                do_attack = plan_entry.attack and frame_index_in_scene >= plan_entry.prefix
+            else:
+                do_attack = None
 
             if self._precomputed_cache is not None:
                 # -------------------------------------------------------
@@ -165,13 +220,18 @@ class EvalPipeline:
                 entry = self._precomputed_cache.get(frame.frame_id)
                 if entry is None:
                     live_run_frames.append(frame.frame_id)
-                    clean_preds, attacked_frame, attacked_preds = self._run_live(frame)
+                    clean_preds, attacked_frame, attacked_preds = self._run_live(
+                        frame, should_attack=do_attack
+                    )
                 else:
                     attacked_frame: Frame | None = None
                     attacked_preds: list[Prediction] | None = None
                     clean_preds = entry.clean_predictions
-                    if entry.is_attacked and self.attack is not None:
-                        if self.use_cached_attacks:
+                    # In scene mode the plan overrides the cached decision.
+                    # In frame mode fall back to the cached decision.
+                    attack_this_frame = do_attack if do_attack is not None else entry.is_attacked
+                    if attack_this_frame and self.attack is not None:
+                        if self.use_cached_attacks and entry.is_attacked:
                             # Use cached predictions + metadata; don't re-run the
                             # attack so predictions and metadata are consistent.
                             attacked_preds = entry.attacked_predictions
@@ -193,7 +253,9 @@ class EvalPipeline:
                 # -------------------------------------------------------
                 # Live mode: run attack + detector, accumulate cache entry.
                 # -------------------------------------------------------
-                clean_preds, attacked_frame, attacked_preds = self._run_live(frame)
+                clean_preds, attacked_frame, attacked_preds = self._run_live(
+                    frame, should_attack=do_attack
+                )
 
                 if self._precomputed_save_path is not None:
                     accumulator[frame.frame_id] = FrameCacheEntry(
@@ -222,6 +284,14 @@ class EvalPipeline:
             clean_history.append(frame)          # pre-attack, as yielded by dataset
             dirty_history.append(current_frame)  # post-attack, what the vehicle received
 
+            # Compute scene-position metadata for FrameResult.
+            sl = scene_lengths.get(frame.sequence_id, 0)
+            if self._granularity == "scene":
+                plan_entry = self._scene_plan[frame.sequence_id]
+                attack_start_index = plan_entry.prefix if plan_entry.attack else None
+            else:
+                attack_start_index = None
+
             frame_results.append(FrameResult(
                 frame_id=frame.frame_id,
                 labels=frame.labels,
@@ -229,18 +299,64 @@ class EvalPipeline:
                 clean_predictions=clean_preds,
                 attacked_predictions=attacked_preds,
                 defense_result=defense_result,
+                sequence_id=frame.sequence_id,
+                frame_index_in_scene=frame_index_in_scene,
+                scene_length=sl,
+                attack_start_index=attack_start_index,
+                attack_start_frame_id=None,  # filled in below
             ))
 
-        logger.info("Pipeline complete: %d frames processed. %d frames processed live as they were not found in precomputed cache", n, len(live_run_frames))
+        logger.info(
+            "Pipeline complete: %d frames processed. %d frames processed live as they were "
+            "not found in precomputed cache", n, len(live_run_frames)
+        )
 
         if self._precomputed_save_path is not None and accumulator:
             self._save_cache(accumulator)
+
+        # Fill in attack_start_frame_id for all frames in attacked scenes.
+        # Find the frame_id of the frame at the attack-onset index in each scene.
+        if self._granularity == "scene":
+            scene_onset_frame_id: dict[str, str] = {}
+            for fr in frame_results:
+                if (
+                    fr.attack_start_index is not None
+                    and fr.frame_index_in_scene == fr.attack_start_index
+                ):
+                    scene_onset_frame_id[fr.sequence_id] = fr.frame_id
+            for fr in frame_results:
+                if fr.attack_start_index is not None and fr.sequence_id in scene_onset_frame_id:
+                    fr.attack_start_frame_id = scene_onset_frame_id[fr.sequence_id]
 
         return EvalResults(frame_results=frame_results)
 
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    def _plan_scene_attacks(self) -> dict[str, _SceneAttackPlan]:
+        """Pre-compute per-scene attack decisions and prefix lengths."""
+        lengths = self.dataset.scene_lengths()
+        plan: dict[str, _SceneAttackPlan] = {}
+        for seq_id, scene_length in lengths.items():
+            if self._attack_rng.random() < self.attack_fraction:
+                if scene_length >= self.min_unattacked_frames + self.min_attacked_frames:
+                    prefix = int(self._attack_rng.integers(
+                        self.min_unattacked_frames,
+                        scene_length - self.min_attacked_frames + 1,
+                    ))
+                    plan[seq_id] = _SceneAttackPlan(
+                        attack=True, prefix=prefix, scene_length=scene_length,
+                    )
+                else:
+                    plan[seq_id] = _SceneAttackPlan(
+                        attack=False, prefix=0, scene_length=scene_length,
+                    )
+            else:
+                plan[seq_id] = _SceneAttackPlan(
+                    attack=False, prefix=0, scene_length=scene_length,
+                )
+        return plan
 
     def _get_attack_frame(self, frame: Frame, preds: list[Prediction]) -> Frame:
         """Return frame for attack. When self.use_predicted_labels is True,
@@ -258,18 +374,29 @@ class EvalPipeline:
         return dataclasses.replace(frame, labels=labels)
 
     def _run_live(
-        self, frame: Frame
+        self,
+        frame: Frame,
+        *,
+        should_attack: bool | None = None,
     ) -> tuple[list[Prediction], Frame | None, list[Prediction] | None]:
         """Run attack + detection for one frame without consulting the cache.
 
         Returns (clean_preds, attacked_frame_or_None, attacked_preds_or_None).
+
+        should_attack=None  → use per-frame RNG (frame-granularity mode).
+        should_attack=bool  → use provided decision (scene-granularity mode).
         """
         clean_preds = self._get_clean_preds(frame)
 
         attacked_frame: Frame | None = None
         attacked_preds: list[Prediction] | None = None
 
-        if self.attack is not None and self._attack_rng.random() < self.attack_fraction:
+        will_attack = (
+            should_attack
+            if should_attack is not None
+            else self._attack_rng.random() < self.attack_fraction
+        )
+        if self.attack is not None and will_attack:
             attacked_frame = self.attack.apply(
                 self._get_attack_frame(frame, clean_preds)
             )

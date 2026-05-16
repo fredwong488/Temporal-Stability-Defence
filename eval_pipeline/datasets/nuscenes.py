@@ -240,6 +240,16 @@ class NuScenesDataset:
         for scene_token, sd_token in self._entries:
             yield self._load_frame(scene_token, sd_token)
 
+    def scene_lengths(self) -> dict[str, int]:
+        """Return mapping from sequence_id (scene token) to frame count.
+
+        Reads from the pre-built _entries list — no lidar is loaded.
+        """
+        counts: dict[str, int] = {}
+        for scene_token, _ in self._entries:
+            counts[scene_token] = counts.get(scene_token, 0) + 1
+        return counts
+
     # ------------------------------------------------------------------
     # Internal loading
     # ------------------------------------------------------------------

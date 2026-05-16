@@ -101,6 +101,8 @@ def run_single(
     use_cached_attacks: bool = False,
     use_predicted_labels: bool = False,
     pred_label_score_threshold: float = 0.5,
+    min_unattacked_frames: int = 6,     # defaulted to 6 to suit jitter defense
+    min_attacked_frames: int = 6,       # defaulted to 6 to suit jitter defense
 ) -> dict:
     """Run one experiment and return the summary dict."""
     from eval_pipeline.config import ExperimentConfig
@@ -127,6 +129,8 @@ def run_single(
         use_cached_attacks=use_cached_attacks,
         use_predicted_labels=use_predicted_labels,
         pred_label_score_threshold=pred_label_score_threshold,
+        min_unattacked_frames=min_unattacked_frames,
+        min_attacked_frames=min_attacked_frames,
     )
     return run_experiment(config, desc=desc)
 
@@ -197,7 +201,16 @@ def main() -> None:
                         metavar="F",
                         help="Fraction of frames to attack, chosen randomly (0.0–1.0)")
     parser.add_argument("--attack-fraction-seed", type=int, default=0,
-                        help="RNG seed for attack frame sampling")
+                        help="RNG seed for attack sampling")
+    parser.add_argument("--min-unattacked-frames", type=int, default=6,
+                        metavar="N",
+                        help="Minimum frames left unattacked at the start of each attacked scene "
+                             "(NuScenes / scene-granularity datasets only). "
+                             "Actual prefix is randomised in [N, scene_length - min-attacked-frames].")
+    parser.add_argument("--min-attacked-frames", type=int, default=6,
+                        metavar="N",
+                        help="Minimum frames that must be attacked in a chosen scene. "
+                             "Scenes too short to satisfy both minima revert to unattacked.")
     parser.add_argument("--defense", type=str, default=None,
                         help="Defense type to apply (e.g. void_region)")
     parser.add_argument("--detector", type=str, default=None,
@@ -346,6 +359,11 @@ def main() -> None:
     logging.info("Attack       : %s", args.attack or "(none)")
     if args.attack and args.attack_fraction < 1.0:
         logging.info("Atk fraction : %.2f (seed=%d)", args.attack_fraction, args.attack_fraction_seed)
+        if args.min_unattacked_frames != 6 or args.min_attacked_frames != 6:    # If not equal cmd arg defaults
+            logging.info(
+                "Scene prefix : min_unattacked=%d  min_attacked=%d",
+                args.min_unattacked_frames, args.min_attacked_frames,
+            )
     logging.info("Defense      : %s", args.defense or "(none)")
     logging.info("Detector     : %s", args.detector or "(none)")
     logging.info("Sweep target : %s", args.sweep_target)
@@ -430,6 +448,8 @@ def main() -> None:
             use_cached_attacks=False if is_baseline else args.use_cached_attacks,
             use_predicted_labels=args.use_predicted_labels,
             pred_label_score_threshold=args.pred_label_score_threshold,
+            min_unattacked_frames=args.min_unattacked_frames,
+            min_attacked_frames=args.min_attacked_frames,
         )
 
         if "ap" in args.metric_types:

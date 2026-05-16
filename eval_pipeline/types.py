@@ -152,6 +152,12 @@ class FrameResult:
     clean_predictions: list[Prediction]
     attacked_predictions: list[Prediction] | None     # None if no attack or no detector
     defense_result: DetectionResult | None            # None if no defense
+    # Scene-position fields — always populated; attack_start_* are None for unattacked scenes
+    sequence_id: str = ""
+    frame_index_in_scene: int = 0
+    scene_length: int = 0
+    attack_start_index: int | None = None             # 0-indexed within scene; None if unattacked
+    attack_start_frame_id: str | None = None          # frame_id of the first attacked frame
 
 
 # ---------------------------------------------------------------------------

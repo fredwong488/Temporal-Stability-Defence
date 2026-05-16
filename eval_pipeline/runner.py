@@ -56,6 +56,11 @@ def _serialise_prediction(p: Prediction) -> dict:
 def _serialise_frame_result(fr: FrameResult) -> dict:
     result: dict = {
         "frame_id": fr.frame_id,
+        "sequence_id": fr.sequence_id,
+        "frame_index_in_scene": fr.frame_index_in_scene,
+        "scene_length": fr.scene_length,
+        "attack_start_index": fr.attack_start_index,
+        "attack_start_frame_id": fr.attack_start_frame_id,
         "is_attacked": fr.is_attacked,
         "clean_predictions": [_serialise_prediction(p) for p in fr.clean_predictions],
         "attacked_predictions": (
@@ -175,6 +180,8 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
         use_cached_attacks=config.use_cached_attacks,
         use_predicted_labels=config.use_predicted_labels,
         pred_label_score_threshold=config.pred_label_score_threshold,
+        min_unattacked_frames=config.min_unattacked_frames,
+        min_attacked_frames=config.min_attacked_frames,
     )
 
 

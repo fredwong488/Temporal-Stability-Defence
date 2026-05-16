@@ -95,8 +95,14 @@ class ExperimentConfig:
     # Attack
     attack_type: str | None = None              # "ora" | None
     attack_params: dict = dataclasses.field(default_factory=dict)
-    attack_fraction: float = 1.0                # fraction of frames to attack (0.0–1.0)
-    attack_fraction_seed: int = 0               # RNG seed for frame sampling
+    attack_fraction: float = 1.0                # fraction of scenes/frames to attack (0.0–1.0)
+    attack_fraction_seed: int = 0               # RNG seed for attack sampling
+    # Scene-aware attack prefix (only used when dataset granularity == "scene", e.g. NuScenes).
+    # A random number of frames in [min_unattacked_frames, scene_length - min_attacked_frames]
+    # are left unattacked at the start of each attacked scene.  Scenes that cannot satisfy
+    # both minima revert to fully unattacked.
+    min_unattacked_frames: int = 0
+    min_attacked_frames: int = 1
 
     # Detector
     detector_type: str | None = None            # "pointpillars" | None
