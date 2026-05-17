@@ -296,6 +296,7 @@ class EvalPipeline:
                 frame_id=frame.frame_id,
                 labels=frame.labels,
                 is_attacked=current_frame.is_attacked,
+                attack_metadata=current_frame.attack_metadata,
                 clean_predictions=clean_preds,
                 attacked_predictions=attacked_preds,
                 defense_result=defense_result,

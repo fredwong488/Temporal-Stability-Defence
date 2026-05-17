@@ -158,6 +158,7 @@ class FrameResult:
     scene_length: int = 0
     attack_start_index: int | None = None             # 0-indexed within scene; None if unattacked
     attack_start_frame_id: str | None = None          # frame_id of the first attacked frame
+    attack_metadata: dict = dataclasses.field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------
