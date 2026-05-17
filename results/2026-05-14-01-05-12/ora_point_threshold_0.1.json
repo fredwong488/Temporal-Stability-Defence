@@ -1,0 +1,64 @@
+{
+  "experiment_name": "ora_point_threshold_0.1",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+      "version": "v1.0-mini",
+      "split": "mini_val"
+    },
+    "attack_type": "ora",
+    "attack_params": {
+      "target_types": [
+        "Car",
+        "Pedestrian",
+        "Cyclist"
+      ]
+    },
+    "attack_fraction": 0.5,
+    "attack_fraction_seed": 0,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "radial_jitter",
+    "defense_params": {
+      "point_threshold": 0.1
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "detection_rate"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-05-14-01-05-12",
+    "experiment_name": "ora_point_threshold_0.1",
+    "save_frame_results": true,
+    "precomputed_cache_path": "precomputed/nuscenes-pointpillars-ora-b200-0.5/point_threshold_0.1.pkl",
+    "use_cached_attacks": true,
+    "use_predicted_labels": false,
+    "pred_label_score_threshold": 0.5
+  },
+  "num_frames": 788,
+  "defense_effectiveness": {
+    "tp": 175,
+    "fp": 185,
+    "tn": 228,
+    "fn": 200,
+    "tpr": 0.4666666666666667,
+    "fpr": 0.44794188861985473,
+    "accuracy": 0.5114213197969543,
+    "precision": 0.4861111111111111,
+    "recall": 0.4666666666666667,
+    "f1": 0.4761904761904762
+  }
+}
