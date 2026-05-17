@@ -177,6 +177,7 @@ class ORAAttack(BaseAttack):
         return pts, {
             "label_type": label.type,
             "n_removed": n_sample,
+            "reinjected_centroid": reinjected[:, :3].mean(axis=0).tolist(),
         }
 
     def _azimuth_candidates(
@@ -303,7 +304,11 @@ class ORAAttackNotebook(BaseAttack):
                 "budget": self.budget,
                 "target_types": list(self.target_types),
                 "removed_per_obj": [
-                    {"label_type": p["label_type"], "n_removed": p["n_removed"]}
+                    {
+                        "label_type": p["label_type"],
+                        "n_removed": p["n_removed"],
+                        **({} if p["n_removed"] == 0 else {"reinjected_centroid": p["reinjected_centroid"]}),
+                    }
                     for p in plans
                 ],
             },
@@ -365,6 +370,7 @@ class ORAAttackNotebook(BaseAttack):
             "attacked_pts": attacked_pts,
             "n_removed": n_sample,
             "label_type": label.type,
+            "reinjected_centroid": reinjected[:, :3].mean(axis=0).tolist(),
         }
 
     def _azimuth_candidates_notebook(

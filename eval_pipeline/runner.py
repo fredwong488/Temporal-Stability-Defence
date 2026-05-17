@@ -62,6 +62,7 @@ def _serialise_frame_result(fr: FrameResult) -> dict:
         "attack_start_index": fr.attack_start_index,
         "attack_start_frame_id": fr.attack_start_frame_id,
         "is_attacked": fr.is_attacked,
+        "attack_metadata": fr.attack_metadata,
         "clean_predictions": [_serialise_prediction(p) for p in fr.clean_predictions],
         "attacked_predictions": (
             [_serialise_prediction(p) for p in fr.attacked_predictions]

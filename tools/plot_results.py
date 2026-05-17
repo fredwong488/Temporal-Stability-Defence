@@ -32,6 +32,7 @@ Two DataFrames are assembled from whichever files are currently selected:
 from __future__ import annotations
 
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -58,11 +59,11 @@ CLUSTER_NUMERIC = FRAME_NUMERIC + [
     "sigma_centroid", "sigma_point",
     "centroid_x", "centroid_y", "centroid_z",
 ]
-CLUSTER_CATEGORICAL = FRAME_CATEGORICAL + ["flagged_centroid", "flagged_point", "flagged"]
+CLUSTER_CATEGORICAL = FRAME_CATEGORICAL + ["flagged_centroid", "flagged_point", "flagged", "is_spoofed_cluster"]
 
 FILTER_COLS = [
     "is_attacked", "is_attack_detected", "flagged",
-    "flagged_centroid", "flagged_point",
+    "flagged_centroid", "flagged_point", "is_spoofed_cluster",
     "file", "run", "defense_reason",
 ]
 
@@ -134,8 +135,26 @@ def _load_jsonl(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
             }
             rows_frame.append(frame_row)
 
+            # Collect spoofed-cluster centroids from attack_metadata (ORA only).
+            # Each entry has a "reinjected_centroid" [x, y, z] when n_removed > 0.
+            spoofed_centroids: list[tuple[float, float, float]] = []
+            for obj in (d.get("attack_metadata") or {}).get("removed_per_obj") or []:
+                rc = obj.get("reinjected_centroid")
+                if rc and len(rc) == 3:
+                    spoofed_centroids.append((float(rc[0]), float(rc[1]), float(rc[2])))
+
             for cd in meta.get("cluster_details") or []:
                 centroid = cd.get("centroid") or [None, None, None]
+                cx, cy, cz = centroid[0], centroid[1], centroid[2]
+
+                is_spoofed = False
+                if spoofed_centroids and cx is not None and cy is not None and cz is not None:
+                    min_dist = min(
+                        math.sqrt((cx - sx) ** 2 + (cy - sy) ** 2 + (cz - sz) ** 2)
+                        for sx, sy, sz in spoofed_centroids
+                    )
+                    is_spoofed = min_dist < 1.5
+
                 rows_cluster.append({
                     **frame_row,
                     "n_points_cur": cd.get("n_points_cur"),
@@ -145,9 +164,10 @@ def _load_jsonl(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
                     "flagged_centroid": cd.get("flagged_centroid"),
                     "flagged_point": cd.get("flagged_point"),
                     "flagged": cd.get("flagged"),
-                    "centroid_x": centroid[0],
-                    "centroid_y": centroid[1],
-                    "centroid_z": centroid[2],
+                    "centroid_x": cx,
+                    "centroid_y": cy,
+                    "centroid_z": cz,
+                    "is_spoofed_cluster": is_spoofed,
                 })
 
     return pd.DataFrame(rows_frame), pd.DataFrame(rows_cluster)
