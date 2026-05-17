@@ -40,6 +40,31 @@ def flatten_scalar_keys(obj: Any, prefix: str = "") -> list[str]:
     return keys
 
 
+def flatten_all_keys(obj: Any, prefix: str = "") -> list[str]:
+    """Return dot-notation paths to all keys, including intermediate dict nodes."""
+    keys: list[str] = []
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            path = f"{prefix}.{k}" if prefix else k
+            keys.append(path)
+            if isinstance(v, dict):
+                keys.extend(flatten_all_keys(v, path))
+    return keys
+
+
+def delete_nested_key(obj: dict, dot_path: str) -> dict:
+    """Return a copy of obj with the key at dot_path removed."""
+    parts = dot_path.split(".", 1)
+    if len(parts) == 1:
+        return {k: v for k, v in obj.items() if k != dot_path}
+    top, rest = parts
+    if top not in obj or not isinstance(obj[top], dict):
+        return obj
+    result = dict(obj)
+    result[top] = delete_nested_key(result[top], rest)
+    return result
+
+
 def get_value(obj: Any, dot_path: str) -> Any:
     cur = obj
     for part in dot_path.split("."):
@@ -224,10 +249,12 @@ def main() -> None:
     print("\n" + "=" * 60)
     print("STEP 1: Exclude Keys")
     print("=" * 60)
-    print("Choose top-level keys to REMOVE from every entry in the output.")
+    print("Choose keys to REMOVE from every entry in the output.")
+    print("Selecting an intermediate key (e.g. 'metrics') removes the entire subtree.")
 
-    excl_indices = prompt_multi_select("Available top-level keys:", top_level_keys)
-    exclude_keys: set[str] = {top_level_keys[i] for i in excl_indices}
+    all_keys = flatten_all_keys(first)
+    excl_indices = prompt_multi_select("Available keys:", all_keys)
+    exclude_keys: set[str] = {all_keys[i] for i in excl_indices}
 
     if exclude_keys:
         print(f"  → Excluding: {', '.join(sorted(exclude_keys))}")
@@ -242,11 +269,11 @@ def main() -> None:
     print("List and dict fields are omitted — only scalar (leaf) values can be sorted on.")
 
     sortable_keys = flatten_scalar_keys(first)
-    # Remove keys that live under an excluded top-level field
+    # Remove keys that were excluded or live under an excluded subtree
     if exclude_keys:
         sortable_keys = [
             k for k in sortable_keys
-            if k.split(".")[0] not in exclude_keys
+            if not any(k == ek or k.startswith(ek + ".") for ek in exclude_keys)
         ]
 
     sort_spec: list[tuple[str, bool]] = []  # (dot_path, ascending)
@@ -269,10 +296,9 @@ def main() -> None:
 
     # ---- Apply transformations ----
 
-    result = [
-        {k: v for k, v in entry.items() if k not in exclude_keys}
-        for entry in entries
-    ]
+    result = list(entries)
+    for key_path in exclude_keys:
+        result = [delete_nested_key(entry, key_path) for entry in result]
 
     if sort_spec:
         # Stable multi-key sort: apply in reverse priority order
