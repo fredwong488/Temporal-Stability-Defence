@@ -294,9 +294,9 @@ def main() -> None:
              "when --use-predicted-labels is set.",
     )
     parser.add_argument(
-        "--ora-noise-preset", type=str, default="vlp32c",
-        choices=["none", "vlp16", "vlp32c", "os1_32", "helios", "horizon", "l515", "xt32"],
-        help="Sato 2024 spoofing noise preset for ORA reinjection "
+        "--attack-noise-preset", type=str, default="worst_case",
+        choices=["none", "worst_case", "vlp16", "vlp32c", "os1_32", "helios", "horizon", "l515", "xt32"],
+        help="Sato 2024 spoofing noise preset for attack reinjection "
              "(default vlp32c; 'none' disables δ_inner/δ_inter/δ_rand).",
     )
     args = parser.parse_args()
@@ -388,10 +388,10 @@ def main() -> None:
     detection_rate_rows: list[dict] = []
 
     base_attack_params: dict = {"target_types": args.classes} if args.attack else {}
-    if args.attack == "ora" and args.ora_noise_preset != "none":
+    if args.attack == "ora" and args.attack_noise_preset != "none":
         from eval_pipeline.utils.spoofing_noise import SpoofingNoiseModel
         base_attack_params["noise_model"] = SpoofingNoiseModel.from_preset(
-            args.ora_noise_preset, seed=args.attack_fraction_seed
+            args.attack_noise_preset, seed=args.attack_fraction_seed
         )
     base_defense_params: dict = {}
 

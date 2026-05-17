@@ -51,13 +51,14 @@ class _LidarProfile:
 # rand_std values are the measured Std σ in metres.
 # For uniform distributions, half-width = rand_std * √3 ≈ Max Δ in the table.
 _PRESETS: dict[str, _LidarProfile] = {
-    "vlp16":   _LidarProfile("none",     0.0,  0.985),
-    "vlp32c":  _LidarProfile("none",     0.0,  0.829),
-    "os1_32":  _LidarProfile("uniform",  33.3, 0.438),
-    "helios":  _LidarProfile("gaussian",  1.5, 0.194),
-    "horizon": _LidarProfile("uniform",  26.0, 0.799),
-    "l515":    _LidarProfile("gaussian",  7.5, 0.001),
-    "xt32":    _LidarProfile("none",      0.0, 0.021),
+    "worst_case":   _LidarProfile("none",     0.0,  1),
+    "vlp16":        _LidarProfile("none",     0.0,  0.985),
+    "vlp32c":       _LidarProfile("none",     0.0,  0.829),
+    "os1_32":       _LidarProfile("uniform",  33.3, 0.438),
+    "helios":       _LidarProfile("gaussian",  1.5, 0.194),
+    "horizon":      _LidarProfile("uniform",  26.0, 0.799),
+    "l515":         _LidarProfile("gaussian",  7.5, 0.001),
+    "xt32":         _LidarProfile("none",      0.0, 0.021),
 }
 
 
