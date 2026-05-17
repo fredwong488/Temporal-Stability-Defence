@@ -178,6 +178,7 @@ class EvalPipeline:
         accumulator: dict[str, FrameCacheEntry] = {}  # built when saving cache
         n = 0
         live_run_frames = []
+        live_attack_rerun = 0
         frame_index_in_scene = 0
 
         # Pre-compute scene plans (scene mode) or just scene lengths (frame mode).
@@ -249,6 +250,7 @@ class EvalPipeline:
                             )
                             if self.detector is not None:
                                 attacked_preds = self.detector.predict(attacked_frame)
+                            live_attack_rerun += 1
             else:
                 # -------------------------------------------------------
                 # Live mode: run attack + detector, accumulate cache entry.
@@ -307,10 +309,14 @@ class EvalPipeline:
                 attack_start_frame_id=None,  # filled in below
             ))
 
-        logger.info(
-            "Pipeline complete: %d frames processed. %d frames processed live as they were "
-            "not found in precomputed cache", n, len(live_run_frames)
-        )
+        if self._precomputed_cache is None:
+            logger.info("Pipeline complete: %d frames processed live (no precomputed cache).", n)
+        else:
+            logger.info(
+                "Pipeline complete: %d frames processed. %d cache misses ran fully live. "
+                "%d cache hits re-ran attack live (use_cached_attacks=False).",
+                n, len(live_run_frames), live_attack_rerun,
+            )
 
         if self._precomputed_save_path is not None and accumulator:
             self._save_cache(accumulator)
