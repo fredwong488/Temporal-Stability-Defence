@@ -50,7 +50,8 @@ DEFAULT_NUSCENES_SPLIT = "mini_val"
 
 DEFAULT_SWEEP_PARAM = "budget"
 DEFAULT_SWEEP_VALUES = [0, 10, 20, 40, 60, 100, 150, 200]
-DEFAULT_CLASSES = ["Car", "Pedestrian", "Cyclist"]
+KITTI_DEFAULT_CLASSES = ["Car", "Pedestrian", "Cyclist"]
+NUSCENES_DEFAULT_CLASSES = ["car", "pedestrian", "bicycle"]
 DEFAULT_DIFFICULTIES = ["Easy", "Moderate", "Hard"]
 DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
@@ -239,9 +240,11 @@ def main() -> None:
                         help="KITTI split to use (reads from OpenPCDet ImageSets/)")
 
     # Evaluation
-    parser.add_argument("--classes", nargs="+", default=DEFAULT_CLASSES,
+    parser.add_argument("--classes", nargs="+", default=None,
                         metavar="CLASS",
-                        help="Object classes to evaluate")
+                        help="Object classes to evaluate "
+                             "(default: Car Pedestrian Cyclist for KITTI; "
+                             "car pedestrian bicycle for NuScenes)")
     parser.add_argument("--difficulties", nargs="+", default=DEFAULT_DIFFICULTIES,
                         choices=sorted(VALID_DIFFICULTIES), metavar="DIFF",
                         help="Difficulty levels for AP/PR metrics (Easy Moderate Hard)")
@@ -300,6 +303,11 @@ def main() -> None:
              "(default vlp32c; 'none' disables δ_inner/δ_inter/δ_rand).",
     )
     args = parser.parse_args()
+
+    if args.classes is None:
+        args.classes = (
+            NUSCENES_DEFAULT_CLASSES if args.dataset == "nuscenes" else KITTI_DEFAULT_CLASSES
+        )
 
     start_time = datetime.now()
 
