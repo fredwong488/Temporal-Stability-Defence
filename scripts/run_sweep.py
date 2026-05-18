@@ -431,10 +431,15 @@ def main() -> None:
         else:
             experiment_name = f"{args.attack or args.defense}_{args.sweep_param}_{val}"
 
-        # Compute per-value cache path: <dir>/<sweep_param>_<val>.pkl
+        # Compute cache path.  When sweeping defense params the attack/detector
+        # outputs are identical for every value, so all iterations share one file.
         val_cache_path: str | None = None
         if args.precomputed_cache_dir is not None:
-            if is_baseline:
+            if args.sweep_target == "defense":
+                val_cache_path = str(
+                    pathlib.Path(args.precomputed_cache_dir) / "defense_sweep_shared.pkl"
+                )
+            elif is_baseline:
                 val_cache_path = str(
                     pathlib.Path(args.precomputed_cache_dir) / "baseline_no_attack.pkl"
                 )
