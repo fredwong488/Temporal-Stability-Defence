@@ -520,7 +520,7 @@ def render_frame(
     )
     draw_bev(
         ax_bev_atk, atk_lidar, atk_preds,
-        gt_labels=gt_labels, show_boxes=show_boxes,
+        gt_labels=None, show_boxes=show_boxes,
         roi_min=roi_min, roi_max=roi_max,
         title=f"Attacked BEV  |  {len(atk_preds)} prediction(s){atk_note}",
     )
@@ -568,8 +568,7 @@ def render_frame(
         y=0.99,
     )
 
-    fig.savefig(output_path, dpi=110, bbox_inches="tight",
-                facecolor=fig.get_facecolor())
+    fig.savefig(output_path, dpi=110, facecolor=fig.get_facecolor())
     plt.close(fig)
 
 
