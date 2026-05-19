@@ -30,11 +30,14 @@ Usage
     python tools/visualise_frames.py --run 2026-04-23-12-00-00 --experiment ora_budget_40
     python tools/visualise_frames.py --run 2026-04-23-12-00-00 --filter fp
     python tools/visualise_frames.py --isometric
+    python tools/visualise_frames.py --show-image
+    python tools/visualise_frames.py --isometric --show-image
 """
 
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 import pathlib
 import sys
@@ -253,6 +256,72 @@ def open_dataset(dataset_type: str, dataset_params: dict):
     return dataset_cls(**dataset_params)
 
 
+@dataclasses.dataclass
+class _NuScenesCamCalib:
+    """Minimal camera calibration for NuScenes box projection."""
+    lidar_to_cam: "np.ndarray"   # (4, 4) LiDAR sensor → CAM_FRONT sensor
+    K: "np.ndarray"              # (3, 3) camera intrinsic matrix
+
+
+def _nusc_sensor_to_global(nusc: Any, sample_data: dict) -> "np.ndarray":
+    """4×4 sensor-to-global transform for a NuScenes sample_data record."""
+    from pyquaternion import Quaternion
+    ep = nusc.get("ego_pose", sample_data["ego_pose_token"])
+    cs = nusc.get("calibrated_sensor", sample_data["calibrated_sensor_token"])
+
+    def _tf(t: list, r: list) -> "np.ndarray":
+        T = np.eye(4, dtype=np.float64)
+        T[:3, :3] = Quaternion(r).rotation_matrix
+        T[:3, 3]  = t
+        return T
+
+    return _tf(ep["translation"], ep["rotation"]) @ _tf(cs["translation"], cs["rotation"])
+
+
+def build_nuscenes_cam_calib_map(dataset: Any) -> "dict[str, _NuScenesCamCalib]":
+    """Build frame_id → _NuScenesCamCalib for every entry in a NuScenesDataset."""
+    calib_map: dict[str, _NuScenesCamCalib] = {}
+    nusc = dataset._nusc
+    for _scene_token, sd_token in dataset._entries:
+        fid        = sd_token[:16]
+        lidar_sd   = nusc.get("sample_data", sd_token)
+        lidar_to_g = _nusc_sensor_to_global(nusc, lidar_sd)
+        sample     = nusc.get("sample", lidar_sd["sample_token"])
+        cam_token  = sample["data"].get("CAM_FRONT")
+        if not cam_token:
+            continue
+        cam_sd      = nusc.get("sample_data", cam_token)
+        cam_to_g    = _nusc_sensor_to_global(nusc, cam_sd)
+        lidar_to_cam = np.linalg.inv(cam_to_g) @ lidar_to_g
+        cs = nusc.get("calibrated_sensor", cam_sd["calibrated_sensor_token"])
+        K  = np.array(cs["camera_intrinsic"], dtype=np.float64)
+        calib_map[fid] = _NuScenesCamCalib(lidar_to_cam=lidar_to_cam, K=K)
+    return calib_map
+
+
+def build_image_map(dataset: Any, dataset_type: str) -> dict[str, pathlib.Path]:
+    """Build a frame_id → image path mapping from an opened dataset."""
+    img_map: dict[str, pathlib.Path] = {}
+    if dataset_type == "kitti":
+        for fid in dataset.frame_ids:
+            p = dataset._img_dir / f"{fid}.png"
+            if p.exists():
+                img_map[fid] = p
+    elif dataset_type == "nuscenes":
+        nusc = dataset._nusc
+        for _scene_token, sd_token in dataset._entries:
+            fid = sd_token[:16]
+            sd = nusc.get("sample_data", sd_token)
+            sample = nusc.get("sample", sd["sample_token"])
+            cam_token = sample["data"].get("CAM_FRONT")
+            if cam_token:
+                cam_sd = nusc.get("sample_data", cam_token)
+                p = dataset.root / cam_sd["filename"]
+                if p.exists():
+                    img_map[fid] = p
+    return img_map
+
+
 # ---------------------------------------------------------------------------
 # Drawing helpers — 3-D
 # ---------------------------------------------------------------------------
@@ -367,10 +436,10 @@ def draw_isometric(
             ax.scatter([cpx], [cpy], [c[2]], marker="x",
                        color="#ef4444", s=80, zorder=5, depthshade=False)
 
-    x_span = roi_max[0] + 6
+    x_span = roi_max[0] - roi_min[0] + 6
     y_span = roi_max[1] - roi_min[1] + 6
     z_span = 6.0
-    ax.set_xlim(-3, roi_max[0] + 3)
+    ax.set_xlim(roi_min[0] - 3, roi_max[0] + 3)
     ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
     ax.set_zlim(-3.0, 3.0)
     ax.set_box_aspect([x_span, y_span, z_span])
@@ -505,7 +574,7 @@ def draw_bev(
     if rj_clusters:
         _draw_rj_clusters_bev(ax, rj_clusters, dataset_type=dataset_type)
 
-    ax.set_xlim(-3, roi_max[0] + 3)
+    ax.set_xlim(roi_min[0] - 3, roi_max[0] + 3)
     ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
     ax.set_aspect("equal")
     fwd_label = "y / forward (m)" if dataset_type == "nuscenes" else "x / forward (m)"
@@ -852,6 +921,141 @@ def draw_stats(ax: "plt.Axes", frame_data: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Drawing helpers — velodyne → image projection
+# ---------------------------------------------------------------------------
+
+_BOX_EDGES = [
+    (0, 1), (1, 2), (2, 3), (3, 0),   # bottom face
+    (4, 5), (5, 6), (6, 7), (7, 4),   # top face
+    (0, 4), (1, 5), (2, 6), (3, 7),   # verticals
+]
+
+
+def _project_velo_to_image(
+    pts_velo: "np.ndarray",
+    calib: Any,
+) -> "tuple[np.ndarray, np.ndarray]":
+    """Project (N, 3) velodyne points to (N, 2) image pixels.
+
+    Accepts either a KITTI Calibration object (has .P2, .R0_rect,
+    .Tr_velo_to_cam) or a _NuScenesCamCalib (has .lidar_to_cam, .K).
+    Returns (pixels (N, 2), valid_mask (N,)).
+    """
+    if calib is None:
+        return np.zeros((0, 2)), np.zeros(len(pts_velo), dtype=bool)
+
+    N = len(pts_velo)
+    pts_h = np.hstack([pts_velo.astype(np.float64),
+                       np.ones((N, 1), dtype=np.float64)])
+
+    if isinstance(calib, _NuScenesCamCalib):
+        pts_cam = (calib.lidar_to_cam @ pts_h.T).T          # (N, 4)
+        depth   = pts_cam[:, 2]
+        pts_img = (calib.K @ pts_cam[:, :3].T).T            # (N, 3)
+    else:
+        if calib.P2 is None:
+            return np.zeros((0, 2)), np.zeros(N, dtype=bool)
+        pts_cam    = (calib.Tr_velo_to_cam @ pts_h.T).T
+        pts_rect   = (calib.R0_rect @ pts_cam.T).T
+        pts_rect_h = np.hstack([pts_rect, np.ones((N, 1), dtype=np.float64)])
+        pts_img    = (calib.P2 @ pts_rect_h.T).T
+        depth      = pts_img[:, 2]
+
+    with np.errstate(divide="ignore", invalid="ignore"):
+        u = np.where(depth > 0, pts_img[:, 0] / depth, np.nan)
+        v = np.where(depth > 0, pts_img[:, 1] / depth, np.nan)
+    mask   = (depth > 0) & np.isfinite(u) & np.isfinite(v)
+    pixels = np.column_stack([u, v])
+    return pixels, mask
+
+
+def _project_box_to_image(corners_velo: "np.ndarray", calib: Any) -> "np.ndarray | None":
+    pixels, mask = _project_velo_to_image(corners_velo, calib)
+    if mask.sum() < 4:
+        return None
+    return pixels
+
+
+def _draw_box_image(
+    ax: "plt.Axes",
+    corners_img: "np.ndarray",
+    color: str,
+    linewidth: float = 1.5,
+    alpha: float = 0.9,
+) -> None:
+    for i, j in _BOX_EDGES:
+        p1, p2 = corners_img[i], corners_img[j]
+        if np.any(np.isnan([p1, p2])):
+            continue
+        ax.plot([p1[0], p2[0]], [p1[1], p2[1]],
+                color=color, linewidth=linewidth, alpha=alpha)
+
+
+# ---------------------------------------------------------------------------
+# Drawing helpers — image panel
+# ---------------------------------------------------------------------------
+
+def draw_image_panel(
+    ax: "plt.Axes",
+    image_path: "pathlib.Path | None",
+    gt_labels: Any = None,
+    predictions: "list[dict] | None" = None,
+    calib: Any = None,
+    show_gt: bool = True,
+    title: str = "Camera image",
+) -> None:
+    ax.set_facecolor("#0d1117")
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    if image_path is None:
+        ax.axis("off")
+        ax.text(0.5, 0.5, "No image available",
+                ha="center", va="center", transform=ax.transAxes,
+                fontsize=9, color="#9ca3af")
+        ax.set_title(title, fontsize=8, color="white", pad=4)
+        return
+
+    try:
+        img = plt.imread(str(image_path))
+    except Exception as exc:
+        ax.axis("off")
+        ax.text(0.5, 0.5, f"Failed to load image:\n{exc}",
+                ha="center", va="center", transform=ax.transAxes,
+                fontsize=8, color="#f87171")
+        ax.set_title(title, fontsize=8, color="white", pad=4)
+        return
+
+    ax.imshow(img)
+
+    if calib is not None:
+        if show_gt and gt_labels:
+            for label in gt_labels:
+                corners_img = _project_box_to_image(
+                    np.asarray(label.corners_velo), calib
+                )
+                if corners_img is not None:
+                    _draw_box_image(ax, corners_img, color="#22c55e", linewidth=1.5)
+
+        for pred in (predictions or []):
+            corners_velo = np.asarray(pred["corners_velo"])
+            corners_img  = _project_box_to_image(corners_velo, calib)
+            if corners_img is not None:
+                _draw_box_image(ax, corners_img, color="#60a5fa", linewidth=1.5)
+
+    legend_items: list = []
+    if calib is not None and show_gt and gt_labels:
+        legend_items.append(mpatches.Patch(facecolor="none", edgecolor="#22c55e", label="GT"))
+    if calib is not None and predictions:
+        legend_items.append(mpatches.Patch(facecolor="none", edgecolor="#60a5fa", label="Prediction"))
+    if legend_items:
+        ax.legend(handles=legend_items, fontsize=6, loc="upper right",
+                  facecolor="#1f2937", labelcolor="white", framealpha=0.7)
+
+    ax.set_title(f"{title}  —  {image_path.name}", fontsize=8, color="white", pad=4)
+
+
+# ---------------------------------------------------------------------------
 # Figure assembly
 # ---------------------------------------------------------------------------
 
@@ -864,18 +1068,27 @@ def render_frame(
     roi_max: tuple[float, float],
     output_path: pathlib.Path,
     dataset_type: str = "kitti",
+    show_image: bool = False,
+    image_path: "pathlib.Path | None" = None,
+    cam_calib: "Any | None" = None,
 ) -> None:
     fig_height = 20 if show_isometric else 12
+    if show_image:
+        fig_height += 5
     fig = plt.figure(figsize=(18, fig_height))
     fig.patch.set_facecolor("#0d1117")
 
     if show_isometric:
-        gs = gridspec.GridSpec(3, 2, figure=fig,
-                               height_ratios=[2.5, 2.5, 1.2],
+        n_rows = 4 if show_image else 3
+        height_ratios = [2.5, 2.5, 1.2] + ([2.0] if show_image else [])
+        gs = gridspec.GridSpec(n_rows, 2, figure=fig,
+                               height_ratios=height_ratios,
                                hspace=0.42, wspace=0.22)
     else:
-        gs = gridspec.GridSpec(2, 2, figure=fig,
-                               height_ratios=[2.5, 1.2],
+        n_rows = 3 if show_image else 2
+        height_ratios = [2.5, 1.2] + ([2.0] if show_image else [])
+        gs = gridspec.GridSpec(n_rows, 2, figure=fig,
+                               height_ratios=height_ratios,
                                hspace=0.38, wspace=0.22)
 
     ax_clean = fig.add_subplot(gs[0, 0])
@@ -885,9 +1098,13 @@ def render_frame(
         ax_iso_atk   = fig.add_subplot(gs[1, 1], projection="3d")
         ax_grid  = fig.add_subplot(gs[2, 0])
         ax_stats = fig.add_subplot(gs[2, 1])
+        if show_image:
+            ax_img = fig.add_subplot(gs[3, :])
     else:
         ax_grid  = fig.add_subplot(gs[1, 0])
         ax_stats = fig.add_subplot(gs[1, 1])
+        if show_image:
+            ax_img = fig.add_subplot(gs[2, :])
 
     lidar       = kitti_frame.lidar
     dr          = frame_data.get("defense_result") or {}
@@ -957,6 +1174,17 @@ def render_frame(
                       attack_metadata=attack_metadata, dataset_type=dataset_type)
     draw_stats(ax_stats, frame_data)
 
+    if show_image:
+        resolved_calib = cam_calib if cam_calib is not None else getattr(kitti_frame, "kitti_calib", None)
+        draw_image_panel(
+            ax_img, image_path,
+            gt_labels=kitti_frame.labels if show_gt else None,
+            predictions=atk_preds,
+            calib=resolved_calib,
+            show_gt=show_gt,
+            title="Camera image (CAM_FRONT / image_2)",
+        )
+
     fig.savefig(output_path, dpi=110, bbox_inches="tight",
                 facecolor=fig.get_facecolor())
     plt.close(fig)
@@ -989,10 +1217,15 @@ def main() -> None:
                         help="Override dataset type from the experiment config (e.g. kitti, nuscenes)")
     parser.add_argument("--dataset-root", default=None, metavar="PATH",
                         help="Override dataset root from the experiment config")
-    parser.add_argument("--bev-range", nargs=2, type=float, metavar=("FORWARD", "SIDE"),
-                        default=None,
-                        help="Override BEV/isometric view extents: FORWARD metres ahead "
-                             "and SIDE metres each side (e.g. --bev-range 50 50)")
+    parser.add_argument("--bev-range", nargs="+", type=float,
+                        metavar="VALUE", default=None,
+                        help="Override BEV/isometric view extents. "
+                             "Usage: FORWARD SIDE [REAR]. "
+                             "REAR defaults to FORWARD (symmetric). "
+                             "E.g. --bev-range 50 20  or  --bev-range 50 20 30")
+    parser.add_argument("--show-image", action="store_true", default=False,
+                        help="Add a camera image panel below the existing panels "
+                             "(CAM_FRONT for NuScenes, image_2 for KITTI)")
     parser.add_argument("--backend", default="matplotlib",
                         choices=["matplotlib", "plotly"],
                         help="Rendering backend (plotly not yet implemented)")
@@ -1038,7 +1271,7 @@ def main() -> None:
         roi_min = tuple(
             defense_params.get("roi_min")
             or config.get("roi_min")
-            or [0.0, -5.0]
+            or [-30.0, -5.0]
         )
         roi_max = tuple(
             defense_params.get("roi_max")
@@ -1046,8 +1279,12 @@ def main() -> None:
             or [30.0, 5.0]
         )
         if args.bev_range:
-            fwd, side = args.bev_range
-            roi_min = (0.0, -side)
+            if len(args.bev_range) not in (2, 3):
+                sys.exit("--bev-range takes 2 or 3 values: FORWARD SIDE [REAR]")
+            fwd  = args.bev_range[0]
+            side = args.bev_range[1]
+            rear = args.bev_range[2] if len(args.bev_range) == 3 else fwd
+            roi_min = (-rear, -side)
             roi_max = (fwd, side)
 
         if frame_filter != "all":
@@ -1070,6 +1307,15 @@ def main() -> None:
         except Exception as e:
             sys.exit(f"Failed to open {dataset_type} dataset: {e}")
 
+        image_map: dict[str, pathlib.Path] = {}
+        cam_calib_map: dict[str, Any] = {}
+        if args.show_image:
+            image_map = build_image_map(dataset, dataset_type)
+            print(f"  Image map built: {len(image_map)} image(s) found")
+            if dataset_type == "nuscenes":
+                cam_calib_map = build_nuscenes_cam_calib_map(dataset)
+                print(f"  NuScenes cam calib map built: {len(cam_calib_map)} entries")
+
         for frame_data, kitti_frame in tqdm(zip(frames, dataset), total=len(frames), desc="Rendering", unit="frame"):
             frame_id = frame_data["frame_id"]
             render_frame(
@@ -1079,6 +1325,9 @@ def main() -> None:
                 roi_min=roi_min, roi_max=roi_max,
                 output_path=vis_dir / f"{frame_id}.png",
                 dataset_type=dataset_type,
+                show_image=args.show_image,
+                image_path=image_map.get(frame_id),
+                cam_calib=cam_calib_map.get(frame_id),
             )
         total_saved += len(frames)
 
