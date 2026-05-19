@@ -114,6 +114,10 @@ class RadialJitterDefense(BaseDefense):
     point_threshold
         σ_point (metres) above which a cluster is flagged as spoofed.
         Default 0.08 m — just below δ_inner's std of ~10 cm.  Sweep target.
+    use_centroid
+        Whether to compute and use σ_centroid for flagging.
+    use_point
+        Whether to compute and use σ_point (ICP-based) for flagging.
     history_source
         ``"dirty"`` (default) — use the post-attack history the vehicle
         received, so phantom objects inserted by the attack are present.
@@ -134,6 +138,8 @@ class RadialJitterDefense(BaseDefense):
         icp_max_correspondence_dist: float = 0.5,
         centroid_threshold: float = 0.3,
         point_threshold: float = 0.08,
+        use_centroid: bool = True,
+        use_point: bool = True,
         history_source: Literal["clean", "dirty"] = "dirty",
     ) -> None:
         self._temporal_window = temporal_window
@@ -148,6 +154,8 @@ class RadialJitterDefense(BaseDefense):
         self.icp_max_correspondence_dist = icp_max_correspondence_dist
         self.centroid_threshold = centroid_threshold
         self.point_threshold = point_threshold
+        self.use_centroid = use_centroid
+        self.use_point = use_point
         self.history_source = history_source
 
     @property
@@ -273,21 +281,21 @@ class RadialJitterDefense(BaseDefense):
             n_tested += 1
 
             # --- σ_centroid: captures δ_inter --------------------------------
-            # First-differences of per-frame centroid radial distances.
-            # Avoids the degree-of-freedom collapse that affects linear detrending
-            # on short chains (2 frames → detrended residuals are identically 0).
-            all_centroids = np.array(
-                [p.mean(axis=0) for p in valid_past] + [centroid_cur]
-            )  # (K+1, 3)
-            r_c = np.linalg.norm(all_centroids, axis=1)  # (K+1,)
-            sigma_centroid = float(np.std(np.diff(r_c)))
+            if self.use_centroid:
+                all_centroids = np.array(
+                    [p.mean(axis=0) for p in valid_past] + [centroid_cur]
+                )  # (K+1, 3)
+                r_c = np.linalg.norm(all_centroids, axis=1)  # (K+1,)
+                sigma_centroid = float(np.std(np.diff(r_c)))
+            else:
+                sigma_centroid = 0.0
 
             # --- σ_point: captures δ_inner + δ_rand --------------------------
-            sigma_point = self._compute_sigma_point(pts_cur, valid_past)
+            sigma_point = self._compute_sigma_point(pts_cur, valid_past) if self.use_point else 0.0
 
             flagged = (
-                sigma_centroid > self.centroid_threshold
-                or sigma_point > self.point_threshold
+                (self.use_centroid and sigma_centroid > self.centroid_threshold)
+                or (self.use_point and sigma_point > self.point_threshold)
             )
             if flagged:
                 n_flagged += 1
@@ -296,10 +304,10 @@ class RadialJitterDefense(BaseDefense):
                 "centroid": centroid_cur.tolist(),
                 "n_points_cur": int(len(pts_cur)),
                 "n_frames_associated": len(valid_past),
-                "sigma_centroid": round(sigma_centroid, 4),
-                "sigma_point": round(sigma_point, 4),
-                "flagged_centroid": sigma_centroid > self.centroid_threshold,
-                "flagged_point": sigma_point > self.point_threshold,
+                "sigma_centroid": round(sigma_centroid, 4) if self.use_centroid else None,
+                "sigma_point": round(sigma_point, 4) if self.use_point else None,
+                "flagged_centroid": (sigma_centroid > self.centroid_threshold) if self.use_centroid else None,
+                "flagged_point": (sigma_point > self.point_threshold) if self.use_point else None,
                 "flagged": flagged,
             })
 
