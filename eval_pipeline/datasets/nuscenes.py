@@ -153,6 +153,10 @@ class NuScenesDataset:
         When True, yield only annotated keyframes (2 Hz).  When False (default),
         yield every LiDAR sweep at the native 10 Hz cadence, which is required
         for temporal defenses that need densely-sampled history.
+    frame_ids
+        Optional allowlist of frame IDs to yield.  Frames are returned in
+        dataset-natural order filtered to this set.  No LiDAR is loaded during
+        filtering — only the token strings are compared.
     verbose
         Whether the NuScenes devkit should print loading progress.
     """
@@ -165,6 +169,7 @@ class NuScenesDataset:
         scene_names: list[str] | None = None,
         lidar_channel: str = "LIDAR_TOP",
         keyframes_only: bool = False,
+        frame_ids: list[str] | None = None,
         verbose: bool = False,
     ) -> None:
         try:
@@ -198,6 +203,9 @@ class NuScenesDataset:
 
         # Build flat ordered list of (scene_token, sample_data_token) pairs
         self._entries: list[tuple[str, str]] = self._build_entries()
+        if frame_ids is not None:
+            wanted = set(frame_ids)
+            self._entries = [(st, sdt) for st, sdt in self._entries if sdt[:16] in wanted]
         logger.info(
             "NuScenesDataset: %d frames from %s (%s)",
             len(self._entries), version, split or "all scenes",

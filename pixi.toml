@@ -24,7 +24,8 @@ tmux-ls = {cmd = "tmux attach -t $(tmux ls | fzf | cut -d: -f1)"}
 fm = {cmd = "python tools/format_metrics.py"}
 vm = {cmd = "python tools/visualise_metrics.py"}
 pr = {cmd = "python tools/plot_results.py"}
-vd = {cmd = "python tools/visualise_frames.py --isometric --kitti-root data/datasets/KITTI"}
+vd-kitti = {cmd = "python tools/visualise_frames.py --isometric --dataset-root data/datasets/KITTI"}
+vd-nuscenes = {cmd = "python tools/visualise_frames.py --isometric --dataset-root data/datasets/nuscenes-v1.0-mini --bev-range 50 20"}
 va = {cmd = "python tools/visualise_attack.py --attack ora --attack-params budget=200 --detector pointrcnn --show-boxes --isometric"}
 ff = {cmd = "python tools/filter_sort_frames.py results results_local/filtered_results"}
 sb = {cmd = "sbatch --partition a100 --gres=gpu:1 slurm_submit.sh"}
@@ -60,6 +61,7 @@ pandas = "*"
 [target.osx-arm64.pypi-dependencies]
 torch = "*"
 torchvision = "*"
+nuscenes-devkit = ">=1.1"
 
 [target.linux-64.pypi-dependencies]
 torch = { version = ">=2", index = "https://download.pytorch.org/whl/cu118" }

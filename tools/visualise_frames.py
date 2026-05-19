@@ -6,9 +6,12 @@ scripts/run_sweep.py --save-frames.
 
 Works with any defense (or no defense at all).  The bottom-left panel
 auto-detects what to show:
-  • VoidRegionDefense  → occupancy grid with shadow-cluster colouring
-  • any other defense  → generic key/value dump of defense metadata
-  • no defense         → "No defense metadata" placeholder
+  • VoidRegionDefense    → occupancy grid with shadow-cluster colouring
+  • RadialJitterDefense  → BEV of DBSCAN clusters coloured by σ_centroid,
+                           red rings on flagged clusters, amber ✕ on ORA
+                           reinjected centroids; σ_c / σ_p annotated per cluster
+  • any other defense    → generic key/value dump of defense metadata
+  • no defense           → "No defense metadata" placeholder
 
 Layout per frame (2 × 2 grid, or 3 × 2 with --isometric):
   Top-left:     Clean BEV   — lidar z-coloured, clean predictions, optional GT
@@ -56,8 +59,9 @@ if str(_PROJECT_ROOT) not in sys.path:
 DEFAULT_RESULTS_DIR = "results"
 VALID_FILTERS = {"all", "tp", "tn", "fp", "fn"}
 
-# Keys that identify void-region defense metadata
-_VOID_REGION_KEY = "empty_cell_positions"
+# Keys that identify defense metadata types
+_VOID_REGION_KEY     = "empty_cell_positions"
+_RADIAL_JITTER_KEY   = "cluster_details"
 
 # Metadata keys already rendered verbatim in draw_stats — omit from generic dump
 _STATS_SHOWN_META_KEYS = {
@@ -307,6 +311,17 @@ def _draw_aabb_3d(
                 color=color, linewidth=linewidth, alpha=alpha)
 
 
+def _transform_corners_iso(corners: Any, dataset_type: str) -> "np.ndarray":
+    """Apply BEV coordinate transform to a set of 3-D box corners."""
+    c = np.asarray(corners, dtype=float)
+    if dataset_type == "nuscenes":
+        new_c = c.copy()
+        new_c[:, 0] = c[:, 1]   # px = y (forward)
+        new_c[:, 1] = -c[:, 0]  # py = -x (left)
+        return new_c
+    return c
+
+
 def draw_isometric(
     ax: Any,
     lidar: "np.ndarray",
@@ -317,6 +332,7 @@ def draw_isometric(
     obstacle_centroids: list | None = None,
     roi_min: tuple[float, float] = (0.0, -5.0),
     roi_max: tuple[float, float] = (30.0, 5.0),
+    dataset_type: str = "kitti",
     title: str = "",
 ) -> None:
     ax.set_facecolor("#111827")
@@ -328,23 +344,27 @@ def draw_isometric(
     if len(pts) > 15_000:
         pts = pts[np.random.default_rng(0).choice(len(pts), 15_000, replace=False)]
     z_norm = np.clip(pts[:, 2], -3.0, 1.5)
-    ax.scatter(pts[:, 0], pts[:, 1], pts[:, 2], c=z_norm,
+    px, py = _to_bev_xy(pts, dataset_type)
+    ax.scatter(px, py, pts[:, 2], c=z_norm,
                s=0.3, cmap="viridis", alpha=0.6, rasterized=True, zorder=1,
                vmin=-3.0, vmax=1.5)
 
     if show_gt and gt_labels:
         for label in gt_labels:
-            _draw_box_3d(ax, label.corners_velo, color="#22c55e", linewidth=1.0)
+            _draw_box_3d(ax, _transform_corners_iso(label.corners_velo, dataset_type),
+                         color="#22c55e", linewidth=1.0)
 
     for pred in predictions:
-        _draw_box_3d(ax, pred["corners_velo"], color="#60a5fa", linewidth=1.0)
+        _draw_box_3d(ax, _transform_corners_iso(pred["corners_velo"], dataset_type),
+                     color="#60a5fa", linewidth=1.0)
 
     if obstacle_aabbs:
         for aabb in obstacle_aabbs:
             _draw_aabb_3d(ax, aabb[0], aabb[1], color="#ef4444")
     elif obstacle_centroids:
         for c in obstacle_centroids:
-            ax.scatter([c[0]], [c[1]], [c[2]], marker="x",
+            cpx, cpy = _to_bev_pt(c[0], c[1], dataset_type)
+            ax.scatter([cpx], [cpy], [c[2]], marker="x",
                        color="#ef4444", s=80, zorder=5, depthshade=False)
 
     x_span = roi_max[0] + 6
@@ -354,8 +374,10 @@ def draw_isometric(
     ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
     ax.set_zlim(-3.0, 3.0)
     ax.set_box_aspect([x_span, y_span, z_span])
-    ax.set_xlabel("x (m)", fontsize=7, color="white")
-    ax.set_ylabel("y (m)", fontsize=7, color="white")
+    fwd_label = "y / forward (m)" if dataset_type == "nuscenes" else "x / forward (m)"
+    left_label = "-x / left (m)" if dataset_type == "nuscenes" else "y / left (m)"
+    ax.set_xlabel(fwd_label, fontsize=7, color="white")
+    ax.set_ylabel(left_label, fontsize=7, color="white")
     ax.set_zlabel("z (m)", fontsize=7, color="white")
     ax.tick_params(colors="white", labelsize=6)
     ax.set_title(title, fontsize=8, color="white", pad=4)
@@ -365,11 +387,40 @@ def draw_isometric(
 
 
 # ---------------------------------------------------------------------------
+# Coordinate conventions
+# ---------------------------------------------------------------------------
+# KITTI velodyne:  x = forward, y = left,    z = up
+# NuScenes lidar:  x = right,   y = forward, z = up
+#
+# For BEV plots we always display (forward, left) on the (plot-x, plot-y) axes
+# so the ego vehicle always faces right and left is up — regardless of dataset.
+# The helpers below perform that remapping.
+
+def _to_bev_xy(pts: "np.ndarray", dataset_type: str) -> "tuple[np.ndarray, np.ndarray]":
+    """Return (plot_x, plot_y) arrays for an (N, 2+) sensor-frame point array."""
+    if dataset_type == "nuscenes":
+        return pts[:, 1], -pts[:, 0]   # forward=y → px,  left=-x → py
+    return pts[:, 0], pts[:, 1]        # KITTI: forward=x → px, left=y → py
+
+
+def _to_bev_pt(x: float, y: float, dataset_type: str) -> "tuple[float, float]":
+    """Return (plot_x, plot_y) for a single sensor-frame point."""
+    if dataset_type == "nuscenes":
+        return y, -x
+    return x, y
+
+
+# ---------------------------------------------------------------------------
 # Drawing helpers — BEV
 # ---------------------------------------------------------------------------
 
-def _draw_box_bev(ax: "plt.Axes", corners_velo: Any, color: str, linewidth: float = 1.5) -> None:
+def _draw_box_bev(
+    ax: "plt.Axes", corners_velo: Any, color: str,
+    linewidth: float = 1.5, dataset_type: str = "kitti",
+) -> None:
     xy = np.asarray(corners_velo)[:, :2]
+    px, py = _to_bev_xy(xy, dataset_type)
+    xy = np.column_stack([px, py])
     _, idx = np.unique(np.round(xy, 3), axis=0, return_index=True)
     xy_u = xy[idx]
     c = xy_u.mean(axis=0)
@@ -409,8 +460,10 @@ def draw_bev(
     show_gt: bool = True,
     obstacle_aabbs: list | None = None,
     obstacle_centroids: list | None = None,
+    rj_clusters: list[dict] | None = None,
     roi_min: tuple[float, float] = (0.0, -5.0),
     roi_max: tuple[float, float] = (30.0, 5.0),
+    dataset_type: str = "kitti",
     title: str = "",
 ) -> None:
     ax.set_facecolor("#111827")
@@ -419,7 +472,8 @@ def draw_bev(
     if len(pts) > 20_000:
         pts = pts[np.random.default_rng(0).choice(len(pts), 20_000, replace=False)]
     z_norm = np.clip(pts[:, 2], -3.0, 1.5)
-    ax.scatter(pts[:, 0], pts[:, 1], c=z_norm, s=0.4,
+    px, py = _to_bev_xy(pts, dataset_type)
+    ax.scatter(px, py, c=z_norm, s=0.4,
                cmap="viridis", alpha=0.7, rasterized=True, zorder=1)
 
     roi_rect = mpatches.Rectangle(
@@ -432,24 +486,32 @@ def draw_bev(
 
     if show_gt and gt_labels:
         for label in gt_labels:
-            _draw_box_bev(ax, label.corners_velo, color="#22c55e", linewidth=1.2)
+            _draw_box_bev(ax, label.corners_velo, color="#22c55e", linewidth=1.2,
+                          dataset_type=dataset_type)
 
     for pred in predictions:
-        _draw_box_bev(ax, pred["corners_velo"], color="#60a5fa", linewidth=1.2)
+        _draw_box_bev(ax, pred["corners_velo"], color="#60a5fa", linewidth=1.2,
+                      dataset_type=dataset_type)
 
     if obstacle_aabbs:
         for aabb in obstacle_aabbs:
             _draw_aabb_bev(ax, aabb[0], aabb[1], color="#ef4444")
     elif obstacle_centroids:
         for c in obstacle_centroids:
-            ax.plot(c[0], c[1], "x", color="#ef4444",
+            cpx, cpy = _to_bev_pt(c[0], c[1], dataset_type)
+            ax.plot(cpx, cpy, "x", color="#ef4444",
                     markersize=10, markeredgewidth=2, zorder=5)
+
+    if rj_clusters:
+        _draw_rj_clusters_bev(ax, rj_clusters, dataset_type=dataset_type)
 
     ax.set_xlim(-3, roi_max[0] + 3)
     ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
     ax.set_aspect("equal")
-    ax.set_xlabel("x (m)", fontsize=8, color="white")
-    ax.set_ylabel("y (m)", fontsize=8, color="white")
+    fwd_label = "y / forward (m)" if dataset_type == "nuscenes" else "x / forward (m)"
+    left_label = "-x / left (m)" if dataset_type == "nuscenes" else "y / left (m)"
+    ax.set_xlabel(fwd_label, fontsize=8, color="white")
+    ax.set_ylabel(left_label, fontsize=8, color="white")
     ax.tick_params(colors="white", labelsize=7)
     for spine in ax.spines.values():
         spine.set_edgecolor("#374151")
@@ -460,6 +522,8 @@ def draw_bev(
         legend_items.insert(0, mpatches.Patch(facecolor="none", edgecolor="#22c55e", label="GT"))
     if obstacle_aabbs or obstacle_centroids:
         legend_items.append(mpatches.Patch(facecolor="#ef4444", alpha=0.4, label="Obstacle cluster"))
+    if rj_clusters:
+        legend_items.append(mpatches.Patch(facecolor="#fbbf24", alpha=0.7, label="RJ cluster (σ_c)"))
     ax.legend(handles=legend_items, fontsize=6, loc="upper right",
               facecolor="#1f2937", labelcolor="white", framealpha=0.7)
 
@@ -467,6 +531,139 @@ def draw_bev(
 # ---------------------------------------------------------------------------
 # Drawing helpers — bottom-left panel
 # ---------------------------------------------------------------------------
+
+def _draw_rj_clusters_bev(
+    ax: "plt.Axes", clusters: list[dict], dataset_type: str = "kitti",
+) -> None:
+    """Overlay radial-jitter clusters on a BEV axes, coloured by σ_centroid."""
+    if not clusters:
+        return
+    raw_xy  = np.array([[c["centroid"][0], c["centroid"][1]] for c in clusters])
+    pxs, pys = _to_bev_xy(raw_xy, dataset_type)
+    sigmas  = [c.get("sigma_centroid", 0.0) for c in clusters]
+    flagged = [c.get("flagged", False) for c in clusters]
+    sizes   = [max(30, min(200, (c.get("n_points_cur") or 20) * 3)) for c in clusters]
+
+    ax.scatter(pxs, pys, c=sigmas, cmap="RdYlGn_r", vmin=0.0, vmax=0.8,
+               s=sizes, alpha=0.75, zorder=4, edgecolors="none")
+
+    fx = [x for x, f in zip(pxs, flagged) if f]
+    fy = [y for y, f in zip(pys, flagged) if f]
+    fs = [s for s, f in zip(sizes, flagged) if f]
+    if fx:
+        ax.scatter(fx, fy, s=[s * 2.2 for s in fs],
+                   facecolors="none", edgecolors="#ef4444", linewidths=1.8, zorder=5)
+
+
+def draw_radial_jitter_panel(
+    ax: "plt.Axes",
+    metadata: dict,
+    attack_metadata: dict | None = None,
+    roi_min: tuple[float, float] = (0.0, -5.0),
+    roi_max: tuple[float, float] = (30.0, 5.0),
+    dataset_type: str = "kitti",
+) -> None:
+    """RadialJitterDefense bottom-left panel.
+
+    Draws a wide-view BEV with:
+      • DBSCAN cluster centroids coloured by σ_centroid (green→red colormap)
+      • Red ring around flagged clusters
+      • Amber ✕ markers at ORA reinjected centroids (when attack_metadata present)
+      • Colorbar with centroid_threshold marked as a dashed line
+    """
+    ax.set_facecolor("#111827")
+
+    clusters           = metadata.get("cluster_details") or []
+    centroid_threshold = metadata.get("centroid_threshold", 0.25)
+    point_threshold    = metadata.get("point_threshold", 0.08)
+    n_tested           = metadata.get("n_clusters_tested", len(clusters))
+    n_flagged          = metadata.get("n_clusters_flagged", 0)
+
+    sc = None
+    if clusters:
+        raw_xy  = np.array([[c["centroid"][0], c["centroid"][1]] for c in clusters])
+        pxs, pys = _to_bev_xy(raw_xy, dataset_type)
+        sigmas  = [c.get("sigma_centroid", 0.0) for c in clusters]
+        sp      = [c.get("sigma_point", 0.0) for c in clusters]
+        flagged = [c.get("flagged", False) for c in clusters]
+        sizes   = [max(30, min(300, (c.get("n_points_cur") or 20) * 4)) for c in clusters]
+
+        vmax = max(centroid_threshold * 4, max(sigmas) * 1.05 if sigmas else centroid_threshold * 4)
+        norm = matplotlib.colors.Normalize(vmin=0.0, vmax=vmax)
+        sc   = ax.scatter(pxs, pys, c=sigmas, cmap="RdYlGn_r", norm=norm,
+                          s=sizes, alpha=0.85, zorder=3, edgecolors="none")
+
+        fx = [x for x, f in zip(pxs, flagged) if f]
+        fy = [y for y, f in zip(pys, flagged) if f]
+        fs = [s for s, f in zip(sizes, flagged) if f]
+        if fx:
+            ax.scatter(fx, fy, s=[s * 2.2 for s in fs],
+                       facecolors="none", edgecolors="#ef4444", linewidths=2, zorder=4)
+
+        # Annotate each cluster with its σ_c / σ_p values
+        for px, py, sc_val, sp_val in zip(pxs, pys, sigmas, sp):
+            ax.annotate(
+                f"{sc_val:.2f}\n{sp_val:.3f}",
+                xy=(px, py), fontsize=4.5, color="white", ha="center", va="bottom",
+                xytext=(0, 5), textcoords="offset points", zorder=6,
+            )
+
+    # Reinjected centroids from attack metadata
+    has_reinjected = False
+    for obj in ((attack_metadata or {}).get("removed_per_obj") or []):
+        rc = obj.get("reinjected_centroid")
+        if rc and len(rc) == 3:
+            rpx, rpy = _to_bev_pt(rc[0], rc[1], dataset_type)
+            ax.plot(rpx, rpy, "x", color="#f59e0b",
+                    markersize=9, markeredgewidth=2, zorder=5)
+            has_reinjected = True
+
+    # Axes styling
+    x_pad = max(20.0, (roi_max[0] - roi_min[0]) * 0.5)
+    y_pad = max(20.0, (roi_max[1] - roi_min[1]) * 0.5)
+    cx = (roi_min[0] + roi_max[0]) / 2
+    cy = (roi_min[1] + roi_max[1]) / 2
+    ax.set_xlim(cx - x_pad, cx + x_pad)
+    ax.set_ylim(cy - y_pad, cy + y_pad)
+    ax.set_aspect("equal")
+    ax.set_xlabel("x (m)", fontsize=7, color="white")
+    ax.set_ylabel("y (m)", fontsize=7, color="white")
+    ax.tick_params(colors="white", labelsize=6)
+    for spine in ax.spines.values():
+        spine.set_edgecolor("#374151")
+
+    ax.set_title(
+        f"RJ Clusters — tested={n_tested}  flagged={n_flagged}"
+        f"  σ_c thr={centroid_threshold}  σ_p thr={point_threshold}",
+        fontsize=7, color="white", pad=4,
+    )
+
+    if sc is not None:
+        cb = plt.colorbar(sc, ax=ax, fraction=0.03, pad=0.02)
+        cb.set_label("σ_centroid (m)", fontsize=6, color="white")
+        cb.ax.tick_params(colors="white", labelsize=5)
+        cb.ax.axhline(centroid_threshold, color="#ef4444", linewidth=1.5, linestyle="--")
+
+    legend_items: list = []
+    if clusters:
+        legend_items.append(
+            plt.Line2D([0], [0], marker="o", color="w", linestyle="None",
+                       markerfacecolor="#fbbf24", markersize=6, label="cluster (σ_c colour)")
+        )
+    if any(c.get("flagged") for c in clusters):
+        legend_items.append(
+            plt.Line2D([0], [0], marker="o", color="#ef4444", linestyle="None",
+                       markerfacecolor="none", markersize=8, markeredgewidth=2, label="flagged")
+        )
+    if has_reinjected:
+        legend_items.append(
+            plt.Line2D([0], [0], marker="x", color="#f59e0b", linestyle="None",
+                       markersize=7, markeredgewidth=2, label="reinjected")
+        )
+    if legend_items:
+        ax.legend(handles=legend_items, fontsize=6, loc="upper right",
+                  facecolor="#1f2937", labelcolor="white", framealpha=0.7)
+
 
 def draw_occupancy_grid(
     ax: "plt.Axes",
@@ -556,10 +753,19 @@ def _draw_bottom_left(
     metadata: dict,
     roi_min: tuple[float, float],
     roi_max: tuple[float, float],
+    attack_metadata: dict | None = None,
+    dataset_type: str = "kitti",
 ) -> None:
     """Dispatch to the appropriate bottom-left panel based on metadata content."""
     if _VOID_REGION_KEY in metadata:
         draw_occupancy_grid(ax, metadata, roi_min=roi_min, roi_max=roi_max)
+    elif _RADIAL_JITTER_KEY in metadata:
+        draw_radial_jitter_panel(
+            ax, metadata,
+            attack_metadata=attack_metadata,
+            roi_min=roi_min, roi_max=roi_max,
+            dataset_type=dataset_type,
+        )
     else:
         draw_defense_metadata(ax, metadata)
 
@@ -589,7 +795,7 @@ def draw_stats(ax: "plt.Axes", frame_data: dict) -> None:
         f"Attacked preds   : {len(frame_data.get('attacked_predictions') or [])}",
     ]
 
-    # Void-region specific block — only shown when those keys are present
+    # Defense-specific stats blocks
     void_keys = {"n_empty_cells", "n_clusters", "n_obstacle_clusters"}
     if any(k in meta for k in void_keys):
         lines += [
@@ -598,6 +804,28 @@ def draw_stats(ax: "plt.Axes", frame_data: dict) -> None:
             f"Shadow clusters  : {meta.get('n_clusters', 'N/A')}",
             f"Obstacle clusters: {meta.get('n_obstacle_clusters', 'N/A')}",
         ]
+    elif _RADIAL_JITTER_KEY in meta:
+        clusters = meta.get("cluster_details") or []
+        lines += [
+            "",
+            f"Clusters tested  : {meta.get('n_clusters_tested', 'N/A')}",
+            f"Clusters flagged : {meta.get('n_clusters_flagged', 'N/A')}",
+            f"σ_c threshold    : {meta.get('centroid_threshold', 'N/A')}",
+            f"σ_p threshold    : {meta.get('point_threshold', 'N/A')}",
+        ]
+        if clusters:
+            lines.append("")
+            lines.append("Clusters (σ_c / σ_p / flagged):")
+            for c in clusters[:8]:
+                cx, cy = c["centroid"][0], c["centroid"][1]
+                lines.append(
+                    f"  ({cx:5.1f},{cy:5.1f})"
+                    f"  σ_c={c.get('sigma_centroid', 0):.3f}"
+                    f"  σ_p={c.get('sigma_point', 0):.3f}"
+                    f"  {'FLAG' if c.get('flagged') else '    '}"
+                )
+            if len(clusters) > 8:
+                lines.append(f"  … +{len(clusters) - 8} more")
     else:
         # Generic: show scalar metadata fields not already in the dedicated panel
         scalars = [
@@ -635,6 +863,7 @@ def render_frame(
     roi_min: tuple[float, float],
     roi_max: tuple[float, float],
     output_path: pathlib.Path,
+    dataset_type: str = "kitti",
 ) -> None:
     fig_height = 20 if show_isometric else 12
     fig = plt.figure(figsize=(18, fig_height))
@@ -668,11 +897,15 @@ def render_frame(
     raw_atk_preds = frame_data.get("attacked_predictions")
     atk_preds   = raw_atk_preds if raw_atk_preds is not None else clean_preds
 
+    attack_metadata = frame_data.get("attack_metadata") or {}
+
     obstacle_aabbs = meta.get("obstacle_cluster_aabbs") or None
     obstacle_centroids = (
         meta.get("obstacle_centroids")
         if not meta.get("obstacle_cluster_aabbs") else None
     )
+    rj_clusters = (meta.get("cluster_details") or None) if _RADIAL_JITTER_KEY in meta else None
+
     atk_title = (
         f"{'Attacked' if is_attacked else 'Clean (no attack)'} BEV"
         f"  |  {len(atk_preds)} prediction(s)"
@@ -685,6 +918,7 @@ def render_frame(
         gt_labels=kitti_frame.labels if show_gt else None,
         show_gt=show_gt,
         roi_min=roi_min, roi_max=roi_max,
+        dataset_type=dataset_type,
         title=f"Clean BEV  |  {len(clean_preds)} prediction(s)",
     )
     draw_bev(
@@ -693,7 +927,9 @@ def render_frame(
         show_gt=show_gt,
         obstacle_aabbs=obstacle_aabbs,
         obstacle_centroids=obstacle_centroids,
+        rj_clusters=rj_clusters,
         roi_min=roi_min, roi_max=roi_max,
+        dataset_type=dataset_type,
         title=atk_title,
     )
 
@@ -703,6 +939,7 @@ def render_frame(
             gt_labels=kitti_frame.labels if show_gt else None,
             show_gt=show_gt,
             roi_min=roi_min, roi_max=roi_max,
+            dataset_type=dataset_type,
             title=f"Clean isometric  |  {len(clean_preds)} prediction(s)",
         )
         draw_isometric(
@@ -712,10 +949,12 @@ def render_frame(
             obstacle_aabbs=obstacle_aabbs,
             obstacle_centroids=obstacle_centroids,
             roi_min=roi_min, roi_max=roi_max,
+            dataset_type=dataset_type,
             title=atk_title.replace("BEV", "isometric"),
         )
 
-    _draw_bottom_left(ax_grid, meta, roi_min=roi_min, roi_max=roi_max)
+    _draw_bottom_left(ax_grid, meta, roi_min=roi_min, roi_max=roi_max,
+                      attack_metadata=attack_metadata, dataset_type=dataset_type)
     draw_stats(ax_stats, frame_data)
 
     fig.savefig(output_path, dpi=110, bbox_inches="tight",
@@ -750,6 +989,10 @@ def main() -> None:
                         help="Override dataset type from the experiment config (e.g. kitti, nuscenes)")
     parser.add_argument("--dataset-root", default=None, metavar="PATH",
                         help="Override dataset root from the experiment config")
+    parser.add_argument("--bev-range", nargs=2, type=float, metavar=("FORWARD", "SIDE"),
+                        default=None,
+                        help="Override BEV/isometric view extents: FORWARD metres ahead "
+                             "and SIDE metres each side (e.g. --bev-range 50 50)")
     parser.add_argument("--backend", default="matplotlib",
                         choices=["matplotlib", "plotly"],
                         help="Rendering backend (plotly not yet implemented)")
@@ -802,6 +1045,10 @@ def main() -> None:
             or config.get("roi_max")
             or [30.0, 5.0]
         )
+        if args.bev_range:
+            fwd, side = args.bev_range
+            roi_min = (0.0, -side)
+            roi_max = (fwd, side)
 
         if frame_filter != "all":
             frames = [f for f in frames if _frame_outcome(f) == frame_filter]
@@ -831,6 +1078,7 @@ def main() -> None:
                 show_isometric=args.isometric,
                 roi_min=roi_min, roi_max=roi_max,
                 output_path=vis_dir / f"{frame_id}.png",
+                dataset_type=dataset_type,
             )
         total_saved += len(frames)
 
