@@ -108,12 +108,14 @@ def _defense_registry() -> dict[str, type]:
     from .defenses.fsd import FSDDefense
     from .defenses.carlo import CARLODefense
     from .defenses.radial_jitter import RadialJitterDefense
+    from .defenses.wasserstein_anisotropy import WassersteinAnisotropyDefense
     return {
         "void_region": VoidRegionDefense,
         "tc2": TC2Defense,
         "fsd": FSDDefense,
         "carlo": CARLODefense,
         "radial_jitter": RadialJitterDefense,
+        "wasserstein": WassersteinAnisotropyDefense
     }
 
 

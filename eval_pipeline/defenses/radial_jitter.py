@@ -68,6 +68,12 @@ from sklearn.cluster import DBSCAN
 
 from ..base import BaseDefense
 from ..types import DetectionResult, Frame, FrameHistory
+from ._multiframe_common import (
+    associate_cluster_chain,
+    compensate_history,
+    dbscan_past_sweeps,
+    remove_ego_box,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -203,11 +209,17 @@ class RadialJitterDefense(BaseDefense):
             )
 
         # Ego-compensate past sweeps into the current sensor frame (oldest-first)
-        past_xyz_list = self._compensate_history(frame, hist)
+        past_xyz_list = compensate_history(
+            frame, hist, self.ground_z_max,
+            self.ego_front, self.ego_rear, self.ego_side,
+        )
 
         # DBSCAN the current frame (above-ground only)
         cur_xyz = frame.lidar[:, :3]
-        cur_xyz_filt = self._remove_ego_box(cur_xyz[cur_xyz[:, 2] > self.ground_z_max])
+        cur_xyz_filt = remove_ego_box(
+            cur_xyz[cur_xyz[:, 2] > self.ground_z_max],
+            self.ego_front, self.ego_rear, self.ego_side,
+        )
 
         if len(cur_xyz_filt) == 0:
             return DetectionResult(
@@ -231,20 +243,9 @@ class RadialJitterDefense(BaseDefense):
             )
 
         # DBSCAN each past compensated sweep (same parameters).
-        # past_clustered[i] = (xyz_filt, labels) for the i-th past frame, oldest-first.
-        past_clustered: list[tuple[np.ndarray, np.ndarray]] = []
-        for xyz_past in past_xyz_list:
-            if len(xyz_past) < self.dbscan_min_samples:
-                past_clustered.append((xyz_past, np.full(len(xyz_past), -1, dtype=int)))
-                continue
-            lbl_past = DBSCAN(
-                eps=self.dbscan_eps,
-                min_samples=self.dbscan_min_samples,
-                n_jobs=1,
-            ).fit_predict(xyz_past)
-            past_clustered.append((xyz_past, lbl_past))
-
-        n_past = len(past_clustered)
+        past_clustered = dbscan_past_sweeps(
+            past_xyz_list, self.dbscan_eps, self.dbscan_min_samples,
+        )
 
         cluster_details: list[dict] = []
         n_tested = 0
@@ -257,38 +258,10 @@ class RadialJitterDefense(BaseDefense):
 
             centroid_cur = pts_cur.mean(axis=0)
 
-            # Chain-based backward tracking: start from the current centroid,
-            # match the most recent past frame, then use that matched cluster's
-            # centroid as the source for the next frame back, and so on.
-            # A broken link (no cluster within motion_tolerance) stops the chain.
-            valid_past_reversed: list[np.ndarray] = []
-            source_centroid = centroid_cur
-            for i in reversed(range(n_past)):  # most recent → oldest
-                xyz_past, lbl_past = past_clustered[i]
-
-                past_unique = [l for l in set(lbl_past) if l != -1]
-                if not past_unique:
-                    break
-
-                past_centroids = np.array([
-                    xyz_past[lbl_past == l].mean(axis=0) for l in past_unique
-                ])
-                dists = np.linalg.norm(past_centroids - source_centroid, axis=1)
-                dists_gated = np.where(dists < self.motion_tolerance, dists, np.inf)
-                best_idx = int(np.argmin(dists_gated))
-
-                if not np.isfinite(dists_gated[best_idx]):
-                    break  # chain broken
-
-                best_pts = xyz_past[lbl_past == past_unique[best_idx]]
-                if len(best_pts) < self.min_points_per_cluster:
-                    break  # cluster too sparse to continue
-
-                valid_past_reversed.append(best_pts)
-                source_centroid = best_pts.mean(axis=0)
-
-            # Reverse to restore chronological order (oldest first → current last)
-            valid_past = valid_past_reversed[::-1]
+            valid_past = associate_cluster_chain(
+                centroid_cur, past_clustered,
+                self.motion_tolerance, self.min_points_per_cluster,
+            )
 
             if len(valid_past) < self.min_frames_associated:
                 continue
@@ -350,40 +323,6 @@ class RadialJitterDefense(BaseDefense):
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
-
-    def _remove_ego_box(self, xyz: np.ndarray) -> np.ndarray:
-        """Remove points inside the ego-vehicle bounding box."""
-        in_box = (
-            (xyz[:, 0] <= self.ego_front)
-            & (xyz[:, 0] >= -self.ego_rear)
-            & (np.abs(xyz[:, 1]) <= self.ego_side)
-        )
-        return xyz[~in_box]
-
-    def _compensate_history(
-        self,
-        current_frame: Frame,
-        hist: deque[Frame],
-    ) -> list[np.ndarray]:
-        """Return past sweeps transformed into the current sensor frame.
-
-        Each entry is an (N_t, 3) float32 xyz array with ground points removed,
-        in the same order (oldest-first) as hist.
-        """
-        cur_inv = np.linalg.inv(current_frame.nuscenes_ego_pose.astype(np.float64))
-        result: list[np.ndarray] = []
-        for f in hist:
-            if f.nuscenes_ego_pose is None:
-                logger.warning(
-                    "RadialJitterDefense: past frame %s missing ego pose — skipping",
-                    f.frame_id,
-                )
-                continue
-            T = cur_inv @ f.nuscenes_ego_pose.astype(np.float64)
-            pts = f.lidar[:, :3].astype(np.float64)
-            compensated = (T[:3, :3] @ pts.T + T[:3, 3:4]).T.astype(np.float32)
-            result.append(self._remove_ego_box(compensated[compensated[:, 2] > self.ground_z_max]))
-        return result
 
     def _compute_sigma_point(
         self,
