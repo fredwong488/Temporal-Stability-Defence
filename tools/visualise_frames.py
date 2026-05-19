@@ -607,11 +607,25 @@ def _draw_rj_clusters_bev(
     """Overlay radial-jitter clusters on a BEV axes, coloured by σ_centroid."""
     if not clusters:
         return
-    raw_xy  = np.array([[c["centroid"][0], c["centroid"][1]] for c in clusters])
+
+    active   = [c for c in clusters if c.get("skipped") is None]
+    skipped  = [c for c in clusters if c.get("skipped") is not None]
+
+    # Skipped clusters: small grey crosses
+    if skipped:
+        sk_xy = np.array([[c["centroid"][0], c["centroid"][1]] for c in skipped])
+        sx, sy = _to_bev_xy(sk_xy, dataset_type)
+        ax.scatter(sx, sy, marker="x", c="#6b7280", s=20, alpha=0.5,
+                   linewidths=0.8, zorder=3)
+
+    if not active:
+        return
+
+    raw_xy  = np.array([[c["centroid"][0], c["centroid"][1]] for c in active])
     pxs, pys = _to_bev_xy(raw_xy, dataset_type)
-    sigmas  = [c.get("sigma_centroid", 0.0) for c in clusters]
-    flagged = [c.get("flagged", False) for c in clusters]
-    sizes   = [max(30, min(200, (c.get("n_points_cur") or 20) * 3)) for c in clusters]
+    sigmas  = [c.get("sigma_centroid") or 0.0 for c in active]
+    flagged = [c.get("flagged", False) for c in active]
+    sizes   = [max(30, min(200, (c.get("n_points_cur") or 20) * 3)) for c in active]
 
     ax.scatter(pxs, pys, c=sigmas, cmap="RdYlGn_r", vmin=0.0, vmax=0.8,
                s=sizes, alpha=0.75, zorder=4, edgecolors="none")

@@ -197,10 +197,20 @@ class WassersteinAnisotropyDefense(BaseDefense):
 
         for lbl in unique_labels:
             pts_cur = cur_xyz_filt[labels_cur == lbl]
-            if len(pts_cur) < self.min_points_per_cluster:
-                continue
-
             centroid_cur = pts_cur.mean(axis=0)
+
+            if len(pts_cur) < self.min_points_per_cluster:
+                cluster_details.append({
+                    "centroid": centroid_cur.tolist(),
+                    "n_points_cur": int(len(pts_cur)),
+                    "n_frames_associated": 0,
+                    "w_r": None,
+                    "w_perp": None,
+                    "rho": None,
+                    "flagged": False,
+                    "skipped": "too_few_points",
+                })
+                continue
 
             valid_past = associate_cluster_chain(
                 centroid_cur, past_clustered,
@@ -208,6 +218,16 @@ class WassersteinAnisotropyDefense(BaseDefense):
             )
 
             if len(valid_past) < self.min_frames_associated:
+                cluster_details.append({
+                    "centroid": centroid_cur.tolist(),
+                    "n_points_cur": int(len(pts_cur)),
+                    "n_frames_associated": len(valid_past),
+                    "w_r": None,
+                    "w_perp": None,
+                    "rho": None,
+                    "flagged": False,
+                    "skipped": "too_few_frames",
+                })
                 continue
 
             n_tested += 1
