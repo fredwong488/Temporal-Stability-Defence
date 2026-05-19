@@ -393,6 +393,9 @@ def main() -> None:
         dataset_params["root"] = KITTI_ROOT
         dataset_params["frame_ids"] = frame_ids
 
+    extra_attack_params = _parse_kv_params(args.attack_params or [])
+    extra_defense_params = _parse_kv_params(args.defense_params or [])
+
     logging.info("Start time      : %s", start_time)
     logging.info("Run dir      : %s", run_dir)
     logging.info("Dataset      : %s", dataset_type)
@@ -429,9 +432,6 @@ def main() -> None:
     pr_all: list[dict] = []
     recall_iou_all: list[dict] = []
     detection_rate_rows: list[dict] = []
-
-    extra_attack_params = _parse_kv_params(args.attack_params or [])
-    extra_defense_params = _parse_kv_params(args.defense_params or [])
 
     base_attack_params: dict = {"target_types": args.classes} if args.attack else {}
     base_attack_params.update(extra_attack_params)

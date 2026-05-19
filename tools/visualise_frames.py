@@ -1026,6 +1026,7 @@ def draw_image_panel(
         ax.set_title(title, fontsize=8, color="white", pad=4)
         return
 
+    img_h, img_w = img.shape[:2]
     ax.imshow(img)
 
     if calib is not None:
@@ -1042,6 +1043,9 @@ def draw_image_panel(
             corners_img  = _project_box_to_image(corners_velo, calib)
             if corners_img is not None:
                 _draw_box_image(ax, corners_img, color="#60a5fa", linewidth=1.5)
+
+    ax.set_xlim(0, img_w - 1)
+    ax.set_ylim(img_h - 1, 0)
 
     legend_items: list = []
     if calib is not None and show_gt and gt_labels:
