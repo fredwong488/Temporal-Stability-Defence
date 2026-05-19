@@ -65,6 +65,25 @@ VALID_SWEEP_TARGETS = {"attack", "defense"}
 IMAGESETS_DIR = _PROJECT_ROOT / "OpenPCDet" / "data" / "kitti" / "ImageSets"
 
 
+def _parse_kv_params(pairs: list[str]) -> dict:
+    """Parse KEY=VALUE strings into a dict, auto-casting values to int/float/str."""
+    out: dict = {}
+    for item in pairs:
+        if "=" not in item:
+            raise argparse.ArgumentTypeError(
+                f"Invalid parameter '{item}': expected KEY=VALUE format"
+            )
+        key, _, raw = item.partition("=")
+        try:
+            out[key] = int(raw)
+        except ValueError:
+            try:
+                out[key] = float(raw)
+            except ValueError:
+                out[key] = raw
+    return out
+
+
 def get_split_frame_ids(split: str, num_frames: int | None = None) -> list[str]:
     """Return frame IDs from an OpenPCDet ImageSets split file."""
     split_file = IMAGESETS_DIR / f"{split}.txt"
@@ -302,6 +321,18 @@ def main() -> None:
         help="Sato 2024 spoofing noise preset for attack reinjection "
              "(default vlp32c; 'none' disables δ_inner/δ_inter/δ_rand).",
     )
+    parser.add_argument(
+        "--attack-params", nargs="*", default=[], metavar="KEY=VALUE",
+        help="Extra fixed attack parameters as KEY=VALUE pairs (e.g. --attack-params eps=0.1 n_iter=10). "
+             "Values are auto-cast to int, float, or string. These are merged into base attack params "
+             "and are NOT the swept parameter.",
+    )
+    parser.add_argument(
+        "--defense-params", nargs="*", default=[], metavar="KEY=VALUE",
+        help="Extra fixed defense parameters as KEY=VALUE pairs (e.g. --defense-params threshold=0.3). "
+             "Values are auto-cast to int, float, or string. These are merged into base defense params "
+             "and are NOT the swept parameter.",
+    )
     args = parser.parse_args()
 
     if args.classes is None:
@@ -383,6 +414,10 @@ def main() -> None:
     logging.info("Sweep target : %s", args.sweep_target)
     logging.info("Sweep param  : %s", args.sweep_param)
     logging.info("Sweep values : %s", sweep_values)
+    if extra_attack_params:
+        logging.info("Atk extras   : %s", extra_attack_params)
+    if extra_defense_params:
+        logging.info("Def extras   : %s", extra_defense_params)
     if dataset_type == "kitti":
         logging.info("Split        : %s", args.kitti_split if not args.kitti_frames else "custom")
         logging.info("Frames       : %d  (%s … %s)", len(frame_ids), frame_ids[0], frame_ids[-1])
@@ -395,13 +430,18 @@ def main() -> None:
     recall_iou_all: list[dict] = []
     detection_rate_rows: list[dict] = []
 
+    extra_attack_params = _parse_kv_params(args.attack_params or [])
+    extra_defense_params = _parse_kv_params(args.defense_params or [])
+
     base_attack_params: dict = {"target_types": args.classes} if args.attack else {}
+    base_attack_params.update(extra_attack_params)
     if args.attack == "ora" and args.attack_noise_preset != "none":
         from eval_pipeline.utils.spoofing_noise import SpoofingNoiseModel
         base_attack_params["noise_model"] = SpoofingNoiseModel.from_preset(
             args.attack_noise_preset, seed=args.attack_fraction_seed
         )
     base_defense_params: dict = {}
+    base_defense_params.update(extra_defense_params)
 
     # Build the iteration list: when sweeping attack, prepend a no-attack baseline
     # represented by the sentinel string "no_attack" in the sweep_param column.
