@@ -19,14 +19,15 @@ radially offset by fresh δ_inter each frame.
 
 Two complementary statistics capture this:
 
-    σ_centroid  — std of consecutive first-differences of the per-frame cluster-
-                  centroid radial distance.  Captures δ_inter (~35 cm).
-                  Using first-differences rather than a detrended series removes
-                  all smooth motion components without consuming degrees of freedom,
-                  so it is effective even on short chains (K=2 → 1 difference).
-                  For δ_inter i.i.d. N(0, 0.35 m), consecutive differences are
-                  N(0, 0.35√2 ≈ 0.50 m); for real clusters, Δr reflects only
-                  sensor noise + residual acceleration (~2–5 cm).
+    σ_centroid  — std of residuals after fitting a linear velocity model
+                  r(t) = a + bt to the per-frame cluster-centroid radial
+                  distances.  Captures δ_inter (~35 cm).
+                  Subtracting the linear fit removes constant-velocity radial
+                  motion as well as the mean, so σ_centroid reflects only the
+                  frame-to-frame scatter around a straight-line trajectory.
+                  For δ_inter i.i.d. N(0, 0.35 m) the residual std is ~0.35 m;
+                  for real clusters undergoing smooth motion the residuals
+                  reflect only sensor noise + residual acceleration (~2–5 cm).
 
     σ_point     — std of per-correspondence ICP radial residuals pooled across
                   frames.  For each past-frame cluster, ICP gives explicit
@@ -108,12 +109,20 @@ class RadialJitterDefense(BaseDefense):
         Maximum point-to-point correspondence distance in metres for ICP.
     centroid_threshold
         σ_centroid (metres) above which a cluster is flagged as spoofed.
-        Default 0.25 m — well below the expected first-difference std of
-        ~0.50 m for δ_inter, with headroom above real cluster motion noise.
+        Default 0.25 m — well below the expected residual std of ~0.35 m
+        for δ_inter, with headroom above real cluster motion noise.
         Sweep target.
     point_threshold
         σ_point (metres) above which a cluster is flagged as spoofed.
         Default 0.08 m — just below δ_inner's std of ~10 cm.  Sweep target.
+    ego_front
+        Distance forward (metres) of the ego-vehicle exclusion box.  Points
+        with x ≤ ego_front, x ≥ -ego_rear, |y| ≤ ego_side are removed before
+        clustering.  Prevents the car body from forming spurious clusters.
+    ego_rear
+        Distance behind (metres) of the ego-vehicle exclusion box.
+    ego_side
+        Half-width (metres) of the ego-vehicle exclusion box.
     use_centroid
         Whether to compute and use σ_centroid for flagging.
     use_point
@@ -138,6 +147,9 @@ class RadialJitterDefense(BaseDefense):
         icp_max_correspondence_dist: float = 0.5,
         centroid_threshold: float = 0.3,
         point_threshold: float = 0.08,
+        ego_front: float = 3.0,
+        ego_rear: float = 2.0,
+        ego_side: float = 1.4,
         use_centroid: bool = True,
         use_point: bool = True,
         history_source: Literal["clean", "dirty"] = "dirty",
@@ -154,6 +166,9 @@ class RadialJitterDefense(BaseDefense):
         self.icp_max_correspondence_dist = icp_max_correspondence_dist
         self.centroid_threshold = centroid_threshold
         self.point_threshold = point_threshold
+        self.ego_front = ego_front
+        self.ego_rear = ego_rear
+        self.ego_side = ego_side
         self.use_centroid = use_centroid
         self.use_point = use_point
         self.history_source = history_source
@@ -192,7 +207,7 @@ class RadialJitterDefense(BaseDefense):
 
         # DBSCAN the current frame (above-ground only)
         cur_xyz = frame.lidar[:, :3]
-        cur_xyz_filt = cur_xyz[cur_xyz[:, 2] > self.ground_z_max]
+        cur_xyz_filt = self._remove_ego_box(cur_xyz[cur_xyz[:, 2] > self.ground_z_max])
 
         if len(cur_xyz_filt) == 0:
             return DetectionResult(
@@ -286,7 +301,13 @@ class RadialJitterDefense(BaseDefense):
                     [p.mean(axis=0) for p in valid_past] + [centroid_cur]
                 )  # (K+1, 3)
                 r_c = np.linalg.norm(all_centroids, axis=1)  # (K+1,)
-                sigma_centroid = float(np.std(np.diff(r_c)))
+                # Fit r(t) = a + b*t (closed-form OLS) and subtract to remove
+                # constant-velocity radial motion before measuring scatter.
+                t = np.arange(len(r_c), dtype=np.float64)
+                t_c = t - t.mean()
+                b = (t_c * (r_c - r_c.mean())).sum() / (t_c ** 2).sum()
+                r_detrended = r_c - r_c.mean() - b * t_c
+                sigma_centroid = float(np.std(r_detrended))
             else:
                 sigma_centroid = 0.0
 
@@ -330,6 +351,15 @@ class RadialJitterDefense(BaseDefense):
     # Internal helpers
     # ------------------------------------------------------------------
 
+    def _remove_ego_box(self, xyz: np.ndarray) -> np.ndarray:
+        """Remove points inside the ego-vehicle bounding box."""
+        in_box = (
+            (xyz[:, 0] <= self.ego_front)
+            & (xyz[:, 0] >= -self.ego_rear)
+            & (np.abs(xyz[:, 1]) <= self.ego_side)
+        )
+        return xyz[~in_box]
+
     def _compensate_history(
         self,
         current_frame: Frame,
@@ -352,7 +382,7 @@ class RadialJitterDefense(BaseDefense):
             T = cur_inv @ f.nuscenes_ego_pose.astype(np.float64)
             pts = f.lidar[:, :3].astype(np.float64)
             compensated = (T[:3, :3] @ pts.T + T[:3, 3:4]).T.astype(np.float32)
-            result.append(compensated[compensated[:, 2] > self.ground_z_max])
+            result.append(self._remove_ego_box(compensated[compensated[:, 2] > self.ground_z_max]))
         return result
 
     def _compute_sigma_point(
