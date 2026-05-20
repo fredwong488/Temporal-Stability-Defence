@@ -509,7 +509,7 @@ def render_frame(
         ax_stats = fig.add_subplot(gs[1, 1])
 
     atk_lidar  = attacked_lidar if attacked_lidar is not None else clean_lidar
-    atk_preds  = attacked_preds if attacked_preds is not None else []
+    atk_preds  = clean_preds if not is_attacked else (attacked_preds if attacked_preds is not None else [])
     atk_note   = "" if is_attacked else "  (no attack applied)"
 
     draw_bev(
