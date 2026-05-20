@@ -37,12 +37,12 @@ import pathlib
 import subprocess
 import sys
 
-from eval_pipeline.config import ExperimentConfig
-from eval_pipeline.runner import run_experiment
-
 _PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
+
+from eval_pipeline.config import ExperimentConfig
+from eval_pipeline.runner import run_experiment
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
