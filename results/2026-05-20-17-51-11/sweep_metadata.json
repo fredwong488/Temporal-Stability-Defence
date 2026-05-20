@@ -1,0 +1,57 @@
+{
+  "notes": "Temporal window sweep, regular radial_jitter using linear velocity. No sigma points",
+  "git_commit": "07fb5fa5261b523de95273aadc1176c4195d5e84",
+  "timestamp": "2026-05-20-17-51-11",
+  "sweep": {
+    "target": "defense",
+    "param": "temporal_window",
+    "values": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "dataset_type": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_val"
+  },
+  "attack_type": "ora",
+  "attack_params": {
+    "target_types": [
+      "car",
+      "pedestrian",
+      "bicycle"
+    ],
+    "noise_preset": "worst_case"
+  },
+  "attack_fraction": 0.5,
+  "attack_fraction_seed": 0,
+  "min_unattacked_frames": 6,
+  "min_attacked_frames": 6,
+  "detector_type": "pointpillars_nuscenes",
+  "detector_params": {
+    "score_threshold": 0.3
+  },
+  "defense_type": "radial_jitter",
+  "defense_params": {
+    "use_point": "False",
+    "centroid_method": "linear_velocity"
+  },
+  "metric_types": [
+    "detection_rate"
+  ],
+  "difficulties": [
+    "Easy",
+    "Moderate",
+    "Hard"
+  ],
+  "recall_iou_confidence_threshold": 0.3,
+  "save_frame_results": true,
+  "use_cached_attacks": true,
+  "use_predicted_labels": true,
+  "pred_label_score_threshold": 0.5
+}
