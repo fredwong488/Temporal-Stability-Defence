@@ -113,6 +113,14 @@ class RadialJitterDefense(BaseDefense):
         current one (used for σ_point computation).
     icp_max_correspondence_dist
         Maximum point-to-point correspondence distance in metres for ICP.
+    centroid_method
+        How to compute σ_centroid.  ``"linear_velocity"`` (default) fits
+        r(t) = a + bt via OLS and measures the std of the residuals after
+        subtracting that trend — removes constant-velocity radial motion
+        before measuring scatter.  ``"first_diff"`` instead takes first
+        differences Δr(t) = r(t) − r(t−1) and measures their std — a
+        simpler statistic that is sensitive to frame-to-frame jumps but
+        does not require a global linear fit.
     centroid_threshold
         σ_centroid (metres) above which a cluster is flagged as spoofed.
         Default 0.25 m — well below the expected residual std of ~0.35 m
@@ -158,6 +166,7 @@ class RadialJitterDefense(BaseDefense):
         ego_side: float = 1.4,
         use_centroid: bool = True,
         use_point: bool = True,
+        centroid_method: Literal["linear_velocity", "first_diff"] = "linear_velocity",
         history_source: Literal["clean", "dirty"] = "dirty",
     ) -> None:
         self._temporal_window = temporal_window
@@ -177,6 +186,7 @@ class RadialJitterDefense(BaseDefense):
         self.ego_side = ego_side
         self.use_centroid = use_centroid
         self.use_point = use_point
+        self.centroid_method = centroid_method
         self.history_source = history_source
 
     @property
@@ -296,13 +306,17 @@ class RadialJitterDefense(BaseDefense):
                     [p.mean(axis=0) for p in valid_past] + [centroid_cur]
                 )  # (K+1, 3)
                 r_c = np.linalg.norm(all_centroids, axis=1)  # (K+1,)
-                # Fit r(t) = a + b*t (closed-form OLS) and subtract to remove
-                # constant-velocity radial motion before measuring scatter.
-                t = np.arange(len(r_c), dtype=np.float64)
-                t_c = t - t.mean()
-                b = (t_c * (r_c - r_c.mean())).sum() / (t_c ** 2).sum()
-                r_detrended = r_c - r_c.mean() - b * t_c
-                sigma_centroid = float(np.std(r_detrended))
+                if self.centroid_method == "linear_velocity":
+                    # Fit r(t) = a + b*t (closed-form OLS) and subtract to
+                    # remove constant-velocity radial motion before measuring
+                    # scatter.
+                    t = np.arange(len(r_c), dtype=np.float64)
+                    t_c = t - t.mean()
+                    b = (t_c * (r_c - r_c.mean())).sum() / (t_c ** 2).sum()
+                    r_detrended = r_c - r_c.mean() - b * t_c
+                    sigma_centroid = float(np.std(r_detrended))
+                else:  # first_diff
+                    sigma_centroid = float(np.std(np.diff(r_c)))
             else:
                 sigma_centroid = 0.0
 
