@@ -212,6 +212,7 @@ def _draw_box_image(
     color: str,
     linewidth: float = 1.5,
     alpha: float = 0.9,
+    label: str | None = None,
 ) -> None:
     for i, j in _BOX_EDGES:
         p1, p2 = corners_img[i], corners_img[j]
@@ -219,13 +220,19 @@ def _draw_box_image(
             continue
         ax.plot([p1[0], p2[0]], [p1[1], p2[1]],
                 color=color, linewidth=linewidth, alpha=alpha)
+    if label:
+        valid = corners_img[~np.any(np.isnan(corners_img), axis=1)]
+        if len(valid) > 0:
+            ax.text(valid[:, 0].min(), valid[:, 1].min() - 2, label,
+                    color=color, fontsize=6, ha="left", va="bottom", zorder=5,
+                    bbox=dict(boxstyle="round,pad=0.1", facecolor="black", alpha=0.5, edgecolor="none"))
 
 
 # ---------------------------------------------------------------------------
 # BEV drawing helpers  (reuse logic from visualise_frames.py)
 # ---------------------------------------------------------------------------
 
-def _draw_box_bev(ax: "plt.Axes", corners_velo: np.ndarray, color: str, lw: float = 1.5) -> None:
+def _draw_box_bev(ax: "plt.Axes", corners_velo: np.ndarray, color: str, lw: float = 1.5, label: str | None = None) -> None:
     xy = np.asarray(corners_velo)[:, :2]
     _, idx = np.unique(np.round(xy, 3), axis=0, return_index=True)
     xy_u = xy[idx]
@@ -233,6 +240,10 @@ def _draw_box_bev(ax: "plt.Axes", corners_velo: np.ndarray, color: str, lw: floa
     order = np.argsort(np.arctan2(xy_u[:, 1] - c[1], xy_u[:, 0] - c[0]))
     ax.add_patch(plt.Polygon(xy_u[order], closed=True, fill=False,
                               edgecolor=color, linewidth=lw))
+    if label:
+        ax.text(c[0], c[1], label, color=color, fontsize=5.5,
+                ha="center", va="center", zorder=5,
+                bbox=dict(boxstyle="round,pad=0.1", facecolor="#0d1117", alpha=0.6, edgecolor="none"))
 
 
 def draw_bev(
@@ -264,10 +275,13 @@ def draw_bev(
     if show_boxes:
         if gt_labels:
             for lbl in gt_labels:
-                _draw_box_bev(ax, lbl.corners_velo, color="#22c55e", lw=1.2)
+                _draw_box_bev(ax, lbl.corners_velo, color="#22c55e", lw=1.2, label=lbl.type)
         for pred in predictions:
             corners = pred.corners_velo if hasattr(pred, "corners_velo") else pred["corners_velo"]
-            _draw_box_bev(ax, corners, color="#60a5fa", lw=1.2)
+            pred_type = pred.type if hasattr(pred, "type") else pred.get("type", "")
+            pred_score = pred.score if hasattr(pred, "score") else pred.get("score", None)
+            pred_label = f"{pred_type} {pred_score:.2f}" if pred_score is not None else pred_type
+            _draw_box_bev(ax, corners, color="#60a5fa", lw=1.2, label=pred_label)
 
     ax.set_xlim(-3, roi_max[0] + 3)
     ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
@@ -392,19 +406,29 @@ def draw_camera(
         ax.set_xticks([])
         ax.set_yticks([])
 
+        h, w = image.shape[:2]
+
         if show_boxes and calib is not None:
             # GT boxes — green
             for lbl in (gt_labels or []):
                 corners_img = _project_box_to_image(lbl.corners_velo, calib)
                 if corners_img is not None:
-                    _draw_box_image(ax, corners_img, color="#22c55e", linewidth=1.5)
+                    _draw_box_image(ax, corners_img, color="#22c55e", linewidth=0.8, label=lbl.type)
 
             # Prediction boxes — blue
             for pred in predictions:
                 corners_velo = pred.corners_velo if hasattr(pred, "corners_velo") else np.array(pred["corners_velo"])
                 corners_img = _project_box_to_image(corners_velo, calib)
                 if corners_img is not None:
-                    _draw_box_image(ax, corners_img, color="#60a5fa", linewidth=1.5)
+                    pred_type = pred.type if hasattr(pred, "type") else pred.get("type", "")
+                    pred_score = pred.score if hasattr(pred, "score") else pred.get("score", None)
+                    pred_label = f"{pred_type} {pred_score:.2f}" if pred_score is not None else pred_type
+                    _draw_box_image(ax, corners_img, color="#60a5fa", linewidth=0.8, label=pred_label)
+
+        # Lock axis limits to image bounds so out-of-frame projected corners
+        # do not cause matplotlib to shrink or warp the image.
+        ax.set_xlim(0, w)
+        ax.set_ylim(h, 0)
 
     attack_label = "ATTACKED" if is_attacked else "CLEAN"
     attack_colour = "#ef4444" if is_attacked else "#22c55e"
@@ -487,13 +511,15 @@ def render_frame(
     output_path: pathlib.Path,
 ) -> None:
     n_rows = 3 if show_isometric else 2
-    fig_height = 22 if show_isometric else 14
-    fig = plt.figure(figsize=(18, fig_height))
+    fig_height = 30 if show_isometric else 19
+    fig = plt.figure(figsize=(24, fig_height))
     fig.patch.set_facecolor("#0d1117")
 
-    height_ratios = ([2.5, 2.5, 1.8] if show_isometric else [2.5, 1.8])
+    # Attacked column (col 1) is 1.5× wider; camera row gets equal height to BEV rows.
+    height_ratios = ([2.5, 2.5, 2.5] if show_isometric else [2.5, 2.5])
     gs = gridspec.GridSpec(n_rows, 2, figure=fig,
                            height_ratios=height_ratios,
+                           width_ratios=[1, 1.5],
                            hspace=0.40, wspace=0.22)
 
     ax_bev_clean = fig.add_subplot(gs[0, 0])
@@ -534,14 +560,14 @@ def render_frame(
         )
         draw_isometric(
             ax_iso_atk, atk_lidar, atk_preds,
-            gt_labels=gt_labels, show_boxes=show_boxes,
+            gt_labels=None, show_boxes=show_boxes,
             roi_min=roi_min, roi_max=roi_max,
             title=f"Attacked isometric  |  {len(atk_preds)} prediction(s){atk_note}",
         )
 
     draw_camera(
         ax_cam, camera_image,
-        gt_labels=gt_labels,
+        gt_labels=None,
         predictions=atk_preds,
         calib=calib,
         show_boxes=show_boxes,
@@ -568,7 +594,7 @@ def render_frame(
         y=0.99,
     )
 
-    fig.savefig(output_path, dpi=110, facecolor=fig.get_facecolor())
+    fig.savefig(output_path, dpi=170, facecolor=fig.get_facecolor())
     plt.close(fig)
 
 
