@@ -267,9 +267,10 @@ def write_sweep_metadata(
     swept_params = config_dict.get("attack_params" if sweep_target == "attack" else "defense_params", {})
     swept_params.pop(sweep_param, None)
     # noise_model is not JSON-serialisable; record the preset string instead
-    if "noise_model" in swept_params:
-        swept_params.pop("noise_model")
-        swept_params["noise_preset"] = attack_noise_preset
+    attack_params_dict = config_dict.get("attack_params", {})
+    if "noise_model" in attack_params_dict:
+        attack_params_dict.pop("noise_model")
+        attack_params_dict["noise_preset"] = attack_noise_preset
 
     metadata = {
         "notes": notes,
@@ -418,9 +419,9 @@ def main() -> None:
     )
     parser.add_argument(
         "--attack-noise-preset", type=str, default="worst_case",
-        choices=["none", "worst_case", "vlp16", "vlp32c", "os1_32", "helios", "horizon", "l515", "xt32"],
+        choices=["none", "worst_case", "worst_case_high_error", "vlp16", "vlp32c", "os1_32", "helios", "horizon", "l515", "xt32"],
         help="Sato 2024 spoofing noise preset for attack reinjection "
-             "(default vlp32c; 'none' disables δ_inner/δ_inter/δ_rand).",
+             "('none' disables δ_inner/δ_inter/δ_rand).",
     )
     parser.add_argument(
         "--attack-params", nargs="*", default=[], metavar="KEY=VALUE",

@@ -45,20 +45,23 @@ class _LidarProfile:
     rand_distribution: Literal["none", "gaussian", "uniform"]
     rand_std: float               # metres
     injection_success_rate: float  # R ∈ (0, 1]
+    inner_frame_std: float = 0.10  # metres
+    inter_frame_std: float = 0.35  # metres
 
 
 # Presets from Tables IV and V (Tu et al. 2023).
 # rand_std values are the measured Std σ in metres.
 # For uniform distributions, half-width = rand_std * √3 ≈ Max Δ in the table.
 _PRESETS: dict[str, _LidarProfile] = {
-    "worst_case":   _LidarProfile("none",     0.0,  1),
-    "vlp16":        _LidarProfile("none",     0.0,  0.985),
-    "vlp32c":       _LidarProfile("none",     0.0,  0.829),
-    "os1_32":       _LidarProfile("uniform",  33.3, 0.438),
-    "helios":       _LidarProfile("gaussian",  1.5, 0.194),
-    "horizon":      _LidarProfile("uniform",  26.0, 0.799),
-    "l515":         _LidarProfile("gaussian",  7.5, 0.001),
-    "xt32":         _LidarProfile("none",      0.0, 0.021),
+    "worst_case":            _LidarProfile("none",     0.0,  1),
+    "worst_case_high_error": _LidarProfile("none",     0.0,  1,    inner_frame_std=0.30, inter_frame_std=0.70),
+    "vlp16":                 _LidarProfile("none",     0.0,  0.985),
+    "vlp32c":                _LidarProfile("none",     0.0,  0.829),
+    "os1_32":                _LidarProfile("uniform",  33.3, 0.438),
+    "helios":                _LidarProfile("gaussian",  1.5, 0.194),
+    "horizon":               _LidarProfile("uniform",  26.0, 0.799),
+    "l515":                  _LidarProfile("gaussian",  7.5, 0.001),
+    "xt32":                  _LidarProfile("none",      0.0, 0.021),
 }
 
 
@@ -132,6 +135,8 @@ class SpoofingNoiseModel:
             rand_distribution=p.rand_distribution,
             rand_std=p.rand_std,
             injection_success_rate=p.injection_success_rate,
+            inner_frame_std=p.inner_frame_std,
+            inter_frame_std=p.inter_frame_std,
             seed=seed,
         )
         params.update(overrides)
