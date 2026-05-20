@@ -34,7 +34,11 @@ from datetime import datetime
 import json
 import logging
 import pathlib
+import subprocess
 import sys
+
+from eval_pipeline.config import ExperimentConfig
+from eval_pipeline.runner import run_experiment
 
 _PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
@@ -125,8 +129,6 @@ def run_single(
     min_attacked_frames: int = 6,       # defaulted to 6 to suit jitter defense
 ) -> dict:
     """Run one experiment and return the summary dict."""
-    from eval_pipeline.config import ExperimentConfig
-    from eval_pipeline.runner import run_experiment
 
     config = ExperimentConfig(
         dataset_type=dataset_type,
@@ -189,6 +191,101 @@ def extract_ap_row(
         for diff in difficulties:
             row[f"{cls.lower()}_ap_{diff.lower()}"] = cls_ap.get(diff, float("nan"))
     return row
+
+
+# ---------------------------------------------------------------------------
+# Metadata
+# ---------------------------------------------------------------------------
+
+def write_sweep_metadata(
+    *,
+    run_dir: pathlib.Path,
+    timestamp: str,
+    notes: str | None,
+    sweep_target: str,
+    sweep_param: str,
+    sweep_values: list,
+    base_attack_params: dict,
+    base_defense_params: dict,
+    attack_noise_preset: str,
+    dataset_type: str,
+    dataset_params: dict,
+    attack_type: str | None,
+    defense_type: str | None,
+    detector_type: str | None,
+    detector_params: dict,
+    metric_types: list,
+    difficulties: list,
+    confidence_threshold: float,
+    attack_fraction: float,
+    attack_fraction_seed: int,
+    use_cached_attacks: bool,
+    use_predicted_labels: bool,
+    pred_label_score_threshold: float,
+    min_unattacked_frames: int,
+    min_attacked_frames: int,
+    save_frame_results: bool,
+) -> None:
+    try:
+        git_hash = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=_PROJECT_ROOT, text=True
+        ).strip()
+    except subprocess.CalledProcessError:
+        git_hash = "unknown"
+
+    first_val = sweep_values[0]
+    rep_attack_params = base_attack_params | ({sweep_param: first_val} if sweep_target == "attack" else {})
+    rep_defense_params = base_defense_params | ({sweep_param: first_val} if sweep_target == "defense" else {})
+    rep_config = ExperimentConfig(
+        dataset_type=dataset_type,
+        dataset_params=dataset_params,
+        attack_type=attack_type,
+        attack_params=rep_attack_params,
+        defense_type=defense_type,
+        defense_params=rep_defense_params,
+        detector_type=detector_type,
+        detector_params=detector_params,
+        metric_types=metric_types,
+        difficulties=difficulties,
+        recall_iou_confidence_threshold=confidence_threshold,
+        attack_fraction=attack_fraction,
+        attack_fraction_seed=attack_fraction_seed,
+        use_cached_attacks=use_cached_attacks,
+        use_predicted_labels=use_predicted_labels,
+        pred_label_score_threshold=pred_label_score_threshold,
+        min_unattacked_frames=min_unattacked_frames,
+        min_attacked_frames=min_attacked_frames,
+        save_frame_results=save_frame_results,
+    )
+    config_dict = rep_config.to_dict()
+
+    # Strip per-run fields that vary between sweep iterations
+    for k in ("output_dir", "experiment_name", "precomputed_cache_path", "cache_clean_preds", "iou_thresholds"):
+        config_dict.pop(k, None)
+
+    # Remove the single swept value; replace with the full sweep block
+    swept_params = config_dict.get("attack_params" if sweep_target == "attack" else "defense_params", {})
+    swept_params.pop(sweep_param, None)
+    # noise_model is not JSON-serialisable; record the preset string instead
+    if "noise_model" in swept_params:
+        swept_params.pop("noise_model")
+        swept_params["noise_preset"] = attack_noise_preset
+
+    metadata = {
+        "notes": notes,
+        "git_commit": git_hash,
+        "timestamp": timestamp,
+        "sweep": {
+            "target": sweep_target,
+            "param": sweep_param,
+            "values": sweep_values,
+        },
+        **config_dict,
+    }
+    metadata_path = run_dir / "sweep_metadata.json"
+    with open(metadata_path, "w") as f:
+        json.dump(metadata, f, indent=2)
+    logging.info("Metadata written to %s", metadata_path)
 
 
 # ---------------------------------------------------------------------------
@@ -314,6 +411,10 @@ def main() -> None:
         "--pred-label-score-threshold", type=float, default=0.5,
         help="Minimum detection score for a prediction to be used as an attack label "
              "when --use-predicted-labels is set.",
+    )
+    parser.add_argument(
+        "--notes", type=str, default=None,
+        help="Free-text notes about this sweep run, stored in sweep_metadata.json.",
     )
     parser.add_argument(
         "--attack-noise-preset", type=str, default="worst_case",
@@ -442,6 +543,35 @@ def main() -> None:
         )
     base_defense_params: dict = {}
     base_defense_params.update(extra_defense_params)
+
+    write_sweep_metadata(
+        run_dir=run_dir,
+        timestamp=timestamp,
+        notes=args.notes,
+        sweep_target=args.sweep_target,
+        sweep_param=args.sweep_param,
+        sweep_values=sweep_values,
+        base_attack_params=base_attack_params,
+        base_defense_params=base_defense_params,
+        attack_noise_preset=args.attack_noise_preset,
+        dataset_type=dataset_type,
+        dataset_params=dataset_params,
+        attack_type=args.attack,
+        defense_type=args.defense,
+        detector_type=args.detector,
+        detector_params=detector_params,
+        metric_types=args.metric_types,
+        difficulties=args.difficulties,
+        confidence_threshold=args.confidence_threshold,
+        attack_fraction=args.attack_fraction,
+        attack_fraction_seed=args.attack_fraction_seed,
+        use_cached_attacks=args.use_cached_attacks,
+        use_predicted_labels=args.use_predicted_labels,
+        pred_label_score_threshold=args.pred_label_score_threshold,
+        min_unattacked_frames=args.min_unattacked_frames,
+        min_attacked_frames=args.min_attacked_frames,
+        save_frame_results=args.save_frames,
+    )
 
     # Build the iteration list: when sweeping attack, prepend a no-attack baseline
     # represented by the sentinel string "no_attack" in the sweep_param column.

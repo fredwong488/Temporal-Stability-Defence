@@ -19,8 +19,8 @@ s-ora-jitter-sw-icpdist = {cmd = "python scripts/run_sweep.py --dataset nuscenes
 s-ora-jitter-sw-tempwindow = {cmd = "python scripts/run_sweep.py --dataset nuscenes --attack ora --attack-fraction 0.5 --defense radial_jitter --detector pointpillars_nuscenes --metric-types detection_rate --sweep-target defense --sweep-param temporal_window --sweep-values 5 6 7 8 9 10 --precomputed-cache-dir precomputed/nuscenes-pointpillars-ora-b200-0.5 --use-cached-attacks"}
 precompute-kitti-pointrcnn-ora = {cmd = "python scripts/run_sweep.py --dataset kitti --kitti-split val --detector pointrcnn --attack ora --attack-fraction 0.5 --sweep-param budget --sweep-values 0 10 20 40 60 100 150 200 --classes Car Pedestrian Cyclist --precomputed-cache-dir precomputed/kitti-pointrcnn-ora-0.5 --use-cached-attacks"}
 precompute-nuscenes-pointrcnn-ora = {cmd = "python scripts/run_sweep.py --dataset nuscenes --nuscenes-split mini_val --detector pointrcnn --attack ora --attack-fraction 0.5 --sweep-param budget --sweep-values 0 10 20 40 60 100 150 200 --classes Car Pedestrian Cyclist --precomputed-cache-dir precomputed/kitti-pointrcnn-ora-0.5 --use-cached-attacks"}
-tmux-create = {cmd = "tmux new-session -s"}
-tmux-ls = {cmd = "tmux attach -t $(tmux ls | fzf | cut -d: -f1)"}
+tcr = {cmd = "tmux new-session -s"}
+tls = {cmd = "tmux attach -t $(tmux ls | fzf | cut -d: -f1)"}
 fm = {cmd = "python tools/format_metrics.py"}
 vm = {cmd = "python tools/visualise_metrics.py"}
 pr = {cmd = "python tools/plot_results.py"}

@@ -608,15 +608,23 @@ def _draw_rj_clusters_bev(
     if not clusters:
         return
 
-    active   = [c for c in clusters if c.get("skipped") is None]
-    skipped  = [c for c in clusters if c.get("skipped") is not None]
+    active        = [c for c in clusters if c.get("skipped") is None]
+    sk_few_pts    = [c for c in clusters if c.get("skipped") == "too_few_points"]
+    sk_few_frames = [c for c in clusters if c.get("skipped") == "too_few_frames"]
+    sk_other      = [c for c in clusters if c.get("skipped") is not None
+                     and c.get("skipped") not in ("too_few_points", "too_few_frames")]
 
-    # Skipped clusters: small grey crosses
-    if skipped:
-        sk_xy = np.array([[c["centroid"][0], c["centroid"][1]] for c in skipped])
-        sx, sy = _to_bev_xy(sk_xy, dataset_type)
-        ax.scatter(sx, sy, marker="x", c="#6b7280", s=20, alpha=0.5,
+    def _scatter_skipped(pts_list: list[dict], color: str) -> None:
+        if not pts_list:
+            return
+        xy = np.array([[c["centroid"][0], c["centroid"][1]] for c in pts_list])
+        sx, sy = _to_bev_xy(xy, dataset_type)
+        ax.scatter(sx, sy, marker="x", c=color, s=20, alpha=0.6,
                    linewidths=0.8, zorder=3)
+
+    _scatter_skipped(sk_few_pts,    "#ef4444")   # red — too_few_points
+    _scatter_skipped(sk_few_frames, "#a855f7")   # purple — too_few_frames
+    _scatter_skipped(sk_other,      "#6b7280")   # grey — other/unknown
 
     if not active:
         return
@@ -662,28 +670,46 @@ def draw_radial_jitter_panel(
     n_tested           = metadata.get("n_clusters_tested", len(clusters))
     n_flagged          = metadata.get("n_clusters_flagged", 0)
 
+    active_clusters = [c for c in clusters if c.get("skipped") is None]
+    sk_few_pts      = [c for c in clusters if c.get("skipped") == "too_few_points"]
+    sk_few_frames   = [c for c in clusters if c.get("skipped") == "too_few_frames"]
+    sk_other        = [c for c in clusters if c.get("skipped") is not None
+                       and c.get("skipped") not in ("too_few_points", "too_few_frames")]
+
+    def _scatter_skipped_panel(pts_list: list[dict], color: str) -> None:
+        if not pts_list:
+            return
+        xy = np.array([[c["centroid"][0], c["centroid"][1]] for c in pts_list])
+        pxs, pys = _to_bev_xy(xy, dataset_type)
+        ax.scatter(pxs, pys, marker="x", c=color, s=25, alpha=0.7,
+                   linewidths=1.0, zorder=3)
+
+    _scatter_skipped_panel(sk_few_pts,    "#ef4444")   # red — too_few_points
+    _scatter_skipped_panel(sk_few_frames, "#a855f7")   # purple — too_few_frames
+    _scatter_skipped_panel(sk_other,      "#6b7280")   # grey — other/unknown
+
     sc = None
-    if clusters:
-        raw_xy  = np.array([[c["centroid"][0], c["centroid"][1]] for c in clusters])
+    if active_clusters:
+        raw_xy  = np.array([[c["centroid"][0], c["centroid"][1]] for c in active_clusters])
         pxs, pys = _to_bev_xy(raw_xy, dataset_type)
-        sigmas  = [c.get("sigma_centroid", 0.0) for c in clusters]
-        sp      = [c.get("sigma_point", 0.0) for c in clusters]
-        flagged = [c.get("flagged", False) for c in clusters]
-        sizes   = [max(30, min(300, (c.get("n_points_cur") or 20) * 4)) for c in clusters]
+        sigmas  = [c.get("sigma_centroid", 0.0) for c in active_clusters]
+        sp      = [c.get("sigma_point", 0.0) for c in active_clusters]
+        flagged = [c.get("flagged", False) for c in active_clusters]
+        sizes   = [max(30, min(300, (c.get("n_points_cur") or 20) * 4)) for c in active_clusters]
 
         vmax = max(centroid_threshold * 4, max(sigmas) * 1.05 if sigmas else centroid_threshold * 4)
         norm = matplotlib.colors.Normalize(vmin=0.0, vmax=vmax)
         sc   = ax.scatter(pxs, pys, c=sigmas, cmap="RdYlGn_r", norm=norm,
-                          s=sizes, alpha=0.85, zorder=3, edgecolors="none")
+                          s=sizes, alpha=0.85, zorder=4, edgecolors="none")
 
         fx = [x for x, f in zip(pxs, flagged) if f]
         fy = [y for y, f in zip(pys, flagged) if f]
         fs = [s for s, f in zip(sizes, flagged) if f]
         if fx:
             ax.scatter(fx, fy, s=[s * 2.2 for s in fs],
-                       facecolors="none", edgecolors="#ef4444", linewidths=2, zorder=4)
+                       facecolors="none", edgecolors="#ef4444", linewidths=2, zorder=5)
 
-        # Annotate each cluster with its σ_c / σ_p values
+        # Annotate each active cluster with its σ_c / σ_p values
         for px, py, sc_val, sp_val in zip(pxs, pys, sigmas, sp):
             ax.annotate(
                 f"{sc_val:.2f}\n{sp_val:.3f}",
@@ -728,15 +754,30 @@ def draw_radial_jitter_panel(
         cb.ax.axhline(centroid_threshold, color="#ef4444", linewidth=1.5, linestyle="--")
 
     legend_items: list = []
-    if clusters:
+    if active_clusters:
         legend_items.append(
             plt.Line2D([0], [0], marker="o", color="w", linestyle="None",
                        markerfacecolor="#fbbf24", markersize=6, label="cluster (σ_c colour)")
         )
-    if any(c.get("flagged") for c in clusters):
+    if any(c.get("flagged") for c in active_clusters):
         legend_items.append(
             plt.Line2D([0], [0], marker="o", color="#ef4444", linestyle="None",
                        markerfacecolor="none", markersize=8, markeredgewidth=2, label="flagged")
+        )
+    if sk_few_pts:
+        legend_items.append(
+            plt.Line2D([0], [0], marker="x", color="#ef4444", linestyle="None",
+                       markersize=6, markeredgewidth=1.2, label="skip: too_few_points")
+        )
+    if sk_few_frames:
+        legend_items.append(
+            plt.Line2D([0], [0], marker="x", color="#a855f7", linestyle="None",
+                       markersize=6, markeredgewidth=1.2, label="skip: too_few_frames")
+        )
+    if sk_other:
+        legend_items.append(
+            plt.Line2D([0], [0], marker="x", color="#6b7280", linestyle="None",
+                       markersize=6, markeredgewidth=1.2, label="skip: other")
         )
     if has_reinjected:
         legend_items.append(
