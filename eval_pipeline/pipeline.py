@@ -235,15 +235,26 @@ class EvalPipeline:
                     attack_this_frame = do_attack if do_attack is not None else entry.is_attacked
                     if attack_this_frame and self.attack is not None:
                         if self.use_cached_attacks and entry.is_attacked:
-                            # Use cached predictions + metadata; don't re-run the
-                            # attack so predictions and metadata are consistent.
-                            attacked_preds = entry.attacked_predictions
-                            attacked_frame = dataclasses.replace(
-                                frame,
-                                is_attacked=True,
-                                attacked_modalities=frozenset({"lidar"}),
-                                attack_metadata=entry.attack_metadata,
-                            )
+                            if entry.attacked_lidar is not None:
+                                # Use cached predictions, metadata, and lidar so that
+                                # the defense receives the exact same data as the
+                                # original run without re-running the attack.
+                                attacked_preds = entry.attacked_predictions
+                                attacked_frame = dataclasses.replace(
+                                    frame,
+                                    lidar=entry.attacked_lidar,
+                                    is_attacked=True,
+                                    attacked_modalities=frozenset({"lidar"}),
+                                    attack_metadata=entry.attack_metadata,
+                                )
+                            else:
+                                # Cache pre-dates lidar storage — run the attack live.
+                                attacked_frame = self.attack.apply(
+                                    self._get_attack_frame(frame, clean_preds)
+                                )
+                                if self.detector is not None:
+                                    attacked_preds = self.detector.predict(attacked_frame)
+                                live_attack_rerun += 1
                         else:
                             # Re-run the attack live for a fresh lidar and fresh
                             # predictions; the new result is not saved to cache.
@@ -269,6 +280,9 @@ class EvalPipeline:
                         attack_metadata=(
                             dict(attacked_frame.attack_metadata)
                             if attacked_frame is not None else {}
+                        ),
+                        attacked_lidar=(
+                            attacked_frame.lidar if attacked_frame is not None else None
                         ),
                     )
 

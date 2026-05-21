@@ -257,11 +257,16 @@ class FrameCacheEntry:
         Copy of ``Frame.attack_metadata`` after the attack was applied.
         Forwarded to the reconstructed attacked frame during replay so that
         defenses receive consistent metadata.
+    attacked_lidar
+        The perturbed lidar point cloud (N, 4), or None when the frame was
+        not attacked.  Stored so that ``use_cached_attacks=True`` replay can
+        present the exact same lidar to the defense without re-running the attack.
     """
     clean_predictions: list[Prediction]
     attacked_predictions: list[Prediction] | None
     is_attacked: bool
     attack_metadata: dict = dataclasses.field(default_factory=dict)
+    attacked_lidar: np.ndarray | None = None
 
 
 # ---------------------------------------------------------------------------
