@@ -70,8 +70,6 @@ from ..base import BaseDefense
 from ..types import DetectionResult, Frame, FrameHistory
 from ._multiframe_common import (
     associate_cluster_chain,
-    compensate_history,
-    dbscan_past_sweeps,
     remove_ego_box,
 )
 
@@ -188,10 +186,17 @@ class RadialJitterDefense(BaseDefense):
         self.use_point = use_point
         self.centroid_method = centroid_method
         self.history_source = history_source
+        # Maps (frame_id, is_attacked) → (xyz_filt, labels) in own sensor frame.
+        # DBSCAN is distance-invariant under rigid transforms, so labels computed
+        # here are reused after ego-compensation in detect().
+        self._dbscan_cache: dict[tuple[str, bool], tuple[np.ndarray, np.ndarray]] = {}
 
     @property
     def temporal_window(self) -> int:
         return self._temporal_window
+
+    def reset(self) -> None:
+        self._dbscan_cache.clear()
 
     # ------------------------------------------------------------------
     # BaseDefense contract
@@ -218,18 +223,9 @@ class RadialJitterDefense(BaseDefense):
                 },
             )
 
-        # Ego-compensate past sweeps into the current sensor frame (oldest-first)
-        past_xyz_list = compensate_history(
-            frame, hist, self.ground_z_max,
-            self.ego_front, self.ego_rear, self.ego_side,
-        )
-
-        # DBSCAN the current frame (above-ground only)
-        cur_xyz = frame.lidar[:, :3]
-        cur_xyz_filt = remove_ego_box(
-            cur_xyz[cur_xyz[:, 2] > self.ground_z_max],
-            self.ego_front, self.ego_rear, self.ego_side,
-        )
+        # Current frame: filter + DBSCAN (result cached so it's free next call as
+        # a past frame).
+        cur_xyz_filt, labels_cur = self._get_or_cluster_frame(frame)
 
         if len(cur_xyz_filt) == 0:
             return DetectionResult(
@@ -237,12 +233,6 @@ class RadialJitterDefense(BaseDefense):
                 confidence=0.0,
                 metadata={"reason": "no_points_above_ground"},
             )
-
-        labels_cur = DBSCAN(
-            eps=self.dbscan_eps,
-            min_samples=self.dbscan_min_samples,
-            n_jobs=1,
-        ).fit_predict(cur_xyz_filt)
 
         unique_labels = set(labels_cur) - {-1}
         if not unique_labels:
@@ -252,10 +242,22 @@ class RadialJitterDefense(BaseDefense):
                 metadata={"reason": "no_clusters"},
             )
 
-        # DBSCAN each past compensated sweep (same parameters).
-        past_clustered = dbscan_past_sweeps(
-            past_xyz_list, self.dbscan_eps, self.dbscan_min_samples,
-        )
+        # Past frames: apply ego compensation to cached own-frame xyz, reuse
+        # cached labels (rigid transforms preserve Euclidean distances).
+        cur_inv = np.linalg.inv(frame.nuscenes_ego_pose.astype(np.float64))
+        past_clustered: list[tuple[np.ndarray, np.ndarray]] = []
+        for f in hist:
+            if f.nuscenes_ego_pose is None:
+                logger.warning(
+                    "detect: past frame %s missing ego pose — skipping", f.frame_id
+                )
+                continue
+            xyz_filt, labels = self._get_or_cluster_frame(f)
+            T = cur_inv @ f.nuscenes_ego_pose.astype(np.float64)
+            compensated = (
+                T[:3, :3] @ xyz_filt.astype(np.float64).T + T[:3, 3:4]
+            ).T.astype(np.float32)
+            past_clustered.append((compensated, labels))
 
         cluster_details: list[dict] = []
         n_tested = 0
@@ -359,6 +361,35 @@ class RadialJitterDefense(BaseDefense):
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    def _get_or_cluster_frame(
+        self, frame: Frame
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Return (xyz_filt, labels) for frame, computing and caching on first call.
+
+        xyz_filt is ground- and ego-box-filtered in the frame's own sensor
+        coordinates.  Labels are the DBSCAN result on that filtered set.
+        """
+        key = (frame.frame_id, bool(frame.is_attacked))
+        if key in self._dbscan_cache:
+            return self._dbscan_cache[key]
+
+        xyz = frame.lidar[:, :3].astype(np.float64)
+        xyz_filt = remove_ego_box(
+            xyz[xyz[:, 2] > self.ground_z_max],
+            self.ego_front, self.ego_rear, self.ego_side,
+        )
+        if len(xyz_filt) >= self.dbscan_min_samples:
+            labels = DBSCAN(
+                eps=self.dbscan_eps,
+                min_samples=self.dbscan_min_samples,
+                n_jobs=1,
+            ).fit_predict(xyz_filt)
+        else:
+            labels = np.full(len(xyz_filt), -1, dtype=int)
+
+        self._dbscan_cache[key] = (xyz_filt, labels)
+        return xyz_filt, labels
 
     def _compute_sigma_point(
         self,

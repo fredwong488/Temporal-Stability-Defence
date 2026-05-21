@@ -90,6 +90,13 @@ class BaseDefense(abc.ABC):
         """
         ...
 
+    def reset(self) -> None:
+        """Called by the pipeline at scene boundaries to clear per-scene state.
+
+        Override in stateful defenses (e.g. to evict internal caches).
+        The default is a no-op.
+        """
+
     @property
     def name(self) -> str:
         return self.__class__.__name__

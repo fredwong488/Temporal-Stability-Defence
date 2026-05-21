@@ -199,6 +199,8 @@ class EvalPipeline:
             if frame.sequence_id != last_sequence_id:
                 clean_history.clear()
                 dirty_history.clear()
+                if self.defense is not None:
+                    self.defense.reset()
                 frame_index_in_scene = 0
                 last_sequence_id = frame.sequence_id
             else:
