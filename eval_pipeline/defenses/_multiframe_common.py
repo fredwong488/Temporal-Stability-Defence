@@ -58,13 +58,10 @@ def compensate_history(
             continue
         T = cur_inv @ f.nuscenes_ego_pose.astype(np.float64)
         pts = f.lidar[:, :3].astype(np.float64)
+        pts = pts[pts[:, 2] > ground_z_max]
+        pts = remove_ego_box(pts, ego_front, ego_rear, ego_side)
         compensated = (T[:3, :3] @ pts.T + T[:3, 3:4]).T.astype(np.float32)
-        result.append(
-            remove_ego_box(
-                compensated[compensated[:, 2] > ground_z_max],
-                ego_front, ego_rear, ego_side,
-            )
-        )
+        result.append(compensated)
     return result
 
 
