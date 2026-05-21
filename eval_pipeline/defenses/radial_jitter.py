@@ -186,10 +186,14 @@ class RadialJitterDefense(BaseDefense):
         self.use_point = use_point
         self.centroid_method = centroid_method
         self.history_source = history_source
-        # Maps (frame_id, is_attacked) → (xyz_filt, labels) in own sensor frame.
-        # DBSCAN is distance-invariant under rigid transforms, so labels computed
-        # here are reused after ego-compensation in detect().
-        self._dbscan_cache: dict[tuple[str, bool], tuple[np.ndarray, np.ndarray]] = {}
+        # Maps (frame_id, is_attacked) → (xyz_filt, labels, cluster_pts, centroids)
+        # in own sensor frame.  DBSCAN is distance-invariant under rigid transforms,
+        # so labels and per-cluster data computed here are reused after
+        # ego-compensation in detect().
+        self._dbscan_cache: dict[
+            tuple[str, bool],
+            tuple[np.ndarray, np.ndarray, list[np.ndarray], np.ndarray],
+        ] = {}
 
     @property
     def temporal_window(self) -> int:
@@ -225,7 +229,7 @@ class RadialJitterDefense(BaseDefense):
 
         # Current frame: filter + DBSCAN (result cached so it's free next call as
         # a past frame).
-        cur_xyz_filt, labels_cur = self._get_or_cluster_frame(frame)
+        cur_xyz_filt, labels_cur, _, _ = self._get_or_cluster_frame(frame)
 
         if len(cur_xyz_filt) == 0:
             return DetectionResult(
@@ -242,22 +246,34 @@ class RadialJitterDefense(BaseDefense):
                 metadata={"reason": "no_clusters"},
             )
 
-        # Past frames: apply ego compensation to cached own-frame xyz, reuse
-        # cached labels (rigid transforms preserve Euclidean distances).
+        # Past frames: transform cached per-cluster pts and centroids into the
+        # current sensor frame.  Centroids transform as points (mean commutes
+        # with rigid transforms), so this is O(K) not O(N_points) per frame.
         cur_inv = np.linalg.inv(frame.nuscenes_ego_pose.astype(np.float64))
-        past_clustered: list[tuple[np.ndarray, np.ndarray]] = []
+        past_frame_data: list[tuple[list[np.ndarray], np.ndarray]] = []
         for f in hist:
             if f.nuscenes_ego_pose is None:
                 logger.warning(
                     "detect: past frame %s missing ego pose — skipping", f.frame_id
                 )
+                past_frame_data.append(([], np.empty((0, 3), dtype=np.float32)))
                 continue
-            xyz_filt, labels = self._get_or_cluster_frame(f)
-            T = cur_inv @ f.nuscenes_ego_pose.astype(np.float64)
-            compensated = (
-                T[:3, :3] @ xyz_filt.astype(np.float64).T + T[:3, 3:4]
+            _, _, cluster_pts_own, centroids_own = self._get_or_cluster_frame(f)
+            if len(cluster_pts_own) == 0:
+                past_frame_data.append(([], np.empty((0, 3), dtype=np.float32)))
+                continue
+            R = cur_inv[:3, :3]
+            t = cur_inv[:3, 3:4]
+            T_past = R @ f.nuscenes_ego_pose.astype(np.float64)[:3, :3]
+            t_past = (R @ f.nuscenes_ego_pose.astype(np.float64)[:3, 3:4] + t)
+            comp_centroids = (
+                T_past @ centroids_own.astype(np.float64).T + t_past
             ).T.astype(np.float32)
-            past_clustered.append((compensated, labels))
+            comp_cluster_pts = [
+                (T_past @ pts.astype(np.float64).T + t_past).T.astype(np.float32)
+                for pts in cluster_pts_own
+            ]
+            past_frame_data.append((comp_cluster_pts, comp_centroids))
 
         cluster_details: list[dict] = []
         n_tested = 0
@@ -282,7 +298,7 @@ class RadialJitterDefense(BaseDefense):
                 continue
 
             valid_past = associate_cluster_chain(
-                centroid_cur, past_clustered,
+                centroid_cur, past_frame_data,
                 self.motion_tolerance, self.min_points_per_cluster,
             )
 
@@ -364,11 +380,14 @@ class RadialJitterDefense(BaseDefense):
 
     def _get_or_cluster_frame(
         self, frame: Frame
-    ) -> tuple[np.ndarray, np.ndarray]:
-        """Return (xyz_filt, labels) for frame, computing and caching on first call.
+    ) -> tuple[np.ndarray, np.ndarray, list[np.ndarray], np.ndarray]:
+        """Return (xyz_filt, labels, cluster_pts, centroids) for frame.
 
-        xyz_filt is ground- and ego-box-filtered in the frame's own sensor
-        coordinates.  Labels are the DBSCAN result on that filtered set.
+        All arrays are in the frame's own sensor coordinates.  Computed once
+        and cached; subsequent calls are a dict lookup.
+
+        cluster_pts : list of (N_k, 3) arrays, one per non-noise cluster
+        centroids   : (K, 3) float32 array of per-cluster centroids
         """
         key = (frame.frame_id, bool(frame.is_attacked))
         if key in self._dbscan_cache:
@@ -388,8 +407,18 @@ class RadialJitterDefense(BaseDefense):
         else:
             labels = np.full(len(xyz_filt), -1, dtype=int)
 
-        self._dbscan_cache[key] = (xyz_filt, labels)
-        return xyz_filt, labels
+        unique = sorted(l for l in set(labels) if l != -1)
+        if unique:
+            cluster_pts = [xyz_filt[labels == l] for l in unique]
+            centroids = np.array(
+                [p.mean(axis=0) for p in cluster_pts], dtype=np.float32
+            )
+        else:
+            cluster_pts = []
+            centroids = np.empty((0, 3), dtype=np.float32)
+
+        self._dbscan_cache[key] = (xyz_filt, labels, cluster_pts, centroids)
+        return xyz_filt, labels, cluster_pts, centroids
 
     def _compute_sigma_point(
         self,

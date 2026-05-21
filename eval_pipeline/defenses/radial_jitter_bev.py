@@ -73,6 +73,7 @@ from ..types import DetectionResult, Frame, FrameHistory
 from ._multiframe_common import (
     associate_cluster_chain,
     compensate_history,
+    precompute_cluster_data,
     remove_ego_box,
 )
 
@@ -268,6 +269,8 @@ class RadialJitterBEVDefense(BaseDefense):
                 ).fit_predict(xyz_past[:, :2])
                 past_clustered.append((xyz_past, lbl))
 
+        past_frame_data = precompute_cluster_data(past_clustered)
+
         cluster_details: list[dict] = []
         n_tested = 0
         n_flagged = 0
@@ -291,7 +294,7 @@ class RadialJitterBEVDefense(BaseDefense):
                 continue
 
             valid_past = associate_cluster_chain(
-                centroid_cur, past_clustered,
+                centroid_cur, past_frame_data,
                 self.motion_tolerance, self.min_points_per_cluster,
             )
 

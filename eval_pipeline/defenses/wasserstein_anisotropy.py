@@ -38,6 +38,7 @@ from ._multiframe_common import (
     associate_cluster_chain,
     compensate_history,
     dbscan_past_sweeps,
+    precompute_cluster_data,
     remove_ego_box,
 )
 
@@ -190,6 +191,7 @@ class WassersteinAnisotropyDefense(BaseDefense):
         past_clustered = dbscan_past_sweeps(
             past_xyz_list, self.dbscan_eps, self.dbscan_min_samples,
         )
+        past_frame_data = precompute_cluster_data(past_clustered)
 
         cluster_details: list[dict] = []
         n_tested = 0
@@ -213,7 +215,7 @@ class WassersteinAnisotropyDefense(BaseDefense):
                 continue
 
             valid_past = associate_cluster_chain(
-                centroid_cur, past_clustered,
+                centroid_cur, past_frame_data,
                 self.motion_tolerance, self.min_points_per_cluster,
             )
 

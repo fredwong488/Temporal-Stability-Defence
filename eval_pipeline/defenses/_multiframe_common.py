@@ -88,9 +88,44 @@ def dbscan_past_sweeps(
     return past_clustered
 
 
+def precompute_cluster_data(
+    past_clustered: list[tuple[np.ndarray, np.ndarray]],
+) -> list[tuple[list[np.ndarray], np.ndarray]]:
+    """Convert (xyz, labels) pairs into precomputed (cluster_pts_list, centroids).
+
+    Separates each past frame's points into per-cluster arrays and computes
+    their centroids once, so ``associate_cluster_chain`` can skip recomputing
+    them for every current cluster it tests.
+
+    Parameters
+    ----------
+    past_clustered
+        Output of ``dbscan_past_sweeps``: list of (xyz, labels) per past frame,
+        where xyz is in the current sensor frame.
+
+    Returns
+    -------
+    list of (cluster_pts_list, centroids) per past frame:
+        cluster_pts_list : list of (N_k, 3) arrays, one per non-noise cluster
+        centroids        : (K, 3) float32 array of per-cluster centroids
+    """
+    result: list[tuple[list[np.ndarray], np.ndarray]] = []
+    for xyz, labels in past_clustered:
+        unique = sorted(l for l in set(labels) if l != -1)
+        if not unique:
+            result.append(([], np.empty((0, 3), dtype=np.float32)))
+            continue
+        cluster_pts = [xyz[labels == l] for l in unique]
+        centroids = np.array(
+            [p.mean(axis=0) for p in cluster_pts], dtype=np.float32
+        )
+        result.append((cluster_pts, centroids))
+    return result
+
+
 def associate_cluster_chain(
     centroid_cur: np.ndarray,
-    past_clustered: list[tuple[np.ndarray, np.ndarray]],
+    past_frame_data: list[tuple[list[np.ndarray], np.ndarray]],
     motion_tolerance: float,
     min_points_per_cluster: int,
 ) -> list[np.ndarray]:
@@ -101,35 +136,37 @@ def associate_cluster_chain(
     on.  A broken link (no cluster within ``motion_tolerance``) terminates the
     chain.
 
+    Parameters
+    ----------
+    past_frame_data
+        Output of ``precompute_cluster_data``: list of (cluster_pts_list,
+        centroids) per past frame in the current sensor frame, oldest-first.
+
     Returns the matched past clusters in **oldest-first** (chronological)
     order as a list of (N_t, 3) xyz arrays.  The current frame is NOT included.
     """
-    n_past = len(past_clustered)
+    n_past = len(past_frame_data)
     valid_past_reversed: list[np.ndarray] = []
     source_centroid = centroid_cur
 
     for i in reversed(range(n_past)):  # most recent → oldest
-        xyz_past, lbl_past = past_clustered[i]
+        cluster_pts, centroids = past_frame_data[i]
 
-        past_unique = [l for l in set(lbl_past) if l != -1]
-        if not past_unique:
+        if len(cluster_pts) == 0:
             break
 
-        past_centroids = np.array([
-            xyz_past[lbl_past == l].mean(axis=0) for l in past_unique
-        ])
-        dists = np.linalg.norm(past_centroids - source_centroid, axis=1)
+        dists = np.linalg.norm(centroids - source_centroid, axis=1)
         dists_gated = np.where(dists < motion_tolerance, dists, np.inf)
         best_idx = int(np.argmin(dists_gated))
 
         if not np.isfinite(dists_gated[best_idx]):
             break  # chain broken
 
-        best_pts = xyz_past[lbl_past == past_unique[best_idx]]
+        best_pts = cluster_pts[best_idx]
         if len(best_pts) < min_points_per_cluster:
             break  # cluster too sparse to continue
 
         valid_past_reversed.append(best_pts)
-        source_centroid = best_pts.mean(axis=0)
+        source_centroid = centroids[best_idx]  # reuse precomputed centroid
 
     return valid_past_reversed[::-1]  # restore chronological order
