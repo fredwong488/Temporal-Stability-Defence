@@ -1,0 +1,400 @@
+"""
+scripts/optuna_search.py
+------------------------
+Multi-objective Optuna (MOTPE) search for radial-jitter defense clustering params.
+
+Optimises a Pareto front of (spoofed_f1, pred_f1) — the clustering-quality
+metric defined in eval_pipeline/metrics/common.py.  The first trial builds a
+shared precomputed cache (detector + ORA pass over the dataset); all subsequent
+trials replay from that cache so only the defense re-runs per trial.
+
+Edit SEARCH_SPACE near the top of this file to change which params are searched
+and over what ranges.  Fixed (non-searched) defense params can be passed with
+--defense-params KEY=VALUE.
+
+Usage:
+    pixi run python scripts/optuna_search.py \\
+        --defense radial_jitter_bev \\
+        --attack ora \\
+        --detector pointpillars_nuscenes \\
+        --dataset nuscenes \\
+        --n-trials 100 \\
+        --use-predicted-labels \\
+        --use-cached-attacks
+
+Outputs under results/optuna/<study_name>/:
+    search_metadata.json  — config snapshot
+    <study_name>.db       — SQLite study (resume with --study-name)
+    trials.csv            — all trials
+    pareto.csv            — Pareto-optimal configs
+    trial_NNNN.json       — per-trial summary JSON (from run_experiment)
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import logging
+import pathlib
+import sys
+from datetime import datetime
+
+_PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+import optuna
+
+from eval_pipeline.config import ExperimentConfig
+from eval_pipeline.runner import run_experiment
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+optuna.logging.set_verbosity(optuna.logging.WARNING)
+
+_DATASETS_BASE = "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets"
+DEFAULT_NUSCENES_ROOT = f"{_DATASETS_BASE}/nuscenes-v1.0-mini"
+DEFAULT_NUSCENES_VERSION = "v1.0-mini"
+DEFAULT_NUSCENES_SPLIT = "mini_val"
+DEFAULT_RESULTS_DIR = "results/optuna"
+
+# ---------------------------------------------------------------------------
+# Search space — edit to add / remove params or change ranges.
+# Format: param_name -> ("float" | "int", low, high)
+# ---------------------------------------------------------------------------
+SEARCH_SPACE: dict[str, tuple[str, float, float]] = {
+    "dbscan_eps":            ("float", 0.2,  1.5),
+    "dbscan_min_samples":    ("int",   3,    20),
+    "temporal_window":       ("int",   4,    14),
+    "motion_tolerance":      ("float", 0.3,  3.0),
+    "min_frames_associated": ("int",   1,    6),
+}
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _parse_kv_params(pairs: list[str]) -> dict:
+    out: dict = {}
+    for item in pairs:
+        if "=" not in item:
+            raise ValueError(f"Invalid parameter '{item}': expected KEY=VALUE format")
+        key, _, raw = item.partition("=")
+        try:
+            out[key] = int(raw)
+        except ValueError:
+            try:
+                out[key] = float(raw)
+            except ValueError:
+                out[key] = raw
+    return out
+
+
+def _suggest_params(trial: optuna.Trial) -> dict:
+    params: dict = {}
+    for name, (kind, low, high) in SEARCH_SPACE.items():
+        if kind == "float":
+            params[name] = trial.suggest_float(name, low, high)
+        else:
+            params[name] = trial.suggest_int(name, int(low), int(high))
+    return params
+
+
+def _derive_defense_params(trial_params: dict, base: dict) -> dict:
+    """Merge trial params into base, deriving min_history_frames when temporal_window is searched."""
+    merged = {**base, **trial_params}
+    if "temporal_window" in trial_params and "min_history_frames" not in base:
+        tw = int(trial_params["temporal_window"])
+        merged["min_history_frames"] = max(2, tw - 2)
+    return merged
+
+
+# ---------------------------------------------------------------------------
+# Objective
+# ---------------------------------------------------------------------------
+
+def build_objective(
+    base_defense_params: dict,
+    attack_type: str | None,
+    attack_params: dict,
+    attack_fraction: float,
+    attack_fraction_seed: int,
+    defense_type: str,
+    detector_type: str | None,
+    detector_params: dict,
+    dataset_type: str,
+    dataset_params: dict,
+    run_dir: pathlib.Path,
+    shared_cache_path: str,
+    use_cached_attacks: bool,
+    use_predicted_labels: bool,
+    pred_label_score_threshold: float,
+    min_unattacked_frames: int,
+    min_attacked_frames: int,
+):
+    def objective(trial: optuna.Trial) -> tuple[float, float]:
+        trial_params = _suggest_params(trial)
+        defense_params = _derive_defense_params(trial_params, base_defense_params)
+
+        config = ExperimentConfig(
+            dataset_type=dataset_type,
+            dataset_params=dataset_params,
+            attack_type=attack_type,
+            attack_params=attack_params,
+            attack_fraction=attack_fraction,
+            attack_fraction_seed=attack_fraction_seed,
+            defense_type=defense_type,
+            defense_params=defense_params,
+            detector_type=detector_type,
+            detector_params=detector_params,
+            output_dir=str(run_dir),
+            experiment_name=f"trial_{trial.number:04d}",
+            metric_types=["clustering_quality"],
+            save_frame_results=False,
+            precomputed_cache_path=shared_cache_path,
+            use_cached_attacks=use_cached_attacks,
+            use_predicted_labels=use_predicted_labels,
+            pred_label_score_threshold=pred_label_score_threshold,
+            min_unattacked_frames=min_unattacked_frames,
+            min_attacked_frames=min_attacked_frames,
+        )
+        summary = run_experiment(config, desc=f"trial {trial.number}")
+
+        cq = summary.get("clustering_quality") or {}
+        spoofed_f1 = float(cq.get("spoofed_f1") or 0.0)
+        pred_f1 = float(cq.get("pred_f1") or 0.0)
+
+        logging.info(
+            "Trial %d  spoofed_f1=%.4f  pred_f1=%.4f  params=%s",
+            trial.number, spoofed_f1, pred_f1,
+            {k: f"{v:.3f}" if isinstance(v, float) else v for k, v in trial_params.items()},
+        )
+        return spoofed_f1, pred_f1
+
+    return objective
+
+
+# ---------------------------------------------------------------------------
+# Output helpers
+# ---------------------------------------------------------------------------
+
+def _save_pareto(pareto_trials: list[optuna.trial.FrozenTrial], path: pathlib.Path) -> None:
+    if not pareto_trials:
+        return
+    rows = []
+    for t in pareto_trials:
+        row: dict = {"number": t.number, "spoofed_f1": t.values[0], "pred_f1": t.values[1]}
+        row.update(t.params)
+        if "temporal_window" in t.params and "min_history_frames" not in t.params:
+            row["min_history_frames"] = max(2, int(t.params["temporal_window"]) - 2)
+        rows.append(row)
+
+    fieldnames = list(rows[0].keys())
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def _print_pareto(pareto_trials: list[optuna.trial.FrozenTrial]) -> None:
+    if not pareto_trials:
+        logging.warning("No Pareto-front trials found.")
+        return
+
+    param_keys = list(SEARCH_SPACE.keys())
+    header = f"{'#':>6}  {'spoofed_f1':>10}  {'pred_f1':>10}"
+    for k in param_keys:
+        header += f"  {k}"
+    print(f"\n=== Pareto front ({len(pareto_trials)} configs) ===")
+    print(header)
+    for t in pareto_trials:
+        line = f"{t.number:>6}  {t.values[0]:>10.4f}  {t.values[1]:>10.4f}"
+        for k in param_keys:
+            v = t.params.get(k, "?")
+            line += f"  {v:.4f}" if isinstance(v, float) else f"  {v}"
+        print(line)
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Multi-objective Optuna search for radial-jitter clustering params.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    # Dataset
+    parser.add_argument("--dataset", default="nuscenes", choices=["kitti", "nuscenes"])
+    parser.add_argument("--nuscenes-root", default=DEFAULT_NUSCENES_ROOT)
+    parser.add_argument("--nuscenes-version", default=DEFAULT_NUSCENES_VERSION)
+    parser.add_argument("--nuscenes-split", default=DEFAULT_NUSCENES_SPLIT)
+    parser.add_argument("--nuscenes-scene-names", nargs="+", default=None, metavar="SCENE")
+
+    # Components
+    parser.add_argument("--defense", required=True,
+                        help="Defense type to tune (radial_jitter or radial_jitter_bev)")
+    parser.add_argument("--attack", default="ora")
+    parser.add_argument("--detector", default=None)
+    parser.add_argument("--attack-noise-preset", default="worst_case",
+                        choices=["none", "worst_case", "worst_case_high_error",
+                                 "vlp16", "vlp32c", "os1_32", "helios", "horizon", "l515", "xt32"])
+    parser.add_argument("--attack-fraction", type=float, default=1.0)
+    parser.add_argument("--attack-fraction-seed", type=int, default=0)
+    parser.add_argument("--min-unattacked-frames", type=int, default=6)
+    parser.add_argument("--min-attacked-frames", type=int, default=6)
+    parser.add_argument("--use-cached-attacks", action="store_true", default=False)
+    parser.add_argument("--use-predicted-labels", action="store_true", default=False)
+    parser.add_argument("--pred-label-score-threshold", type=float, default=0.5)
+    parser.add_argument("--confidence-threshold", type=float, default=0.3)
+
+    # Fixed (non-searched) defense params
+    parser.add_argument("--defense-params", nargs="*", default=[], metavar="KEY=VALUE",
+                        help="Fixed defense params not in the search space (e.g. use_point=False)")
+
+    # Optuna
+    parser.add_argument("--n-trials", type=int, default=100)
+    parser.add_argument("--study-name", default=None,
+                        help="Optuna study name; pass an existing name with --results-dir to resume")
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--n-warmup-steps", type=int, default=10,
+                        help="Random startup trials before MOTPE kicks in")
+
+    # Output
+    parser.add_argument("--results-dir", default=DEFAULT_RESULTS_DIR)
+    parser.add_argument(
+        "--precomputed-cache-dir", default=None, metavar="DIR",
+        help="Directory for the shared precomputed cache. Uses defense_sweep_shared.pkl "
+             "inside that directory. Defaults to run_dir/shared_cache.pkl if not set.",
+    )
+    parser.add_argument("--notes", default=None)
+
+    args = parser.parse_args()
+
+    timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    study_name = args.study_name or f"{args.defense}_{timestamp}"
+    run_dir = pathlib.Path(args.results_dir) / study_name
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    if args.precomputed_cache_dir is not None:
+        shared_cache_path = str(
+            pathlib.Path(args.precomputed_cache_dir) / "defense_sweep_shared.pkl"
+        )
+    else:
+        shared_cache_path = str(run_dir / "shared_cache.pkl")
+
+    # Dataset params
+    dataset_type = args.dataset
+    dataset_params: dict = {}
+    if dataset_type == "nuscenes":
+        dataset_params.update({
+            "root": args.nuscenes_root,
+            "version": args.nuscenes_version,
+            "split": args.nuscenes_split,
+        })
+        if args.nuscenes_scene_names:
+            dataset_params["scene_names"] = args.nuscenes_scene_names
+        classes = ["car", "pedestrian", "bicycle"]
+    else:
+        classes = ["Car", "Pedestrian", "Cyclist"]
+
+    # Attack params
+    attack_params: dict = {"target_types": classes}
+    if args.attack == "ora" and args.attack_noise_preset != "none":
+        from eval_pipeline.utils.spoofing_noise import SpoofingNoiseModel
+        attack_params["noise_model"] = SpoofingNoiseModel.from_preset(
+            args.attack_noise_preset, seed=args.attack_fraction_seed
+        )
+
+    base_defense_params = _parse_kv_params(args.defense_params)
+    detector_params: dict = {}
+    if args.detector:
+        detector_params["score_threshold"] = args.confidence_threshold
+
+    # Optuna study
+    storage = f"sqlite:///{run_dir / (study_name + '.db')}"
+    sampler = optuna.samplers.TPESampler(
+        seed=args.seed,
+        n_startup_trials=args.n_warmup_steps,
+        multivariate=True,
+    )
+    study = optuna.create_study(
+        directions=["maximize", "maximize"],
+        study_name=study_name,
+        storage=storage,
+        load_if_exists=True,
+        sampler=sampler,
+    )
+
+    # Metadata snapshot
+    metadata = {
+        "study_name": study_name,
+        "timestamp": timestamp,
+        "notes": args.notes,
+        "defense": args.defense,
+        "attack": args.attack,
+        "dataset": dataset_type,
+        "dataset_params": dataset_params,
+        "n_trials": args.n_trials,
+        "seed": args.seed,
+        "n_warmup_steps": args.n_warmup_steps,
+        "search_space": {k: list(v) for k, v in SEARCH_SPACE.items()},
+        "base_defense_params": {k: str(v) for k, v in base_defense_params.items()},
+        "attack_noise_preset": args.attack_noise_preset,
+        "use_cached_attacks": args.use_cached_attacks,
+        "use_predicted_labels": args.use_predicted_labels,
+    }
+    with open(run_dir / "search_metadata.json", "w") as f:
+        json.dump(metadata, f, indent=2)
+
+    logging.info("Study: %s", study_name)
+    logging.info("Storage: %s", storage)
+    logging.info("Search space: %s", SEARCH_SPACE)
+    logging.info(
+        "Cache: %s  (built on trial 0, replayed on subsequent trials)",
+        shared_cache_path,
+    )
+    logging.info("Running %d trials...", args.n_trials)
+
+    objective = build_objective(
+        base_defense_params=base_defense_params,
+        attack_type=args.attack,
+        attack_params=attack_params,
+        attack_fraction=args.attack_fraction,
+        attack_fraction_seed=args.attack_fraction_seed,
+        defense_type=args.defense,
+        detector_type=args.detector,
+        detector_params=detector_params,
+        dataset_type=dataset_type,
+        dataset_params=dataset_params,
+        run_dir=run_dir,
+        shared_cache_path=shared_cache_path,
+        use_cached_attacks=args.use_cached_attacks,
+        use_predicted_labels=args.use_predicted_labels,
+        pred_label_score_threshold=args.pred_label_score_threshold,
+        min_unattacked_frames=args.min_unattacked_frames,
+        min_attacked_frames=args.min_attacked_frames,
+    )
+
+    study.optimize(objective, n_trials=args.n_trials, show_progress_bar=True)
+
+    # Save all trials
+    trials_path = run_dir / "trials.csv"
+    study.trials_dataframe().to_csv(trials_path, index=False)
+    logging.info("All trials → %s", trials_path)
+
+    # Save Pareto front
+    pareto_path = run_dir / "pareto.csv"
+    _save_pareto(study.best_trials, pareto_path)
+    logging.info("Pareto front (%d configs) → %s", len(study.best_trials), pareto_path)
+    _print_pareto(study.best_trials)
+
+    print(f"\nResults: {run_dir}")
+    print(f"Resume:  pixi run python scripts/optuna_search.py --study-name {study_name} "
+          f"--results-dir {args.results_dir} --n-trials <more>")
+
+
+if __name__ == "__main__":
+    main()

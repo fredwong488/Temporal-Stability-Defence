@@ -211,6 +211,27 @@ class EvalResults:
 
         return compute_defense_metrics(self.frame_results)
 
+    def clustering_quality(self) -> dict:
+        """Compute spatial cluster-matching F1 scores for radial-jitter defenses.
+
+        Matches cluster centroids against ORA phantom targets and vehicle
+        predictions via Hungarian assignment.  Returns spoofed_f1, vehicle_f1,
+        and the component precision/recall values.  Empty dict if no attacked
+        frames carry cluster_details.
+        """
+        from .metrics import compute_clustering_quality_metrics
+
+        has_data = any(
+            r.is_attacked
+            and r.defense_result is not None
+            and r.defense_result.metadata.get("cluster_details")
+            for r in self.frame_results
+        )
+        if not has_data:
+            return {}
+
+        return compute_clustering_quality_metrics(self.frame_results)
+
 
 # ---------------------------------------------------------------------------
 # FrameCacheEntry

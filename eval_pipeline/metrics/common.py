@@ -12,7 +12,7 @@ Includes:
 from __future__ import annotations
 
 import numpy as np
-from shapely.geometry import Polygon
+from shapely.geometry import Point, Polygon
 
 from ..types import FrameResult, ObjectLabel, Prediction
 
@@ -136,6 +136,10 @@ def _match_frame(
 # Defense metrics
 # ---------------------------------------------------------------------------
 
+SPOOF_DIST_THRESHOLD = 1.5   # metres — phantom match gate
+PREDICTION_MATCH_MARGIN = 0.5   # metres buffer added to BEV polygon for prediction match
+
+
 def compute_defense_metrics(frame_results: list[FrameResult]) -> dict:
     """Compute binary classification metrics for the defense.
 
@@ -179,4 +183,109 @@ def compute_defense_metrics(frame_results: list[FrameResult]) -> dict:
         "precision": precision,
         "recall": recall,
         "f1": f1,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Clustering-quality metrics
+# ---------------------------------------------------------------------------
+
+def compute_clustering_quality_metrics(frame_results: list[FrameResult]) -> dict:
+    """Spatial cluster-matching F1 for radial-jitter defenses.
+
+    For each attacked frame with cluster_details, one global Hungarian assignment
+    matches cluster centroids against:
+      - Phantom targets: ORA reinjected_centroid from attack_metadata
+      - Prediction targets: all attacked_predictions boxes (BEV containment)
+
+    Micro-averages counts across frames then derives:
+      spoofed_f1 = H(spoofed_recall, precision)
+      pred_f1    = H(pred_recall, precision)
+
+    where precision is shared (global over-clustering penalty).
+    Frames with no defense_result or no cluster_details are skipped.
+    """
+    from scipy.optimize import linear_sum_assignment
+
+    _INF = 1e9
+
+    def _h(a: float, b: float) -> float:
+        return 2 * a * b / (a + b) if (a + b) > 0.0 else 0.0
+
+    mp = mpr = mc = tc = tp_count = tpr = 0
+
+    for fr in frame_results:
+        if not fr.is_attacked:
+            continue
+        if fr.defense_result is None:
+            continue
+
+        cluster_details = fr.defense_result.metadata.get("cluster_details")
+        if not cluster_details:
+            continue
+
+        centroids: list[np.ndarray] = []
+        for cd in cluster_details:
+            c = cd.get("centroid")
+            if c and len(c) == 3:
+                centroids.append(np.array(c, dtype=float))
+
+        phantom_targets: list[np.ndarray] = []
+        for obj in fr.attack_metadata.get("removed_per_obj", []):
+            rc = obj.get("reinjected_centroid")
+            if rc and len(rc) == 3:
+                phantom_targets.append(np.array(rc, dtype=float))
+
+        pred_targets: list[Prediction] = fr.attacked_predictions or []
+
+        n_c = len(centroids)
+        n_p = len(phantom_targets)
+        n_pr = len(pred_targets)
+        n_t = n_p + n_pr
+
+        tc += n_c
+        tp_count += n_p
+        tpr += n_pr
+
+        if n_c == 0 or n_t == 0:
+            continue
+
+        cost = np.full((n_c, n_t), _INF)
+
+        for i, cen in enumerate(centroids):
+            for j, pt in enumerate(phantom_targets):
+                d = float(np.linalg.norm(cen - pt))
+                if d <= SPOOF_DIST_THRESHOLD:
+                    cost[i, j] = d
+
+            for j, pred in enumerate(pred_targets):
+                poly = _corners_to_bev_polygon(pred.corners_velo).buffer(PREDICTION_MATCH_MARGIN)
+                if poly.contains(Point(float(cen[0]), float(cen[1]))):
+                    cost[i, n_p + j] = float(np.linalg.norm(cen[:2] - np.array([pred.x, pred.y])))
+
+        row_ind, col_ind = linear_sum_assignment(cost)
+        for r, c_idx in zip(row_ind, col_ind):
+            if cost[r, c_idx] < _INF:
+                mc += 1
+                if c_idx < n_p:
+                    mp += 1
+                else:
+                    mpr += 1
+
+    precision = mc / tc if tc > 0 else 0.0
+    spoofed_recall = mp / tp_count if tp_count > 0 else 0.0
+    pred_recall = mpr / tpr if tpr > 0 else 0.0
+
+    return {
+        "spoofed_f1": _h(spoofed_recall, precision),
+        "pred_f1": _h(pred_recall, precision),
+        "precision": precision,
+        "spoofed_recall": spoofed_recall,
+        "pred_recall": pred_recall,
+        "matched_phantoms": mp,
+        "total_phantoms": tp_count,
+        "matched_predictions": mpr,
+        "total_predictions": tpr,
+        "matched_clusters": mc,
+        "total_clusters": tc,
     }

@@ -54,6 +54,7 @@ tqdm = "*"
 opencv = "*"
 pip = "*"
 pandas = "*"
+optuna = "*"
 
 [target.linux-64.dependencies]
 

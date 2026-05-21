@@ -61,7 +61,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "clustering_quality"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
@@ -173,6 +173,23 @@ def extract_detection_rate_row(
         "detection_f1": de.get("f1", float("nan")),
         "detection_precision": de.get("precision", float("nan")),
         "detection_recall": de.get("recall", float("nan")),
+    }
+
+
+def extract_clustering_quality_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+) -> dict:
+    """Extract clustering-quality F1 scores into a flat dict for the CSV."""
+    cq = summary.get("clustering_quality", {})
+    return {
+        sweep_param: sweep_val,
+        "spoofed_f1": cq.get("spoofed_f1", float("nan")),
+        "pred_f1": cq.get("pred_f1", float("nan")),
+        "precision": cq.get("precision", float("nan")),
+        "spoofed_recall": cq.get("spoofed_recall", float("nan")),
+        "pred_recall": cq.get("pred_recall", float("nan")),
     }
 
 
@@ -534,6 +551,7 @@ def main() -> None:
     pr_all: list[dict] = []
     recall_iou_all: list[dict] = []
     detection_rate_rows: list[dict] = []
+    clustering_quality_rows: list[dict] = []
 
     base_attack_params: dict = {"target_types": args.classes} if args.attack else {}
     base_attack_params.update(extra_attack_params)
@@ -684,6 +702,14 @@ def main() -> None:
                 row["detection_f1"], row["detection_precision"], row["detection_recall"],
             )
 
+        if "clustering_quality" in args.metric_types:
+            row = extract_clustering_quality_row(summary, args.sweep_param, val)
+            clustering_quality_rows.append(row)
+            logging.info(
+                "  Clustering  spoofed_f1=%.3f  pred_f1=%.3f  precision=%.3f",
+                row["spoofed_f1"], row["pred_f1"], row["precision"],
+            )
+
     sweep_tag = f"{args.sweep_target}_{args.sweep_param}"
 
     # AP → CSV
@@ -742,6 +768,30 @@ def main() -> None:
                 f"{row['detection_f1']:.4f}",
                 f"{row['detection_precision']:.4f}",
                 f"{row['detection_recall']:.4f}",
+            ]))
+
+    # Clustering quality → CSV
+    if "clustering_quality" in args.metric_types and clustering_quality_rows:
+        fieldnames = [
+            args.sweep_param,
+            "spoofed_f1", "pred_f1", "precision", "spoofed_recall", "pred_recall",
+        ]
+        out_path = run_dir / f"sweep_{sweep_tag}_clustering_quality.csv"
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(clustering_quality_rows)
+        logging.info("Clustering quality CSV written to %s", out_path)
+        print(f"\nClustering quality: {out_path}")
+        print(",".join(fieldnames))
+        for row in clustering_quality_rows:
+            print(",".join([
+                str(row[args.sweep_param]),
+                f"{row['spoofed_f1']:.4f}",
+                f"{row['pred_f1']:.4f}",
+                f"{row['precision']:.4f}",
+                f"{row['spoofed_recall']:.4f}",
+                f"{row['pred_recall']:.4f}",
             ]))
 
     end_time = datetime.now()
