@@ -60,14 +60,17 @@ DEFAULT_RESULTS_DIR = "results/optuna"
 
 # ---------------------------------------------------------------------------
 # Search space — edit to add / remove params or change ranges.
-# Format: param_name -> ("float" | "int", low, high)
+# Format:
+#   numeric:     param_name -> ("float" | "int", low, high)
+#   categorical: param_name -> ("categorical", [choice, ...])
 # ---------------------------------------------------------------------------
-SEARCH_SPACE: dict[str, tuple[str, float, float]] = {
-    "dbscan_eps":            ("float", 0.2,  1.5),
-    "dbscan_min_samples":    ("int",   3,    20),
-    "temporal_window":       ("int",   4,    14),
-    "motion_tolerance":      ("float", 0.3,  3.0),
-    "min_frames_associated": ("int",   1,    6),
+SEARCH_SPACE: dict[str, tuple] = {
+    "dbscan_eps":            ("float",       0.2,  1.5),
+    "dbscan_min_samples":    ("int",         3,    20),
+    "temporal_window":       ("int",         4,    14),
+    "motion_tolerance":      ("float",       0.3,  3.0),
+    "min_frames_associated": ("int",         2,    6),
+    "centroid_method":       ("categorical", ["linear_velocity", "first_diff"]),
 }
 
 
@@ -93,21 +96,15 @@ def _parse_kv_params(pairs: list[str]) -> dict:
 
 def _suggest_params(trial: optuna.Trial) -> dict:
     params: dict = {}
-    for name, (kind, low, high) in SEARCH_SPACE.items():
+    for name, spec in SEARCH_SPACE.items():
+        kind = spec[0]
         if kind == "float":
-            params[name] = trial.suggest_float(name, low, high)
-        else:
-            params[name] = trial.suggest_int(name, int(low), int(high))
+            params[name] = trial.suggest_float(name, spec[1], spec[2])
+        elif kind == "int":
+            params[name] = trial.suggest_int(name, int(spec[1]), int(spec[2]))
+        else:  # categorical
+            params[name] = trial.suggest_categorical(name, spec[1])
     return params
-
-
-def _derive_defense_params(trial_params: dict, base: dict) -> dict:
-    """Merge trial params into base, deriving min_history_frames when temporal_window is searched."""
-    merged = {**base, **trial_params}
-    if "temporal_window" in trial_params and "min_history_frames" not in base:
-        tw = int(trial_params["temporal_window"])
-        merged["min_history_frames"] = max(2, tw - 2)
-    return merged
 
 
 # ---------------------------------------------------------------------------
@@ -135,7 +132,7 @@ def build_objective(
 ):
     def objective(trial: optuna.Trial) -> tuple[float, float]:
         trial_params = _suggest_params(trial)
-        defense_params = _derive_defense_params(trial_params, base_defense_params)
+        defense_params = {**base_defense_params, **trial_params}
 
         config = ExperimentConfig(
             dataset_type=dataset_type,
@@ -186,8 +183,6 @@ def _save_pareto(pareto_trials: list[optuna.trial.FrozenTrial], path: pathlib.Pa
     for t in pareto_trials:
         row: dict = {"number": t.number, "spoofed_f1": t.values[0], "pred_f1": t.values[1]}
         row.update(t.params)
-        if "temporal_window" in t.params and "min_history_frames" not in t.params:
-            row["min_history_frames"] = max(2, int(t.params["temporal_window"]) - 2)
         rows.append(row)
 
     fieldnames = list(rows[0].keys())
@@ -259,8 +254,8 @@ def main() -> None:
     parser.add_argument("--study-name", default=None,
                         help="Optuna study name; pass an existing name with --results-dir to resume")
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--n-warmup-steps", type=int, default=10,
-                        help="Random startup trials before MOTPE kicks in")
+    parser.add_argument("--population-size", type=int, default=50,
+                        help="NSGA-II population size")
 
     # Output
     parser.add_argument("--results-dir", default=DEFAULT_RESULTS_DIR)
@@ -315,10 +310,9 @@ def main() -> None:
 
     # Optuna study
     storage = f"sqlite:///{run_dir / (study_name + '.db')}"
-    sampler = optuna.samplers.TPESampler(
+    sampler = optuna.samplers.NSGAIISampler(
         seed=args.seed,
-        n_startup_trials=args.n_warmup_steps,
-        multivariate=True,
+        population_size=args.population_size,
     )
     study = optuna.create_study(
         directions=["maximize", "maximize"],
@@ -328,7 +322,32 @@ def main() -> None:
         sampler=sampler,
     )
 
-    # Metadata snapshot
+    # Resume guard: if an existing study is being continued, check for config drift.
+    metadata_path = run_dir / "search_metadata.json"
+    if args.study_name is not None and metadata_path.exists():
+        with open(metadata_path) as f:
+            saved = json.load(f)
+        _COMPARE_KEYS = ("defense", "attack", "dataset", "search_space",
+                         "attack_noise_preset", "use_predicted_labels")
+        current = {
+            "defense": args.defense,
+            "attack": args.attack,
+            "dataset": dataset_type,
+            "search_space": {k: list(v) for k, v in SEARCH_SPACE.items()},
+            "attack_noise_preset": args.attack_noise_preset,
+            "use_predicted_labels": args.use_predicted_labels,
+        }
+        diffs = {k: (saved.get(k), current[k]) for k in _COMPARE_KEYS if saved.get(k) != current[k]}
+        if diffs:
+            print("\nWARNING: Current arguments differ from the saved study metadata:")
+            for k, (old, new) in diffs.items():
+                print(f"  {k}: saved={old!r}  current={new!r}")
+            answer = input("\nContinue anyway? [y/N] ").strip().lower()
+            if answer != "y":
+                print("Aborted.")
+                return
+
+    # Metadata snapshot (written / overwritten each run so it reflects latest n_trials target)
     metadata = {
         "study_name": study_name,
         "timestamp": timestamp,
@@ -339,24 +358,35 @@ def main() -> None:
         "dataset_params": dataset_params,
         "n_trials": args.n_trials,
         "seed": args.seed,
-        "n_warmup_steps": args.n_warmup_steps,
+        "population_size": args.population_size,
         "search_space": {k: list(v) for k, v in SEARCH_SPACE.items()},
         "base_defense_params": {k: str(v) for k, v in base_defense_params.items()},
         "attack_noise_preset": args.attack_noise_preset,
         "use_cached_attacks": args.use_cached_attacks,
         "use_predicted_labels": args.use_predicted_labels,
     }
-    with open(run_dir / "search_metadata.json", "w") as f:
+    with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
 
     logging.info("Study: %s", study_name)
     logging.info("Storage: %s", storage)
     logging.info("Search space: %s", SEARCH_SPACE)
-    logging.info(
-        "Cache: %s  (built on trial 0, replayed on subsequent trials)",
-        shared_cache_path,
+    logging.info("Cache: %s", shared_cache_path)
+
+    # Work out how many trials remain to reach the target.
+    completed = sum(
+        1 for t in study.trials if t.state == optuna.trial.TrialState.COMPLETE
     )
-    logging.info("Running %d trials...", args.n_trials)
+    remaining = max(0, args.n_trials - completed)
+    if remaining == 0:
+        logging.info(
+            "Study already has %d completed trials (target: %d). Nothing to do.",
+            completed, args.n_trials,
+        )
+    else:
+        logging.info(
+            "Completed: %d / %d — running %d more.", completed, args.n_trials, remaining,
+        )
 
     objective = build_objective(
         base_defense_params=base_defense_params,
@@ -378,7 +408,7 @@ def main() -> None:
         min_attacked_frames=args.min_attacked_frames,
     )
 
-    study.optimize(objective, n_trials=args.n_trials, show_progress_bar=True)
+    study.optimize(objective, n_trials=remaining, show_progress_bar=True)
 
     # Save all trials
     trials_path = run_dir / "trials.csv"
@@ -393,7 +423,7 @@ def main() -> None:
 
     print(f"\nResults: {run_dir}")
     print(f"Resume:  pixi run python scripts/optuna_search.py --study-name {study_name} "
-          f"--results-dir {args.results_dir} --n-trials <more>")
+          f"--results-dir {args.results_dir} --n-trials <total_target>")
 
 
 if __name__ == "__main__":
