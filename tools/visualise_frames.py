@@ -91,6 +91,25 @@ def _get_int_choice(n: int, *, allow_empty: bool = False) -> int | None:
         print(f"  Please enter a number between 1 and {n}.")
 
 
+def _get_int_choices(n: int) -> list[int]:
+    """Prompt until the user enters one or more space-separated integers in [1, n].
+
+    Returns a sorted, deduplicated list of the chosen values.
+    """
+    prompt = f"Choose [1-{n}] or space-separated numbers (e.g. 2 4 5): "
+    while True:
+        raw = input(prompt).strip()
+        parts = raw.split()
+        try:
+            choices = [int(p) for p in parts]
+        except ValueError:
+            print(f"  Please enter numbers between 1 and {n}.")
+            continue
+        if parts and all(1 <= c <= n for c in choices):
+            return sorted(set(choices))
+        print(f"  Please enter numbers between 1 and {n}.")
+
+
 def list_run_dirs(results_dir: pathlib.Path) -> list[pathlib.Path]:
     """Return subdirectories that contain at least one *_frames.jsonl file."""
     return sorted(
@@ -193,8 +212,10 @@ def pick_experiment(run_dir: pathlib.Path, experiment_name: str | None) -> list[
         print(f"  [{i + 1}] {name}  (frames={n_frames}, attacked={n_attacked}, detected={n_detected})")
 
     print()
-    choice = _get_int_choice(len(names) + 1)
-    return names if choice == 1 else [names[choice - 2]]
+    choices = _get_int_choices(len(names) + 1)
+    if 1 in choices:
+        return names
+    return [names[c - 2] for c in choices]
 
 
 def pick_filter(current: str) -> str:
@@ -944,8 +965,8 @@ def draw_stats(ax: "plt.Axes", frame_data: dict) -> None:
                 cx, cy = c["centroid"][0], c["centroid"][1]
                 lines.append(
                     f"  ({cx:5.1f},{cy:5.1f})"
-                    f"  σ_c={c.get('sigma_centroid', 0):.3f}"
-                    f"  σ_p={c.get('sigma_point', 0):.3f}"
+                    f"  σ_c={c.get('sigma_centroid') or 0:.3f}"
+                    f"  σ_p={c.get('sigma_point') or 0:.3f}"
                     f"  {'FLAG' if c.get('flagged') else '    '}"
                 )
             if len(clusters) > 8:

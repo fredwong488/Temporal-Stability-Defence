@@ -51,6 +51,7 @@ FRAME_NUMERIC = [
     "frame_index_in_scene", "scene_length", "confidence",
     "n_clusters_tested", "n_clusters_flagged",
     "centroid_threshold", "point_threshold",
+    "total_n_removed",
 ]
 FRAME_CATEGORICAL = ["file", "run", "is_attacked", "is_attack_detected", "defense_reason"]
 
@@ -58,6 +59,7 @@ CLUSTER_NUMERIC = FRAME_NUMERIC + [
     "n_points_cur", "n_frames_associated",
     "sigma_centroid", "sigma_point",
     "centroid_x", "centroid_y", "centroid_z",
+    "n_removed", "n_removed_matched",
 ]
 CLUSTER_CATEGORICAL = FRAME_CATEGORICAL + ["flagged_centroid", "flagged_point", "flagged", "is_spoofed_cluster"]
 
@@ -137,23 +139,32 @@ def _load_jsonl(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
 
             # Collect spoofed-cluster centroids from attack_metadata (ORA only).
             # Each entry has a "reinjected_centroid" [x, y, z] when n_removed > 0.
-            spoofed_centroids: list[tuple[float, float, float]] = []
+            spoofed_centroids: list[tuple[float, float, float, int]] = []
+            total_n_removed = 0
             for obj in (d.get("attack_metadata") or {}).get("removed_per_obj") or []:
                 rc = obj.get("reinjected_centroid")
+                nr = obj.get("n_removed") or 0
+                total_n_removed += nr
                 if rc and len(rc) == 3:
-                    spoofed_centroids.append((float(rc[0]), float(rc[1]), float(rc[2])))
+                    spoofed_centroids.append((float(rc[0]), float(rc[1]), float(rc[2]), int(nr)))
+            frame_row["total_n_removed"] = total_n_removed if total_n_removed else None
 
             for cd in meta.get("cluster_details") or []:
                 centroid = cd.get("centroid") or [None, None, None]
                 cx, cy, cz = centroid[0], centroid[1], centroid[2]
 
                 is_spoofed = False
+                n_removed = None
+                n_removed_matched = None
                 if spoofed_centroids and cx is not None and cy is not None and cz is not None:
-                    min_dist = min(
-                        math.sqrt((cx - sx) ** 2 + (cy - sy) ** 2 + (cz - sz) ** 2)
-                        for sx, sy, sz in spoofed_centroids
+                    best = min(
+                        spoofed_centroids,
+                        key=lambda s: math.sqrt((cx - s[0]) ** 2 + (cy - s[1]) ** 2 + (cz - s[2]) ** 2),
                     )
-                    is_spoofed = min_dist < 1.5
+                    n_removed = best[3]
+                    if math.sqrt((cx - best[0]) ** 2 + (cy - best[1]) ** 2 + (cz - best[2]) ** 2) < 1.5:
+                        is_spoofed = True
+                        n_removed_matched = best[3]
 
                 rows_cluster.append({
                     **frame_row,
@@ -168,6 +179,8 @@ def _load_jsonl(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
                     "centroid_y": cy,
                     "centroid_z": cz,
                     "is_spoofed_cluster": is_spoofed,
+                    "n_removed": n_removed,
+                    "n_removed_matched": n_removed_matched,
                 })
 
     return pd.DataFrame(rows_frame), pd.DataFrame(rows_cluster)
@@ -510,12 +523,16 @@ def main() -> None:
 
         try:
             if plot_type == "histogram":
+                col_vals = df[x_col].dropna()
+                x_range = col_vals.max() - col_vals.min()
+                xbins = dict(size=x_range / 100) if x_range > 0 else {}
                 fig = px.histogram(
                     df, x=x_col, color=color,
                     barmode="overlay", opacity=0.7,
                     marginal="rug",
                     labels={x_col: x_col},
                 )
+                fig.update_traces(xbins=xbins, selector=dict(type="histogram"))
             elif plot_type == "box":
                 fig = px.box(
                     df, x=color, y=x_col,
