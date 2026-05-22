@@ -67,7 +67,7 @@ DEFAULT_RESULTS_DIR = "results/optuna"
 SEARCH_SPACE: dict[str, tuple] = {
     "dbscan_eps":            ("float",       0.2,  1.5),
     "dbscan_min_samples":    ("int",         3,    20),
-    "temporal_window":       ("int",         4,    14),
+    "temporal_window":       ("int",         6,    14),
     "motion_tolerance":      ("float",       0.3,  3.0),
     "min_frames_associated": ("int",         2,    6),
     "centroid_method":       ("categorical", ["linear_velocity", "first_diff"]),
