@@ -63,15 +63,29 @@ DEFAULT_RESULTS_DIR = "results/optuna"
 # Format:
 #   numeric:     param_name -> ("float" | "int", low, high)
 #   categorical: param_name -> ("categorical", [choice, ...])
+#
+# SEARCH_SPACE is set at runtime in main() based on --clusterer.
 # ---------------------------------------------------------------------------
-SEARCH_SPACE: dict[str, tuple] = {
-    "dbscan_eps":            ("float",       0.2,  1.5),
+_SEARCH_SPACE_SHARED: dict[str, tuple] = {
     "dbscan_min_samples":    ("int",         3,    20),
     "temporal_window":       ("int",         6,    14),
     "motion_tolerance":      ("float",       0.3,  3.0),
     "min_frames_associated": ("int",         2,    6),
     "centroid_method":       ("categorical", ["linear_velocity", "first_diff"]),
 }
+
+SEARCH_SPACE_DBSCAN: dict[str, tuple] = {
+    "dbscan_eps": ("float", 0.2, 1.5),
+    **_SEARCH_SPACE_SHARED,
+}
+
+SEARCH_SPACE_HDBSCAN: dict[str, tuple] = {
+    "hdbscan_min_cluster_size": ("int", 5, 30),
+    **_SEARCH_SPACE_SHARED,
+}
+
+# Assigned in main() once --clusterer is known.
+SEARCH_SPACE: dict[str, tuple] = {}
 
 
 # ---------------------------------------------------------------------------
@@ -304,6 +318,17 @@ def main() -> None:
         )
 
     base_defense_params = _parse_kv_params(args.defense_params)
+    clusterer = base_defense_params.get("clusterer")
+    if clusterer not in ("dbscan", "hdbscan"):
+        raise ValueError(
+            "clusterer must be provided via --defense-params (e.g. clusterer=dbscan or "
+            "clusterer=hdbscan). It is required to select the correct search space: "
+            "DBSCAN searches dbscan_eps; HDBSCAN searches hdbscan_min_cluster_size instead."
+        )
+
+    global SEARCH_SPACE
+    SEARCH_SPACE = SEARCH_SPACE_DBSCAN if clusterer == "dbscan" else SEARCH_SPACE_HDBSCAN
+    logging.info("Clusterer: %s  →  search space: %s", clusterer, list(SEARCH_SPACE.keys()))
     detector_params: dict = {}
     if args.detector:
         detector_params["score_threshold"] = args.confidence_threshold

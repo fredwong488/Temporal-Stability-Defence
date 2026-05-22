@@ -64,7 +64,7 @@ from collections import deque
 from typing import Literal
 
 import numpy as np
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN, HDBSCAN
 
 from ..base import BaseDefense
 from ..types import DetectionResult, Frame, FrameHistory
@@ -135,6 +135,18 @@ class RadialJitterDefense(BaseDefense):
         Distance behind (metres) of the ego-vehicle exclusion box.
     ego_side
         Half-width (metres) of the ego-vehicle exclusion box.
+    clusterer
+        Which clustering algorithm to use.  ``"dbscan"`` (default) uses
+        sklearn DBSCAN with ``dbscan_eps`` and ``dbscan_min_samples``.
+        ``"hdbscan"`` uses sklearn HDBSCAN with ``hdbscan_min_cluster_size``
+        as the minimum cluster size and ``dbscan_min_samples`` as the density
+        estimation parameter (HDBSCAN ``min_samples``).  Note: ``dbscan_eps``
+        is ignored for HDBSCAN.
+    hdbscan_min_cluster_size
+        Minimum number of points for a group to survive as a cluster under
+        HDBSCAN.  Defaults to 10 to match ``min_points_per_cluster`` — the
+        floor the rest of the pipeline already enforces.  Ignored when
+        ``clusterer="dbscan"``.
     use_centroid
         Whether to compute and use σ_centroid for flagging.
     use_point
@@ -167,6 +179,8 @@ class RadialJitterDefense(BaseDefense):
         centroid_method: Literal["linear_velocity", "first_diff"] = "linear_velocity",
         history_source: Literal["clean", "dirty"] = "dirty",
         cluster_on_bev: bool = False,
+        clusterer: Literal["dbscan", "hdbscan"] = "dbscan",
+        hdbscan_min_cluster_size: int = 10,
     ) -> None:
         self._temporal_window = temporal_window
         self.min_history_frames = min_history_frames
@@ -188,6 +202,8 @@ class RadialJitterDefense(BaseDefense):
         self.centroid_method = centroid_method
         self.history_source = history_source
         self.cluster_on_bev = cluster_on_bev
+        self.clusterer = clusterer
+        self.hdbscan_min_cluster_size = hdbscan_min_cluster_size
         # Maps (frame_id, is_attacked) → (xyz_filt, labels, cluster_pts, centroids)
         # in own sensor frame.  DBSCAN is distance-invariant under rigid transforms,
         # so labels and per-cluster data computed here are reused after
@@ -408,11 +424,18 @@ class RadialJitterDefense(BaseDefense):
         )
         if len(xyz_filt) >= self.dbscan_min_samples:
             cluster_input = xyz_filt[:, :2] if self.cluster_on_bev else xyz_filt
-            labels = DBSCAN(
-                eps=self.dbscan_eps,
-                min_samples=self.dbscan_min_samples,
-                n_jobs=1,
-            ).fit_predict(cluster_input)
+            if self.clusterer == "hdbscan":
+                labels = HDBSCAN(
+                    min_cluster_size=self.hdbscan_min_cluster_size,
+                    min_samples=self.dbscan_min_samples,
+                    n_jobs=1,
+                ).fit_predict(cluster_input)
+            else:
+                labels = DBSCAN(
+                    eps=self.dbscan_eps,
+                    min_samples=self.dbscan_min_samples,
+                    n_jobs=1,
+                ).fit_predict(cluster_input)
         else:
             labels = np.full(len(xyz_filt), -1, dtype=int)
 
