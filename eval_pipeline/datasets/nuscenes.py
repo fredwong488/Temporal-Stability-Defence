@@ -62,13 +62,13 @@ def _make_transform(translation: list[float], rotation_wxyz: list[float]) -> np.
     return T
 
 
-def _sensor_to_global(nusc, sample_data: dict) -> np.ndarray:
-    """Return 4×4 sensor-to-global transform for the given sample_data record."""
+def _sensor_to_global(nusc, sample_data: dict) -> tuple[np.ndarray, np.ndarray]:
+    """Return (sensor-to-global, sensor-to-ego) 4×4 transforms for the given sample_data record."""
     ep = nusc.get("ego_pose", sample_data["ego_pose_token"])
     cs = nusc.get("calibrated_sensor", sample_data["calibrated_sensor_token"])
     car_from_sensor = _make_transform(cs["translation"], cs["rotation"])
     global_from_car = _make_transform(ep["translation"], ep["rotation"])
-    return global_from_car @ car_from_sensor
+    return global_from_car @ car_from_sensor, car_from_sensor
 
 
 def _load_lidar(nusc_dataroot: pathlib.Path, sample_data: dict) -> np.ndarray:
@@ -264,7 +264,7 @@ class NuScenesDataset:
 
     def _load_frame(self, scene_token: str, sd_token: str) -> Frame:
         sd = self._nusc.get("sample_data", sd_token)
-        ego_pose = _sensor_to_global(self._nusc, sd)
+        ego_pose, sensor_to_ego = _sensor_to_global(self._nusc, sd)
         lidar = _load_lidar(self.root, sd)
         timestamp = sd["timestamp"] / 1e6  # microseconds → seconds
 
@@ -289,4 +289,5 @@ class NuScenesDataset:
             labels=labels,
             kitti_calib=None,  # NuScenes has no KITTI-style calibration matrices
             nuscenes_ego_pose=ego_pose,
+            nuscenes_sensor_to_ego=sensor_to_ego,
         )

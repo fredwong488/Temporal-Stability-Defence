@@ -87,9 +87,9 @@ class RadialJitterDefense(BaseDefense):
     min_history_frames
         Minimum past frames required before the defense produces a decision.
     ground_z_max
-        Z threshold (metres, velodyne frame) below which points are dropped as
-        ground before clustering.  Tuned for NuScenes lidar sensor height of
-        1.84 m + 20 cm buffer.
+        Z threshold (metres, ego/car frame) below which points are dropped as
+        ground before clustering.  Ground is at z ≈ 0 in the ego frame
+        regardless of sensor tilt; 0.1 m provides a 10 cm clearance buffer.
     dbscan_eps
         DBSCAN neighbourhood radius in metres.  Applied to both the current
         frame and every past compensated sweep.
@@ -149,7 +149,7 @@ class RadialJitterDefense(BaseDefense):
         self,
         temporal_window: int = 6,
         min_history_frames: int = 5,
-        ground_z_max: float = -1.65,
+        ground_z_max: float = 0.1,
         dbscan_eps: float = 0.7,
         dbscan_min_samples: int = 10,
         min_points_per_cluster: int = 10,
@@ -159,7 +159,7 @@ class RadialJitterDefense(BaseDefense):
         icp_max_correspondence_dist: float = 0.5,
         centroid_threshold: float = 0.3,
         point_threshold: float = 0.08,
-        ego_front: float = 3.0,
+        ego_front: float = 2.0,
         ego_rear: float = 2.0,
         ego_side: float = 1.4,
         use_centroid: bool = True,
@@ -394,8 +394,14 @@ class RadialJitterDefense(BaseDefense):
             return self._dbscan_cache[key]
 
         xyz = frame.lidar[:, :3].astype(np.float64)
+        # Compute z in the level ego frame (ground is at z≈0 regardless of sensor tilt)
+        if frame.nuscenes_sensor_to_ego is None:
+            raise ValueError(f"nuscenes_sensor_to_ego missing from frame {frame.frame_id}")
+        s2e = frame.nuscenes_sensor_to_ego.astype(np.float64)
+        z_ego = s2e[2, :3] @ xyz.T + s2e[2, 3]
+        xyz = xyz[z_ego > self.ground_z_max]
         xyz_filt = remove_ego_box(
-            xyz[xyz[:, 2] > self.ground_z_max],
+            xyz,
             self.ego_front, self.ego_rear, self.ego_side,
         )
         if len(xyz_filt) >= self.dbscan_min_samples:

@@ -25,11 +25,14 @@ def remove_ego_box(
     ego_rear: float,
     ego_side: float,
 ) -> np.ndarray:
-    """Remove points inside the ego-vehicle bounding box."""
+    """Remove points inside the ego-vehicle bounding box.
+
+    In the NuScenes LiDAR sensor frame: +y is forward, +x is right.
+    """
     in_box = (
-        (xyz[:, 0] <= ego_front)
-        & (xyz[:, 0] >= -ego_rear)
-        & (np.abs(xyz[:, 1]) <= ego_side)
+        (xyz[:, 1] <= ego_front)
+        & (xyz[:, 1] >= -ego_rear)
+        & (np.abs(xyz[:, 0]) <= ego_side)
     )
     return xyz[~in_box]
 
