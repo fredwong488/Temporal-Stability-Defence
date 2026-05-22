@@ -1,0 +1,56 @@
+{
+  "study_name": "radial_jitter_2026-05-22-00-10-32",
+  "timestamp": "2026-05-22-00-10-32",
+  "notes": null,
+  "defense": "radial_jitter",
+  "attack": "ora",
+  "dataset": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_val"
+  },
+  "n_trials": 100,
+  "seed": 42,
+  "population_size": 50,
+  "search_space": {
+    "dbscan_eps": [
+      "float",
+      0.2,
+      1.5
+    ],
+    "dbscan_min_samples": [
+      "int",
+      3,
+      20
+    ],
+    "temporal_window": [
+      "int",
+      4,
+      14
+    ],
+    "motion_tolerance": [
+      "float",
+      0.3,
+      3.0
+    ],
+    "min_frames_associated": [
+      "int",
+      2,
+      6
+    ],
+    "centroid_method": [
+      "categorical",
+      [
+        "linear_velocity",
+        "first_diff"
+      ]
+    ]
+  },
+  "base_defense_params": {
+    "use_point": "False"
+  },
+  "attack_noise_preset": "worst_case",
+  "use_cached_attacks": true,
+  "use_predicted_labels": true
+}
