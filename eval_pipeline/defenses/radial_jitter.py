@@ -435,6 +435,7 @@ class RadialJitterDefense(BaseDefense):
                     min_cluster_size=self.hdbscan_min_cluster_size,
                     min_samples=self.dbscan_min_samples,
                     n_jobs=1,
+                    copy=False,
                 ).fit_predict(cluster_input)
             else:
                 labels = DBSCAN(
