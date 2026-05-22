@@ -147,13 +147,13 @@ class RadialJitterDefense(BaseDefense):
 
     def __init__(
         self,
-        temporal_window: int = 6,
+        temporal_window: int = 12,
         min_history_frames: int = 5,
         ground_z_max: float = 0.1,
         dbscan_eps: float = 0.7,
-        dbscan_min_samples: int = 10,
+        dbscan_min_samples: int = 20,
         min_points_per_cluster: int = 10,
-        motion_tolerance: float = 1,
+        motion_tolerance: float = 1.92,
         min_frames_associated: int = 2,
         icp_max_iter: int = 30,
         icp_max_correspondence_dist: float = 0.5,
