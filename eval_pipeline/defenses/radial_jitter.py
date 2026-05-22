@@ -166,6 +166,7 @@ class RadialJitterDefense(BaseDefense):
         use_point: bool = True,
         centroid_method: Literal["linear_velocity", "first_diff"] = "linear_velocity",
         history_source: Literal["clean", "dirty"] = "dirty",
+        cluster_on_bev: bool = False,
     ) -> None:
         self._temporal_window = temporal_window
         self.min_history_frames = min_history_frames
@@ -186,6 +187,7 @@ class RadialJitterDefense(BaseDefense):
         self.use_point = use_point
         self.centroid_method = centroid_method
         self.history_source = history_source
+        self.cluster_on_bev = cluster_on_bev
         # Maps (frame_id, is_attacked) → (xyz_filt, labels, cluster_pts, centroids)
         # in own sensor frame.  DBSCAN is distance-invariant under rigid transforms,
         # so labels and per-cluster data computed here are reused after
@@ -405,11 +407,12 @@ class RadialJitterDefense(BaseDefense):
             self.ego_front, self.ego_rear, self.ego_side,
         )
         if len(xyz_filt) >= self.dbscan_min_samples:
+            cluster_input = xyz_filt[:, :2] if self.cluster_on_bev else xyz_filt
             labels = DBSCAN(
                 eps=self.dbscan_eps,
                 min_samples=self.dbscan_min_samples,
                 n_jobs=1,
-            ).fit_predict(xyz_filt)
+            ).fit_predict(cluster_input)
         else:
             labels = np.full(len(xyz_filt), -1, dtype=int)
 

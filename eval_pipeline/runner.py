@@ -107,8 +107,8 @@ def _defense_registry() -> dict[str, type]:
     from .defenses.tc2 import TC2Defense
     from .defenses.fsd import FSDDefense
     from .defenses.carlo import CARLODefense
+    import functools
     from .defenses.radial_jitter import RadialJitterDefense
-    from .defenses.radial_jitter_bev import RadialJitterBEVDefense
     from .defenses.wasserstein_anisotropy import WassersteinAnisotropyDefense
     return {
         "void_region": VoidRegionDefense,
@@ -116,7 +116,7 @@ def _defense_registry() -> dict[str, type]:
         "fsd": FSDDefense,
         "carlo": CARLODefense,
         "radial_jitter": RadialJitterDefense,
-        "radial_jitter_bev": RadialJitterBEVDefense,
+        "radial_jitter_bev": functools.partial(RadialJitterDefense, cluster_on_bev=True),   # For backwards compatibility
         "wasserstein": WassersteinAnisotropyDefense
     }
 

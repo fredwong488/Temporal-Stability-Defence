@@ -14,7 +14,7 @@ and over what ranges.  Fixed (non-searched) defense params can be passed with
 
 Usage:
     pixi run python scripts/optuna_search.py \\
-        --defense radial_jitter_bev \\
+        --defense radial_jitter \\
         --attack ora \\
         --detector pointpillars_nuscenes \\
         --dataset nuscenes \\
@@ -230,7 +230,7 @@ def main() -> None:
 
     # Components
     parser.add_argument("--defense", required=True,
-                        help="Defense type to tune (radial_jitter or radial_jitter_bev)")
+                        help="Defense type to tune (e.g. radial_jitter)")
     parser.add_argument("--attack", default="ora")
     parser.add_argument("--detector", default=None)
     parser.add_argument("--attack-noise-preset", default="worst_case",
