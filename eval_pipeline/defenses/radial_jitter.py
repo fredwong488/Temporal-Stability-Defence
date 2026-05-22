@@ -155,6 +155,12 @@ class RadialJitterDefense(BaseDefense):
         ``"dirty"`` (default) — use the post-attack history the vehicle
         received, so phantom objects inserted by the attack are present.
         ``"clean"`` — use pre-attack history for ablation.
+    cluster_on_bev
+        If ``True``, cluster on the 2-D bird's-eye-view projection (x, y)
+        rather than full 3-D (x, y, z).  Useful when height variation within
+        a cluster is large enough to split it under 3-D clustering but the
+        object is coherent in the horizontal plane.  Applies to both DBSCAN
+        and HDBSCAN.
     """
 
     def __init__(

@@ -8,9 +8,8 @@ metric defined in eval_pipeline/metrics/common.py.  The first trial builds a
 shared precomputed cache (detector + ORA pass over the dataset); all subsequent
 trials replay from that cache so only the defense re-runs per trial.
 
-Edit SEARCH_SPACE near the top of this file to change which params are searched
-and over what ranges.  Fixed (non-searched) defense params can be passed with
---defense-params KEY=VALUE.
+Edit _suggest_params() to change which params are searched and over what ranges.
+Fixed (non-searched) defense params can be passed with --defense-params KEY=VALUE.
 
 Usage:
     pixi run python scripts/optuna_search.py \\
@@ -59,33 +58,15 @@ DEFAULT_NUSCENES_SPLIT = "mini_val"
 DEFAULT_RESULTS_DIR = "results/optuna"
 
 # ---------------------------------------------------------------------------
-# Search space — edit to add / remove params or change ranges.
-# Format:
-#   numeric:     param_name -> ("float" | "int", low, high)
-#   categorical: param_name -> ("categorical", [choice, ...])
+# Search space
 #
-# SEARCH_SPACE is set at runtime in main() based on --clusterer.
+# cluster_on_bev is a conditional categorical: when True, dbscan_eps is
+# suggested under the name "dbscan_eps_bev"; when False,
+# under "dbscan_eps_3d".  Separate names keep the NSGA-II
+# crossover histories clean so BEV-optimal eps values never contaminate
+# 3D-optimal ones.  For HDBSCAN, cluster_on_bev has no dependent parameter
+# and is suggested as a plain categorical.
 # ---------------------------------------------------------------------------
-_SEARCH_SPACE_SHARED: dict[str, tuple] = {
-    "dbscan_min_samples":    ("int",         3,    20),
-    "temporal_window":       ("int",         6,    14),
-    "motion_tolerance":      ("float",       0.3,  3.0),
-    "min_frames_associated": ("int",         2,    6),
-    "centroid_method":       ("categorical", ["linear_velocity", "first_diff"]),
-}
-
-SEARCH_SPACE_DBSCAN: dict[str, tuple] = {
-    "dbscan_eps": ("float", 0.2, 1.5),
-    **_SEARCH_SPACE_SHARED,
-}
-
-SEARCH_SPACE_HDBSCAN: dict[str, tuple] = {
-    "hdbscan_min_cluster_size": ("int", 5, 30),
-    **_SEARCH_SPACE_SHARED,
-}
-
-# Assigned in main() once --clusterer is known.
-SEARCH_SPACE: dict[str, tuple] = {}
 
 
 # ---------------------------------------------------------------------------
@@ -108,16 +89,26 @@ def _parse_kv_params(pairs: list[str]) -> dict:
     return out
 
 
-def _suggest_params(trial: optuna.Trial) -> dict:
-    params: dict = {}
-    for name, spec in SEARCH_SPACE.items():
-        kind = spec[0]
-        if kind == "float":
-            params[name] = trial.suggest_float(name, spec[1], spec[2])
-        elif kind == "int":
-            params[name] = trial.suggest_int(name, int(spec[1]), int(spec[2]))
-        else:  # categorical
-            params[name] = trial.suggest_categorical(name, spec[1])
+def _suggest_params(trial: optuna.Trial, clusterer: str) -> dict:
+    cluster_on_bev = trial.suggest_categorical("cluster_on_bev", [True, False])
+    params: dict = {
+        "cluster_on_bev":        cluster_on_bev,
+        "dbscan_min_samples":    trial.suggest_int  ("dbscan_min_samples",    3,   20),
+        "temporal_window":       trial.suggest_int  ("temporal_window",        6,   14),
+        "motion_tolerance":      trial.suggest_float("motion_tolerance",      0.3,  3.0),
+        "min_frames_associated": trial.suggest_int  ("min_frames_associated",  2,    6),
+        "centroid_method":       trial.suggest_categorical(
+                                     "centroid_method", ["linear_velocity", "first_diff"]),
+    }
+    if clusterer == "dbscan":
+        param_name = "dbscan_eps_bev" if cluster_on_bev else "dbscan_eps_3d"
+        params["dbscan_eps"] = trial.suggest_float(param_name, 0.2, 2.0)
+    else:  # hdbscan
+        params["hdbscan_min_cluster_size"] = trial.suggest_int(
+            "hdbscan_min_cluster_size", 5, 30,
+        )
+    if trial.number == 0:
+        logging.info("Search space (trial 0): %s", trial.distributions)
     return params
 
 
@@ -127,6 +118,7 @@ def _suggest_params(trial: optuna.Trial) -> dict:
 
 def build_objective(
     base_defense_params: dict,
+    clusterer: str,
     attack_type: str | None,
     attack_params: dict,
     attack_fraction: float,
@@ -145,7 +137,7 @@ def build_objective(
     min_attacked_frames: int,
 ):
     def objective(trial: optuna.Trial) -> tuple[float, float]:
-        trial_params = _suggest_params(trial)
+        trial_params = _suggest_params(trial, clusterer)
         defense_params = {**base_defense_params, **trial_params}
 
         config = ExperimentConfig(
@@ -211,7 +203,7 @@ def _print_pareto(pareto_trials: list[optuna.trial.FrozenTrial]) -> None:
         logging.warning("No Pareto-front trials found.")
         return
 
-    param_keys = list(SEARCH_SPACE.keys())
+    param_keys = sorted({k for t in pareto_trials for k in t.params})
     header = f"{'#':>6}  {'spoofed_f1':>10}  {'pred_f1':>10}"
     for k in param_keys:
         header += f"  {k}"
@@ -326,9 +318,7 @@ def main() -> None:
             "DBSCAN searches dbscan_eps; HDBSCAN searches hdbscan_min_cluster_size instead."
         )
 
-    global SEARCH_SPACE
-    SEARCH_SPACE = SEARCH_SPACE_DBSCAN if clusterer == "dbscan" else SEARCH_SPACE_HDBSCAN
-    logging.info("Clusterer: %s  →  search space: %s", clusterer, list(SEARCH_SPACE.keys()))
+    logging.info("Clusterer: %s", clusterer)
     detector_params: dict = {}
     if args.detector:
         detector_params["score_threshold"] = args.confidence_threshold
@@ -352,13 +342,13 @@ def main() -> None:
     if args.study_name is not None and metadata_path.exists():
         with open(metadata_path) as f:
             saved = json.load(f)
-        _COMPARE_KEYS = ("defense", "attack", "dataset", "search_space",
+        _COMPARE_KEYS = ("defense", "attack", "dataset", "clusterer",
                          "attack_noise_preset", "use_predicted_labels")
         current = {
             "defense": args.defense,
             "attack": args.attack,
             "dataset": dataset_type,
-            "search_space": {k: list(v) for k, v in SEARCH_SPACE.items()},
+            "clusterer": clusterer,
             "attack_noise_preset": args.attack_noise_preset,
             "use_predicted_labels": args.use_predicted_labels,
         }
@@ -384,7 +374,7 @@ def main() -> None:
         "n_trials": args.n_trials,
         "seed": args.seed,
         "population_size": args.population_size,
-        "search_space": {k: list(v) for k, v in SEARCH_SPACE.items()},
+        "clusterer": clusterer,
         "base_defense_params": {k: str(v) for k, v in base_defense_params.items()},
         "attack_noise_preset": args.attack_noise_preset,
         "use_cached_attacks": args.use_cached_attacks,
@@ -395,7 +385,6 @@ def main() -> None:
 
     logging.info("Study: %s", study_name)
     logging.info("Storage: %s", storage)
-    logging.info("Search space: %s", SEARCH_SPACE)
     logging.info("Cache: %s", shared_cache_path)
 
     # Work out how many trials remain to reach the target.
@@ -415,6 +404,7 @@ def main() -> None:
 
     objective = build_objective(
         base_defense_params=base_defense_params,
+        clusterer=clusterer,
         attack_type=args.attack,
         attack_params=attack_params,
         attack_fraction=args.attack_fraction,
