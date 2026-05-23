@@ -1,0 +1,66 @@
+{
+  "notes": "HDBSCAN Run using optuna targets use_point=False dbscan_min_samples=20 hdbscan_min_cluster_size=24 temporal_window=8 motion_tolerance=1.6731 min_frames_associated=2 centroid_method=first_diff cluster_on_bev=True clusterer=hdbscan",
+  "git_commit": "83e315a1c1fb3127cf6b850aa5e55d17d1a958a2",
+  "timestamp": "2026-05-23-15-13-14",
+  "sweep": {
+    "target": "defense",
+    "param": "centroid_threshold",
+    "values": [
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8
+    ]
+  },
+  "dataset_type": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_val"
+  },
+  "attack_type": "ora",
+  "attack_params": {
+    "target_types": [
+      "car",
+      "pedestrian",
+      "bicycle"
+    ],
+    "noise_preset": "worst_case"
+  },
+  "attack_fraction": 0.5,
+  "attack_fraction_seed": 0,
+  "min_unattacked_frames": 6,
+  "min_attacked_frames": 6,
+  "detector_type": "pointpillars_nuscenes",
+  "detector_params": {
+    "score_threshold": 0.3
+  },
+  "defense_type": "radial_jitter",
+  "defense_params": {
+    "use_point": "False",
+    "dbscan_min_samples": 20,
+    "hdbscan_min_cluster_size": 24,
+    "temporal_window": 8,
+    "motion_tolerance": 1.6731,
+    "min_frames_associated": 2,
+    "centroid_method": "first_diff",
+    "cluster_on_bev": "True",
+    "clusterer": "hdbscan"
+  },
+  "metric_types": [
+    "detection_rate"
+  ],
+  "difficulties": [
+    "Easy",
+    "Moderate",
+    "Hard"
+  ],
+  "recall_iou_confidence_threshold": 0.3,
+  "save_frame_results": true,
+  "use_cached_attacks": true,
+  "use_predicted_labels": true,
+  "pred_label_score_threshold": 0.5
+}

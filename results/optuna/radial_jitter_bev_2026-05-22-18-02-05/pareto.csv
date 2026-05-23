@@ -1,0 +1,3 @@
+number,spoofed_f1,pred_f1,cluster_on_bev,dbscan_min_samples,temporal_window,motion_tolerance,min_frames_associated,centroid_method,hdbscan_min_cluster_size
+59,0.25015291963500075,0.23463583026130627,True,20,8,1.6731408661446976,2,first_diff,24
+94,0.2580686461836837,0.23316987061338154,False,20,8,1.4852228359052175,4,linear_velocity,23

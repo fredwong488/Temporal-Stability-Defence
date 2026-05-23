@@ -1,0 +1,24 @@
+{
+  "study_name": "radial_jitter_bev_2026-05-22-18-02-05",
+  "timestamp": "2026-05-22-18-02-05",
+  "notes": null,
+  "defense": "radial_jitter_bev",
+  "attack": "ora",
+  "dataset": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_val"
+  },
+  "n_trials": 100,
+  "seed": 42,
+  "population_size": 50,
+  "clusterer": "hdbscan",
+  "base_defense_params": {
+    "use_point": "False",
+    "clusterer": "hdbscan"
+  },
+  "attack_noise_preset": "worst_case",
+  "use_cached_attacks": true,
+  "use_predicted_labels": true
+}

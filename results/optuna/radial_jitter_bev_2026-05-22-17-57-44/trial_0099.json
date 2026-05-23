@@ -1,0 +1,88 @@
+{
+  "experiment_name": "trial_0099",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+      "version": "v1.0-mini",
+      "split": "mini_val"
+    },
+    "attack_type": "ora",
+    "attack_params": {
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x7b14961bf4d0>"
+    },
+    "attack_fraction": 0.5,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "radial_jitter_bev",
+    "defense_params": {
+      "use_point": "False",
+      "clusterer": "dbscan",
+      "cluster_on_bev": false,
+      "dbscan_min_samples": 20,
+      "temporal_window": 13,
+      "motion_tolerance": 0.6457237651859856,
+      "min_frames_associated": 2,
+      "centroid_method": "first_diff",
+      "dbscan_eps": 0.47342484832212983
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "clustering_quality"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/optuna/radial_jitter_bev_2026-05-22-17-57-44",
+    "experiment_name": "trial_0099",
+    "save_frame_results": false,
+    "precomputed_cache_path": "precomputed/nuscenes-pointpillars-ora-withnoise-b200-0.5/defense_sweep_shared.pkl",
+    "use_cached_attacks": true,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5
+  },
+  "num_frames": 788,
+  "defense_effectiveness": {
+    "tp": 273,
+    "fp": 453,
+    "tn": 61,
+    "fn": 1,
+    "tpr": 0.9963503649635036,
+    "fpr": 0.8813229571984436,
+    "accuracy": 0.42385786802030456,
+    "precision": 0.3760330578512397,
+    "recall": 0.9963503649635036,
+    "f1": 0.546
+  },
+  "clustering_quality": {
+    "spoofed_f1": 0.13093285290192544,
+    "pred_f1": 0.23272268510682367,
+    "precision": 0.2374841348187844,
+    "spoofed_recall": 0.0903816112474894,
+    "pred_recall": 0.22814841241526934,
+    "matched_phantoms": 405,
+    "total_phantoms": 4481,
+    "matched_predictions": 1279,
+    "total_predictions": 5606,
+    "matched_clusters": 1684,
+    "total_clusters": 7091
+  }
+}
