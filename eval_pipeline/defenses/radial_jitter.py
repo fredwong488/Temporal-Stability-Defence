@@ -151,6 +151,11 @@ class RadialJitterDefense(BaseDefense):
         Whether to compute and use σ_centroid for flagging.
     use_point
         Whether to compute and use σ_point (ICP-based) for flagging.
+    flag_condition
+        How to combine the two signal thresholds when both are active.
+        ``"or"`` (default) flags a cluster if either σ_centroid or σ_point
+        exceeds its threshold.  ``"and"`` requires both to exceed their
+        respective thresholds simultaneously.
     history_source
         ``"dirty"`` (default) — use the post-attack history the vehicle
         received, so phantom objects inserted by the attack are present.
@@ -182,6 +187,7 @@ class RadialJitterDefense(BaseDefense):
         ego_side: float = 1.4,
         use_centroid: bool = True,
         use_point: bool = True,
+        flag_condition: Literal["or", "and"] = "or",
         centroid_method: Literal["linear_velocity", "first_diff"] = "linear_velocity",
         history_source: Literal["clean", "dirty"] = "dirty",
         cluster_on_bev: bool = False,
@@ -205,6 +211,7 @@ class RadialJitterDefense(BaseDefense):
         self.ego_side = ego_side
         self.use_centroid = use_centroid
         self.use_point = use_point
+        self.flag_condition = flag_condition
         self.centroid_method = centroid_method
         self.history_source = history_source
         self.cluster_on_bev = cluster_on_bev
@@ -368,10 +375,12 @@ class RadialJitterDefense(BaseDefense):
             # --- σ_point: captures δ_inner + δ_rand --------------------------
             sigma_point = self._compute_sigma_point(pts_cur, valid_past) if self.use_point else 0.0
 
-            flagged = (
-                (self.use_centroid and sigma_centroid > self.centroid_threshold)
-                or (self.use_point and sigma_point > self.point_threshold)
-            )
+            centroid_flagged = self.use_centroid and sigma_centroid > self.centroid_threshold
+            point_flagged = self.use_point and sigma_point > self.point_threshold
+            if self.flag_condition == "and":
+                flagged = centroid_flagged and point_flagged
+            else:
+                flagged = centroid_flagged or point_flagged
             if flagged:
                 n_flagged += 1
 
