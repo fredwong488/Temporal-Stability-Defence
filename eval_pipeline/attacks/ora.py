@@ -76,7 +76,7 @@ class ORAAttack(BaseAttack):
         budget: int = 200,
         target_types: set[str] | None = None,
         azimuth_constraint_deg: float = 10.0,
-        reinject_distance_range: tuple[float, float] = (2.0, 3.0),
+        reinject_distance_range: tuple[float, float] = (2.5, 2.5),
         noise_model: SpoofingNoiseModel | None = None,
         seed: int | None = None,
     ) -> None:
