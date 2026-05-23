@@ -70,7 +70,7 @@ IMAGESETS_DIR = _PROJECT_ROOT / "OpenPCDet" / "data" / "kitti" / "ImageSets"
 
 
 def _parse_kv_params(pairs: list[str]) -> dict:
-    """Parse KEY=VALUE strings into a dict, auto-casting values to int/float/str."""
+    """Parse KEY=VALUE strings into a dict, auto-casting values to bool/int/float/str."""
     out: dict = {}
     for item in pairs:
         if "=" not in item:
@@ -78,13 +78,18 @@ def _parse_kv_params(pairs: list[str]) -> dict:
                 f"Invalid parameter '{item}': expected KEY=VALUE format"
             )
         key, _, raw = item.partition("=")
-        try:
-            out[key] = int(raw)
-        except ValueError:
+        if raw.lower() == "true":
+            out[key] = True
+        elif raw.lower() == "false":
+            out[key] = False
+        else:
             try:
-                out[key] = float(raw)
+                out[key] = int(raw)
             except ValueError:
-                out[key] = raw
+                try:
+                    out[key] = float(raw)
+                except ValueError:
+                    out[key] = raw
     return out
 
 

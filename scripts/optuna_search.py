@@ -79,13 +79,18 @@ def _parse_kv_params(pairs: list[str]) -> dict:
         if "=" not in item:
             raise ValueError(f"Invalid parameter '{item}': expected KEY=VALUE format")
         key, _, raw = item.partition("=")
-        try:
-            out[key] = int(raw)
-        except ValueError:
+        if raw.lower() == "true":
+            out[key] = True
+        elif raw.lower() == "false":
+            out[key] = False
+        else:
             try:
-                out[key] = float(raw)
+                out[key] = int(raw)
             except ValueError:
-                out[key] = raw
+                try:
+                    out[key] = float(raw)
+                except ValueError:
+                    out[key] = raw
     return out
 
 
