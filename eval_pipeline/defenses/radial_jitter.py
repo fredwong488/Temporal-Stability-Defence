@@ -274,6 +274,9 @@ class RadialJitterDefense(BaseDefense):
         # current sensor frame.  Centroids transform as points (mean commutes
         # with rigid transforms), so this is O(K) not O(N_points) per frame.
         cur_inv = np.linalg.inv(frame.nuscenes_ego_pose.astype(np.float64))
+        active_ids = {frame.frame_id} | {f.frame_id for f in hist}
+        self._evict_stale_cache(active_ids)
+
         past_frame_data: list[tuple[list[np.ndarray], np.ndarray]] = []
         for f in hist:
             if f.nuscenes_ego_pose is None:
@@ -401,6 +404,11 @@ class RadialJitterDefense(BaseDefense):
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    def _evict_stale_cache(self, active_frame_ids: set[str]) -> None:
+        stale = [k for k in self._dbscan_cache if k[0] not in active_frame_ids]
+        for k in stale:
+            del self._dbscan_cache[k]
 
     def _get_or_cluster_frame(
         self, frame: Frame
