@@ -24,10 +24,8 @@ def main() -> None:
     with open(args.cache, "rb") as f:
         cache: dict = pickle.load(f)
 
-    print(f"Cache file : {args.cache}")
-    print(f"Total frames: {len(cache)}")
-
     if not cache:
+        print("Cache not found")
         return
 
     # Summarise field presence across all entries
@@ -37,11 +35,6 @@ def main() -> None:
     attacked = sum(1 for e in cache.values() if e.is_attacked)
     has_lidar = sum(1 for e in cache.values() if getattr(e, "attacked_lidar", None) is not None)
     has_atk_preds = sum(1 for e in cache.values() if e.attacked_predictions is not None)
-
-    print(f"Attacked frames     : {attacked} / {len(cache)}")
-    print(f"With attacked_lidar : {has_lidar} / {attacked} attacked")
-    print(f"With attacked_preds : {has_atk_preds} / {attacked} attacked")
-    print(f"Fields in entry     : {fields}")
 
     if args.frame:
         entry = cache.get(args.frame)
@@ -71,6 +64,13 @@ def main() -> None:
                 f"| {'yes' if lidar is not None else 'no ':3}  "
                 f"| {n_clean:6} | {n_atk}"
             )
+
+    print(f"\nCache file          : {args.cache}")
+    print(f"Total frames        : {len(cache)}")
+    print(f"Attacked frames     : {attacked} / {len(cache)}")
+    print(f"With attacked_lidar : {has_lidar} / {attacked} attacked")
+    print(f"With attacked_preds : {has_atk_preds} / {attacked} attacked")
+    print(f"Fields in entry     : {fields}")
 
 
 if __name__ == "__main__":
