@@ -118,6 +118,18 @@ def list_run_dirs(results_dir: pathlib.Path) -> list[pathlib.Path]:
     )
 
 
+def _load_run_notes(run_dir: pathlib.Path) -> str | None:
+    """Return the 'notes' string from sweep_metadata.json, or None if absent."""
+    p = run_dir / "sweep_metadata.json"
+    if not p.exists():
+        return None
+    try:
+        with open(p) as f:
+            return json.load(f).get("notes")
+    except Exception:
+        return None
+
+
 def load_run_metadata(run_dir: pathlib.Path) -> dict:
     """Read summary info from the first experiment JSON in the run directory."""
     json_files = sorted(
@@ -152,24 +164,42 @@ def pick_run_dir(results_dir: pathlib.Path, run_name: str | None) -> pathlib.Pat
             sys.exit(f"Run '{run_name}' not found. Available: {[d.name for d in dirs]}")
         return matches[0]
 
-    print(f"\nAvailable run directories in '{results_dir}':")
-    for i, d in enumerate(dirs, 1):
-        n_experiments = len(list(d.glob("*_frames.jsonl")))
-        meta = load_run_metadata(d)
-        parts = []
-        if meta.get("attack_type"):
-            parts.append(meta["attack_type"])
-        if meta.get("detector_type"):
-            parts.append(meta["detector_type"])
-        if meta.get("defense_type"):
-            parts.append(meta["defense_type"])
-        if meta.get("num_frames") is not None:
-            parts.append(f"{meta['num_frames']} frames")
-        meta_str = f"  [{', '.join(parts)}]" if parts else ""
-        print(f"  [{i}] {d.name}  ({n_experiments} experiment(s)){meta_str}")
+    def _print_run_list() -> None:
+        print(f"\nAvailable run directories in '{results_dir}':")
+        for i, d in enumerate(dirs, 1):
+            n_experiments = len(list(d.glob("*_frames.jsonl")))
+            meta = load_run_metadata(d)
+            parts = []
+            if meta.get("attack_type"):
+                parts.append(meta["attack_type"])
+            if meta.get("detector_type"):
+                parts.append(meta["detector_type"])
+            if meta.get("defense_type"):
+                parts.append(meta["defense_type"])
+            if meta.get("num_frames") is not None:
+                parts.append(f"{meta['num_frames']} frames")
+            meta_str = f"  [{', '.join(parts)}]" if parts else ""
+            has_notes = "  [n]" if (d / "sweep_metadata.json").exists() else ""
+            print(f"  [{i}] {d.name}  ({n_experiments} experiment(s)){meta_str}{has_notes}")
+        print()
 
-    print()
-    return dirs[_get_int_choice(len(dirs)) - 1]
+    _print_run_list()
+    n = len(dirs)
+    prompt = f"Choose [1-{n}] (or n<N> to show notes, e.g. n2): "
+    while True:
+        raw = input(prompt).strip().lower()
+        if raw.startswith("n") and raw[1:].isdigit():
+            idx = int(raw[1:])
+            if 1 <= idx <= n:
+                notes = _load_run_notes(dirs[idx - 1])
+                if notes:
+                    print(f"\n  Notes for [{idx}] {dirs[idx-1].name}:\n    {notes}\n")
+                else:
+                    print(f"  No notes found for [{idx}].\n")
+                continue
+        if raw.isdigit() and 1 <= int(raw) <= n:
+            return dirs[int(raw) - 1]
+        print(f"  Please enter a number between 1 and {n}.")
 
 
 def pick_experiment(run_dir: pathlib.Path, experiment_name: str | None) -> list[str]:
@@ -713,8 +743,8 @@ def draw_radial_jitter_panel(
     if active_clusters:
         raw_xy  = np.array([[c["centroid"][0], c["centroid"][1]] for c in active_clusters])
         pxs, pys = _to_bev_xy(raw_xy, dataset_type)
-        sigmas  = [c.get("sigma_centroid", 0.0) for c in active_clusters]
-        sp      = [c.get("sigma_point", 0.0) for c in active_clusters]
+        sigmas  = [c.get("sigma_centroid") or 0.0 for c in active_clusters]
+        sp      = [c.get("sigma_point") or 0.0 for c in active_clusters]
         flagged = [c.get("flagged", False) for c in active_clusters]
         sizes   = [max(30, min(300, (c.get("n_points_cur") or 20) * 4)) for c in active_clusters]
 
