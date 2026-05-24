@@ -96,7 +96,7 @@ def _parse_kv_params(pairs: list[str]) -> dict:
 
 
 def _suggest_params_clustering(trial: optuna.Trial, clusterer: str) -> dict:
-    """Search space for clustering_quality objective (spoofed_f1 + pred_f1)."""
+    """Search space for clustering_quality objective (spoofed_f1 + pred_f1) for Phase 1."""
     cluster_on_bev = trial.suggest_categorical("cluster_on_bev", [True, False])
     params: dict = {
         "cluster_on_bev":        cluster_on_bev,
@@ -119,34 +119,22 @@ def _suggest_params_clustering(trial: optuna.Trial, clusterer: str) -> dict:
     return params
 
 
-def _suggest_params_defense(trial: optuna.Trial, clusterer: str, base_defense_params: dict) -> dict:
-    """Search space for defense_effectiveness objective (frame-level detection F1)."""
+def _suggest_params_defense(trial: optuna.Trial, base_defense_params: dict) -> dict:
+    """Search space for defense_effectiveness (Phase 2): thresholds and flag_condition only.
+
+    Clustering params are assumed fixed via --defense-params from a Phase 1 clustering run.
+    """
     use_point    = base_defense_params.get("use_point",    True)
     use_centroid = base_defense_params.get("use_centroid", True)
-    force_or     = (use_point is False) or (use_centroid is False)
+    force_or     = (not use_point) or (not use_centroid)
 
-    cluster_on_bev = trial.suggest_categorical("cluster_on_bev", [True, False])
     params: dict = {
-        "cluster_on_bev":           cluster_on_bev,
-        "dbscan_min_samples":       trial.suggest_int  ("dbscan_min_samples",    2,   25),
-        "temporal_window":          trial.suggest_int  ("temporal_window",        4,   20),
-        "motion_tolerance":         trial.suggest_float("motion_tolerance",      0.1,  5.0),
-        "min_frames_associated":    trial.suggest_int  ("min_frames_associated",  1,    8),
-        "centroid_method":          trial.suggest_categorical(
-                                     "centroid_method", ["linear_velocity", "first_diff"]),
-        "flag_condition":           "or" if force_or else trial.suggest_categorical("flag_condition", ["and", "or"]),
+        "flag_condition": "or" if force_or else trial.suggest_categorical("flag_condition", ["and", "or"]),
     }
-    if use_centroid is not False:
-        params["centroid_threshold"] = trial.suggest_float("centroid_threshold", 0.1, 1)
-    if use_point is not False:
+    if use_centroid:
+        params["centroid_threshold"] = trial.suggest_float("centroid_threshold", 0.1, 1.0)
+    if use_point:
         params["point_threshold"] = trial.suggest_float("point_threshold", 0.03, 0.25)
-    if clusterer == "dbscan":
-        param_name = "dbscan_eps_bev" if cluster_on_bev else "dbscan_eps_3d"
-        params["dbscan_eps"] = trial.suggest_float(param_name, 0.1, 3.0)
-    else:  # hdbscan
-        params["hdbscan_min_cluster_size"] = trial.suggest_int(
-            "hdbscan_min_cluster_size", 3, 40,
-        )
     if trial.number == 0:
         logging.info("Search space (trial 0): %s", trial.distributions)
     return params
@@ -179,7 +167,7 @@ def build_objective(
 ):
     def objective(trial: optuna.Trial):
         if objective_mode == "defense_effectiveness":
-            trial_params = _suggest_params_defense(trial, clusterer, base_defense_params)
+            trial_params = _suggest_params_defense(trial, base_defense_params)
         else:
             trial_params = _suggest_params_clustering(trial, clusterer)
         defense_params = {**base_defense_params, **trial_params}
@@ -336,6 +324,9 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--population-size", type=int, default=50,
                         help="NSGA-II population size (clustering_quality only)")
+    parser.add_argument("--tpe-startup-trials", type=int, default=10,
+                        help="Random startup trials before TPE begins (defense_effectiveness only). "
+                             "Default 10; reduce for small search spaces (e.g. 5 for Phase 2).")
 
     # Output
     parser.add_argument("--results-dir", default=DEFAULT_RESULTS_DIR)
@@ -400,7 +391,7 @@ def main() -> None:
     # Optuna study
     storage = f"sqlite:///{run_dir / (study_name + '.db')}"
     if args.objective == "defense_effectiveness":
-        sampler = optuna.samplers.TPESampler(seed=args.seed)
+        sampler = optuna.samplers.TPESampler(seed=args.seed, n_startup_trials=args.tpe_startup_trials)
         study = optuna.create_study(
             direction="maximize",
             study_name=study_name,
