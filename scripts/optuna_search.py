@@ -103,9 +103,8 @@ def _suggest_params_clustering(trial: optuna.Trial, clusterer: str) -> dict:
         "dbscan_min_samples":    trial.suggest_int  ("dbscan_min_samples",    3,   20),
         "temporal_window":       trial.suggest_int  ("temporal_window",        6,   14),
         "motion_tolerance":      trial.suggest_float("motion_tolerance",      0.3,  3.0),
-        "min_frames_associated": trial.suggest_int  ("min_frames_associated",  2,    6),
-        "centroid_method":       trial.suggest_categorical(
-                                     "centroid_method", ["linear_velocity", "first_diff"]),
+        "min_frames_associated": trial.suggest_int  ("min_frames_associated",  2,    13),
+        "min_points_per_cluster": trial.suggest_int  ("min_points_per_cluster",  5,    30)
     }
     if clusterer == "dbscan":
         param_name = "dbscan_eps_bev" if cluster_on_bev else "dbscan_eps_3d"
@@ -133,7 +132,9 @@ def _suggest_params_defense(trial: optuna.Trial, base_defense_params: dict) -> d
     }
     if use_centroid:
         params["centroid_threshold"] = trial.suggest_float("centroid_threshold", 0.1, 1.0)
+        params["centroid_method"] = trial.suggest_categorical("centroid_method", ["linear_velocity", "first_diff"])
     if use_point:
+        params["icp_max_correspondence_dist"] = trial.suggest_float("icp_max_correspondence_dist", 0.1, 1)
         params["point_threshold"] = trial.suggest_float("point_threshold", 0.03, 0.25)
     if trial.number == 0:
         logging.info("Search space (trial 0): %s", trial.distributions)

@@ -136,7 +136,7 @@ def _match_frame(
 # Defense metrics
 # ---------------------------------------------------------------------------
 
-SPOOF_DIST_THRESHOLD = 1.5   # metres — phantom match gate
+SPOOF_DIST_THRESHOLD = 0.5  # metres — phantom match gate
 PREDICTION_MATCH_MARGIN = 0.5   # metres buffer added to BEV polygon for prediction match
 
 
@@ -226,6 +226,8 @@ def compute_clustering_quality_metrics(frame_results: list[FrameResult]) -> dict
 
         centroids: list[np.ndarray] = []
         for cd in cluster_details:
+            if cd.get("skipped"):
+                continue
             c = cd.get("centroid")
             if c and len(c) == 3:
                 centroids.append(np.array(c, dtype=float))
