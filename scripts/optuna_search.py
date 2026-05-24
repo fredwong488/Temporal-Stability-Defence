@@ -186,7 +186,7 @@ def build_objective(
             detector_params=detector_params,
             output_dir=str(run_dir),
             experiment_name=f"trial_{trial.number:04d}",
-            metric_types=["clustering_quality"],
+            metric_types=[objective_mode],
             save_frame_results=False,
             precomputed_cache_path=shared_cache_path,
             use_cached_attacks=use_cached_attacks,
