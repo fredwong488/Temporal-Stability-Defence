@@ -173,6 +173,12 @@ def build_objective(
             trial_params = _suggest_params_clustering(trial, clusterer)
         defense_params = {**base_defense_params, **trial_params}
 
+        logging.info(
+            "Trial %d starting  params=%s",
+            trial.number,
+            {k: f"{v:.3f}" if isinstance(v, float) else v for k, v in defense_params.items()},
+        )
+
         config = ExperimentConfig(
             dataset_type=dataset_type,
             dataset_params=dataset_params,
