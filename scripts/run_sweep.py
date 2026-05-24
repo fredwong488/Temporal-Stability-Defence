@@ -224,6 +224,7 @@ def write_sweep_metadata(
     run_dir: pathlib.Path,
     timestamp: str,
     notes: str | None,
+    cmd_args: list[str],
     sweep_target: str,
     sweep_param: str,
     sweep_values: list,
@@ -247,6 +248,7 @@ def write_sweep_metadata(
     min_unattacked_frames: int,
     min_attacked_frames: int,
     save_frame_results: bool,
+    precomputed_cache_dir: str | None,
 ) -> None:
     try:
         git_hash = subprocess.check_output(
@@ -298,6 +300,8 @@ def write_sweep_metadata(
         "notes": notes,
         "git_commit": git_hash,
         "timestamp": timestamp,
+        "cmd_args": cmd_args,
+        "precomputed_cache_dir": precomputed_cache_dir,
         "sweep": {
             "target": sweep_target,
             "param": sweep_param,
@@ -572,6 +576,7 @@ def main() -> None:
         run_dir=run_dir,
         timestamp=timestamp,
         notes=args.notes,
+        cmd_args=sys.argv,
         sweep_target=args.sweep_target,
         sweep_param=args.sweep_param,
         sweep_values=sweep_values,
@@ -595,6 +600,7 @@ def main() -> None:
         min_unattacked_frames=args.min_unattacked_frames,
         min_attacked_frames=args.min_attacked_frames,
         save_frame_results=args.save_frames,
+        precomputed_cache_dir=args.precomputed_cache_dir,
     )
 
     # Build the iteration list: when sweeping attack, prepend a no-attack baseline

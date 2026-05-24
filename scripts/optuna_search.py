@@ -8,7 +8,7 @@ metric defined in eval_pipeline/metrics/common.py.  The first trial builds a
 shared precomputed cache (detector + ORA pass over the dataset); all subsequent
 trials replay from that cache so only the defense re-runs per trial.
 
-Edit _suggest_params() to change which params are searched and over what ranges.
+Edit _suggest_params_clustering() or _suggest_params_defense to change which params are searched and over what ranges.
 Fixed (non-searched) defense params can be passed with --defense-params KEY=VALUE.
 
 Usage:
@@ -36,6 +36,7 @@ import csv
 import json
 import logging
 import pathlib
+import subprocess
 import sys
 from datetime import datetime
 
@@ -94,7 +95,8 @@ def _parse_kv_params(pairs: list[str]) -> dict:
     return out
 
 
-def _suggest_params(trial: optuna.Trial, clusterer: str) -> dict:
+def _suggest_params_clustering(trial: optuna.Trial, clusterer: str) -> dict:
+    """Search space for clustering_quality objective (spoofed_f1 + pred_f1)."""
     cluster_on_bev = trial.suggest_categorical("cluster_on_bev", [True, False])
     params: dict = {
         "cluster_on_bev":        cluster_on_bev,
@@ -111,6 +113,33 @@ def _suggest_params(trial: optuna.Trial, clusterer: str) -> dict:
     else:  # hdbscan
         params["hdbscan_min_cluster_size"] = trial.suggest_int(
             "hdbscan_min_cluster_size", 5, 30,
+        )
+    if trial.number == 0:
+        logging.info("Search space (trial 0): %s", trial.distributions)
+    return params
+
+
+def _suggest_params_defense(trial: optuna.Trial, clusterer: str) -> dict:
+    """Search space for defense_effectiveness objective (frame-level detection F1)."""
+    cluster_on_bev = trial.suggest_categorical("cluster_on_bev", [True, False])
+    params: dict = {
+        "cluster_on_bev":           cluster_on_bev,
+        "dbscan_min_samples":       trial.suggest_int  ("dbscan_min_samples",    2,   25),
+        "temporal_window":          trial.suggest_int  ("temporal_window",        4,   20),
+        "motion_tolerance":         trial.suggest_float("motion_tolerance",      0.1,  5.0),
+        "min_frames_associated":    trial.suggest_int  ("min_frames_associated",  1,    8),
+        "centroid_method":          trial.suggest_categorical(
+                                     "centroid_method", ["linear_velocity", "first_diff"]),
+        "flag_condition":           trial.suggest_categorical("flag_condition", ["and", "or"]),
+        "centroid_threshold":       trial.suggest_float("centroid_threshold",   0.1, 1),
+        "point_threshold":          trial.suggest_float("point_threshold",   0.03, 0.25)
+    }
+    if clusterer == "dbscan":
+        param_name = "dbscan_eps_bev" if cluster_on_bev else "dbscan_eps_3d"
+        params["dbscan_eps"] = trial.suggest_float(param_name, 0.1, 3.0)
+    else:  # hdbscan
+        params["hdbscan_min_cluster_size"] = trial.suggest_int(
+            "hdbscan_min_cluster_size", 3, 40,
         )
     if trial.number == 0:
         logging.info("Search space (trial 0): %s", trial.distributions)
@@ -140,9 +169,13 @@ def build_objective(
     pred_label_score_threshold: float,
     min_unattacked_frames: int,
     min_attacked_frames: int,
+    objective_mode: str,
 ):
-    def objective(trial: optuna.Trial) -> tuple[float, float]:
-        trial_params = _suggest_params(trial, clusterer)
+    def objective(trial: optuna.Trial):
+        if objective_mode == "defense_effectiveness":
+            trial_params = _suggest_params_defense(trial, clusterer)
+        else:
+            trial_params = _suggest_params_clustering(trial, clusterer)
         defense_params = {**base_defense_params, **trial_params}
 
         config = ExperimentConfig(
@@ -169,16 +202,25 @@ def build_objective(
         )
         summary = run_experiment(config, desc=f"trial {trial.number}")
 
-        cq = summary.get("clustering_quality") or {}
-        spoofed_f1 = float(cq.get("spoofed_f1") or 0.0)
-        pred_f1 = float(cq.get("pred_f1") or 0.0)
-
-        logging.info(
-            "Trial %d  spoofed_f1=%.4f  pred_f1=%.4f  params=%s",
-            trial.number, spoofed_f1, pred_f1,
-            {k: f"{v:.3f}" if isinstance(v, float) else v for k, v in trial_params.items()},
-        )
-        return spoofed_f1, pred_f1
+        if objective_mode == "defense_effectiveness":
+            de = summary.get("defense_effectiveness") or {}
+            f1 = float(de.get("f1") or 0.0)
+            logging.info(
+                "Trial %d  defense_f1=%.4f  params=%s",
+                trial.number, f1,
+                {k: f"{v:.3f}" if isinstance(v, float) else v for k, v in trial_params.items()},
+            )
+            return f1
+        else:
+            cq = summary.get("clustering_quality") or {}
+            spoofed_f1 = float(cq.get("spoofed_f1") or 0.0)
+            pred_f1 = float(cq.get("pred_f1") or 0.0)
+            logging.info(
+                "Trial %d  spoofed_f1=%.4f  pred_f1=%.4f  params=%s",
+                trial.number, spoofed_f1, pred_f1,
+                {k: f"{v:.3f}" if isinstance(v, float) else v for k, v in trial_params.items()},
+            )
+            return spoofed_f1, pred_f1
 
     return objective
 
@@ -222,6 +264,23 @@ def _print_pareto(pareto_trials: list[optuna.trial.FrozenTrial]) -> None:
         print(line)
 
 
+def _save_best(best_trial: optuna.trial.FrozenTrial, path: pathlib.Path) -> None:
+    row: dict = {"number": best_trial.number, "defense_f1": best_trial.value}
+    row.update(best_trial.params)
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(row.keys()), extrasaction="ignore")
+        writer.writeheader()
+        writer.writerow(row)
+
+
+def _print_best(best_trial: optuna.trial.FrozenTrial) -> None:
+    param_keys = sorted(best_trial.params)
+    print(f"\n=== Best trial (#{best_trial.number})  defense_f1={best_trial.value:.4f} ===")
+    for k in param_keys:
+        v = best_trial.params[k]
+        print(f"  {k}: {v:.4f}" if isinstance(v, float) else f"  {k}: {v}")
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -261,12 +320,16 @@ def main() -> None:
                         help="Fixed defense params not in the search space (e.g. use_point=False)")
 
     # Optuna
+    parser.add_argument("--objective", default="clustering_quality",
+                        choices=["clustering_quality", "defense_effectiveness"],
+                        help="Metric to optimise: clustering_quality (multi-obj Pareto) or "
+                             "defense_effectiveness (single-obj F1)")
     parser.add_argument("--n-trials", type=int, default=100)
     parser.add_argument("--study-name", default=None,
                         help="Optuna study name; pass an existing name with --results-dir to resume")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--population-size", type=int, default=50,
-                        help="NSGA-II population size")
+                        help="NSGA-II population size (clustering_quality only)")
 
     # Output
     parser.add_argument("--results-dir", default=DEFAULT_RESULTS_DIR)
@@ -330,17 +393,27 @@ def main() -> None:
 
     # Optuna study
     storage = f"sqlite:///{run_dir / (study_name + '.db')}"
-    sampler = optuna.samplers.NSGAIISampler(
-        seed=args.seed,
-        population_size=args.population_size,
-    )
-    study = optuna.create_study(
-        directions=["maximize", "maximize"],
-        study_name=study_name,
-        storage=storage,
-        load_if_exists=True,
-        sampler=sampler,
-    )
+    if args.objective == "defense_effectiveness":
+        sampler = optuna.samplers.TPESampler(seed=args.seed)
+        study = optuna.create_study(
+            direction="maximize",
+            study_name=study_name,
+            storage=storage,
+            load_if_exists=True,
+            sampler=sampler,
+        )
+    else:
+        sampler = optuna.samplers.NSGAIISampler(
+            seed=args.seed,
+            population_size=args.population_size,
+        )
+        study = optuna.create_study(
+            directions=["maximize", "maximize"],
+            study_name=study_name,
+            storage=storage,
+            load_if_exists=True,
+            sampler=sampler,
+        )
 
     # Resume guard: if an existing study is being continued, check for config drift.
     metadata_path = run_dir / "search_metadata.json"
@@ -367,10 +440,19 @@ def main() -> None:
                 print("Aborted.")
                 return
 
+    try:
+        git_hash = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=_PROJECT_ROOT, text=True
+        ).strip()
+    except subprocess.CalledProcessError:
+        git_hash = "unknown"
+
     # Metadata snapshot (written / overwritten each run so it reflects latest n_trials target)
     metadata = {
         "study_name": study_name,
         "timestamp": timestamp,
+        "git_commit": git_hash,
+        "cmd_args": sys.argv,
         "notes": args.notes,
         "defense": args.defense,
         "attack": args.attack,
@@ -426,6 +508,7 @@ def main() -> None:
         pred_label_score_threshold=args.pred_label_score_threshold,
         min_unattacked_frames=args.min_unattacked_frames,
         min_attacked_frames=args.min_attacked_frames,
+        objective_mode=args.objective,
     )
 
     study.optimize(objective, n_trials=remaining, show_progress_bar=True)
@@ -435,11 +518,17 @@ def main() -> None:
     study.trials_dataframe().to_csv(trials_path, index=False)
     logging.info("All trials → %s", trials_path)
 
-    # Save Pareto front
-    pareto_path = run_dir / "pareto.csv"
-    _save_pareto(study.best_trials, pareto_path)
-    logging.info("Pareto front (%d configs) → %s", len(study.best_trials), pareto_path)
-    _print_pareto(study.best_trials)
+    # Save best result(s)
+    if args.objective == "defense_effectiveness":
+        best_path = run_dir / "best.csv"
+        _save_best(study.best_trial, best_path)
+        logging.info("Best trial → %s", best_path)
+        _print_best(study.best_trial)
+    else:
+        pareto_path = run_dir / "pareto.csv"
+        _save_pareto(study.best_trials, pareto_path)
+        logging.info("Pareto front (%d configs) → %s", len(study.best_trials), pareto_path)
+        _print_pareto(study.best_trials)
 
     print(f"\nResults: {run_dir}")
     print(f"Resume:  pixi run python scripts/optuna_search.py --study-name {study_name} "
