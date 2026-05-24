@@ -119,8 +119,12 @@ def _suggest_params_clustering(trial: optuna.Trial, clusterer: str) -> dict:
     return params
 
 
-def _suggest_params_defense(trial: optuna.Trial, clusterer: str) -> dict:
+def _suggest_params_defense(trial: optuna.Trial, clusterer: str, base_defense_params: dict) -> dict:
     """Search space for defense_effectiveness objective (frame-level detection F1)."""
+    use_point    = base_defense_params.get("use_point",    True)
+    use_centroid = base_defense_params.get("use_centroid", True)
+    force_or     = (use_point is False) or (use_centroid is False)
+
     cluster_on_bev = trial.suggest_categorical("cluster_on_bev", [True, False])
     params: dict = {
         "cluster_on_bev":           cluster_on_bev,
@@ -130,10 +134,12 @@ def _suggest_params_defense(trial: optuna.Trial, clusterer: str) -> dict:
         "min_frames_associated":    trial.suggest_int  ("min_frames_associated",  1,    8),
         "centroid_method":          trial.suggest_categorical(
                                      "centroid_method", ["linear_velocity", "first_diff"]),
-        "flag_condition":           trial.suggest_categorical("flag_condition", ["and", "or"]),
-        "centroid_threshold":       trial.suggest_float("centroid_threshold",   0.1, 1),
-        "point_threshold":          trial.suggest_float("point_threshold",   0.03, 0.25)
+        "flag_condition":           "or" if force_or else trial.suggest_categorical("flag_condition", ["and", "or"]),
     }
+    if use_centroid is not False:
+        params["centroid_threshold"] = trial.suggest_float("centroid_threshold", 0.1, 1)
+    if use_point is not False:
+        params["point_threshold"] = trial.suggest_float("point_threshold", 0.03, 0.25)
     if clusterer == "dbscan":
         param_name = "dbscan_eps_bev" if cluster_on_bev else "dbscan_eps_3d"
         params["dbscan_eps"] = trial.suggest_float(param_name, 0.1, 3.0)
@@ -173,7 +179,7 @@ def build_objective(
 ):
     def objective(trial: optuna.Trial):
         if objective_mode == "defense_effectiveness":
-            trial_params = _suggest_params_defense(trial, clusterer)
+            trial_params = _suggest_params_defense(trial, clusterer, base_defense_params)
         else:
             trial_params = _suggest_params_clustering(trial, clusterer)
         defense_params = {**base_defense_params, **trial_params}
