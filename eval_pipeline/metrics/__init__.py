@@ -14,6 +14,7 @@ from .common import (
     _match_frame,
     compute_defense_metrics,
     compute_clustering_quality_metrics,
+    compute_pacts_effectiveness,
 )
 
 from .kitti_metrics import (
@@ -34,6 +35,7 @@ __all__ = [
     "compute_iou_3d",
     "compute_defense_metrics",
     "compute_clustering_quality_metrics",
+    "compute_pacts_effectiveness",
     # kitti
     "N_SAMPLE_PTS",
     "DIFFICULTIES",

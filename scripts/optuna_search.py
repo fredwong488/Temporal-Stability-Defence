@@ -167,7 +167,7 @@ def build_objective(
     objective_mode: str,
 ):
     def objective(trial: optuna.Trial):
-        if objective_mode == "defense_effectiveness":
+        if objective_mode in ("defense_effectiveness", "pacts_effectiveness"):
             trial_params = _suggest_params_defense(trial, base_defense_params)
         else:
             trial_params = _suggest_params_clustering(trial, clusterer)
@@ -208,6 +208,15 @@ def build_objective(
             f1 = float(de.get("f1") or 0.0)
             logging.info(
                 "Trial %d  defense_f1=%.4f  params=%s",
+                trial.number, f1,
+                {k: f"{v:.3f}" if isinstance(v, float) else v for k, v in trial_params.items()},
+            )
+            return f1
+        elif objective_mode == "pacts_effectiveness":
+            pe = summary.get("pacts_effectiveness") or {}
+            f1 = float(pe.get("f1") or 0.0)
+            logging.info(
+                "Trial %d  pacts_f1=%.4f  params=%s",
                 trial.number, f1,
                 {k: f"{v:.3f}" if isinstance(v, float) else v for k, v in trial_params.items()},
             )
@@ -322,9 +331,10 @@ def main() -> None:
 
     # Optuna
     parser.add_argument("--objective", default="clustering_quality",
-                        choices=["clustering_quality", "defense_effectiveness"],
-                        help="Metric to optimise: clustering_quality (multi-obj Pareto) or "
-                             "defense_effectiveness (single-obj F1)")
+                        choices=["clustering_quality", "defense_effectiveness", "pacts_effectiveness"],
+                        help="Metric to optimise: clustering_quality (multi-obj Pareto), "
+                             "defense_effectiveness (single-obj F1), or "
+                             "pacts_effectiveness (single-obj cluster-targeting F1, radial_jitter only)")
     parser.add_argument("--n-trials", type=int, default=100)
     parser.add_argument("--study-name", default=None,
                         help="Optuna study name; pass an existing name with --results-dir to resume")
@@ -397,7 +407,7 @@ def main() -> None:
 
     # Optuna study
     storage = f"sqlite:///{run_dir / (study_name + '.db')}"
-    if args.objective == "defense_effectiveness":
+    if args.objective in ("defense_effectiveness", "pacts_effectiveness"):
         sampler = optuna.samplers.TPESampler(seed=args.seed, n_startup_trials=args.tpe_startup_trials)
         study = optuna.create_study(
             direction="maximize",
@@ -425,7 +435,7 @@ def main() -> None:
         with open(metadata_path) as f:
             saved = json.load(f)
         _COMPARE_KEYS = ("defense", "attack", "dataset", "clusterer",
-                         "attack_noise_preset", "use_predicted_labels")
+                         "attack_noise_preset", "use_predicted_labels", "objective")
         current = {
             "defense": args.defense,
             "attack": args.attack,
@@ -433,6 +443,7 @@ def main() -> None:
             "clusterer": clusterer,
             "attack_noise_preset": args.attack_noise_preset,
             "use_predicted_labels": args.use_predicted_labels,
+            "objective": args.objective,
         }
         diffs = {k: (saved.get(k), current[k]) for k in _COMPARE_KEYS if saved.get(k) != current[k]}
         if diffs:
@@ -470,6 +481,7 @@ def main() -> None:
         "attack_noise_preset": args.attack_noise_preset,
         "use_cached_attacks": args.use_cached_attacks,
         "use_predicted_labels": args.use_predicted_labels,
+        "objective": args.objective,
     }
     with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
@@ -523,7 +535,7 @@ def main() -> None:
     logging.info("All trials → %s", trials_path)
 
     # Save best result(s)
-    if args.objective == "defense_effectiveness":
+    if args.objective in ("defense_effectiveness", "pacts_effectiveness"):
         best_path = run_dir / "best.csv"
         _save_best(study.best_trial, best_path)
         logging.info("Best trial → %s", best_path)

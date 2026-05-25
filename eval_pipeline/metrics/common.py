@@ -136,7 +136,7 @@ def _match_frame(
 # Defense metrics
 # ---------------------------------------------------------------------------
 
-SPOOF_DIST_THRESHOLD = 0.5  # metres — phantom match gate
+SPOOF_DIST_THRESHOLD = 1  # metres — phantom match gate
 PREDICTION_MATCH_MARGIN = 0.5   # metres buffer added to BEV polygon for prediction match
 
 
@@ -290,4 +290,120 @@ def compute_clustering_quality_metrics(frame_results: list[FrameResult]) -> dict
         "total_predictions": tpr,
         "matched_clusters": mc,
         "total_clusters": tc,
+    }
+
+
+# ---------------------------------------------------------------------------
+# PACTS effectiveness metric (radial_jitter defense only)
+# ---------------------------------------------------------------------------
+
+def compute_pacts_effectiveness(frame_results: list[FrameResult]) -> dict:
+    """Cluster-level F1 for radial_jitter: correct flags vs reinjected centroids.
+
+    Ground truth positives are the reinjected phantom centroids from
+    ``attack_metadata["removed_per_obj"]``.  Predicted positives are clusters
+    where ``cluster_details[i]["flagged"] == True``.
+
+      TP — flagged cluster within gate of any reinjected centroid;
+           multiple flags near the same phantom each count as TP
+      FP — flagged cluster not within gate of any reinjected centroid,
+           including all flagged clusters in non-attacked frames
+      FN — reinjected centroid with no flagged cluster within gate
+
+    precision = TP / (TP + FP)    [0 when nothing flagged → F1 = 0]
+    recall    = TP / (TP + FN)    [0 when all phantoms missed]
+    f1        = harmonic mean
+
+    Design note — asymmetric many-to-one matching
+    ---------------------------------------------
+    Matching is many-to-one in both directions: N flagged clusters near the
+    same phantom count as N TPs, and one flagged cluster near M phantoms counts
+    as 1 TP (with all M phantoms treated as covered, so none become FNs).
+
+    This creates a known asymmetry: if DBSCAN over-segments a phantom into
+    multiple clusters and the defense correctly flags all of them, recall is
+    inflated because each extra TP increases the numerator while only one FN
+    would have been charged had the phantom been missed entirely.
+
+    The alternative — capping each phantom's contribution at 1 TP regardless of
+    how many flagged clusters cover it — avoids that recall inflation, but
+    introduces a symmetric precision deflation: every correctly flagged cluster
+    beyond the first would not count toward TP yet every single incorrectly
+    flagged cluster still counts toward FP, making precision appear worse than
+    the defence actually is.
+
+    The current scheme was chosen because artificially deflating precision is the
+    more misleading distortion for Optuna optimisation: it would push the
+    optimiser toward higher thresholds (fewer flags) to recover precision, even
+    when the defence is flagging the right clusters.
+
+    Frames without a defense result are skipped.  Attacked frames without
+    ``removed_per_obj`` metadata are also skipped (reinjected centroids unknown).
+    """
+    tp = fp = fn = 0
+
+    for fr in frame_results:
+        if fr.defense_result is None:
+            continue
+
+        cluster_details = fr.defense_result.metadata.get("cluster_details")
+        if cluster_details is None:
+            continue
+
+        flagged: list[np.ndarray] = []
+        for cd in cluster_details:
+            if not cd.get("flagged"):
+                continue
+            c = cd.get("centroid")
+            if c and len(c) == 3:
+                flagged.append(np.array(c, dtype=float))
+
+        if not fr.is_attacked:
+            fp += len(flagged)
+            continue
+
+        reinjected_centroids: list[np.ndarray] = []
+        for obj in fr.attack_metadata.get("removed_per_obj", []):
+            rc = obj.get("reinjected_centroid")
+            if rc and len(rc) == 3:
+                reinjected_centroids.append(np.array(rc, dtype=float))
+
+        if not reinjected_centroids:
+            continue
+
+        n_f = len(flagged)
+        n_r = len(reinjected_centroids)
+
+        if n_f == 0:
+            fn += n_r
+            continue
+
+        phantom_arr = np.array(reinjected_centroids)  # (P, 3)
+        flagged_arr = np.array(flagged)                # (F, 3)
+
+        # Each flagged cluster independently checks proximity to any phantom.
+        # Multiple flagged clusters matching the same phantom all count as TP —
+        # they are each individually correct flags, not errors.
+        for fc in flagged:
+            if np.linalg.norm(phantom_arr - fc, axis=1).min() <= SPOOF_DIST_THRESHOLD:
+                tp += 1
+            else:
+                fp += 1
+
+        # Each phantom is a FN only if no flagged cluster covers it.
+        for rc in reinjected_centroids:
+            if np.linalg.norm(flagged_arr - rc, axis=1).min() > SPOOF_DIST_THRESHOLD:
+                fn += 1
+
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+
+    return {
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
     }

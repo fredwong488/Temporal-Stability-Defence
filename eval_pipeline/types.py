@@ -233,6 +233,27 @@ class EvalResults:
 
         return compute_clustering_quality_metrics(self.frame_results)
 
+    def pacts_effectiveness(self) -> dict:
+        """Cluster-level F1 for radial_jitter: correct flags vs reinjected centroids.
+
+        TP = flagged cluster matched to a reinjected phantom within gate,
+        FP = flagged cluster pointing at nothing reinjected,
+        FN = reinjected phantom missed entirely.
+        Returns precision, recall, f1, tp, fp, fn.
+        Empty dict if no qualifying attacked frames exist.
+        """
+        from .metrics import compute_pacts_effectiveness
+
+        has_data = any(
+            r.defense_result is not None
+            and r.defense_result.metadata.get("cluster_details") is not None
+            for r in self.frame_results
+        )
+        if not has_data:
+            return {}
+
+        return compute_pacts_effectiveness(self.frame_results)
+
 
 # ---------------------------------------------------------------------------
 # FrameCacheEntry
