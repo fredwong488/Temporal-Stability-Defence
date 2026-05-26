@@ -61,7 +61,7 @@ from __future__ import annotations
 
 import logging
 from collections import deque
-from typing import Literal
+from typing import Callable, Literal
 
 import numpy as np
 from sklearn.cluster import DBSCAN, HDBSCAN
@@ -193,6 +193,8 @@ class RadialJitterDefense(BaseDefense):
         cluster_on_bev: bool = False,
         clusterer: Literal["dbscan", "hdbscan"] = "dbscan",
         hdbscan_min_cluster_size: int = 10,
+        debug: bool = False,
+        defense_frame_hook: Callable[[Frame, "DetectionResult", list[np.ndarray]], None] | None = None,
     ) -> None:
         self._temporal_window = temporal_window
         self.min_history_frames = min_history_frames
@@ -217,6 +219,8 @@ class RadialJitterDefense(BaseDefense):
         self.cluster_on_bev = cluster_on_bev
         self.clusterer = clusterer
         self.hdbscan_min_cluster_size = hdbscan_min_cluster_size
+        self.debug = debug
+        self._defense_frame_hook = defense_frame_hook
         # Maps (frame_id, is_attacked) → (xyz_filt, labels, cluster_pts, centroids)
         # in own sensor frame.  DBSCAN is distance-invariant under rigid transforms,
         # so labels and per-cluster data computed here are reused after
@@ -285,21 +289,29 @@ class RadialJitterDefense(BaseDefense):
         self._evict_stale_cache(active_ids)
 
         past_frame_data: list[tuple[list[np.ndarray], np.ndarray]] = []
+        past_xyz_list: list[np.ndarray] = []  # populated only when defense_frame_hook is set
         for f in hist:
             if f.nuscenes_ego_pose is None:
                 logger.warning(
                     "detect: past frame %s missing ego pose — skipping", f.frame_id
                 )
                 past_frame_data.append(([], np.empty((0, 3), dtype=np.float32)))
+                if self._defense_frame_hook is not None:
+                    past_xyz_list.append(np.empty((0, 3), dtype=np.float32))
                 continue
-            _, _, cluster_pts_own, centroids_own = self._get_or_cluster_frame(f)
+            xyz_filt_own, _, cluster_pts_own, centroids_own = self._get_or_cluster_frame(f)
+            R = cur_inv[:3, :3]
+            t_cur = cur_inv[:3, 3:4]
+            T_past = R @ f.nuscenes_ego_pose.astype(np.float64)[:3, :3]
+            t_past = R @ f.nuscenes_ego_pose.astype(np.float64)[:3, 3:4] + t_cur
+            if self._defense_frame_hook is not None:
+                past_xyz_list.append(
+                    (T_past @ xyz_filt_own.astype(np.float64).T + t_past).T.astype(np.float32)
+                    if len(xyz_filt_own) > 0 else np.empty((0, 3), dtype=np.float32)
+                )
             if len(cluster_pts_own) == 0:
                 past_frame_data.append(([], np.empty((0, 3), dtype=np.float32)))
                 continue
-            R = cur_inv[:3, :3]
-            t = cur_inv[:3, 3:4]
-            T_past = R @ f.nuscenes_ego_pose.astype(np.float64)[:3, :3]
-            t_past = (R @ f.nuscenes_ego_pose.astype(np.float64)[:3, 3:4] + t)
             comp_centroids = (
                 T_past @ centroids_own.astype(np.float64).T + t_past
             ).T.astype(np.float32)
@@ -398,17 +410,25 @@ class RadialJitterDefense(BaseDefense):
         is_attack = n_flagged > 0
         confidence = n_flagged / n_tested if n_tested > 0 else 0.0
 
-        return DetectionResult(
+        meta: dict = {
+            "n_clusters_tested": n_tested,
+            "n_clusters_flagged": n_flagged,
+            "centroid_threshold": self.centroid_threshold,
+            "point_threshold": self.point_threshold,
+            "cluster_details": cluster_details,
+        }
+        if self.debug:
+            meta["xyz_filt"] = cur_xyz_filt
+            meta["labels_cur"] = labels_cur
+
+        result = DetectionResult(
             is_attack_detected=is_attack,
             confidence=float(confidence),
-            metadata={
-                "n_clusters_tested": n_tested,
-                "n_clusters_flagged": n_flagged,
-                "centroid_threshold": self.centroid_threshold,
-                "point_threshold": self.point_threshold,
-                "cluster_details": cluster_details,
-            },
+            metadata=meta,
         )
+        if self._defense_frame_hook is not None:
+            self._defense_frame_hook(frame, result, past_xyz_list)
+        return result
 
     # ------------------------------------------------------------------
     # Internal helpers

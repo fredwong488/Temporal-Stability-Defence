@@ -79,12 +79,14 @@ class ORAAttack(BaseAttack):
         reinject_distance_range: tuple[float, float] = (2.5, 2.5),
         noise_model: SpoofingNoiseModel | None = None,
         seed: int | None = None,
+        debug: bool = False,
     ) -> None:
         self.budget = budget
         self.target_types = target_types if target_types is not None else {"Car"}
         self.azimuth_constraint_deg = azimuth_constraint_deg
         self.reinject_distance_range = reinject_distance_range
         self.noise_model = noise_model
+        self.debug = debug
         self._rng = random.Random(seed)
         self._np_rng = np.random.default_rng(seed)
 
@@ -174,11 +176,14 @@ class ORAAttack(BaseAttack):
         keep_mask[chosen] = False
         pts = np.concatenate([pts[keep_mask], reinjected], axis=0)
 
-        return pts, {
+        info: dict = {
             "label_type": label.type,
             "n_removed": n_sample,
             "reinjected_centroid": reinjected[:, :3].mean(axis=0).tolist(),
         }
+        if self.debug:
+            info["reinjected_xyz"] = reinjected[:, :3].tolist()
+        return pts, info
 
     def _azimuth_candidates(
         self,
