@@ -7,6 +7,7 @@ EvalPipeline — orchestrates attack, detection, and defense over a dataset.
 from __future__ import annotations
 
 import dataclasses
+import itertools
 import logging
 import pathlib
 import pickle
@@ -108,6 +109,28 @@ class EvalPipeline:
         attacked in a chosen scene.  Scenes where
         scene_length < min_unattacked_frames + min_attacked_frames revert to
         fully unattacked.  Ignored in frame-granularity mode.
+    max_frames
+        Stop after processing this many frames across all scenes.  Useful for
+        quick inspection runs.  If None (default), all frames are processed.
+    skip_unattacked_frames_per_scene
+        Skip this many unattacked frames at the start of each scene before
+        beginning to process any unattacked frame.  Skipped frames are
+        completely bypassed (no attack, no defense, no history update).
+        Default 0.  Only effective in scene-granularity mode.
+    skip_attacked_frames_per_scene
+        Skip this many attacked frames at the start of each scene's attack
+        phase before beginning to process any attacked frame.  Default 0.
+        Only effective in scene-granularity mode.
+    max_unattacked_frames_per_scene
+        After ``skip_unattacked_frames_per_scene``, process at most this many
+        unattacked frames per scene; remaining unattacked frames are skipped
+        entirely.  If None (default), all unattacked frames are processed.
+        Only effective in scene-granularity mode.
+    max_attacked_frames_per_scene
+        After ``skip_attacked_frames_per_scene``, process at most this many
+        attacked frames per scene; remaining attacked frames are skipped
+        entirely.  If None (default), all attacked frames are processed.
+        Only effective in scene-granularity mode.
     """
 
     def __init__(
@@ -126,6 +149,11 @@ class EvalPipeline:
         pred_label_score_threshold: float = 0.5,
         min_unattacked_frames: int = 0,
         min_attacked_frames: int = 1,
+        max_frames: int | None = None,
+        skip_unattacked_frames_per_scene: int = 0,
+        skip_attacked_frames_per_scene: int = 0,
+        max_unattacked_frames_per_scene: int | None = None,
+        max_attacked_frames_per_scene: int | None = None,
     ) -> None:
         self.dataset = dataset
         self.attack = attack
@@ -139,6 +167,11 @@ class EvalPipeline:
         self.pred_label_score_threshold = pred_label_score_threshold
         self.min_unattacked_frames = min_unattacked_frames
         self.min_attacked_frames = min_attacked_frames
+        self.max_frames = max_frames
+        self.skip_unattacked_frames_per_scene = skip_unattacked_frames_per_scene
+        self.skip_attacked_frames_per_scene = skip_attacked_frames_per_scene
+        self.max_unattacked_frames_per_scene = max_unattacked_frames_per_scene
+        self.max_attacked_frames_per_scene = max_attacked_frames_per_scene
         self.desc = desc
         self._clean_pred_cache: dict[str, list[Prediction]] = {}
 
@@ -180,6 +213,20 @@ class EvalPipeline:
         live_run_frames = []
         live_attack_rerun = 0
         frame_index_in_scene = 0
+        n_unattacked_in_scene = 0
+        n_attacked_in_scene = 0
+
+        _scene_skip_active = any([
+            self.skip_unattacked_frames_per_scene,
+            self.max_unattacked_frames_per_scene is not None,
+            self.skip_attacked_frames_per_scene,
+            self.max_attacked_frames_per_scene is not None,
+        ])
+        if _scene_skip_active and self._granularity != "scene":
+            logger.warning(
+                "skip/max per-scene frame params are only effective in scene-granularity "
+                "mode (e.g. NuScenes); they will be ignored for this dataset."
+            )
 
         # Pre-compute scene plans (scene mode) or just scene lengths (frame mode).
         if self._granularity == "scene":
@@ -190,7 +237,8 @@ class EvalPipeline:
         else:
             scene_lengths = {}
 
-        for frame in tqdm(self.dataset, desc=self.desc, unit="frame"):
+        frame_iter = itertools.islice(self.dataset, self.max_frames)
+        for frame in tqdm(frame_iter, desc=self.desc, unit="frame"):
             n += 1
             logger.debug("Processing frame %s", frame.frame_id)
 
@@ -202,6 +250,8 @@ class EvalPipeline:
                 if self.defense is not None:
                     self.defense.reset()
                 frame_index_in_scene = 0
+                n_unattacked_in_scene = 0
+                n_attacked_in_scene = 0
                 last_sequence_id = frame.sequence_id
             else:
                 frame_index_in_scene += 1
@@ -215,6 +265,51 @@ class EvalPipeline:
                 do_attack = plan_entry.attack and frame_index_in_scene >= plan_entry.prefix
             else:
                 do_attack = None
+
+            # Per-scene skip/max logic (scene-granularity only; do_attack is bool here).
+            if _scene_skip_active and do_attack is not None:
+                if do_attack:
+                    n_attacked_in_scene += 1
+                    _in_skip = n_attacked_in_scene <= self.skip_attacked_frames_per_scene
+                    _past_max = (
+                        self.max_attacked_frames_per_scene is not None
+                        and n_attacked_in_scene
+                        > self.skip_attacked_frames_per_scene + self.max_attacked_frames_per_scene
+                    )
+                else:
+                    n_unattacked_in_scene += 1
+                    _in_skip = n_unattacked_in_scene <= self.skip_unattacked_frames_per_scene
+                    _past_max = (
+                        self.max_unattacked_frames_per_scene is not None
+                        and n_unattacked_in_scene
+                        > self.skip_unattacked_frames_per_scene + self.max_unattacked_frames_per_scene
+                    )
+                if _in_skip or _past_max:
+                    # History-only pass: maintain temporal continuity without
+                    # running the defense.  Use cached attacked lidar if cheap
+                    # to obtain; never run the attack live.
+                    _history_frame = frame
+                    if self._precomputed_cache is not None:
+                        _entry = self._precomputed_cache.get(frame.frame_id)
+                        if _entry is not None:
+                            _attack_this_frame = do_attack if do_attack is not None else _entry.is_attacked
+                            if (_attack_this_frame and 
+                                self.attack is not None and
+                                self.use_cached_attacks and 
+                                _entry.is_attacked and 
+                                _entry.attacked_lidar is not None):
+                                    _history_frame = dataclasses.replace(
+                                        frame,
+                                        lidar=_entry.attacked_lidar,
+                                        is_attacked=True,
+                                        attacked_modalities=frozenset({"lidar"}),
+                                        attack_metadata=_entry.attack_metadata,
+                                    )
+                        else:
+                            logger.warning(f"Precomputed cache not found for frame_id {frame.frame_id}. Scene skip active, dirty history will be clean frame.")
+                    clean_history.append(frame)
+                    dirty_history.append(_history_frame)
+                    continue
 
             if self._precomputed_cache is not None:
                 # -------------------------------------------------------
