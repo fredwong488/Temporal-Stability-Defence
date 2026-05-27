@@ -166,7 +166,7 @@ def run_single(
 # Per-metric extractors
 # ---------------------------------------------------------------------------
 
-def extract_detection_rate_row(
+def extract_defense_effectiveness_row(
     summary: dict,
     sweep_param: str,
     sweep_val: float | int,
@@ -229,7 +229,7 @@ def log_summary_metrics(
             )
             logging.info("  %s AP  %s", cls, values)
 
-    if "detection_rate" in metric_types:
+    if "detection_rate" or "defense_effectiveness" in metric_types:
         de = summary.get("defense_effectiveness", {})
         logging.info(
             "  Detection  F1=%.3f  precision=%.3f  recall=%.3f",
@@ -464,7 +464,7 @@ def main() -> None:
                             "ap (Average Precision → CSV), "
                             "pr (Precision-Recall curves → JSON), "
                             "recall_iou (Recall vs IoU → JSON), "
-                            "detection_rate (defense F1/precision/recall → CSV), "
+                            "defense_effectiveness (defense F1/precision/recall → CSV), "
                             "pacts_effectiveness (PACTS cluster-level F1/precision/recall → CSV)"
                         ))
     parser.add_argument("--confidence-threshold", type=float, default=0.3,
@@ -643,7 +643,7 @@ def main() -> None:
     ap_rows: list[dict] = []
     pr_all: list[dict] = []
     recall_iou_all: list[dict] = []
-    detection_rate_rows: list[dict] = []
+    defense_effectiveness_rows: list[dict] = []
     clustering_quality_rows: list[dict] = []
     pacts_effectiveness_rows: list[dict] = []
 
@@ -719,6 +719,7 @@ def main() -> None:
             pred_label_score_threshold=args.pred_label_score_threshold,
             min_unattacked_frames=args.min_unattacked_frames,
             min_attacked_frames=args.min_attacked_frames,
+            desc="single run",
         )
 
         log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
@@ -828,8 +829,8 @@ def main() -> None:
                 },
             })
 
-        if "detection_rate" in args.metric_types:
-            detection_rate_rows.append(extract_detection_rate_row(summary, args.sweep_param, val))
+        if "detection_rate" or "defense_effectiveness" in args.metric_types:
+            defense_effectiveness_rows.append(extract_defense_effectiveness_row(summary, args.sweep_param, val))
 
         if "clustering_quality" in args.metric_types:
             clustering_quality_rows.append(extract_clustering_quality_row(summary, args.sweep_param, val))
@@ -880,18 +881,18 @@ def main() -> None:
         logging.info("Recall-IoU curves written to %s", riou_path)
         print(f"\nRecall-IoU: {riou_path}")
 
-    # Detection rate → CSV
-    if "detection_rate" in args.metric_types and detection_rate_rows:
+    # Defense effectiveness → CSV
+    if "detection_rate" or "defense_effectiveness" in args.metric_types and defense_effectiveness_rows:
         fieldnames = [args.sweep_param, "detection_f1", "detection_precision", "detection_recall"]
-        out_path = run_dir / f"sweep_{sweep_tag}_detection_rate.csv"
+        out_path = run_dir / f"sweep_{sweep_tag}_defense_effectiveness.csv"
         with open(out_path, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerows(detection_rate_rows)
-        logging.info("Detection rate CSV written to %s", out_path)
-        print(f"\nDetection rate: {out_path}")
+            writer.writerows(defense_effectiveness_rows)
+        logging.info("Defense effectiveness CSV written to %s", out_path)
+        print(f"\nDefense effectiveness: {out_path}")
         print(",".join(fieldnames))
-        for row in detection_rate_rows:
+        for row in defense_effectiveness_rows:
             print(",".join([
                 str(row[args.sweep_param]),
                 f"{row['detection_f1']:.4f}",

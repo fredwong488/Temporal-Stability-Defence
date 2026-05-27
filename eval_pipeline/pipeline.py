@@ -238,7 +238,8 @@ class EvalPipeline:
             scene_lengths = {}
 
         frame_iter = itertools.islice(self.dataset, self.max_frames)
-        for frame in tqdm(frame_iter, desc=self.desc, unit="frame"):
+        total = self.max_frames if self.max_frames is not None else len(self.dataset)
+        for frame in tqdm(frame_iter, desc=self.desc, unit="frame", total=total):
             n += 1
             logger.debug("Processing frame %s", frame.frame_id)
 
