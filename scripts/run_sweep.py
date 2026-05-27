@@ -61,7 +61,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "clustering_quality"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "clustering_quality", "pacts_effectiveness"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
@@ -198,6 +198,65 @@ def extract_clustering_quality_row(
     }
 
 
+def extract_pacts_effectiveness_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+) -> dict:
+    """Extract PACTS effectiveness F1, precision and recall into a flat dict for the CSV."""
+    pe = summary.get("pacts_effectiveness", {})
+    return {
+        sweep_param: sweep_val,
+        "pacts_f1": pe.get("f1", float("nan")),
+        "pacts_precision": pe.get("precision", float("nan")),
+        "pacts_recall": pe.get("recall", float("nan")),
+    }
+
+
+def log_summary_metrics(
+    summary: dict,
+    metric_types: list[str],
+    classes: list[str],
+    difficulties: list[str],
+) -> None:
+    """Log a one-line summary for each requested metric type."""
+    if "ap" in metric_types:
+        attacked_map = summary.get("attack_effectiveness", {}).get("attacked_map", {})
+        for cls in classes:
+            cls_ap = attacked_map.get(cls, {})
+            values = "  ".join(
+                f"{d}={cls_ap.get(d, float('nan')):.2f}" for d in difficulties
+            )
+            logging.info("  %s AP  %s", cls, values)
+
+    if "detection_rate" in metric_types:
+        de = summary.get("defense_effectiveness", {})
+        logging.info(
+            "  Detection  F1=%.3f  precision=%.3f  recall=%.3f",
+            de.get("f1", float("nan")),
+            de.get("precision", float("nan")),
+            de.get("recall", float("nan")),
+        )
+
+    if "clustering_quality" in metric_types:
+        cq = summary.get("clustering_quality", {})
+        logging.info(
+            "  Clustering  spoofed_f1=%.3f  pred_f1=%.3f  precision=%.3f",
+            cq.get("spoofed_f1", float("nan")),
+            cq.get("pred_f1", float("nan")),
+            cq.get("precision", float("nan")),
+        )
+
+    if "pacts_effectiveness" in metric_types:
+        pe = summary.get("pacts_effectiveness", {})
+        logging.info(
+            "  PACTS  F1=%.3f  precision=%.3f  recall=%.3f",
+            pe.get("f1", float("nan")),
+            pe.get("precision", float("nan")),
+            pe.get("recall", float("nan")),
+        )
+
+
 def extract_ap_row(
     summary: dict,
     sweep_param: str,
@@ -225,8 +284,8 @@ def write_sweep_metadata(
     timestamp: str,
     notes: str | None,
     cmd_args: list[str],
-    sweep_target: str,
-    sweep_param: str,
+    sweep_target: str | None,
+    sweep_param: str | None,
     sweep_values: list,
     base_attack_params: dict,
     base_defense_params: dict,
@@ -257,9 +316,16 @@ def write_sweep_metadata(
     except subprocess.CalledProcessError:
         git_hash = "unknown"
 
-    first_val = sweep_values[0]
-    rep_attack_params = base_attack_params | ({sweep_param: first_val} if sweep_target == "attack" else {})
-    rep_defense_params = base_defense_params | ({sweep_param: first_val} if sweep_target == "defense" else {})
+    is_sweep = any([sweep_target, sweep_param, sweep_values])
+
+    if is_sweep:
+        first_val = sweep_values[0]
+        rep_attack_params = base_attack_params | ({sweep_param: first_val} if sweep_target == "attack" else {})
+        rep_defense_params = base_defense_params | ({sweep_param: first_val} if sweep_target == "defense" else {})
+    else:
+        rep_attack_params = base_attack_params
+        rep_defense_params = base_defense_params
+
     rep_config = ExperimentConfig(
         dataset_type=dataset_type,
         dataset_params=dataset_params,
@@ -283,13 +349,14 @@ def write_sweep_metadata(
     )
     config_dict = rep_config.to_dict()
 
-    # Strip per-run fields that vary between sweep iterations
     for k in ("output_dir", "experiment_name", "precomputed_cache_path", "cache_clean_preds", "iou_thresholds"):
         config_dict.pop(k, None)
 
-    # Remove the single swept value; replace with the full sweep block
-    swept_params = config_dict.get("attack_params" if sweep_target == "attack" else "defense_params", {})
-    swept_params.pop(sweep_param, None)
+    if is_sweep:
+        # Remove the single swept value; the full sweep block replaces it below
+        swept_params = config_dict.get("attack_params" if sweep_target == "attack" else "defense_params", {})
+        swept_params.pop(sweep_param, None)
+
     # noise_model is not JSON-serialisable; record the preset string instead
     attack_params_dict = config_dict.get("attack_params", {})
     if "noise_model" in attack_params_dict:
@@ -302,14 +369,13 @@ def write_sweep_metadata(
         "timestamp": timestamp,
         "cmd_args": cmd_args,
         "precomputed_cache_dir": precomputed_cache_dir,
-        "sweep": {
-            "target": sweep_target,
-            "param": sweep_param,
-            "values": sweep_values,
-        },
+        "sweep": (
+            {"target": sweep_target, "param": sweep_param, "values": sweep_values}
+            if is_sweep else None
+        ),
         **config_dict,
     }
-    metadata_path = run_dir / "sweep_metadata.json"
+    metadata_path = run_dir / "run_metadata.json"
     with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
     logging.info("Metadata written to %s", metadata_path)
@@ -361,11 +427,11 @@ def main() -> None:
                         help="Detector type to run (e.g. pointrcnn, pointpillars)")
 
     # Sweep configuration
-    parser.add_argument("--sweep-target", type=str, default="attack",
+    parser.add_argument("--sweep-target", type=str, default=None,
                         choices=sorted(VALID_SWEEP_TARGETS),
-                        help="Which component's params to sweep over")
-    parser.add_argument("--sweep-param", type=str, default=DEFAULT_SWEEP_PARAM,
-                        help="Name of the parameter to sweep (e.g. budget, threshold, seed)")
+                        help="Which component's params to sweep over (omit for single-run mode)")
+    parser.add_argument("--sweep-param", type=str, default=None,
+                        help="Name of the parameter to sweep (e.g. budget, threshold, seed; omit for single-run mode)")
     parser.add_argument("--sweep-values", type=float, nargs="+",
                         default=None,
                         metavar="V",
@@ -398,7 +464,8 @@ def main() -> None:
                             "ap (Average Precision → CSV), "
                             "pr (Precision-Recall curves → JSON), "
                             "recall_iou (Recall vs IoU → JSON), "
-                            "detection_rate (defense F1/precision/recall → CSV)"
+                            "detection_rate (defense F1/precision/recall → CSV), "
+                            "pacts_effectiveness (PACTS cluster-level F1/precision/recall → CSV)"
                         ))
     parser.add_argument("--confidence-threshold", type=float, default=0.3,
                         help="Confidence threshold used for recall_iou metric and detector scoring")
@@ -474,26 +541,40 @@ def main() -> None:
     if not any([args.attack, args.defense, args.detector]):
         parser.error("At least one of --attack, --defense, --detector must be supplied.")
 
-    # Validate: sweep target requires the matching component
-    if args.sweep_target == "attack" and args.attack is None:
-        parser.error("--sweep-target attack requires --attack to be specified.")
-    if args.sweep_target == "defense" and args.defense is None:
-        parser.error("--sweep-target defense requires --defense to be specified.")
+    # Single-run mode when none of the sweep args are supplied
+    is_sweep = any([
+        args.sweep_param is not None,
+        args.sweep_values is not None,
+        args.sweep_target is not None,
+    ])
 
-    # Resolve sweep values
-    sweep_values: list[float | int]
-    if args.sweep_values is not None:
-        sweep_values = args.sweep_values
-    elif args.sweep_param == DEFAULT_SWEEP_PARAM:
-        sweep_values = DEFAULT_SWEEP_VALUES
-    else:
-        parser.error(
-            f"--sweep-values is required when --sweep-param is not '{DEFAULT_SWEEP_PARAM}'."
-        )
+    sweep_values: list[float | int] = []
+    if is_sweep:
+        # Apply defaults for unset sweep args
+        if args.sweep_target is None:
+            args.sweep_target = "attack"
+        if args.sweep_param is None:
+            args.sweep_param = DEFAULT_SWEEP_PARAM
 
-    # Cast to int when all values are whole numbers (e.g. budget sweep)
-    if all(v == int(v) for v in sweep_values):
-        sweep_values = [int(v) for v in sweep_values]
+        # Validate: sweep target requires the matching component
+        if args.sweep_target == "attack" and args.attack is None:
+            parser.error("--sweep-target attack requires --attack to be specified.")
+        if args.sweep_target == "defense" and args.defense is None:
+            parser.error("--sweep-target defense requires --defense to be specified.")
+
+        # Resolve sweep values
+        if args.sweep_values is not None:
+            sweep_values = args.sweep_values
+        elif args.sweep_param == DEFAULT_SWEEP_PARAM:
+            sweep_values = DEFAULT_SWEEP_VALUES
+        else:
+            parser.error(
+                f"--sweep-values is required when --sweep-param is not '{DEFAULT_SWEEP_PARAM}'."
+            )
+
+        # Cast to int when all values are whole numbers (e.g. budget sweep)
+        if all(v == int(v) for v in sweep_values):
+            sweep_values = [int(v) for v in sweep_values]
 
     timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     run_dir = pathlib.Path(args.results_dir) / timestamp
@@ -542,9 +623,12 @@ def main() -> None:
             )
     logging.info("Defense      : %s", args.defense or "(none)")
     logging.info("Detector     : %s", args.detector or "(none)")
-    logging.info("Sweep target : %s", args.sweep_target)
-    logging.info("Sweep param  : %s", args.sweep_param)
-    logging.info("Sweep values : %s", sweep_values)
+    if is_sweep:
+        logging.info("Sweep target : %s", args.sweep_target)
+        logging.info("Sweep param  : %s", args.sweep_param)
+        logging.info("Sweep values : %s", sweep_values)
+    else:
+        logging.info("Mode         : single run")
     if extra_attack_params:
         logging.info("Atk extras   : %s", extra_attack_params)
     if extra_defense_params:
@@ -561,6 +645,7 @@ def main() -> None:
     recall_iou_all: list[dict] = []
     detection_rate_rows: list[dict] = []
     clustering_quality_rows: list[dict] = []
+    pacts_effectiveness_rows: list[dict] = []
 
     base_attack_params: dict = {"target_types": args.classes} if args.attack else {}
     base_attack_params.update(extra_attack_params)
@@ -602,6 +687,51 @@ def main() -> None:
         save_frame_results=args.save_frames,
         precomputed_cache_dir=args.precomputed_cache_dir,
     )
+
+    if not is_sweep:
+        # -----------------------------------------------------------------------
+        # Single evaluation run
+        # -----------------------------------------------------------------------
+        summary = run_single(
+            attack_type=args.attack,
+            attack_params=base_attack_params,
+            defense_type=args.defense,
+            defense_params=base_defense_params,
+            detector_type=args.detector,
+            detector_params=detector_params,
+            classes=args.classes,
+            difficulties=args.difficulties,
+            metric_types=args.metric_types,
+            confidence_threshold=args.confidence_threshold,
+            output_dir=str(run_dir),
+            experiment_name="single_run",
+            attack_fraction=args.attack_fraction,
+            attack_fraction_seed=args.attack_fraction_seed,
+            save_frame_results=args.save_frames,
+            dataset_type=dataset_type,
+            dataset_params=dataset_params,
+            precomputed_cache_path=(
+                str(pathlib.Path(args.precomputed_cache_dir) / "single_run.pkl")
+                if args.precomputed_cache_dir else None
+            ),
+            use_cached_attacks=args.use_cached_attacks,
+            use_predicted_labels=args.use_predicted_labels,
+            pred_label_score_threshold=args.pred_label_score_threshold,
+            min_unattacked_frames=args.min_unattacked_frames,
+            min_attacked_frames=args.min_attacked_frames,
+        )
+
+        log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
+
+        end_time = datetime.now()
+        logging.info(f"Start time: {start_time}")
+        logging.info(f"End time:   {end_time}")
+        logging.info(f"Total time: {end_time - start_time}")
+        return
+
+    # -----------------------------------------------------------------------
+    # Sweep mode
+    # -----------------------------------------------------------------------
 
     # Build the iteration list: when sweeping attack, prepend a no-attack baseline
     # represented by the sentinel string "no_attack" in the sweep_param column.
@@ -677,14 +807,7 @@ def main() -> None:
         )
 
         if "ap" in args.metric_types:
-            row = extract_ap_row(summary, args.sweep_param, val, args.classes, args.difficulties)
-            ap_rows.append(row)
-            for cls in args.classes:
-                values = "  ".join(
-                    f"{d}={row[f'{cls.lower()}_ap_{d.lower()}']:.2f}"
-                    for d in args.difficulties
-                )
-                logging.info("  %s AP  %s", cls, values)
+            ap_rows.append(extract_ap_row(summary, args.sweep_param, val, args.classes, args.difficulties))
 
         if "pr" in args.metric_types:
             pr_all.append({
@@ -706,20 +829,15 @@ def main() -> None:
             })
 
         if "detection_rate" in args.metric_types:
-            row = extract_detection_rate_row(summary, args.sweep_param, val)
-            detection_rate_rows.append(row)
-            logging.info(
-                "  Detection  F1=%.3f  precision=%.3f  recall=%.3f",
-                row["detection_f1"], row["detection_precision"], row["detection_recall"],
-            )
+            detection_rate_rows.append(extract_detection_rate_row(summary, args.sweep_param, val))
 
         if "clustering_quality" in args.metric_types:
-            row = extract_clustering_quality_row(summary, args.sweep_param, val)
-            clustering_quality_rows.append(row)
-            logging.info(
-                "  Clustering  spoofed_f1=%.3f  pred_f1=%.3f  precision=%.3f",
-                row["spoofed_f1"], row["pred_f1"], row["precision"],
-            )
+            clustering_quality_rows.append(extract_clustering_quality_row(summary, args.sweep_param, val))
+
+        if "pacts_effectiveness" in args.metric_types:
+            pacts_effectiveness_rows.append(extract_pacts_effectiveness_row(summary, args.sweep_param, val))
+
+        log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
 
     sweep_tag = f"{args.sweep_target}_{args.sweep_param}"
 
@@ -803,6 +921,25 @@ def main() -> None:
                 f"{row['precision']:.4f}",
                 f"{row['spoofed_recall']:.4f}",
                 f"{row['pred_recall']:.4f}",
+            ]))
+
+    # PACTS effectiveness → CSV
+    if "pacts_effectiveness" in args.metric_types and pacts_effectiveness_rows:
+        fieldnames = [args.sweep_param, "pacts_f1", "pacts_precision", "pacts_recall"]
+        out_path = run_dir / f"sweep_{sweep_tag}_pacts_effectiveness.csv"
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(pacts_effectiveness_rows)
+        logging.info("PACTS effectiveness CSV written to %s", out_path)
+        print(f"\nPACTS effectiveness: {out_path}")
+        print(",".join(fieldnames))
+        for row in pacts_effectiveness_rows:
+            print(",".join([
+                str(row[args.sweep_param]),
+                f"{row['pacts_f1']:.4f}",
+                f"{row['pacts_precision']:.4f}",
+                f"{row['pacts_recall']:.4f}",
             ]))
 
     end_time = datetime.now()
