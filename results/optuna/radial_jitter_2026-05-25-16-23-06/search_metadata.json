@@ -1,7 +1,7 @@
 {
   "study_name": "radial_jitter_2026-05-25-16-23-06",
-  "timestamp": "2026-05-25-16-23-06",
-  "git_commit": "a3de09430434d98ef0f16e48dabf9e100db9cdcb",
+  "timestamp": "2026-05-27-13-56-47",
+  "git_commit": "c4e4949be669e35737aa0639fbb3b2b6c3b0c1a9",
   "cmd_args": [
     "scripts/optuna_search.py",
     "--dataset",
@@ -34,9 +34,11 @@
     "--objective",
     "pacts_effectiveness",
     "--n-trials",
-    "50",
+    "80",
     "--notes",
-    "Full optuna optimisation run on mini_train, optimising over pacts_effectiveness, usepoint=true usecentroid=true, using phase 1 trial 78 params"
+    "Full optuna optimisation run on mini_train, optimising over pacts_effectiveness, usepoint=true usecentroid=true, using phase 1 trial 78 params",
+    "--study-name",
+    "radial_jitter_2026-05-25-16-23-06"
   ],
   "notes": "Full optuna optimisation run on mini_train, optimising over pacts_effectiveness, usepoint=true usecentroid=true, using phase 1 trial 78 params",
   "defense": "radial_jitter",
@@ -47,7 +49,7 @@
     "version": "v1.0-mini",
     "split": "mini_train"
   },
-  "n_trials": 50,
+  "n_trials": 80,
   "seed": 42,
   "population_size": 50,
   "clusterer": "dbscan",
