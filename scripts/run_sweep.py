@@ -61,7 +61,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "clustering_quality", "pacts_effectiveness"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
