@@ -362,9 +362,9 @@ def main() -> None:
     run_dir.mkdir(parents=True, exist_ok=True)
 
     if args.precomputed_cache_dir is not None:
-        shared_cache_path = str(
-            pathlib.Path(args.precomputed_cache_dir) / "defense_sweep_shared.pkl"
-        )
+        _sweep_cache = pathlib.Path(args.precomputed_cache_dir) / "defense_sweep_shared.pkl"
+        _eval_cache = pathlib.Path(args.precomputed_cache_dir) / "single_run.pkl"
+        shared_cache_path = str(_sweep_cache if _sweep_cache.exists() else _eval_cache)
     else:
         shared_cache_path = str(run_dir / "shared_cache.pkl")
 
