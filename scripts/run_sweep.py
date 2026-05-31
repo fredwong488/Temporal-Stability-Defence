@@ -52,8 +52,6 @@ DEFAULT_NUSCENES_ROOT = f"{_DATASETS_BASE}/nuscenes-v1.0-mini"
 DEFAULT_NUSCENES_VERSION = "v1.0-mini"
 DEFAULT_NUSCENES_SPLIT = "mini_val"
 
-DEFAULT_SWEEP_PARAM = "budget"
-DEFAULT_SWEEP_VALUES = [0, 10, 20, 40, 60, 100, 150, 200]
 KITTI_DEFAULT_CLASSES = ["Car", "Pedestrian", "Cyclist"]
 NUSCENES_DEFAULT_CLASSES = ["car", "pedestrian", "bicycle"]
 DEFAULT_DIFFICULTIES = ["Easy", "Moderate", "Hard"]
@@ -435,8 +433,7 @@ def main() -> None:
     parser.add_argument("--sweep-values", type=float, nargs="+",
                         default=None,
                         metavar="V",
-                        help=f"Values to sweep. Defaults to {DEFAULT_SWEEP_VALUES} "
-                             "when sweep-param is 'budget'")
+                        help="Values to sweep (required when --sweep-param is set)")
 
     # Frames (KITTI-only)
     group = parser.add_mutually_exclusive_group()
@@ -554,7 +551,7 @@ def main() -> None:
         if args.sweep_target is None:
             args.sweep_target = "attack"
         if args.sweep_param is None:
-            args.sweep_param = DEFAULT_SWEEP_PARAM
+            parser.error("--sweep-param is required when sweep mode is active.")
 
         # Validate: sweep target requires the matching component
         if args.sweep_target == "attack" and args.attack is None:
@@ -565,12 +562,8 @@ def main() -> None:
         # Resolve sweep values
         if args.sweep_values is not None:
             sweep_values = args.sweep_values
-        elif args.sweep_param == DEFAULT_SWEEP_PARAM:
-            sweep_values = DEFAULT_SWEEP_VALUES
         else:
-            parser.error(
-                f"--sweep-values is required when --sweep-param is not '{DEFAULT_SWEEP_PARAM}'."
-            )
+            parser.error("--sweep-values is required when sweep mode is active.")
 
         # Cast to int when all values are whole numbers (e.g. budget sweep)
         if all(v == int(v) for v in sweep_values):
@@ -647,9 +640,9 @@ def main() -> None:
     clustering_quality_rows: list[dict] = []
     pacts_effectiveness_rows: list[dict] = []
 
-    base_attack_params: dict = {"target_types": args.classes} if args.attack else {}
+    base_attack_params: dict = {"target_types": args.classes} if args.attack and args.attack == "ora" else {}
     base_attack_params.update(extra_attack_params)
-    if args.attack == "ora" and args.attack_noise_preset != "none":
+    if args.attack and args.attack_noise_preset != "none":
         from eval_pipeline.utils.spoofing_noise import SpoofingNoiseModel
         base_attack_params["noise_model"] = SpoofingNoiseModel.from_preset(
             args.attack_noise_preset, seed=args.attack_fraction_seed

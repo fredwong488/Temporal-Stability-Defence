@@ -86,7 +86,11 @@ def _serialise_frame_result(fr: FrameResult) -> dict:
 
 def _attack_registry() -> dict[str, type]:
     from .attacks.ora import ORAAttack
-    return {"ora": ORAAttack}
+    from .attacks.ghost_object import GhostObjectAttack
+    return {
+        "ora": ORAAttack,
+        "ghost": GhostObjectAttack
+    }
 
 
 def _detector_registry() -> dict[str, type]:
