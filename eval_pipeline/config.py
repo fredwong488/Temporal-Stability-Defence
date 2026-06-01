@@ -127,9 +127,14 @@ class ExperimentConfig:
     save_frame_results: bool = False   # write per-frame JSONL alongside results JSON
 
     # Precomputed cache
-    # If the path does not exist the pipeline runs live and saves a cache there.
-    # If the path exists the pipeline loads the cache and skips detector inference.
+    # Path to a shelve-backed cache of FrameCacheEntry objects.
+    # - Absent path → pipeline runs live and generates a new cache there.
+    # - Present path + read_only_cache=True (default) → read-only replay; safe
+    #   for concurrent Optuna trials.
+    # - Present path + read_only_cache=False → writable; cache hits are replayed
+    #   and misses are run live and written back (resume a crashed generation).
     precomputed_cache_path: str | None = None
+    read_only_cache: bool = True
     # If True, cached attacked_predictions and attack_metadata are used directly
     # and the attack is not re-applied.  If False (default), the attack is re-run
     # live for each flagged frame and the detector is re-run on the new lidar.

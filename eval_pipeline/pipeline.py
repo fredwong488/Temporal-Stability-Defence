@@ -7,10 +7,11 @@ EvalPipeline — orchestrates attack, detection, and defense over a dataset.
 from __future__ import annotations
 
 import dataclasses
+import dbm
 import itertools
 import logging
 import pathlib
-import pickle
+import shelve
 from collections import deque
 from concurrent.futures import Future, ThreadPoolExecutor
 
@@ -40,6 +41,12 @@ def _prediction_to_label(pred: Prediction) -> ObjectLabel:
     )
 
 logger = logging.getLogger(__name__)
+
+
+def _cache_exists(path: str) -> bool:
+    """Return True if a shelve database already exists at *path*."""
+    return dbm.whichdb(path) is not None
+
 
 # Maps dataset class name → attack granularity.  Unknown datasets fall back to "frame".
 _DATASET_GRANULARITY: dict[str, str] = {
@@ -145,6 +152,7 @@ class EvalPipeline:
         attack_fraction_seed: int = 0,
         desc: str = "Frames",
         precomputed_cache_path: str | None = None,
+        read_only_cache: bool = True,
         use_cached_attacks: bool = False,
         use_predicted_labels: bool = False,
         pred_label_score_threshold: float = 0.5,
@@ -179,21 +187,32 @@ class EvalPipeline:
         self._granularity: str = _DATASET_GRANULARITY.get(type(dataset).__name__, "frame")
         self._scene_plan: dict[str, _SceneAttackPlan] | None = None
 
-        # Precomputed cache: load if the file exists; save after run() if it doesn't.
-        self._precomputed_cache: dict[str, FrameCacheEntry] | None = None
-        self._precomputed_save_path: str | None = None
+        # Precomputed cache: opened lazily via shelve so frames are read/written
+        # one at a time rather than loading the entire dict into memory.
+        # read_only_cache=True  → flag='r': reads only, safe for concurrent Optuna trials.
+        # read_only_cache=False → flag='c': reads + writes; generate fresh or resume partial.
+        self._cache: shelve.Shelf | None = None
+        self._cache_writable: bool = False
         if precomputed_cache_path is not None:
-            p = pathlib.Path(precomputed_cache_path)
-            if p.exists():
-                with open(p, "rb") as f:
-                    self._precomputed_cache = pickle.load(f)
+            cache_exists = _cache_exists(precomputed_cache_path)
+            if cache_exists and read_only_cache:
+                self._cache = shelve.open(precomputed_cache_path, flag='r')
+                self._cache_writable = False
                 logger.info(
-                    "Loaded precomputed cache: %d frame entries from %s",
-                    len(self._precomputed_cache), p,
+                    "Opened precomputed cache read-only: %s (~%d entries)",
+                    precomputed_cache_path, len(self._cache),
                 )
             else:
-                self._precomputed_save_path = str(p)
-                logger.info("Will save precomputed cache to: %s", p)
+                pathlib.Path(precomputed_cache_path).parent.mkdir(parents=True, exist_ok=True)
+                self._cache = shelve.open(precomputed_cache_path, flag='c')
+                self._cache_writable = True
+                if cache_exists:
+                    logger.info(
+                        "Opened precomputed cache for resume/append: %s (~%d existing entries)",
+                        precomputed_cache_path, len(self._cache),
+                    )
+                else:
+                    logger.info("Will generate precomputed cache: %s", precomputed_cache_path)
 
     # ------------------------------------------------------------------
     # Main entry point
@@ -215,7 +234,6 @@ class EvalPipeline:
             if self.defense is not None and self.defense.async_detect
             else None
         )
-        accumulator: dict[str, FrameCacheEntry] = {}  # built when saving cache
         n = 0
         live_run_frames = []
         live_attack_rerun = 0
@@ -297,14 +315,14 @@ class EvalPipeline:
                     # running the defense.  Use cached attacked lidar if cheap
                     # to obtain; never run the attack live.
                     _history_frame = frame
-                    if self._precomputed_cache is not None:
-                        _entry = self._precomputed_cache.get(frame.frame_id)
+                    if self._cache is not None:
+                        _entry = self._cache.get(frame.frame_id)
                         if _entry is not None:
                             _attack_this_frame = do_attack if do_attack is not None else _entry.is_attacked
-                            if (_attack_this_frame and 
+                            if (_attack_this_frame and
                                 self.attack is not None and
-                                self.use_cached_attacks and 
-                                _entry.is_attacked and 
+                                self.use_cached_attacks and
+                                _entry.is_attacked and
                                 _entry.attacked_lidar is not None):
                                     _history_frame = dataclasses.replace(
                                         frame,
@@ -319,16 +337,31 @@ class EvalPipeline:
                     dirty_history.append(_history_frame)
                     continue
 
-            if self._precomputed_cache is not None:
+            if self._cache is not None:
                 # -------------------------------------------------------
-                # Replay mode: use cached clean predictions and attack decisions.
+                # Cache mode: hit → replay; miss → run live (+ write back
+                # if writable, enabling generate/resume).
                 # -------------------------------------------------------
-                entry = self._precomputed_cache.get(frame.frame_id)
+                entry = self._cache.get(frame.frame_id)
                 if entry is None:
                     live_run_frames.append(frame.frame_id)
                     clean_preds, attacked_frame, attacked_preds = self._run_live(
                         frame, should_attack=do_attack
                     )
+                    if self._cache_writable:
+                        self._cache[frame.frame_id] = FrameCacheEntry(
+                            clean_predictions=clean_preds,
+                            attacked_predictions=attacked_preds,
+                            is_attacked=attacked_frame is not None,
+                            attack_metadata=(
+                                dict(attacked_frame.attack_metadata)
+                                if attacked_frame is not None else {}
+                            ),
+                            attacked_lidar=(
+                                attacked_frame.lidar if attacked_frame is not None else None
+                            ),
+                        )
+                        self._cache.sync()
                 else:
                     attacked_frame: Frame | None = None
                     attacked_preds: list[Prediction] | None = None
@@ -369,25 +402,11 @@ class EvalPipeline:
                             live_attack_rerun += 1
             else:
                 # -------------------------------------------------------
-                # Live mode: run attack + detector, accumulate cache entry.
+                # No cache configured: run everything live.
                 # -------------------------------------------------------
                 clean_preds, attacked_frame, attacked_preds = self._run_live(
                     frame, should_attack=do_attack
                 )
-
-                if self._precomputed_save_path is not None:
-                    accumulator[frame.frame_id] = FrameCacheEntry(
-                        clean_predictions=clean_preds,
-                        attacked_predictions=attacked_preds,
-                        is_attacked=attacked_frame is not None,
-                        attack_metadata=(
-                            dict(attacked_frame.attack_metadata)
-                            if attacked_frame is not None else {}
-                        ),
-                        attacked_lidar=(
-                            attacked_frame.lidar if attacked_frame is not None else None
-                        ),
-                    )
 
             # Stage 3: Defense — operates on what the vehicle actually received
             current_frame = attacked_frame if attacked_frame is not None else frame
@@ -454,17 +473,18 @@ class EvalPipeline:
                             "Async defense failed for frame %s", frame_results[i].frame_id
                         )
 
-        if self._precomputed_cache is None:
+        if self._cache is None:
             logger.info("Pipeline complete: %d frames processed live (no precomputed cache).", n)
         else:
             logger.info(
-                "Pipeline complete: %d frames processed. %d cache misses ran fully live. "
-                "%d cache hits re-ran attack live (use_cached_attacks=False).",
-                n, len(live_run_frames), live_attack_rerun,
+                "Pipeline complete: %d frames processed. %d cache misses ran fully live "
+                "(%s). %d cache hits re-ran attack live (use_cached_attacks=False).",
+                n, len(live_run_frames),
+                "written to cache" if self._cache_writable else "discarded",
+                live_attack_rerun,
             )
 
-        if self._precomputed_save_path is not None and accumulator:
-            self._save_cache(accumulator)
+        self._close_cache()
 
         # Fill in attack_start_frame_id for all frames in attacked scenes.
         # Find the frame_id of the frame at the attack-onset index in each scene.
@@ -567,11 +587,8 @@ class EvalPipeline:
             self._clean_pred_cache[frame.frame_id] = preds
         return preds
 
-    def _save_cache(self, accumulator: dict[str, FrameCacheEntry]) -> None:
-        path = pathlib.Path(self._precomputed_save_path)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "wb") as f:
-            pickle.dump(accumulator, f, protocol=pickle.HIGHEST_PROTOCOL)
-        logger.info(
-            "Saved precomputed cache: %d frame entries → %s", len(accumulator), path
-        )
+    def _close_cache(self) -> None:
+        """Flush and close the shelve cache if one is open."""
+        if self._cache is not None:
+            self._cache.close()
+            self._cache = None

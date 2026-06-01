@@ -125,6 +125,7 @@ def run_single(
     dataset_type: str = "kitti",
     dataset_params: dict | None = None,
     precomputed_cache_path: str | None = None,
+    read_only_cache: bool = True,
     use_cached_attacks: bool = False,
     use_predicted_labels: bool = False,
     pred_label_score_threshold: float = 0.5,
@@ -151,6 +152,7 @@ def run_single(
         attack_fraction_seed=attack_fraction_seed,
         save_frame_results=save_frame_results,
         precomputed_cache_path=precomputed_cache_path,
+        read_only_cache=read_only_cache,
         use_cached_attacks=use_cached_attacks,
         use_predicted_labels=use_predicted_labels,
         pred_label_score_threshold=pred_label_score_threshold,
@@ -481,6 +483,13 @@ def main() -> None:
             "subsequent runs with the same configuration."
         ),
     )
+    parser.add_argument("--writeable-cache", action="store_true", default=False,
+                        help=(
+                            "Write to an existing or create a new precomputed cache (default to False, safe for parallel runs). "
+                            "When true, opens precomputed cache writable so that cache misses are run live "
+                            "and written back, resuming a crashed or partial cache generation."
+                        ),
+    )
     parser.add_argument(
         "--use-cached-attacks", action="store_true", default=False,
         help=(
@@ -704,9 +713,10 @@ def main() -> None:
             dataset_type=dataset_type,
             dataset_params=dataset_params,
             precomputed_cache_path=(
-                str(pathlib.Path(args.precomputed_cache_dir) / "single_run.pkl")
+                str(pathlib.Path(args.precomputed_cache_dir) / "single_run")
                 if args.precomputed_cache_dir else None
             ),
+            read_only_cache= not args.writeable_cache,
             use_cached_attacks=args.use_cached_attacks,
             use_predicted_labels=args.use_predicted_labels,
             pred_label_score_threshold=args.pred_label_score_threshold,
@@ -761,16 +771,16 @@ def main() -> None:
         if args.precomputed_cache_dir is not None:
             if args.sweep_target == "defense":
                 val_cache_path = str(
-                    pathlib.Path(args.precomputed_cache_dir) / "defense_sweep_shared.pkl"
+                    pathlib.Path(args.precomputed_cache_dir) / "defense_sweep_shared"
                 )
             elif is_baseline:
                 val_cache_path = str(
-                    pathlib.Path(args.precomputed_cache_dir) / "baseline_no_attack.pkl"
+                    pathlib.Path(args.precomputed_cache_dir) / "baseline_no_attack"
                 )
             else:
                 val_str = str(int(val)) if val == int(val) else str(val)
                 val_cache_path = str(
-                    pathlib.Path(args.precomputed_cache_dir) / f"{args.sweep_param}_{val_str}.pkl"
+                    pathlib.Path(args.precomputed_cache_dir) / f"{args.sweep_param}_{val_str}"
                 )
 
         summary = run_single(
@@ -793,6 +803,7 @@ def main() -> None:
             dataset_type=dataset_type,
             dataset_params=dataset_params,
             precomputed_cache_path=val_cache_path,
+            read_only_cache= not args.writeable_cache,
             use_cached_attacks=False if is_baseline else args.use_cached_attacks,
             use_predicted_labels=args.use_predicted_labels,
             pred_label_score_threshold=args.pred_label_score_threshold,

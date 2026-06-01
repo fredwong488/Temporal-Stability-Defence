@@ -188,6 +188,7 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
         attack_fraction_seed=config.attack_fraction_seed,
         desc=desc,
         precomputed_cache_path=config.precomputed_cache_path,
+        read_only_cache=config.read_only_cache,
         use_cached_attacks=config.use_cached_attacks,
         use_predicted_labels=config.use_predicted_labels,
         pred_label_score_threshold=config.pred_label_score_threshold,

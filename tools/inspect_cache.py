@@ -1,14 +1,17 @@
 """
 inspect_cache.py
 ----------------
-Unpickle and summarise a precomputed pipeline cache file.
+Summarise a precomputed pipeline cache (shelve-backed).
 
 Usage:
-    pixi run python tools/inspect_cache.py <cache.pkl> [--frame <frame_id>]
+    pixi run python tools/inspect_cache.py <cache> [--frame <frame_id>]
+
+<cache> is the base path passed to --precomputed-cache-dir (no extension);
+shelve manages its own backing files alongside that path.
 """
 
 import argparse
-import pickle
+import shelve
 import sys
 import pathlib
 
@@ -21,8 +24,7 @@ def main() -> None:
     parser.add_argument("--frame", help="Print full details for a specific frame_id")
     args = parser.parse_args()
 
-    with open(args.cache, "rb") as f:
-        cache: dict = pickle.load(f)
+    cache = shelve.open(args.cache, flag='r')
 
     if not cache:
         print("Cache not found")
@@ -71,6 +73,8 @@ def main() -> None:
     print(f"With attacked_lidar : {has_lidar} / {attacked} attacked")
     print(f"With attacked_preds : {has_atk_preds} / {attacked} attacked")
     print(f"Fields in entry     : {fields}")
+
+    cache.close()
 
 
 if __name__ == "__main__":
