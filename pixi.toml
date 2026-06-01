@@ -63,6 +63,10 @@ optuna = "*"
 torch = "*"
 torchvision = "*"
 nuscenes-devkit = ">=1.1"
+google-genai = "*"
+openai = "*"
+pydantic = ">=2"
+tenacity = "*"
 
 [target.linux-64.pypi-dependencies]
 torch = { version = ">=2", index = "https://download.pytorch.org/whl/cu118" }
@@ -71,3 +75,7 @@ spconv-cu118 = "*"
 SharedArray = "*"
 pyquaternion = "*"
 nuscenes-devkit = ">=1.1"
+google-genai = "*"
+openai = "*"
+pydantic = ">=2"
+tenacity = "*"

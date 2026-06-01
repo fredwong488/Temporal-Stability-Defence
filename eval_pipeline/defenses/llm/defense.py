@@ -1,0 +1,180 @@
+"""
+eval_pipeline/defenses/llm/defense.py
+---------------------------------------
+Multi-modal LLM-based adversarial attack defense.
+
+Sends three rendered views (BEV LiDAR, isometric LiDAR, camera) to a
+vision-language model and maps the structured response to a DetectionResult.
+
+Supported backends: 'gemini' (Gemini 3 Flash via google-genai),
+                    'qwen' (Qwen 3-VL via DashScope / OpenAI-compatible API).
+"""
+
+from __future__ import annotations
+
+import hashlib
+import pathlib
+import time
+from typing import Literal
+
+from eval_pipeline.base import BaseDefense
+from eval_pipeline.types import DetectionResult, Frame, FrameHistory
+
+from .cache import LLMCache, make_cache_key
+from .schema import ConfidenceLevel, LLMVerdict, Verdict
+
+_CONFIDENCE_MAP = {
+    ConfidenceLevel.LOW: 0.33,
+    ConfidenceLevel.MEDIUM: 0.66,
+    ConfidenceLevel.HIGH: 1.0,
+}
+
+_DEFAULT_MODELS = {
+    "gemini": "gemini-2.0-flash",
+    "qwen": "qwen3-vl-plus",
+}
+
+
+class LLMDefense(BaseDefense):
+    """Attack detection via a multimodal LLM judging three sensor views."""
+
+    def __init__(
+        self,
+        backend: Literal["gemini", "qwen"] = "gemini",
+        model: str | None = None,
+        prompt_path: str = "notes/llm_prompts.md",
+        cache_dir: str = "cache/llm_defense",
+        force_refresh: bool = False,
+        attack_threshold: Literal["any", "high_conf"] = "any",
+        render_dpi: int = 150,
+        roi_min: tuple[float, float] = (0.0, -5.0),
+        roi_max: tuple[float, float] = (30.0, 5.0),
+        api_key_env: str | None = None,
+    ) -> None:
+        self._backend_name = backend
+        self._model = model or _DEFAULT_MODELS[backend]
+        self._force_refresh = force_refresh
+        self._attack_threshold = attack_threshold
+        self._render_dpi = render_dpi
+        self._roi_min = roi_min
+        self._roi_max = roi_max
+
+        prompt_file = pathlib.Path(prompt_path)
+        if not prompt_file.exists():
+            raise FileNotFoundError(f"LLM prompt file not found: {prompt_file.resolve()}")
+        self._prompt = prompt_file.read_text()
+        self._prompt_hash = hashlib.sha1(self._prompt.encode()).hexdigest()[:12]
+
+        self._cache = LLMCache(cache_dir, backend, self._model)
+
+        kwargs = {}
+        if api_key_env is not None:
+            kwargs["api_key_env"] = api_key_env
+
+        if backend == "gemini":
+            from .backends.gemini import GeminiBackend
+            self._backend = GeminiBackend(model=self._model, **kwargs)
+        elif backend == "qwen":
+            from .backends.qwen import QwenBackend
+            self._backend = QwenBackend(model=self._model, **kwargs)
+        else:
+            raise ValueError(f"Unknown LLM backend: {backend!r}. Choose 'gemini' or 'qwen'.")
+
+    @property
+    def name(self) -> str:
+        return f"LLMDefense({self._backend_name}/{self._model})"
+
+    def detect(self, frame: Frame, history: FrameHistory) -> DetectionResult:
+        from eval_pipeline.visualisation.render_views import render_three_views
+        t0 = time.perf_counter()
+
+        predictions = frame.predictions or []
+
+        cache_key = make_cache_key(
+            frame_id=frame.frame_id,
+            sequence_id=frame.sequence_id,
+            predictions=predictions,
+            is_attacked=frame.is_attacked,
+            attack_metadata=frame.attack_metadata,
+            backend=self._backend_name,
+            model=self._model,
+            prompt_hash=self._prompt_hash,
+        )
+
+        cache_hit = False
+        raw: dict | None = None
+        if not self._force_refresh:
+            raw = self._cache.load(cache_key)
+            if raw is not None:
+                cache_hit = True
+
+        if raw is None:
+            images = render_three_views(
+                frame, predictions,
+                roi_min=self._roi_min,
+                roi_max=self._roi_max,
+                dpi=self._render_dpi,
+            )
+            raw = self._backend.query(images, self._prompt)
+            self._cache.save(cache_key, raw)
+
+        elapsed_s = time.perf_counter() - t0
+
+        return self._parse(raw, cache_hit, elapsed_s)
+
+    def _parse(self, raw: dict, cache_hit: bool, elapsed_s: float) -> DetectionResult:
+        try:
+            verdict_obj = LLMVerdict.model_validate(raw)
+        except Exception:
+            return DetectionResult(
+                is_attack_detected=False,
+                confidence=0.0,
+                metadata={"error": "Failed to parse LLM response", "raw_response": raw, "cache_hit": cache_hit, "elapsed_s": elapsed_s},
+            )
+
+        verdict = verdict_obj.verdict
+        is_attack = verdict == Verdict.ATTACK_SUSPECTED
+
+        if is_attack and self._attack_threshold == "high_conf":
+            # Require at least MEDIUM confidence on the primary suspected attack
+            if verdict_obj.suspected_attacks:
+                top_conf = verdict_obj.suspected_attacks[0].confidence
+                if top_conf == ConfidenceLevel.LOW:
+                    is_attack = False
+            else:
+                is_attack = False
+
+        # Aggregate confidence: max over all suspected attacks, 0 if benign
+        if verdict_obj.suspected_attacks:
+            confidence = max(
+                _CONFIDENCE_MAP[a.confidence] for a in verdict_obj.suspected_attacks
+            )
+        else:
+            confidence = 0.0
+
+        metadata: dict = {
+            "verdict": verdict.value,
+            "backend": self._backend_name,
+            "model": self._model,
+            "cache_hit": cache_hit,
+            "elapsed_s": elapsed_s,
+            "raw_response": raw,
+        }
+
+        if verdict_obj.suspected_attacks:
+            metadata["suspected_attacks"] = [
+                {
+                    "attack_type": a.attack_type.value,
+                    "confidence": a.confidence.value,
+                    "affected_region": a.affected_region.model_dump(),
+                    "evidence": a.evidence,
+                    "alternatives_ruled_out": a.alternatives_ruled_out,
+                }
+                for a in verdict_obj.suspected_attacks
+            ]
+
+        return DetectionResult(
+            is_attack_detected=is_attack,
+            confidence=confidence,
+            metadata=metadata,
+        )
