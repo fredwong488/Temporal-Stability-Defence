@@ -67,6 +67,7 @@ google-genai = "*"
 openai = "*"
 pydantic = ">=2"
 tenacity = "*"
+python-dotenv = "*"
 
 [target.linux-64.pypi-dependencies]
 torch = { version = ">=2", index = "https://download.pytorch.org/whl/cu118" }
@@ -79,3 +80,4 @@ google-genai = "*"
 openai = "*"
 pydantic = ">=2"
 tenacity = "*"
+python-dotenv = "*"

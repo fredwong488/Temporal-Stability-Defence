@@ -5,7 +5,10 @@ from __future__ import annotations
 import json
 import os
 
+from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, wait_exponential
+
+load_dotenv()
 
 from .base import LLMBackend
 
