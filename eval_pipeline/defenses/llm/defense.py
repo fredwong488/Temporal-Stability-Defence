@@ -14,8 +14,35 @@ from __future__ import annotations
 
 import hashlib
 import pathlib
+import threading
 import time
+from collections import deque
 from typing import Literal
+
+
+class _RateLimiter:
+    """Allow at most max_calls requests in any rolling 60-second window.
+
+    Thread-safe: multiple worker threads share one instance and block here
+    until capacity is available.
+    """
+
+    def __init__(self, max_calls_per_minute: int) -> None:
+        self._max = max_calls_per_minute
+        self._window: deque[float] = deque()
+        self._lock = threading.Lock()
+
+    def acquire(self) -> None:
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                while self._window and now - self._window[0] >= 60.0:
+                    self._window.popleft()
+                if len(self._window) < self._max:
+                    self._window.append(now)
+                    return
+                wait_until = self._window[0] + 60.0
+            time.sleep(max(wait_until - time.monotonic(), 0.05))
 
 from eval_pipeline.base import BaseDefense
 from eval_pipeline.types import DetectionResult, Frame, FrameHistory
@@ -50,6 +77,7 @@ class LLMDefense(BaseDefense):
         roi_min: tuple[float, float] = (0.0, -5.0),
         roi_max: tuple[float, float] = (30.0, 5.0),
         api_key_env: str | None = None,
+        requests_per_minute: int | None = 200,
     ) -> None:
         self._backend_name = backend
         self._model = model or _DEFAULT_MODELS[backend]
@@ -71,6 +99,10 @@ class LLMDefense(BaseDefense):
         if api_key_env is not None:
             kwargs["api_key_env"] = api_key_env
 
+        self._rate_limiter = (
+            _RateLimiter(requests_per_minute) if requests_per_minute is not None else None
+        )
+
         if backend == "gemini":
             from .backends.gemini import GeminiBackend
             self._backend = GeminiBackend(model=self._model, **kwargs)
@@ -79,6 +111,10 @@ class LLMDefense(BaseDefense):
             self._backend = QwenBackend(model=self._model, **kwargs)
         else:
             raise ValueError(f"Unknown LLM backend: {backend!r}. Choose 'gemini' or 'qwen'.")
+
+    @property
+    def async_detect(self) -> bool:
+        return True
 
     @property
     def name(self) -> str:
@@ -109,6 +145,8 @@ class LLMDefense(BaseDefense):
                 cache_hit = True
 
         if raw is None:
+            if self._rate_limiter is not None:
+                self._rate_limiter.acquire()
             images = render_three_views(
                 frame, predictions,
                 roi_min=self._roi_min,

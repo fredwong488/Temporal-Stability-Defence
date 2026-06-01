@@ -12,6 +12,7 @@ import logging
 import pathlib
 import pickle
 from collections import deque
+from concurrent.futures import Future, ThreadPoolExecutor
 
 import numpy as np
 from tqdm import tqdm
@@ -208,6 +209,12 @@ class EvalPipeline:
         last_sequence_id: str | None = None
 
         frame_results: list[FrameResult] = []
+        defense_futures: list[Future | None] = []  # parallel to frame_results; None = sync
+        executor: ThreadPoolExecutor | None = (
+            ThreadPoolExecutor()
+            if self.defense is not None and self.defense.async_detect
+            else None
+        )
         accumulator: dict[str, FrameCacheEntry] = {}  # built when saving cache
         n = 0
         live_run_frames = []
@@ -389,10 +396,24 @@ class EvalPipeline:
 
             defense_result = None
             if self.defense is not None:
-                defense_result = self.defense.detect(
-                    current_frame,
-                    FrameHistory(clean=clean_history, dirty=dirty_history),
-                )
+                if executor is not None:
+                    # Snapshot history before submitting: the deques will be
+                    # mutated by subsequent frames before the future resolves.
+                    history_snapshot = FrameHistory(
+                        clean=deque(clean_history),
+                        dirty=deque(dirty_history),
+                    )
+                    defense_futures.append(
+                        executor.submit(self.defense.detect, current_frame, history_snapshot)
+                    )
+                else:
+                    defense_result = self.defense.detect(
+                        current_frame,
+                        FrameHistory(clean=clean_history, dirty=dirty_history),
+                    )
+                    defense_futures.append(None)
+            else:
+                defense_futures.append(None)
 
             # Update both histories after the defense has been called.
             clean_history.append(frame)          # pre-attack, as yielded by dataset
@@ -420,6 +441,18 @@ class EvalPipeline:
                 attack_start_index=attack_start_index,
                 attack_start_frame_id=None,  # filled in below
             ))
+
+        # Resolve async defense futures and attach results back to frame_results.
+        if executor is not None:
+            executor.shutdown(wait=True)
+            for i, fut in enumerate(defense_futures):
+                if fut is not None:
+                    try:
+                        frame_results[i].defense_result = fut.result()
+                    except Exception:
+                        logger.exception(
+                            "Async defense failed for frame %s", frame_results[i].frame_id
+                        )
 
         if self._precomputed_cache is None:
             logger.info("Pipeline complete: %d frames processed live (no precomputed cache).", n)

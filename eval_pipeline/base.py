@@ -76,6 +76,15 @@ class BaseDefense(abc.ABC):
         """
         return 1
 
+    @property
+    def async_detect(self) -> bool:
+        """Whether the pipeline should run detect() calls concurrently.
+
+        Override to True for defenses whose detect() blocks on an external
+        API (e.g. LLM backends) so frames are processed in parallel.
+        """
+        return False
+
     @abc.abstractmethod
     def detect(self, frame: Frame, history: FrameHistory) -> DetectionResult:
         """Determine whether the frame has been attacked.
