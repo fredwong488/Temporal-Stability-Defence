@@ -1,7 +1,7 @@
 {
   "study_name": "radial_jitter_2026-05-28-13-18-19",
-  "timestamp": "2026-05-28-13-18-19",
-  "git_commit": "bb899e56e76458978c6dfc0620aebc3318cbf8ae",
+  "timestamp": "2026-05-28-14-01-55",
+  "git_commit": "2b55603ef73f6d6a5dcc1297d35ec63c130b5bc4",
   "cmd_args": [
     "scripts/optuna_search.py",
     "--dataset",
@@ -31,7 +31,9 @@
     "--population-size",
     "30",
     "--notes",
-    "Full optuna optimisation run on mini_train attack fraction 1, optimising over clustering quality, usepoint=false usecentroid=false"
+    "Full optuna optimisation run on mini_train attack fraction 1, optimising over clustering quality, usepoint=false usecentroid=false",
+    "--study-name",
+    "radial_jitter_2026-05-28-13-18-19"
   ],
   "notes": "Full optuna optimisation run on mini_train attack fraction 1, optimising over clustering quality, usepoint=false usecentroid=false",
   "defense": "radial_jitter",
