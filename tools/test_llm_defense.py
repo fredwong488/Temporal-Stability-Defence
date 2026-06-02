@@ -43,7 +43,7 @@ sys.path.insert(0, str(_ROOT))
 
 _TRACES_DIR = _ROOT / "eval_pipeline" / "attacks" / "ghost_object" / "traces"
 
-_GHOST_CLOUD_PATH = {
+_GHOST_CLOUD_FILE = {
     "car": _TRACES_DIR / "ghost_cloud_car.npy",
     "cyl": _TRACES_DIR / "ghost_cloud_cyl.npy",
     "ped": _TRACES_DIR / "ghost_cloud_ped.npy",
@@ -242,7 +242,8 @@ def main() -> None:
     out_dir = pathlib.Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ghost_cloud_path = _GHOST_CLOUD_PATH[args.attack_type]
+    ghost_cloud_file = _GHOST_CLOUD_FILE[args.attack_type]
+    ghost_cloud_path = _TRACES_DIR / ghost_cloud_file
 
     if not nuscenes_root.exists():
         sys.exit(f"NuScenes root not found: {nuscenes_root}")
@@ -272,7 +273,7 @@ def main() -> None:
     from eval_pipeline.types import FrameHistory
     from eval_pipeline.visualisation.render_views import render_three_views
 
-    attack = GhostObjectAttack(ghost_cloud_path=ghost_cloud_path)
+    attack = GhostObjectAttack(ghost_cloud_file=ghost_cloud_file)
 
     defense = LLMDefense(
         backend=args.backend,
