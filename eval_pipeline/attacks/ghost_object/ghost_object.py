@@ -44,10 +44,11 @@ class GhostObjectAttack(BaseAttack):
 
     def __init__(
         self,
-        ghost_cloud_path: str | pathlib.Path = "ghost_vehicle.npy",
+        ghost_cloud_path: str | pathlib.Path = "eval_pipeline/attacks/ghost_object/traces/",
+        ghost_cloud_file: str = "ghost_cloud_car.npy",
         noise_model: SpoofingNoiseModel | None = None,
     ) -> None:
-        path = pathlib.Path(ghost_cloud_path)
+        path = pathlib.Path(ghost_cloud_path) / ghost_cloud_file
         if not path.exists():
             raise FileNotFoundError(
                 f"Ghost cloud file not found: {path}\n"
