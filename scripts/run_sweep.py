@@ -59,7 +59,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness", "llm_attack_type_accuracy"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
@@ -213,6 +213,22 @@ def extract_pacts_effectiveness_row(
     }
 
 
+def extract_llm_attack_type_accuracy_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+) -> dict:
+    """Extract LLM attack-type accuracy into a flat dict for the CSV."""
+    lata = summary.get("llm_attack_type_accuracy", {})
+    return {
+        sweep_param: sweep_val,
+        "n_tp_detected": lata.get("n_tp_detected", float("nan")),
+        "n_correct_type": lata.get("n_correct_type", float("nan")),
+        "n_incorrect_type": lata.get("n_incorrect_type", float("nan")),
+        "type_accuracy": lata.get("type_accuracy", float("nan")),
+    }
+
+
 def log_summary_metrics(
     summary: dict,
     metric_types: list[str],
@@ -254,6 +270,16 @@ def log_summary_metrics(
             pe.get("f1", float("nan")),
             pe.get("precision", float("nan")),
             pe.get("recall", float("nan")),
+        )
+
+    if "llm_attack_type_accuracy" in metric_types:
+        lata = summary.get("llm_attack_type_accuracy", {})
+        logging.info(
+            "  LLM type accuracy  type_accuracy=%.3f  correct=%s/%s",
+            lata.get("type_accuracy", float("nan")),
+            lata.get("n_correct_type", "?"),
+            lata.get("n_incorrect_type", "?"),
+            lata.get("n_tp_detected", "?"),
         )
 
 
@@ -648,6 +674,7 @@ def main() -> None:
     defense_effectiveness_rows: list[dict] = []
     clustering_quality_rows: list[dict] = []
     pacts_effectiveness_rows: list[dict] = []
+    llm_attack_type_accuracy_rows: list[dict] = []
 
     base_attack_params: dict = {"target_types": args.classes} if args.attack and args.attack == "ora" else {}
     base_attack_params.update(extra_attack_params)
@@ -842,6 +869,9 @@ def main() -> None:
         if "pacts_effectiveness" in args.metric_types:
             pacts_effectiveness_rows.append(extract_pacts_effectiveness_row(summary, args.sweep_param, val))
 
+        if "llm_attack_type_accuracy" in args.metric_types:
+            llm_attack_type_accuracy_rows.append(extract_llm_attack_type_accuracy_row(summary, args.sweep_param, val))
+
         log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
 
     sweep_tag = f"{args.sweep_target}_{args.sweep_param}"
@@ -945,6 +975,26 @@ def main() -> None:
                 f"{row['pacts_f1']:.4f}",
                 f"{row['pacts_precision']:.4f}",
                 f"{row['pacts_recall']:.4f}",
+            ]))
+
+    # LLM attack-type accuracy → CSV
+    if "llm_attack_type_accuracy" in args.metric_types and llm_attack_type_accuracy_rows:
+        fieldnames = [args.sweep_param, "n_tp_detected", "n_correct_type", "n_incorrect_type", "type_accuracy"]
+        out_path = run_dir / f"sweep_{sweep_tag}_llm_attack_type_accuracy.csv"
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(llm_attack_type_accuracy_rows)
+        logging.info("LLM attack-type accuracy CSV written to %s", out_path)
+        print(f"\nLLM attack-type accuracy: {out_path}")
+        print(",".join(fieldnames))
+        for row in llm_attack_type_accuracy_rows:
+            print(",".join([
+                str(row[args.sweep_param]),
+                str(row["n_tp_detected"]),
+                str(row["n_correct_type"]),
+                str(row["n_incorrect_type"]),
+                f"{row['type_accuracy']:.4f}",
             ]))
 
     end_time = datetime.now()

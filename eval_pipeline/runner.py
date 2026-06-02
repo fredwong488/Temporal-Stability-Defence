@@ -272,6 +272,8 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:
         summary["clustering_quality"] = eval_results.clustering_quality()
         if config.defense_type == "radial_jitter":
             summary["pacts_effectiveness"] = eval_results.pacts_effectiveness()
+        if config.defense_type == "llm":
+            summary["llm_attack_type_accuracy"] = eval_results.llm_attack_type_accuracy()
 
     # Optionally save results to disk
     if config.output_dir:
