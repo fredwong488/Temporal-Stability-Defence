@@ -57,7 +57,7 @@ _CONFIDENCE_MAP = {
 }
 
 _DEFAULT_MODELS = {
-    "gemini": "gemini-2.0-flash",
+    "gemini": "gemini-3.5-flash",
     "qwen": "qwen3-vl-plus",
 }
 
