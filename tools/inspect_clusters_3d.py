@@ -21,7 +21,9 @@ Typical usage (mirrors the sweep command):
 from __future__ import annotations
 
 import argparse
+import json
 import pathlib
+import subprocess
 import sys
 
 import numpy as np
@@ -83,9 +85,9 @@ def _cluster_colors(n: int) -> list[str]:
     """Distinct colours for up to n clusters (cycles if n > palette)."""
     palette = [
         "#4e79a7", "#f28e2b", "#59a14f", "#e15759", "#76b7b2",
-        "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ac",
-        "#17becf", "#bcbd22", "#7f7f7f", "#d62728", "#9467bd",
-        "#8c564b", "#e377c2", "#2ca02c", "#1f77b4", "#ff7f0e",
+        "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#17becf",
+        "#bcbd22", "#d62728", "#9467bd", "#8c564b", "#e377c2",
+        "#2ca02c", "#1f77b4", "#ff7f0e", "#a0522d", "#6a5acd",
     ]
     return [palette[i % len(palette)] for i in range(n)]
 
@@ -123,9 +125,9 @@ def _make_frame_figure(
         if len(xyz_past) == 0:
             continue
         fig.add_trace(go.Scatter3d(
-            x=xyz_past[:, 0], y=xyz_past[:, 1], z=xyz_past[:, 2],
+            x=xyz_past[:, 0].tolist(), y=xyz_past[:, 1].tolist(), z=xyz_past[:, 2].tolist(),
             mode="markers",
-            marker=dict(size=1, color="lightgray", opacity=0.15),
+            marker=dict(size=1, color="#666666", opacity=0.4),
             name=f"Past t-{len(past_xyz_list)-t}",
             legendgroup="past",
             showlegend=(t == 0),
@@ -137,9 +139,9 @@ def _make_frame_figure(
     if noise_mask.any():
         npts = cur_xyz_filt[noise_mask]
         fig.add_trace(go.Scatter3d(
-            x=npts[:, 0], y=npts[:, 1], z=npts[:, 2],
+            x=npts[:, 0].tolist(), y=npts[:, 1].tolist(), z=npts[:, 2].tolist(),
             mode="markers",
-            marker=dict(size=1.5, color="rgba(150,150,150,0.25)"),
+            marker=dict(size=1.5, color="rgba(100,100,100,0.6)"),
             name="Noise (unclustered)",
             legendgroup="noise",
         ))
@@ -158,6 +160,7 @@ def _make_frame_figure(
 
         status = "flagged" if flagged else ("skipped: " + skipped if skipped else "ok")
         hover = (
+            f"(%{{x:.2f}}, %{{y:.2f}}, %{{z:.2f}}) m<br>"
             f"Cluster {lbl}<br>"
             f"Points: {n_pts_cur}<br>"
             f"Frames assoc.: {n_frames}<br>"
@@ -180,7 +183,7 @@ def _make_frame_figure(
             symbol  = "diamond"
 
         fig.add_trace(go.Scatter3d(
-            x=pts[:, 0], y=pts[:, 1], z=pts[:, 2],
+            x=pts[:, 0].tolist(), y=pts[:, 1].tolist(), z=pts[:, 2].tolist(),
             mode="markers",
             marker=dict(size=size, color=color, opacity=opacity, symbol=symbol),
             name=f"C{lbl} ({status})",
@@ -191,7 +194,7 @@ def _make_frame_figure(
     # --- ORA injected points (if known) -------------------------------------
     if injected_xyz is not None and len(injected_xyz) > 0:
         fig.add_trace(go.Scatter3d(
-            x=injected_xyz[:, 0], y=injected_xyz[:, 1], z=injected_xyz[:, 2],
+            x=injected_xyz[:, 0].tolist(), y=injected_xyz[:, 1].tolist(), z=injected_xyz[:, 2].tolist(),
             mode="markers",
             marker=dict(size=4, color="magenta", symbol="x", opacity=0.9),
             name="ORA injected",
@@ -253,6 +256,262 @@ def _make_frame_figure(
 
 
 # ---------------------------------------------------------------------------
+# Camera image loader
+# ---------------------------------------------------------------------------
+
+_CAM_ORDER = [
+    "CAM_FRONT_LEFT", "CAM_FRONT", "CAM_FRONT_RIGHT",
+    "CAM_BACK_LEFT",  "CAM_BACK",  "CAM_BACK_RIGHT",
+]
+_CAM_LABELS = [
+    "Front Left", "Front", "Front Right",
+    "Back Left",  "Back",  "Back Right",
+]
+
+
+def _load_camera_images(nusc, sd_token_full: str) -> list[str | None]:
+    """Return 6 base64 data-URIs for the camera views, in _CAM_ORDER. None on failure.
+
+    Uses the most recent keyframe: walks the LiDAR sample_data prev-chain until a
+    keyframe is found (avoids picking a future keyframe when sd["sample_token"]
+    happens to point forward in time).
+    """
+    import base64
+    sd = nusc.get("sample_data", sd_token_full)
+
+    # Walk backwards through LiDAR sweeps to find the most recent keyframe.
+    cur = sd
+    while not cur["is_key_frame"] and cur["prev"]:
+        cur = nusc.get("sample_data", cur["prev"])
+    # If we exhausted prev without finding a keyframe, fall back to nearest sample.
+    if not cur["is_key_frame"]:
+        cur = sd
+    sample = nusc.get("sample", cur["sample_token"])
+    out: list[str | None] = []
+    for cam in _CAM_ORDER:
+        try:
+            cam_sd = nusc.get("sample_data", sample["data"][cam])
+            img_path = pathlib.Path(nusc.dataroot) / cam_sd["filename"]
+            with open(img_path, "rb") as f:
+                b64 = base64.b64encode(f.read()).decode()
+            ext = img_path.suffix.lower().lstrip(".")
+            mime = "jpeg" if ext in ("jpg", "jpeg") else "png"
+            out.append(f"data:image/{mime};base64,{b64}")
+        except Exception:
+            out.append(None)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Combined HTML writer
+# ---------------------------------------------------------------------------
+
+_VIEWER_HTML = """\
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cluster Inspector</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+  body { margin: 0; background: #111; color: #eee; font-family: monospace;
+         display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  #nav { display: flex; align-items: center; gap: 12px; padding: 6px 12px;
+         background: #222; flex-shrink: 0; }
+  #nav button { background: #444; color: #eee; border: 1px solid #666;
+                padding: 4px 14px; cursor: pointer; font-size: 14px;
+                border-radius: 3px; }
+  #nav button:hover { background: #555; }
+  #btn-cameras.hidden { opacity: 0.45; }
+  #frame-label { font-size: 13px; flex: 1; white-space: nowrap;
+                 overflow: hidden; text-overflow: ellipsis; }
+  #counter { font-size: 13px; white-space: nowrap; }
+  #status  { font-size: 12px; color: #aaa; white-space: nowrap; }
+  #main    { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  #plot    { flex: 1; min-height: 0; }
+  #cameras { flex-shrink: 0; min-height: 50vh; display: grid;
+             grid-template-columns: 1fr 1fr 1fr;
+             grid-template-rows: 1fr 1fr;
+             gap: 2px; background: #000; }
+  #cameras.cam-hidden { display: none; }
+  .cam-cell { position: relative; overflow: hidden; background: #222; }
+  .cam-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cam-label { position: absolute; bottom: 2px; left: 4px; font-size: 10px;
+               color: #fff; text-shadow: 0 0 3px #000; pointer-events: none; }
+  .cam-missing { display: flex; align-items: center; justify-content: center;
+                 width: 100%; height: 100%; font-size: 11px; color: #555; }
+</style>
+</head>
+<body>
+<div id="nav">
+  <button id="btn-prev">&#9664; Prev</button>
+  <button id="btn-next">Next &#9654;</button>
+  <span id="frame-label"></span>
+  <span id="counter"></span>
+  <span id="status"></span>
+  <button id="btn-cameras">&#128247; Cameras</button>
+</div>
+<div id="main">
+  <div id="plot"></div>
+  <div id="cameras"></div>
+</div>
+<script>
+const PREFETCH = 2;
+const CAM_LABELS = ['Front Left','Front','Front Right','Back Left','Back','Back Right'];
+let MANIFEST = null;
+let current  = 0;
+const cache  = {};
+
+async function loadManifest() {
+  const r = await fetch('manifest.json');
+  MANIFEST = await r.json();
+  show(0);
+}
+
+async function fetchFrame(i) {
+  if (cache[i]) return cache[i];
+  const r = await fetch(MANIFEST[i].file);
+  cache[i] = await r.json();
+  return cache[i];
+}
+
+function prefetch(idx) {
+  for (let d = 1; d <= PREFETCH; d++) {
+    const j = (idx + d) % MANIFEST.length;
+    if (!cache[j]) fetchFrame(j);
+  }
+}
+
+document.getElementById('btn-cameras').addEventListener('click', () => {
+  const panel = document.getElementById('cameras');
+  const btn   = document.getElementById('btn-cameras');
+  const hidden = panel.classList.toggle('cam-hidden');
+  btn.classList.toggle('hidden', hidden);
+  // Let Plotly re-fit to the newly available width
+  Plotly.relayout('plot', {autosize: true});
+});
+
+function renderCameras(cameras) {
+  const div = document.getElementById('cameras');
+  div.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cam-cell';
+    const src = cameras && cameras[i];
+    if (src) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = CAM_LABELS[i];
+      cell.appendChild(img);
+    } else {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'cam-missing';
+      placeholder.textContent = CAM_LABELS[i];
+      cell.appendChild(placeholder);
+    }
+    const lbl = document.createElement('span');
+    lbl.className = 'cam-label';
+    lbl.textContent = CAM_LABELS[i];
+    cell.appendChild(lbl);
+    div.appendChild(cell);
+  }
+}
+
+async function show(idx) {
+  if (!MANIFEST) return;
+  current = ((idx % MANIFEST.length) + MANIFEST.length) % MANIFEST.length;
+  document.getElementById('status').textContent = 'loading…';
+  const data = await fetchFrame(current);
+  const fig = data.fig || data;  // backwards-compat if fig is the whole object
+  const plotDiv = document.getElementById('plot');
+  const camera = plotDiv._fullLayout?.scene?.camera;
+  const layout = camera
+    ? Object.assign({}, fig.layout, {scene: Object.assign({}, fig.layout.scene, {camera})})
+    : fig.layout;
+  Plotly.react('plot', fig.data, layout, {responsive: true});
+  renderCameras(data.cameras || []);
+  document.getElementById('frame-label').textContent = MANIFEST[current].label;
+  document.getElementById('counter').textContent =
+    (current + 1) + ' / ' + MANIFEST.length;
+  document.getElementById('status').textContent = '';
+  prefetch(current);
+}
+
+document.getElementById('btn-prev').addEventListener('click', () => show(current - 1));
+document.getElementById('btn-next').addEventListener('click', () => show(current + 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft')  show(current - 1);
+  if (e.key === 'ArrowRight') show(current + 1);
+});
+
+loadManifest();
+</script>
+</body>
+</html>
+"""
+
+
+def _write_output_dir(frames_data: list[dict], out_dir: pathlib.Path) -> None:
+    """Write per-frame JSON files + viewer.html into out_dir.
+
+    Serve locally with:  python -m http.server --directory <out_dir>
+    then open http://localhost:8000/viewer.html
+    """
+    frames_dir = out_dir / "frames"
+    frames_dir.mkdir(parents=True, exist_ok=True)
+
+    manifest = []
+    for i, fd in enumerate(frames_data):
+        fname = f"{i:04d}.json"
+        payload = {"fig": fd["fig_json"], "cameras": fd.get("cameras", [])}
+        (frames_dir / fname).write_text(
+            json.dumps(payload), encoding="utf-8"
+        )
+        manifest.append({"file": f"frames/{fname}", "label": fd["label"]})
+
+    (out_dir / "manifest.json").write_text(
+        json.dumps(manifest, indent=2), encoding="utf-8"
+    )
+    (out_dir / "viewer.html").write_text(_VIEWER_HTML, encoding="utf-8")
+
+
+# ---------------------------------------------------------------------------
+# Metadata helpers
+# ---------------------------------------------------------------------------
+
+def _git_commit() -> str:
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=_ROOT, stderr=subprocess.DEVNULL
+        ).decode().strip()
+    except Exception:
+        return "unknown"
+
+
+def _write_metadata(
+    out_dir: pathlib.Path,
+    args: argparse.Namespace,
+    defense_params: dict,
+    attack: object,
+    pipeline_kwargs: dict,
+) -> None:
+    meta = {
+        "notes": args.notes,
+        "git_commit": _git_commit(),
+        "cmd_args": vars(args),
+        "attack": {
+            "class": type(attack).__name__,
+            **{k: v for k, v in vars(attack).items() if not k.startswith("_")},
+        },
+        "defense_params": defense_params,
+        "pipeline_params": pipeline_kwargs,
+    }
+    out_path = out_dir / "metadata.json"
+    out_path.write_text(json.dumps(meta, indent=2, default=str), encoding="utf-8")
+    print(f"Metadata written → {out_path}")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -302,6 +561,23 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--attacked-only", action="store_true",
                    help="Only save HTML for frames where an attack is active")
 
+    # Frame-skipping controls (scene-granularity mode)
+    p.add_argument("--skip-unattacked-frames-per-scene", type=int, default=0,
+                   metavar="N",
+                   help="Skip this many unattacked frames at the start of each scene (default: 0)")
+    p.add_argument("--skip-attacked-frames-per-scene", type=int, default=0,
+                   metavar="N",
+                   help="Skip this many attacked frames at the start of each scene's attack phase (default: 0)")
+    p.add_argument("--max-unattacked-frames-per-scene", type=int, default=None,
+                   metavar="N",
+                   help="Process at most this many unattacked frames per scene (default: all)")
+    p.add_argument("--max-attacked-frames-per-scene", type=int, default=None,
+                   metavar="N",
+                   help="Process at most this many attacked frames per scene (default: all)")
+
+    p.add_argument("--notes", default="",
+                   help="Free-text notes to store in metadata.json alongside the run parameters")
+
     return p.parse_args()
 
 
@@ -324,7 +600,14 @@ def main() -> None:
     attack = ORAAttack(budget=200, target_types=NUSCENES_DEFAULT_CLASSES, noise_model=SpoofingNoiseModel.from_preset("worst_case", seed=args.attack_fraction_seed), debug=True)
 
     defense_params = _parse_kv_params(args.defense_params)
-    n_saved = [0]
+    collected: list[dict] = []
+
+    # Build frame_id (first 16 chars of sd_token) → full sd_token lookup
+    nusc = getattr(dataset, "_nusc", None)
+    frame_id_to_sd_token: dict[str, str] = {}
+    if nusc is not None:
+        for _, sd_token in dataset._entries:
+            frame_id_to_sd_token[sd_token[:16]] = sd_token
 
     def defense_frame_hook(
         frame: Frame,
@@ -361,11 +644,19 @@ def main() -> None:
             defense_params=defense_params,
         )
 
-        n_saved[0] += 1
+        cameras: list[str | None] = []
+        if nusc is not None:
+            sd_token_full = frame_id_to_sd_token.get(frame.frame_id)
+            if sd_token_full:
+                cameras = _load_camera_images(nusc, sd_token_full)
+
+        idx = len(collected) + 1
         attack_tag = "attacked" if frame.is_attacked else "clean"
-        html_name = f"{n_saved[0]:04d}_{frame.frame_id[:16]}_{attack_tag}.html"
-        fig.write_html(str(out_dir / html_name), include_plotlyjs="cdn")
-        print(f"  [{n_saved[0]}] {html_name}  attack={frame.is_attacked}  defense={result.is_attack_detected}")
+        label = f"[{idx}]  {frame.frame_id[:24]}  |  {attack_tag.upper()}"
+        if frame.is_attacked:
+            label += "  |  defense: " + ("triggered" if result.is_attack_detected else "MISSED")
+        collected.append({"fig_json": fig.to_plotly_json(), "cameras": cameras, "label": label})
+        # print(f"  [{idx}] {frame.frame_id[:24]}  attack={frame.is_attacked}  defense={result.is_attack_detected}")
 
     defense = RadialJitterDefense(
         **defense_params,
@@ -373,22 +664,35 @@ def main() -> None:
         defense_frame_hook=defense_frame_hook,
     )
 
-    print(f"Writing HTML files to {out_dir}/")
-
-    EvalPipeline(
-        dataset=dataset,
-        attack=attack,
-        defense=defense,
+    pipeline_kwargs = dict(
         precomputed_cache_path=args.precomputed_cache,
         use_cached_attacks=True,
+        use_predicted_labels=True,
         attack_fraction=args.attack_fraction,
         attack_fraction_seed=args.attack_fraction_seed,
         min_unattacked_frames=args.min_unattacked_frames,
         min_attacked_frames=args.min_attacked_frames,
         max_frames=args.max_frames,
+        skip_unattacked_frames_per_scene=args.skip_unattacked_frames_per_scene,
+        skip_attacked_frames_per_scene=args.skip_attacked_frames_per_scene,
+        max_unattacked_frames_per_scene=args.max_unattacked_frames_per_scene,
+        max_attacked_frames_per_scene=args.max_attacked_frames_per_scene,
+    )
+
+    _write_metadata(out_dir, args, defense_params, attack, pipeline_kwargs)
+
+    print("Running pipeline …")
+
+    EvalPipeline(
+        dataset=dataset,
+        attack=attack,
+        defense=defense,
+        **pipeline_kwargs,
     ).run()
 
-    print(f"\nDone. {n_saved[0]} HTML files written to {out_dir}/")
+    print(f"\nWriting {len(collected)} frames → {out_dir}")
+    _write_output_dir(collected, out_dir)
+    print(f"Done.  Serve with:\n  python -m http.server --directory {out_dir}\nthen open http://localhost:8000/viewer.html")
 
 
 if __name__ == "__main__":
