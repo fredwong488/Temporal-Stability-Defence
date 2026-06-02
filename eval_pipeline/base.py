@@ -34,6 +34,16 @@ class BaseAttack(abc.ABC):
         ...
 
     @property
+    def attack_types(self) -> frozenset[str]:
+        """LLM AttackType enum values this attack may produce (e.g. "GHOST_OBJECT").
+
+        Used by llm_attack_type_accuracy to check whether the LLM correctly
+        identified the attack category.  Return an empty frozenset if not
+        applicable.
+        """
+        return frozenset()
+
+    @property
     def name(self) -> str:
         return self.__class__.__name__
 

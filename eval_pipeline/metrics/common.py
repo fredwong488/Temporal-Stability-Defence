@@ -407,3 +407,65 @@ def compute_pacts_effectiveness(frame_results: list[FrameResult]) -> dict:
         "recall": recall,
         "f1": f1,
     }
+
+
+# ---------------------------------------------------------------------------
+# LLM attack-type accuracy metric (LLMDefense only)
+# ---------------------------------------------------------------------------
+
+def compute_llm_attack_type_accuracy(
+    frame_results: list[FrameResult],
+    expected_attack_types: frozenset[str],
+) -> dict:
+    """Check whether LLMDefense correctly identified the attack category.
+
+    Only applies to frames where:
+      - the defense result carries LLM metadata (``"verdict"`` key present), AND
+      - the frame was actually attacked, AND
+      - an attack was detected (``is_attack_detected=True``).
+
+    For each such frame, the LLM is considered to have given a correct type if
+    at least one entry in ``suspected_attacks`` has an ``attack_type`` value that
+    is in ``expected_attack_types``.
+
+    Parameters
+    ----------
+    expected_attack_types
+        Frozenset of ``AttackType`` string values the active attack may produce
+        (e.g. ``frozenset({"OBJECT_HIDING", "OBJECT_TRANSLATION"})`` for ORA).
+
+    Returns
+    -------
+    dict with keys:
+      n_tp_detected    — frames that were attacked and detected
+      n_correct_type   — subset where at least one suspected type is expected
+      n_incorrect_type — subset where no suspected type is expected
+      type_accuracy    — n_correct_type / n_tp_detected  (0 if none)
+    """
+    n_tp_detected = 0
+    n_correct_type = 0
+
+    for fr in frame_results:
+        if fr.defense_result is None:
+            continue
+        meta = fr.defense_result.metadata
+        if "verdict" not in meta:
+            continue
+        if not fr.is_attacked or not fr.defense_result.is_attack_detected:
+            continue
+
+        n_tp_detected += 1
+        suspected = meta.get("suspected_attacks", [])
+        types_reported = {s["attack_type"] for s in suspected if "attack_type" in s}
+        if types_reported & expected_attack_types:
+            n_correct_type += 1
+
+    n_incorrect_type = n_tp_detected - n_correct_type
+    type_accuracy = n_correct_type / n_tp_detected if n_tp_detected > 0 else 0.0
+
+    return {
+        "n_tp_detected": n_tp_detected,
+        "n_correct_type": n_correct_type,
+        "n_incorrect_type": n_incorrect_type,
+        "type_accuracy": type_accuracy,
+    }

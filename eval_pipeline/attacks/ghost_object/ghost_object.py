@@ -68,6 +68,10 @@ class GhostObjectAttack(BaseAttack):
         return "lidar"
 
     @property
+    def attack_types(self) -> frozenset[str]:
+        return frozenset({"GHOST_OBJECT"})
+
+    @property
     def name(self) -> str:
         return "GhostObjectAttack"
 

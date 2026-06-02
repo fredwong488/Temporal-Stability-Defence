@@ -94,6 +94,10 @@ class ORAAttack(BaseAttack):
     def modality(self) -> str:
         return "lidar"
 
+    @property
+    def attack_types(self) -> frozenset[str]:
+        return frozenset({"OBJECT_HIDING", "OBJECT_TRANSLATION"})
+
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
@@ -263,6 +267,10 @@ class ORAAttackNotebook(BaseAttack):
     @property
     def modality(self) -> str:
         return "lidar"
+
+    @property
+    def attack_types(self) -> frozenset[str]:
+        return frozenset({"OBJECT_HIDING", "OBJECT_TRANSLATION"})
 
     def apply(self, frame: Frame) -> Frame:
         """Return a new attacked Frame with object points pruned and re-injected.

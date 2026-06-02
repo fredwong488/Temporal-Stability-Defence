@@ -500,7 +500,10 @@ class EvalPipeline:
                 if fr.attack_start_index is not None and fr.sequence_id in scene_onset_frame_id:
                     fr.attack_start_frame_id = scene_onset_frame_id[fr.sequence_id]
 
-        return EvalResults(frame_results=frame_results)
+        return EvalResults(
+            frame_results=frame_results,
+            attack_types=self.attack.attack_types if self.attack is not None else frozenset(),
+        )
 
     # ------------------------------------------------------------------
     # Internal helpers

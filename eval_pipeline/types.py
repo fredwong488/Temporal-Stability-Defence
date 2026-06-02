@@ -170,6 +170,7 @@ class FrameResult:
 class EvalResults:
     """Aggregated results across all frames."""
     frame_results: list[FrameResult]
+    attack_types: frozenset[str] = dataclasses.field(default_factory=frozenset)
 
     def attack_effectiveness(self, iou_thresholds: dict[str, float] | None = None) -> dict:
         """Compare clean vs attacked mAP per class and difficulty.
@@ -253,6 +254,31 @@ class EvalResults:
             return {}
 
         return compute_pacts_effectiveness(self.frame_results)
+
+    def llm_attack_type_accuracy(self) -> dict:
+        """Check whether LLMDefense correctly identified the attack category.
+
+        Guards on LLM defense metadata being present (``"verdict"`` key) and
+        ``attack_types`` being non-empty (i.e. the active attack declares its
+        expected categories).  Returns an empty dict when either condition is
+        unmet.
+
+        Returns dict with n_tp_detected, n_correct_type, n_incorrect_type,
+        type_accuracy.
+        """
+        from .metrics import compute_llm_attack_type_accuracy
+
+        if not self.attack_types:
+            return {}
+        has_llm = any(
+            r.defense_result is not None
+            and "verdict" in r.defense_result.metadata
+            for r in self.frame_results
+        )
+        if not has_llm:
+            return {}
+
+        return compute_llm_attack_type_accuracy(self.frame_results, self.attack_types)
 
 
 # ---------------------------------------------------------------------------
