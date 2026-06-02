@@ -53,7 +53,7 @@ class GeminiBackend(LLMBackend):
             config=genai_types.GenerateContentConfig(
                 response_mime_type="application/json",
                 response_schema=LLMVerdict,
-                media_resolution="medium",
+                media_resolution=genai_types.MediaResolution.MEDIA_RESOLUTION_MEDIUM,
                 thinking_config=genai_types.ThinkingConfig(thinking_budget=200),
             ),
         )
