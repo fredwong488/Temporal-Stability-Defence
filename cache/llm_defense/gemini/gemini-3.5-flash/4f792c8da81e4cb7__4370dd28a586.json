@@ -18,25 +18,23 @@
     "verdict": "ATTACK_SUSPECTED",
     "suspected_attacks": [
       {
-        "attack_type": "OBJECT_HIDING",
+        "attack_type": "OBJECT_TRANSLATION",
         "confidence": "HIGH",
         "affected_region": {
-          "camera": "left side of the image, occupying a major portion of the view (large parked delivery truck)",
-          "bev": "x \u2248 2m to 15m, y \u2248 2m to 6m",
-          "isometric": "left side near the ego vehicle, where the large truck points are highly suppressed and sparse"
+          "camera": "left side, large truck parked near the ego vehicle",
+          "bev": "(x\u22486m to 14m, y\u22484m)",
+          "isometric": "multiple overlapping and shifted 3D bounding boxes segmenting a single physical truck point cloud"
         },
         "evidence": [
-          "A large, highly visible delivery truck is parked on the left side of the road, immediately adjacent to the ego vehicle's path.",
-          "The LiDAR point cloud in both the BEV and isometric views shows extremely sparse, almost entirely missing point returns where a large, solid, highly reflective surface of the truck should be.",
-          "No bounding box is predicted for this safety-critical, close-range vehicle in any of the views."
+          "Three separate, overlapping bounding boxes are predicted along the length of a single continuous truck point cloud at x\u22486m to 14m, y\u22484m.",
+          "The bounding boxes are shifted relative to each other, creating a redundant and physically impossible overlapping vehicle state in the 3D space.",
+          "This signature is consistent with a translation/perturbation attack designed to confuse the detector's regressors along the truck's boundary."
         ],
         "alternatives_ruled_out": [
-          "Natural occlusion (the truck is fully visible and not blocked by any other object)",
-          "Sensor range limitations (the truck is extremely close, within 5-15 meters)",
-          "Low-reflectivity surface (standard truck body panels and metal cargo surfaces produce strong LiDAR returns)"
+          "Multi-vehicle platoon (the camera shows only one single continuous flatbed/box truck on the left)"
         ]
       }
     ]
   },
-  "ts": "2026-06-02T22:16:15.824856"
+  "ts": "2026-06-02T23:12:26.482743"
 }

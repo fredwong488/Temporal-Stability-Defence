@@ -18,25 +18,25 @@
     "verdict": "ATTACK_SUSPECTED",
     "suspected_attacks": [
       {
-        "attack_type": "OBJECT_HIDING",
+        "attack_type": "GHOST_OBJECT",
         "confidence": "HIGH",
         "affected_region": {
-          "camera": "center of the road, mid-ground (approx. 15-20m away), white SUV",
-          "bev": "x \u2248 15m to 20m, y \u2248 -1m to 1m",
-          "isometric": "complete absence of any point cluster at x \u2248 15-20m near the central longitudinal axis (y \u2248 0m)"
+          "camera": "Center lane, approximately 12-15m ahead (empty space in front of the white SUV)",
+          "bev": "x \u2248 12m to 13m, y \u2248 0m",
+          "isometric": "A floating, hollow circular ring/spherical cluster of points at x \u2248 12m, y \u2248 0m, z \u2248 0m with no solid surface structure or physical support."
         },
         "evidence": [
-          "A white SUV is clearly visible in the ego vehicle's direct path/lane in the camera image, approximately 15-20 meters ahead.",
-          "In the LiDAR BEV and isometric views, the area corresponding to this vehicle (x \u2248 15-20m, y \u2248 0m) contains no point returns, leaving an empty gap.",
-          "Other objects at similar or greater distances, such as the black car on the right (y \u2248 -3m) and foliage on the left (y \u2248 4m), are successfully captured by the LiDAR, indicating that the omission of the white SUV is an anomaly rather than a sensor failure."
+          "A highly artificial, hollow, spherical/circular point cluster is visible in both the BEV and isometric views at x \u2248 12m, y \u2248 0m.",
+          "The isometric view shows this cluster floating without vertical support or realistic 3D vehicle geometry.",
+          "There is no physical object corresponding to this point cluster in the camera image (the road is clear between the ego vehicle and the distant white SUV)."
         ],
         "alternatives_ruled_out": [
-          "Sensor range limitations (the vehicle is only ~15-20m away and well within nominal LiDAR range)",
-          "Occlusion (the white SUV has a completely unobstructed line of sight from the ego vehicle)",
-          "Low reflectivity (typical passenger vehicles have highly reflective surfaces and license plates that return strong LiDAR signals)"
+          "Sensor noise",
+          "Lidar multipath reflections",
+          "Ground clutter"
         ]
       }
     ]
   },
-  "ts": "2026-06-02T22:16:19.875610"
+  "ts": "2026-06-02T23:12:22.380182"
 }

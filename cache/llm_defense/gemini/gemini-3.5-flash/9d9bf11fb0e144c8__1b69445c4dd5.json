@@ -21,21 +21,22 @@
         "attack_type": "OBJECT_HIDING",
         "confidence": "HIGH",
         "affected_region": {
-          "camera": "left side of the road, occupying the adjacent left lane (large POKKA logistics box truck)",
-          "bev": "x \u2248 8m to 18m, y \u2248 2m to 5m",
-          "isometric": "ground level, left side of the ego-vehicle path"
+          "camera": "Left lane, foreground (large logistics truck)",
+          "bev": "(x\u224810m to 18m, y\u22483m to 6m)",
+          "isometric": "Large cluster of points from x\u224811m to x\u224818m, y\u22483m to y\u22486m representing a truck with no bounding box"
         },
         "evidence": [
-          "A very large, prominent logistics truck is clearly visible on the near left in the camera image, but there is no 3D bounding box predicted for it in either the BEV or Isometric LiDAR views.",
-          "The physical region where this massive vehicle should exist is completely ignored by the object detection system, presenting a severe safety hazard."
+          "A large truck with 'FUKKA LOGISTICS' is clearly visible in the foreground/midground of the left lane in the camera image.",
+          "A very distinct, large L-shaped LiDAR cluster is visible in the BEV and isometric views at x\u224811-18m, y\u22483-6m, representing the rear and side of the truck, along with its physical shadow (occlusion void) behind it.",
+          "There is no 3D bounding box surrounding this highly prominent truck point cluster in either the BEV or Isometric views."
         ],
         "alternatives_ruled_out": [
-          "Sensor range limitations (the truck is very close, under 20 meters, well within LiDAR range)",
-          "Occlusion (the truck is fully visible with no obstruction from the ego-vehicle's viewpoint)",
-          "Low reflectivity (typical metallic truck surfaces provide strong LiDAR returns)"
+          "Sensor noise (the point cluster is highly dense, structured, and consistent)",
+          "Distant object (the truck is extremely close, starting around x\u224811m)",
+          "Low reflectivity (the metallic and flat surfaces of the truck yield a very strong return profile)"
         ]
       }
     ]
   },
-  "ts": "2026-06-02T22:16:21.968176"
+  "ts": "2026-06-02T23:12:16.477344"
 }
