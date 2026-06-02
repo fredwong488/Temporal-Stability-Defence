@@ -238,6 +238,7 @@ def render_frame(
     roi_min: tuple[float, float],
     roi_max: tuple[float, float],
     output_path: pathlib.Path,
+    is_nuscenes: bool = False,
 ) -> None:
     n_rows = 3 if show_isometric else 2
     fig_height = 30 if show_isometric else 19
@@ -272,12 +273,14 @@ def render_frame(
         gt_labels=gt_labels, show_boxes=show_boxes,
         roi_min=roi_min, roi_max=roi_max,
         title=f"Clean BEV  |  {len(clean_preds)} prediction(s)",
+        is_nuscenes=is_nuscenes,
     )
     draw_bev(
         ax_bev_atk, atk_lidar, atk_preds,
         gt_labels=None, show_boxes=show_boxes,
         roi_min=roi_min, roi_max=roi_max,
         title=f"Attacked BEV  |  {len(atk_preds)} prediction(s){atk_note}",
+        is_nuscenes=is_nuscenes,
     )
 
     if show_isometric:
@@ -286,12 +289,14 @@ def render_frame(
             gt_labels=gt_labels, show_boxes=show_boxes,
             roi_min=roi_min, roi_max=roi_max,
             title=f"Clean isometric  |  {len(clean_preds)} prediction(s)",
+            is_nuscenes=is_nuscenes,
         )
         draw_isometric(
             ax_iso_atk, atk_lidar, atk_preds,
             gt_labels=None, show_boxes=show_boxes,
             roi_min=roi_min, roi_max=roi_max,
             title=f"Attacked isometric  |  {len(atk_preds)} prediction(s){atk_note}",
+            is_nuscenes=is_nuscenes,
         )
 
     draw_camera(
@@ -550,6 +555,7 @@ def main() -> None:
             roi_min=(0.0, -5.0),
             roi_max=(30.0, 5.0),
             output_path=out_dir / f"{frame.frame_id}.png",
+            is_nuscenes=(dataset_type == "nuscenes"),
         )
 
     print(f"\nDone. {len(dataset)} figure(s) saved to {out_dir.resolve()}")

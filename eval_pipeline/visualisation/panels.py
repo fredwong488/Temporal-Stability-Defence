@@ -8,6 +8,7 @@ mutates it in-place; callers are responsible for figure creation and saving.
 
 from __future__ import annotations
 
+import dataclasses
 from typing import Any
 
 import numpy as np
@@ -94,6 +95,31 @@ def _draw_box_image(
 
 
 # ---------------------------------------------------------------------------
+# Coordinate helpers
+# ---------------------------------------------------------------------------
+
+def _rotate_pts_cw90(pts: np.ndarray) -> np.ndarray:
+    """Return a copy of (N, 4+) lidar with x/y rotated 90° CW: new_x=y, new_y=-x."""
+    out = pts.copy()
+    out[:, 0], out[:, 1] = pts[:, 1].copy(), -pts[:, 0].copy()
+    return out
+
+
+def _rotate_corners_cw90(corners: np.ndarray) -> np.ndarray:
+    """Return a copy of (8, 3) corners with x/y rotated 90° CW."""
+    out = np.asarray(corners, dtype=float).copy()
+    out[:, 0], out[:, 1] = corners[:, 1].copy(), -corners[:, 0].copy()
+    return out
+
+
+def _rotate_roi_cw90(
+    roi_min: tuple[float, float], roi_max: tuple[float, float]
+) -> tuple[tuple[float, float], tuple[float, float]]:
+    """Transform ROI bounds to match a 90° CW point rotation."""
+    return (roi_min[1], -roi_max[0]), (roi_max[1], -roi_min[0])
+
+
+# ---------------------------------------------------------------------------
 # BEV drawing helpers
 # ---------------------------------------------------------------------------
 
@@ -126,7 +152,19 @@ def draw_bev(
     roi_min: tuple[float, float] = (0.0, -5.0),
     roi_max: tuple[float, float] = (30.0, 5.0),
     title: str = "",
+    is_nuscenes: bool = False,
 ) -> None:
+    if is_nuscenes:
+        lidar = _rotate_pts_cw90(lidar)
+        roi_min, roi_max = _rotate_roi_cw90(roi_min, roi_max)
+        if gt_labels is not None:
+            gt_labels = [dataclasses.replace(l, corners_velo=_rotate_corners_cw90(l.corners_velo)) for l in gt_labels]
+        predictions = [
+            (dataclasses.replace(p, corners_velo=_rotate_corners_cw90(p.corners_velo)) if hasattr(p, "corners_velo")
+             else {**p, "corners_velo": _rotate_corners_cw90(p["corners_velo"])})
+            for p in predictions
+        ]
+
     ax.set_facecolor("#111827")
 
     pts = lidar
@@ -214,7 +252,19 @@ def draw_isometric(
     roi_min: tuple[float, float] = (0.0, -5.0),
     roi_max: tuple[float, float] = (30.0, 5.0),
     title: str = "",
+    is_nuscenes: bool = False,
 ) -> None:
+    if is_nuscenes:
+        lidar = _rotate_pts_cw90(lidar)
+        roi_min, roi_max = _rotate_roi_cw90(roi_min, roi_max)
+        if gt_labels is not None:
+            gt_labels = [dataclasses.replace(l, corners_velo=_rotate_corners_cw90(l.corners_velo)) for l in gt_labels]
+        predictions = [
+            (dataclasses.replace(p, corners_velo=_rotate_corners_cw90(p.corners_velo)) if hasattr(p, "corners_velo")
+             else {**p, "corners_velo": _rotate_corners_cw90(p["corners_velo"])})
+            for p in predictions
+        ]
+
     ax.set_facecolor("#111827")
     for pane in (ax.xaxis.pane, ax.yaxis.pane, ax.zaxis.pane):
         pane.set_facecolor("#111827")
