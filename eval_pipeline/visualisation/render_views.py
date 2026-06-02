@@ -21,6 +21,22 @@ if TYPE_CHECKING:
     from eval_pipeline.types import Frame, Prediction
 
 
+def _rotate_prediction_cw90(pred: "Prediction") -> "Prediction":
+    """Return a copy of pred with corners_velo rotated 90° CW in the x-y plane."""
+    import dataclasses
+    corners = np.asarray(
+        pred.corners_velo if hasattr(pred, "corners_velo") else pred["corners_velo"],
+        dtype=float,
+    ).copy()
+    corners[:, 0], corners[:, 1] = corners[:, 1].copy(), -corners[:, 0].copy()
+    if hasattr(pred, "corners_velo"):
+        return dataclasses.replace(pred, corners_velo=corners)
+    # dict-like prediction
+    rotated = dict(pred)
+    rotated["corners_velo"] = corners
+    return rotated
+
+
 def render_three_views(
     frame: "Frame",
     predictions: list["Prediction"],
@@ -39,6 +55,17 @@ def render_three_views(
     lidar = frame.lidar
     image = frame.image
     calib = frame.kitti_calib
+
+    # nuScenes LiDAR frame is rotated 90° CCW relative to KITTI convention;
+    # rotate CW (new_x = old_y, new_y = -old_x) so BEV/isometric match KITTI layout.
+    is_nuscenes = frame.nuscenes_ego_pose is not None
+    if is_nuscenes:
+        lidar = lidar.copy()
+        lidar[:, 0], lidar[:, 1] = lidar[:, 1].copy(), -lidar[:, 0].copy()
+        predictions = [_rotate_prediction_cw90(p) for p in predictions]
+        # Swap ROI axes to match the rotated frame
+        roi_min = (roi_min[1], -roi_max[0])
+        roi_max = (roi_max[1], -roi_min[0])
 
     views: dict[str, bytes] = {}
 
