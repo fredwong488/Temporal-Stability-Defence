@@ -54,7 +54,7 @@ class GeminiBackend(LLMBackend):
                 response_mime_type="application/json",
                 response_schema=LLMVerdict,
                 media_resolution="medium",
-                thinking_config=genai_types.ThinkingConfig(thinking_budget=0),
+                thinking_config=genai_types.ThinkingConfig(thinking_budget=200),
             ),
         )
         return json.loads(response.text)
