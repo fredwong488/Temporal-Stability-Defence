@@ -86,19 +86,15 @@ class GhostObjectAttack(BaseAttack):
         g_el = np.arctan2(gz, np.sqrt(gxy2))
         az_min, az_max = g_az.min(), g_az.max()
         el_min, el_max = g_el.min(), g_el.max()
-        r_near = np.sqrt(gxy2 + gz ** 2).min()
-
-        # Remove real points inside the angular box that are farther than the ghost
+        # Remove real points inside the angular box (both in front of and behind the ghost)
         lx, ly, lz = frame.lidar[:, 0], frame.lidar[:, 1], frame.lidar[:, 2]
         lxy2 = lx ** 2 + ly ** 2
         l_az = np.arctan2(ly, lx)
         l_el = np.arctan2(lz, np.sqrt(lxy2))
-        l_r = np.sqrt(lxy2 + lz ** 2)
 
         occluded = (
             (l_az >= az_min) & (l_az <= az_max)
             & (l_el >= el_min) & (l_el <= el_max)
-            & (l_r > r_near)
         )
 
         new_lidar = np.concatenate([frame.lidar[~occluded], ghost], axis=0)
