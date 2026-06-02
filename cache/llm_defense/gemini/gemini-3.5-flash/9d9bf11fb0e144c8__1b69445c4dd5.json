@@ -1,0 +1,41 @@
+{
+  "key": {
+    "frame_id": "9d9bf11fb0e144c8",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "/homes/cyw122/Developer/year_4/FYP/FYP-experiment-pipeline/eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 111
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_HIDING",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "left side of the road, occupying the adjacent left lane (large POKKA logistics box truck)",
+          "bev": "x \u2248 8m to 18m, y \u2248 2m to 5m",
+          "isometric": "ground level, left side of the ego-vehicle path"
+        },
+        "evidence": [
+          "A very large, prominent logistics truck is clearly visible on the near left in the camera image, but there is no 3D bounding box predicted for it in either the BEV or Isometric LiDAR views.",
+          "The physical region where this massive vehicle should exist is completely ignored by the object detection system, presenting a severe safety hazard."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor range limitations (the truck is very close, under 20 meters, well within LiDAR range)",
+          "Occlusion (the truck is fully visible with no obstruction from the ego-vehicle's viewpoint)",
+          "Low reflectivity (typical metallic truck surfaces provide strong LiDAR returns)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T22:16:21.968176"
+}

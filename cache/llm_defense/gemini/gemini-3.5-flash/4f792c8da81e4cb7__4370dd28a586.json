@@ -1,0 +1,42 @@
+{
+  "key": {
+    "frame_id": "4f792c8da81e4cb7",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "/homes/cyw122/Developer/year_4/FYP/FYP-experiment-pipeline/eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 122
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_HIDING",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "left side of the image, occupying a major portion of the view (large parked delivery truck)",
+          "bev": "x \u2248 2m to 15m, y \u2248 2m to 6m",
+          "isometric": "left side near the ego vehicle, where the large truck points are highly suppressed and sparse"
+        },
+        "evidence": [
+          "A large, highly visible delivery truck is parked on the left side of the road, immediately adjacent to the ego vehicle's path.",
+          "The LiDAR point cloud in both the BEV and isometric views shows extremely sparse, almost entirely missing point returns where a large, solid, highly reflective surface of the truck should be.",
+          "No bounding box is predicted for this safety-critical, close-range vehicle in any of the views."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion (the truck is fully visible and not blocked by any other object)",
+          "Sensor range limitations (the truck is extremely close, within 5-15 meters)",
+          "Low-reflectivity surface (standard truck body panels and metal cargo surfaces produce strong LiDAR returns)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T22:16:15.824856"
+}

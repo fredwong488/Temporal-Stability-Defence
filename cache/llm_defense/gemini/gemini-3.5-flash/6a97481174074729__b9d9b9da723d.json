@@ -1,0 +1,42 @@
+{
+  "key": {
+    "frame_id": "6a97481174074729",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "/homes/cyw122/Developer/year_4/FYP/FYP-experiment-pipeline/eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 120
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_HIDING",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "center of the road, mid-ground (approx. 15-20m away), white SUV",
+          "bev": "x \u2248 15m to 20m, y \u2248 -1m to 1m",
+          "isometric": "complete absence of any point cluster at x \u2248 15-20m near the central longitudinal axis (y \u2248 0m)"
+        },
+        "evidence": [
+          "A white SUV is clearly visible in the ego vehicle's direct path/lane in the camera image, approximately 15-20 meters ahead.",
+          "In the LiDAR BEV and isometric views, the area corresponding to this vehicle (x \u2248 15-20m, y \u2248 0m) contains no point returns, leaving an empty gap.",
+          "Other objects at similar or greater distances, such as the black car on the right (y \u2248 -3m) and foliage on the left (y \u2248 4m), are successfully captured by the LiDAR, indicating that the omission of the white SUV is an anomaly rather than a sensor failure."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor range limitations (the vehicle is only ~15-20m away and well within nominal LiDAR range)",
+          "Occlusion (the white SUV has a completely unobstructed line of sight from the ego vehicle)",
+          "Low reflectivity (typical passenger vehicles have highly reflective surfaces and license plates that return strong LiDAR signals)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T22:16:19.875610"
+}
