@@ -112,12 +112,6 @@ def _rotate_corners_cw90(corners: np.ndarray) -> np.ndarray:
     return out
 
 
-def _rotate_roi_cw90(
-    roi_min: tuple[float, float], roi_max: tuple[float, float]
-) -> tuple[tuple[float, float], tuple[float, float]]:
-    """Transform ROI bounds to match a 90° CW point rotation."""
-    return (roi_min[1], -roi_max[0]), (roi_max[1], -roi_min[0])
-
 
 # ---------------------------------------------------------------------------
 # BEV drawing helpers
@@ -156,7 +150,6 @@ def draw_bev(
 ) -> None:
     if is_nuscenes:
         lidar = _rotate_pts_cw90(lidar)
-        roi_min, roi_max = _rotate_roi_cw90(roi_min, roi_max)
         if gt_labels is not None:
             gt_labels = [dataclasses.replace(l, corners_velo=_rotate_corners_cw90(l.corners_velo)) for l in gt_labels]
         predictions = [
@@ -256,7 +249,6 @@ def draw_isometric(
 ) -> None:
     if is_nuscenes:
         lidar = _rotate_pts_cw90(lidar)
-        roi_min, roi_max = _rotate_roi_cw90(roi_min, roi_max)
         if gt_labels is not None:
             gt_labels = [dataclasses.replace(l, corners_velo=_rotate_corners_cw90(l.corners_velo)) for l in gt_labels]
         predictions = [
