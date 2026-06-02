@@ -1,0 +1,240 @@
+{
+  "key": {
+    "frame_id": "9d9bf11fb0e144c8",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3042,
+        7.708,
+        24.603,
+        -0.589,
+        0.917,
+        2.989,
+        0.59,
+        3.0486
+      ],
+      [
+        "barrier",
+        0.3276,
+        7.102,
+        15.773,
+        -0.791,
+        0.994,
+        2.536,
+        0.531,
+        3.1322
+      ],
+      [
+        "barrier",
+        0.3314,
+        9.298,
+        35.147,
+        -0.123,
+        1.064,
+        2.052,
+        0.548,
+        3.0619
+      ],
+      [
+        "barrier",
+        0.3441,
+        7.541,
+        22.099,
+        -0.629,
+        0.946,
+        2.796,
+        0.588,
+        3.1046
+      ],
+      [
+        "barrier",
+        0.3513,
+        8.604,
+        17.457,
+        -0.697,
+        1.121,
+        2.034,
+        0.568,
+        3.087
+      ],
+      [
+        "barrier",
+        0.3687,
+        6.188,
+        -9.385,
+        -1.594,
+        0.995,
+        2.17,
+        0.632,
+        3.0776
+      ],
+      [
+        "barrier",
+        0.3895,
+        7.004,
+        13.368,
+        -0.943,
+        1.08,
+        2.031,
+        0.569,
+        3.1269
+      ],
+      [
+        "barrier",
+        0.415,
+        6.941,
+        11.646,
+        -1.019,
+        1.094,
+        2.008,
+        0.587,
+        3.1414
+      ],
+      [
+        "bicycle",
+        0.3112,
+        6.185,
+        33.477,
+        0.063,
+        1.064,
+        0.593,
+        1.66,
+        -2.9116
+      ],
+      [
+        "bicycle",
+        0.4416,
+        15.176,
+        -1.96,
+        -1.159,
+        1.131,
+        0.525,
+        1.611,
+        -0.1634
+      ],
+      [
+        "car",
+        0.302,
+        3.399,
+        40.484,
+        0.494,
+        1.673,
+        1.918,
+        4.574,
+        1.5253
+      ],
+      [
+        "car",
+        0.5243,
+        -1.987,
+        37.999,
+        0.464,
+        1.906,
+        1.953,
+        4.663,
+        1.5667
+      ],
+      [
+        "car",
+        0.7909,
+        9.172,
+        -19.575,
+        -1.686,
+        1.716,
+        1.871,
+        4.387,
+        -1.6839
+      ],
+      [
+        "car",
+        0.8191,
+        -0.372,
+        13.044,
+        -0.666,
+        1.605,
+        1.803,
+        4.299,
+        1.5717
+      ],
+      [
+        "pedestrian",
+        0.3024,
+        -1.19,
+        -14.973,
+        -1.129,
+        1.872,
+        0.718,
+        0.77,
+        -1.9827
+      ],
+      [
+        "pedestrian",
+        0.3626,
+        -3.79,
+        -13.631,
+        -1.211,
+        1.787,
+        0.636,
+        0.648,
+        2.3555
+      ],
+      [
+        "traffic_cone",
+        0.4609,
+        6.972,
+        9.503,
+        -1.063,
+        0.886,
+        0.374,
+        0.373,
+        3.0138
+      ],
+      [
+        "truck",
+        0.8534,
+        -4.465,
+        15.05,
+        0.412,
+        3.514,
+        2.829,
+        9.692,
+        1.5291
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "/homes/cyw122/Developer/year_4/FYP/FYP-experiment-pipeline/eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 111
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "center lane, close-to-mid range (~11-15m ahead)",
+          "bev": "(x\u224811m to 15m, y\u2248-1m to 1m)",
+          "isometric": "Low-height point cluster enclosed by 'car 0.82' box with concentric ring-like structures"
+        },
+        "evidence": [
+          "A 3D bounding box for 'car 0.82' is predicted directly in front of the ego vehicle in the center lane at x \u2248 11-15m.",
+          "The camera image shows that the center lane is completely empty at this short distance, with the nearest real vehicle in this lane (a white van/SUV) being much further down the road (over 25m away).",
+          "The isometric view confirms the points inside the 'car' box lack any vertical physical structure characteristic of a real car, representing either ground reflections or artificially injected low-height point clusters."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion (the view in the camera is completely clear and unobstructed)",
+          "Sensor noise (the cluster has a distinct structured pattern and high detection confidence, unlikely for random noise)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:22:21.896151"
+}
