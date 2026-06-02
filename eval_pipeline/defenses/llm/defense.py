@@ -69,7 +69,7 @@ class LLMDefense(BaseDefense):
         self,
         backend: Literal["gemini", "qwen"] = "gemini",
         model: str | None = None,
-        prompt_path: str = "notes/llm_prompts.md",
+        prompt_path: str = "llm_prompt.md",
         cache_dir: str = "cache/llm_defense",
         force_refresh: bool = False,
         attack_threshold: Literal["any", "high_conf"] = "any",

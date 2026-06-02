@@ -210,13 +210,13 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Smoke-test for LLMDefense.")
     p.add_argument(
         "--nuscenes-root",
-        default="/vol/bitbucket/fw420/data/nuscenes",
+        default="/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
         help="Path to NuScenes dataset root",
     )
     p.add_argument(
         "--nuscenes-version",
-        default="v1.0-trainval",
-        help="NuScenes version string (default: v1.0-trainval)",
+        default="v1.0-mini",
+        help="NuScenes version string (default: v1.0-mini)",
     )
     p.add_argument(
         "--attack-type",
