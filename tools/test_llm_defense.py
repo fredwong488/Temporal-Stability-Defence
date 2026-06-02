@@ -230,6 +230,12 @@ def parse_args() -> argparse.Namespace:
         default="LIDAR_TOP",
         help="NuScenes LiDAR channel name (default: LIDAR_TOP)",
     )
+    p.add_argument(
+        "--detector",
+        choices=["pointpillars_nuscenes", "none"],
+        default="pointpillars_nuscenes",
+        help="Detector to overlay bounding boxes on rendered views (default: pointpillars_nuscenes)",
+    )
     return p.parse_args()
 
 
@@ -270,10 +276,17 @@ def main() -> None:
 
     from eval_pipeline.attacks.ghost_object.ghost_object import GhostObjectAttack
     from eval_pipeline.defenses.llm.defense import LLMDefense
+    from eval_pipeline.runner import _detector_registry
     from eval_pipeline.types import FrameHistory
     from eval_pipeline.visualisation.render_views import render_three_views
 
     attack = GhostObjectAttack(ghost_cloud_file=ghost_cloud_file)
+
+    detector = None
+    if args.detector != "none":
+        det_cls = _detector_registry()[args.detector]
+        detector = det_cls()
+        print(f"Detector : {detector.name}\n")
 
     defense = LLMDefense(
         backend=args.backend,
@@ -291,7 +304,9 @@ def main() -> None:
         print(f"[{idx}/{len(sd_tokens)}] Loading frame {sd_token[:16]}")
         clean_frame = _load_clean_frame(nusc, nuscenes_root, sd_token)
         frame = attack.apply(clean_frame)
-        views = render_three_views(frame, predictions=[], dpi=120)
+        predictions = detector.predict(frame) if detector is not None else []
+        frame = frame.with_predictions(predictions)
+        views = render_three_views(frame, predictions=predictions, dpi=120)
         for view_name, png_bytes in views.items():
             png_path = out_dir / f"frame_{idx:02d}_{view_name}.png"
             png_path.write_bytes(png_bytes)
