@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 
 from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, wait_exponential
+
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("google.genai").setLevel(logging.WARNING)
 
 load_dotenv()
 
