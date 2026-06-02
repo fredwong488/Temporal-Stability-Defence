@@ -207,7 +207,7 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--prompt-path",
-        default="llm_prompt.md",
+        default="eval_pipeline/defenses/llm/llm_prompt.md",
         help="Path to LLM prompt markdown file",
     )
     p.add_argument(
