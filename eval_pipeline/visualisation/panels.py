@@ -185,7 +185,7 @@ def draw_bev(
             pred_label = f"{pred_type} {pred_score:.2f}" if pred_score is not None else pred_type
             _draw_box_bev(ax, corners, color="#60a5fa", lw=1.2, label=pred_label)
 
-    ax.set_xlim(-3, roi_max[0] + 3)
+    ax.set_xlim(roi_min[0] - 3, roi_max[0] + 3)
     ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
     ax.set_aspect("equal")
     ax.set_xlabel("x (m)", fontsize=8, color="white")
@@ -278,9 +278,9 @@ def draw_isometric(
             corners = pred.corners_velo if hasattr(pred, "corners_velo") else pred["corners_velo"]
             _draw_box_3d(ax, corners, color="#60a5fa")
 
-    x_span = roi_max[0] + 6
+    x_span = roi_max[0] - roi_min[0] + 6
     y_span = roi_max[1] - roi_min[1] + 6
-    ax.set_xlim(-3, roi_max[0] + 3)
+    ax.set_xlim(roi_min[0] - 3, roi_max[0] + 3)
     ax.set_ylim(roi_min[1] - 3, roi_max[1] + 3)
     ax.set_zlim(-3.0, 3.0)
     ax.set_box_aspect([x_span, y_span, 6.0])
