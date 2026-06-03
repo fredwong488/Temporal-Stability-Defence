@@ -16,7 +16,7 @@ load_dotenv()
 
 from .base import LLMBackend
 
-_DEFAULT_MODEL = "gemini-3.5-flash"
+_DEFAULT_MODEL = "gemini-3.1-flash-lite"
 
 
 class GeminiBackend(LLMBackend):

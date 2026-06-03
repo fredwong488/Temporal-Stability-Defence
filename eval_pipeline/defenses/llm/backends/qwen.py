@@ -10,7 +10,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 
 from .base import LLMBackend
 
-_DEFAULT_MODEL = "qwen3-vl-plus"
+_DEFAULT_MODEL = "qwen3.5-flash"
 _BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
 
 
