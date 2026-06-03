@@ -236,6 +236,10 @@ def parse_args() -> argparse.Namespace:
         default="pointpillars_nuscenes",
         help="Detector to overlay bounding boxes on rendered views (default: pointpillars_nuscenes)",
     )
+    p.add_argument("--roi-forward", type=float, default=50.0, help="ROI forward extent in metres (default: 50.0)")
+    p.add_argument("--roi-side", type=float, default=20.0, help="ROI lateral half-width in metres (default: 20.0)")
+    p.add_argument("--roi-rear", type=float, default=50.0, help="ROI rear extent in metres (default: 50.0)")
+    p.add_argument("--render-dpi", type=int, default=150, help="DPI for rendered view images (default: 150)")
     return p.parse_args()
 
 
@@ -288,12 +292,19 @@ def main() -> None:
         detector = det_cls()
         print(f"Detector : {detector.name}\n")
 
+    roi_min = (-args.roi_rear, -args.roi_side)
+    roi_max = (args.roi_forward, args.roi_side)
+
     defense = LLMDefense(
         backend=args.backend,
         prompt_path=args.prompt_path,
         cache_dir=args.cache_dir,
         force_refresh=args.force_refresh,
         requests_per_minute=60,
+        roi_forward=args.roi_forward,
+        roi_side=args.roi_side,
+        roi_rear=args.roi_rear,
+        render_dpi=args.render_dpi,
     )
     print(f"Defense : {defense.name}")
     print(f"async_detect : {defense.async_detect}\n")
@@ -306,7 +317,7 @@ def main() -> None:
         frame = attack.apply(clean_frame)
         predictions = detector.predict(frame) if detector is not None else []
         frame = frame.with_predictions(predictions)
-        views = render_three_views(frame, predictions=predictions, dpi=120)
+        views = render_three_views(frame, predictions=predictions, roi_min=roi_min, roi_max=roi_max, dpi=args.render_dpi)
         for view_name, png_bytes in views.items():
             png_path = out_dir / f"frame_{idx:02d}_{view_name}.png"
             png_path.write_bytes(png_bytes)
