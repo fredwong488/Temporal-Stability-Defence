@@ -433,6 +433,8 @@ def main() -> None:
                         help="NuScenes split (e.g. mini_val, mini_train, val, train)")
     parser.add_argument("--nuscenes-scene-names", nargs="+", default=None, metavar="SCENE",
                         help="Restrict NuScenes run to these scene names (e.g. scene-0061 scene-0103)")
+    parser.add_argument("--nuscenes-keyframes-only", action="store_true", default=False,
+                        help="Yield only annotated keyframes (2 Hz) instead of all sweeps (~20 Hz)")
 
     # Components (all optional, but at least one required)
     parser.add_argument("--attack", type=str, default=None,
@@ -625,6 +627,8 @@ def main() -> None:
         dataset_params["split"] = args.nuscenes_split
         if args.nuscenes_scene_names is not None:
             dataset_params["scene_names"] = args.nuscenes_scene_names
+        if args.nuscenes_keyframes_only:
+            dataset_params["keyframes_only"] = True
     elif dataset_type == "kitti":
         frame_ids = (
             args.kitti_frames

@@ -5,7 +5,7 @@ paired sensory data from a single timestep of an autonomous vehicle:
 
 1. A **front-facing camera image** with predicted 2D bounding boxes overlaid.
 2. A **bird's-eye view (BEV) projection of the LiDAR point cloud** with predicted
-   3D bounding boxes overlaid (drawn as rotated rectangles in the BEV plane).
+   3D bounding boxes overlaid (drawn as rectangles in the BEV plane).
 3. An **isometric 3D view of the LiDAR point cloud** with the predicted 3D
    bounding boxes drawn as oriented cuboids.
 

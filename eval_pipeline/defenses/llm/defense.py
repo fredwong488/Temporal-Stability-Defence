@@ -74,8 +74,9 @@ class LLMDefense(BaseDefense):
         force_refresh: bool = False,
         attack_threshold: Literal["any", "high_conf"] = "any",
         render_dpi: int = 150,
-        roi_min: tuple[float, float] = (0.0, -5.0),
-        roi_max: tuple[float, float] = (30.0, 5.0),
+        roi_forward: float = 50.0,
+        roi_side: float = 20.0,
+        roi_rear: float = 50.0,
         api_key_env: str | None = None,
         requests_per_minute: int | None = 200,
     ) -> None:
@@ -84,8 +85,8 @@ class LLMDefense(BaseDefense):
         self._force_refresh = force_refresh
         self._attack_threshold = attack_threshold
         self._render_dpi = render_dpi
-        self._roi_min = roi_min
-        self._roi_max = roi_max
+        self._roi_min = (-roi_rear, -roi_side)
+        self._roi_max = (roi_forward, roi_side)
 
         prompt_file = pathlib.Path(prompt_path)
         if not prompt_file.exists():
