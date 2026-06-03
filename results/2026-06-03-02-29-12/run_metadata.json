@@ -1,0 +1,66 @@
+{
+  "notes": "Evaluate llm defense gemini on mini_train ghost keyframes only extended roi",
+  "git_commit": "86329ddbd35fb0b05f280d3a0fcd7f40d81ac8b5",
+  "timestamp": "2026-06-03-02-29-12",
+  "cmd_args": [
+    "scripts/run_sweep.py",
+    "--dataset",
+    "nuscenes",
+    "--nuscenes-split",
+    "mini_train",
+    "--nuscenes-keyframes-only",
+    "--attack",
+    "ghost",
+    "--attack-fraction",
+    "1.0",
+    "--defense",
+    "llm",
+    "--detector",
+    "pointpillars_nuscenes",
+    "--metric-types",
+    "defense_effectiveness",
+    "llm_attack_type_accuracy",
+    "--save-frames",
+    "--use-predicted-labels",
+    "--notes",
+    "Evaluate llm defense gemini on mini_train ghost keyframes only extended roi"
+  ],
+  "precomputed_cache_dir": null,
+  "sweep": null,
+  "dataset_type": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_train",
+    "keyframes_only": true
+  },
+  "attack_type": "ghost",
+  "attack_params": {
+    "noise_preset": "worst_case"
+  },
+  "attack_fraction": 1.0,
+  "attack_fraction_seed": 0,
+  "min_unattacked_frames": 6,
+  "min_attacked_frames": 6,
+  "detector_type": "pointpillars_nuscenes",
+  "detector_params": {
+    "score_threshold": 0.3
+  },
+  "defense_type": "llm",
+  "defense_params": {},
+  "metric_types": [
+    "defense_effectiveness",
+    "llm_attack_type_accuracy"
+  ],
+  "difficulties": [
+    "Easy",
+    "Moderate",
+    "Hard"
+  ],
+  "recall_iou_confidence_threshold": 0.3,
+  "save_frame_results": true,
+  "read_only_cache": true,
+  "use_cached_attacks": false,
+  "use_predicted_labels": true,
+  "pred_label_score_threshold": 0.5
+}

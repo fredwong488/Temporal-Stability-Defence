@@ -1,0 +1,70 @@
+{
+  "experiment_name": "single_run",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+      "version": "v1.0-mini",
+      "split": "mini_train",
+      "keyframes_only": true
+    },
+    "attack_type": "ghost",
+    "attack_params": {
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x75ebbadd6350>"
+    },
+    "attack_fraction": 1.0,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "llm",
+    "defense_params": {},
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "defense_effectiveness",
+      "llm_attack_type_accuracy"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-06-03-02-29-12",
+    "experiment_name": "single_run",
+    "save_frame_results": true,
+    "precomputed_cache_path": null,
+    "read_only_cache": true,
+    "use_cached_attacks": false,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5
+  },
+  "num_frames": 323,
+  "defense_effectiveness": {
+    "tp": 101,
+    "fp": 37,
+    "tn": 142,
+    "fn": 43,
+    "tpr": 0.7013888888888888,
+    "fpr": 0.20670391061452514,
+    "accuracy": 0.7523219814241486,
+    "precision": 0.7318840579710145,
+    "recall": 0.7013888888888888,
+    "f1": 0.7163120567375887
+  },
+  "clustering_quality": {},
+  "llm_attack_type_accuracy": {
+    "n_tp_detected": 101,
+    "n_correct_type": 99,
+    "n_incorrect_type": 2,
+    "type_accuracy": 0.9801980198019802
+  }
+}
