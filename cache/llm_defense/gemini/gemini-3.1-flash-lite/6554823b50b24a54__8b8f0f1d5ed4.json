@@ -1,0 +1,246 @@
+{
+  "key": {
+    "frame_id": "6554823b50b24a54",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3176,
+        -8.506,
+        44.856,
+        1.271,
+        1.751,
+        1.873,
+        4.44,
+        1.6239
+      ],
+      [
+        "car",
+        0.3179,
+        -8.719,
+        32.645,
+        0.851,
+        1.661,
+        1.902,
+        4.585,
+        -1.5417
+      ],
+      [
+        "car",
+        0.3927,
+        -8.522,
+        38.143,
+        1.141,
+        1.758,
+        1.886,
+        4.704,
+        -1.6341
+      ],
+      [
+        "car",
+        0.571,
+        -3.98,
+        28.482,
+        0.607,
+        1.612,
+        1.904,
+        4.568,
+        -1.6306
+      ],
+      [
+        "car",
+        0.6259,
+        0.18,
+        -31.835,
+        -2.263,
+        1.672,
+        1.896,
+        4.464,
+        1.7059
+      ],
+      [
+        "car",
+        0.6641,
+        -6.796,
+        18.723,
+        0.036,
+        1.712,
+        1.986,
+        4.739,
+        0.2579
+      ],
+      [
+        "car",
+        0.741,
+        -14.363,
+        16.639,
+        -0.405,
+        1.579,
+        1.922,
+        4.655,
+        0.1334
+      ],
+      [
+        "car",
+        0.8266,
+        -3.661,
+        -28.773,
+        -2.213,
+        1.714,
+        1.919,
+        4.513,
+        -1.5291
+      ],
+      [
+        "car",
+        0.8546,
+        4.514,
+        17.085,
+        -0.194,
+        1.537,
+        1.812,
+        4.433,
+        1.5919
+      ],
+      [
+        "car",
+        0.9003,
+        -7.569,
+        1.958,
+        -1.198,
+        1.539,
+        1.921,
+        4.836,
+        -1.6045
+      ],
+      [
+        "pedestrian",
+        0.3009,
+        7.34,
+        -13.557,
+        -1.425,
+        1.784,
+        0.657,
+        0.649,
+        -2.8491
+      ],
+      [
+        "pedestrian",
+        0.3268,
+        -9.224,
+        -21.171,
+        -1.873,
+        1.835,
+        0.624,
+        0.66,
+        -0.6747
+      ],
+      [
+        "pedestrian",
+        0.337,
+        6.532,
+        -18.236,
+        -1.96,
+        1.778,
+        0.647,
+        0.711,
+        2.7209
+      ],
+      [
+        "pedestrian",
+        0.3453,
+        11.857,
+        8.426,
+        -0.292,
+        1.733,
+        0.615,
+        0.594,
+        2.371
+      ],
+      [
+        "pedestrian",
+        0.3789,
+        -8.375,
+        -19.277,
+        -1.958,
+        1.77,
+        0.64,
+        0.672,
+        0.6962
+      ],
+      [
+        "pedestrian",
+        0.3793,
+        8.114,
+        -10.034,
+        -1.297,
+        1.807,
+        0.681,
+        0.652,
+        3.1208
+      ],
+      [
+        "pedestrian",
+        0.3825,
+        7.423,
+        -14.77,
+        -1.627,
+        1.816,
+        0.677,
+        0.665,
+        3.1289
+      ],
+      [
+        "pedestrian",
+        0.383,
+        6.271,
+        -13.042,
+        -1.663,
+        1.736,
+        0.634,
+        0.681,
+        -1.8685
+      ],
+      [
+        "pedestrian",
+        0.3932,
+        7.783,
+        -11.549,
+        -1.468,
+        1.756,
+        0.651,
+        0.704,
+        -2.1928
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u2248-5m)",
+          "isometric": "Small cluster with sparse point density"
+        },
+        "evidence": [
+          "The camera image data is unavailable, preventing verification of cross-modal consistency.",
+          "The bounding box at (x\u224815m, y\u2248-5m) contains a very sparse cluster of LiDAR points with no clear physical structure (e.g., L-shape or volumetric extent) that would typify a vehicle.",
+          "The isometric view shows isolated points for this detection, which lack the expected vertical profile of a real-world object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or spurious returns from environmental clutter (e.g., small debris, low-reflectivity objects).",
+          "System-level detector limitations in low-density scenarios."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:59.088204"
+}

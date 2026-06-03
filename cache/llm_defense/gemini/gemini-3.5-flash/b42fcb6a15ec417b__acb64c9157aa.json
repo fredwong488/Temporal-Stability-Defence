@@ -1,0 +1,104 @@
+{
+  "key": {
+    "frame_id": "b42fcb6a15ec417b",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "car",
+        0.4123,
+        -18.751,
+        -25.592,
+        -1.463,
+        1.626,
+        1.835,
+        4.365,
+        2.692
+      ],
+      [
+        "car",
+        0.6924,
+        0.516,
+        -12.113,
+        -1.394,
+        1.853,
+        2.016,
+        4.77,
+        1.6439
+      ],
+      [
+        "construction_vehicle",
+        0.5466,
+        -0.45,
+        -26.66,
+        -1.295,
+        2.555,
+        2.368,
+        5.558,
+        1.7086
+      ],
+      [
+        "traffic_cone",
+        0.3332,
+        2.702,
+        -8.57,
+        -1.619,
+        1.243,
+        0.39,
+        0.393,
+        1.9335
+      ],
+      [
+        "trailer",
+        0.3264,
+        36.718,
+        -44.772,
+        -0.555,
+        4.228,
+        3.113,
+        16.804,
+        -1.5322
+      ],
+      [
+        "truck",
+        0.487,
+        -7.773,
+        -21.336,
+        -1.683,
+        1.914,
+        2.097,
+        5.552,
+        -1.5237
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480m, y\u2248-7m)",
+          "isometric": "Bounding box at x\u22480m, y\u2248-7m, z\u2248-2.5m contains no distinct 3D point cluster representing an object, only ground level noise points."
+        },
+        "evidence": [
+          "A 3D prediction bounding box is generated at x\u22480m, y\u2248-7m, z\u2248-2.5m.",
+          "The predicted box envelopes an extremely sparse region with no coherent 3D geometry or height profile matching a real object.",
+          "There is a complete lack of a physical 3D structure or corresponding occlusion shadow behind the coordinates of the detected box."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflection",
+          "Low reflectivity object"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:52.413516"
+}

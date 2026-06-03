@@ -1,0 +1,208 @@
+{
+  "key": {
+    "frame_id": "5f984f2235874872",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bus",
+        0.5567,
+        -7.98,
+        33.974,
+        1.24,
+        3.5,
+        2.883,
+        11.058,
+        0.9657
+      ],
+      [
+        "car",
+        0.3225,
+        6.826,
+        19.819,
+        0.141,
+        1.535,
+        1.845,
+        4.404,
+        3.0749
+      ],
+      [
+        "car",
+        0.3942,
+        -5.969,
+        -0.17,
+        -1.385,
+        1.557,
+        1.888,
+        4.559,
+        -1.6923
+      ],
+      [
+        "car",
+        0.6043,
+        7.607,
+        22.384,
+        0.518,
+        1.736,
+        1.936,
+        4.612,
+        -0.066
+      ],
+      [
+        "car",
+        0.8749,
+        -3.315,
+        0.509,
+        -1.19,
+        1.547,
+        1.874,
+        4.636,
+        1.5841
+      ],
+      [
+        "motorcycle",
+        0.3252,
+        32.443,
+        13.365,
+        0.721,
+        1.845,
+        0.768,
+        2.286,
+        2.7116
+      ],
+      [
+        "motorcycle",
+        0.3872,
+        -8.177,
+        20.716,
+        -0.464,
+        1.603,
+        0.792,
+        2.084,
+        -1.6659
+      ],
+      [
+        "pedestrian",
+        0.3267,
+        -4.259,
+        7.945,
+        -0.774,
+        1.754,
+        0.679,
+        0.699,
+        1.2589
+      ],
+      [
+        "pedestrian",
+        0.458,
+        -9.06,
+        9.421,
+        -0.696,
+        1.786,
+        0.653,
+        0.7,
+        1.7157
+      ],
+      [
+        "trailer",
+        0.9529,
+        -3.136,
+        -15.9,
+        -0.373,
+        4.215,
+        2.791,
+        14.849,
+        1.6227
+      ],
+      [
+        "truck",
+        0.6089,
+        20.577,
+        16.619,
+        1.14,
+        3.552,
+        2.861,
+        8.531,
+        0.0792
+      ],
+      [
+        "truck",
+        0.654,
+        -0.189,
+        -7.981,
+        -0.989,
+        2.591,
+        2.207,
+        4.841,
+        1.5542
+      ],
+      [
+        "truck",
+        0.8942,
+        -3.429,
+        -7.712,
+        -0.369,
+        3.979,
+        2.624,
+        5.983,
+        1.636
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.23855447769165,
+            0.6869508624076843,
+            -1.806028127670288
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 38,
+          "reinjected_centroid": [
+            7.170259952545166,
+            21.750215530395508,
+            0.0835273340344429
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image (denial of service / missing camera frame)",
+          "bev": "Region x \u2248 15m to 22m, y \u2248 4m to 8m",
+          "isometric": "Large floating bounding box elevated at z \u2248 1.5m to 3.0m with no supporting point cluster"
+        },
+        "evidence": [
+          "The camera image is completely missing/unavailable with an explicit '[ATTACKED]' label, indicating sensor denial-of-service or data deletion.",
+          "In the isometric view, there is a very large bounding box floating at z \u2248 1.5m to 3.0m (spanning x \u2248 15m to 22m) that contains only a few sparse points and has no vertical structure or ground-plane contact, indicating a ghost/spoofed detection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion",
+          "Sensor noise",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:40.409304"
+}

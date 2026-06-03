@@ -1,0 +1,154 @@
+{
+  "key": {
+    "frame_id": "4a8d4060eea24f3f",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bicycle",
+        0.3774,
+        5.36,
+        7.649,
+        -0.663,
+        1.569,
+        0.692,
+        1.708,
+        0.3141
+      ],
+      [
+        "car",
+        0.7629,
+        -3.316,
+        0.411,
+        -1.149,
+        1.503,
+        1.887,
+        4.654,
+        1.6474
+      ],
+      [
+        "pedestrian",
+        0.3266,
+        1.428,
+        7.167,
+        -0.607,
+        1.785,
+        0.7,
+        0.77,
+        -2.2567
+      ],
+      [
+        "pedestrian",
+        0.4049,
+        1.983,
+        8.156,
+        -0.571,
+        1.79,
+        0.65,
+        0.684,
+        2.5956
+      ],
+      [
+        "pedestrian",
+        0.4117,
+        2.703,
+        8.304,
+        -0.515,
+        1.776,
+        0.682,
+        0.701,
+        2.5926
+      ],
+      [
+        "pedestrian",
+        0.4123,
+        1.174,
+        9.098,
+        -0.393,
+        1.784,
+        0.718,
+        0.777,
+        1.9152
+      ],
+      [
+        "trailer",
+        0.9475,
+        -3.141,
+        -15.808,
+        -0.382,
+        4.192,
+        2.786,
+        14.892,
+        1.6289
+      ],
+      [
+        "truck",
+        0.521,
+        -0.148,
+        -7.994,
+        -1.01,
+        2.451,
+        2.138,
+        4.802,
+        1.5621
+      ],
+      [
+        "truck",
+        0.875,
+        -3.421,
+        -7.75,
+        -0.325,
+        4.052,
+        2.636,
+        6.087,
+        1.6345
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.848242282867432,
+            0.6185415983200073,
+            -1.6650904417037964
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481m, y\u22483.5m)",
+          "isometric": "Bounding box 'car 0.76' is significantly offset from the dense real cluster located near the ego-vehicle at (x\u22480m, y\u22480m), enveloping mostly empty space."
+        },
+        "evidence": [
+          "The bounding box 'car 0.76' is translated and shifted away from the physical point cluster centered near the origin.",
+          "The camera image is completely unavailable/blacked out, which is indicative of a sensor disruption or a physical denial-of-service style attack to hide visual validation."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ego-motion misalignment"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:20.003235"
+}

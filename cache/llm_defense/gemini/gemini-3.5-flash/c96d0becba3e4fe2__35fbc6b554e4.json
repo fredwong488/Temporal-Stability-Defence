@@ -1,0 +1,165 @@
+{
+  "key": {
+    "frame_id": "c96d0becba3e4fe2",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.335,
+        14.809,
+        -6.022,
+        -1.329,
+        0.969,
+        3.169,
+        0.529,
+        2.7777
+      ],
+      [
+        "bicycle",
+        0.4451,
+        -0.351,
+        8.615,
+        -0.798,
+        1.74,
+        0.663,
+        1.703,
+        0.0979
+      ],
+      [
+        "car",
+        0.3777,
+        -25.83,
+        21.166,
+        -0.445,
+        1.694,
+        1.99,
+        4.666,
+        2.9668
+      ],
+      [
+        "car",
+        0.8919,
+        -3.322,
+        0.519,
+        -1.224,
+        1.524,
+        1.899,
+        4.703,
+        1.5907
+      ],
+      [
+        "pedestrian",
+        0.3988,
+        -4.989,
+        8.619,
+        -0.58,
+        1.787,
+        0.667,
+        0.636,
+        1.3751
+      ],
+      [
+        "trailer",
+        0.9369,
+        -3.158,
+        -15.761,
+        -0.416,
+        4.178,
+        2.768,
+        14.336,
+        1.6279
+      ],
+      [
+        "truck",
+        0.5638,
+        -1.125,
+        23.53,
+        0.293,
+        2.031,
+        2.107,
+        5.416,
+        3.083
+      ],
+      [
+        "truck",
+        0.6603,
+        -0.106,
+        -8.114,
+        -1.069,
+        2.535,
+        2.25,
+        4.953,
+        1.6108
+      ],
+      [
+        "truck",
+        0.8688,
+        -3.41,
+        -7.74,
+        -0.335,
+        3.995,
+        2.637,
+        6.238,
+        1.6266
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.601394176483154,
+            0.7765505313873291,
+            -1.9262607097625732
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 74,
+          "reinjected_centroid": [
+            -1.0523380041122437,
+            22.7257137298584,
+            -0.1640939861536026
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (Camera image missing/destroyed)",
+          "bev": "(x\u224823.5m, y\u22481m)",
+          "isometric": "Empty 3D box labeled 'truck 0.56' placed over a sparse, thin line of points that lacks the 3D surface structure, width, or height of a real truck"
+        },
+        "evidence": [
+          "A 3D bounding box for 'truck 0.56' is located at (x\u224823.5m, y\u22481m). However, the points inside this box form a thin, single-layered wall of returns without any L-shape, depth, or volumetric structure of a real truck.",
+          "There is no corresponding LiDAR shadow (occlusion void) behind this point cluster as would be expected for an actual truck of this size.",
+          "The camera image is entirely unavailable ('Camera image not available'), suggesting sensor tampering or a denial-of-service attack to hide the absence of physical vehicles."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion",
+          "Sensor noise",
+          "Low reflectivity surface"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:44.458802"
+}

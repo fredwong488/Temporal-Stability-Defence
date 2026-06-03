@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "d2e46575ee1f4cbd",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3315,
+        1.789,
+        21.297,
+        -0.071,
+        1.681,
+        1.909,
+        4.558,
+        1.2029
+      ],
+      [
+        "car",
+        0.4394,
+        -19.909,
+        2.816,
+        -1.692,
+        1.743,
+        1.97,
+        4.59,
+        0.2293
+      ],
+      [
+        "car",
+        0.4973,
+        -26.997,
+        7.412,
+        -1.817,
+        1.599,
+        1.917,
+        4.414,
+        -3.1071
+      ],
+      [
+        "car",
+        0.514,
+        -21.613,
+        7.914,
+        -1.653,
+        1.59,
+        1.845,
+        4.373,
+        -2.9406
+      ],
+      [
+        "car",
+        0.5933,
+        -28.308,
+        0.674,
+        -1.949,
+        1.701,
+        1.991,
+        4.615,
+        -0.0478
+      ],
+      [
+        "car",
+        0.6517,
+        6.16,
+        35.326,
+        0.775,
+        1.785,
+        1.942,
+        4.584,
+        1.4233
+      ],
+      [
+        "car",
+        0.7009,
+        -0.424,
+        12.503,
+        -0.584,
+        1.548,
+        1.797,
+        4.315,
+        1.5389
+      ],
+      [
+        "car",
+        0.8022,
+        -5.545,
+        11.682,
+        -0.75,
+        1.552,
+        1.91,
+        4.749,
+        -2.0601
+      ],
+      [
+        "car",
+        0.8316,
+        -14.613,
+        2.652,
+        -1.466,
+        1.708,
+        1.964,
+        4.566,
+        0.1751
+      ],
+      [
+        "car",
+        0.8914,
+        -7.683,
+        -11.713,
+        -1.679,
+        1.606,
+        1.857,
+        4.472,
+        -1.5977
+      ],
+      [
+        "car",
+        0.9505,
+        4.312,
+        3.37,
+        -0.97,
+        1.591,
+        1.882,
+        4.683,
+        1.5997
+      ],
+      [
+        "pedestrian",
+        0.3107,
+        7.358,
+        -17.558,
+        -1.191,
+        1.768,
+        0.608,
+        0.632,
+        1.4742
+      ],
+      [
+        "pedestrian",
+        0.3306,
+        8.355,
+        -17.141,
+        -1.098,
+        1.788,
+        0.594,
+        0.602,
+        -3.1402
+      ],
+      [
+        "pedestrian",
+        0.3337,
+        7.992,
+        2.156,
+        -0.781,
+        1.701,
+        0.633,
+        0.69,
+        -1.5454
+      ],
+      [
+        "pedestrian",
+        0.4083,
+        -11.671,
+        6.552,
+        -1.273,
+        1.729,
+        0.622,
+        0.696,
+        1.5779
+      ],
+      [
+        "trailer",
+        0.3019,
+        -20.592,
+        -14.931,
+        -1.127,
+        4.289,
+        2.947,
+        13.679,
+        -1.6616
+      ],
+      [
+        "truck",
+        0.3022,
+        0.855,
+        -40.562,
+        -2.276,
+        2.133,
+        2.293,
+        6.011,
+        -2.9331
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 119
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u22480.5m)",
+          "isometric": "cluster appears as a highly dense, small group of points without the characteristic geometric profile of a vehicle"
+        },
+        "evidence": [
+          "The cluster at (x\u224811m, y\u22480.5m) is highly dense and confined, lacking the distinct L-shape or volumetric surface structure characteristic of a vehicle.",
+          "The cluster lacks a 3D shadow, suggesting it does not occlude the LiDAR beams as a solid object would.",
+          "The detected box (car 0.70) encloses a region with significantly different density and geometry compared to other valid vehicle detections in the scene."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too localized and dense).",
+          "Infrastructure/ground features (point distribution and box placement consistent with spoofing patterns)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:41.450495"
+}

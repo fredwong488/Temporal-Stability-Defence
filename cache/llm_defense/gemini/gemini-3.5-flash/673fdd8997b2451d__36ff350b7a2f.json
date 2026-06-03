@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "673fdd8997b2451d",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3036,
+        12.491,
+        -12.432,
+        -1.772,
+        0.901,
+        3.106,
+        0.474,
+        2.922
+      ],
+      [
+        "barrier",
+        0.3376,
+        14.802,
+        -6.057,
+        -1.275,
+        0.997,
+        3.224,
+        0.536,
+        2.756
+      ],
+      [
+        "bus",
+        0.5962,
+        -5.207,
+        50.712,
+        1.991,
+        3.376,
+        2.824,
+        10.979,
+        1.6501
+      ],
+      [
+        "car",
+        0.579,
+        -6.271,
+        23.769,
+        0.116,
+        1.686,
+        2.013,
+        4.884,
+        0.0127
+      ],
+      [
+        "car",
+        0.8917,
+        -3.323,
+        0.493,
+        -1.213,
+        1.524,
+        1.896,
+        4.683,
+        1.6083
+      ],
+      [
+        "motorcycle",
+        0.3569,
+        0.15,
+        7.655,
+        -0.838,
+        1.706,
+        0.813,
+        1.999,
+        1.8246
+      ],
+      [
+        "pedestrian",
+        0.3005,
+        -1.071,
+        8.701,
+        -0.708,
+        1.775,
+        0.727,
+        0.832,
+        -2.6759
+      ],
+      [
+        "pedestrian",
+        0.305,
+        -5.713,
+        8.636,
+        -0.604,
+        1.829,
+        0.698,
+        0.719,
+        1.4219
+      ],
+      [
+        "pedestrian",
+        0.365,
+        -5.288,
+        7.134,
+        -0.666,
+        1.852,
+        0.739,
+        0.765,
+        1.4285
+      ],
+      [
+        "pedestrian",
+        0.3686,
+        -8.006,
+        8.221,
+        -0.587,
+        1.807,
+        0.665,
+        0.658,
+        1.0486
+      ],
+      [
+        "trailer",
+        0.945,
+        -3.13,
+        -15.883,
+        -0.386,
+        4.208,
+        2.784,
+        14.928,
+        1.6286
+      ],
+      [
+        "truck",
+        0.3177,
+        46.826,
+        17.566,
+        1.692,
+        2.992,
+        2.569,
+        6.543,
+        -0.0093
+      ],
+      [
+        "truck",
+        0.4887,
+        -0.145,
+        -7.971,
+        -1.012,
+        2.446,
+        2.138,
+        4.807,
+        1.5663
+      ],
+      [
+        "truck",
+        0.8691,
+        -3.407,
+        -7.722,
+        -0.327,
+        4.042,
+        2.628,
+        6.066,
+        1.6354
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.6010308265686035,
+            0.7096694707870483,
+            -1.9898631572723389
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 50,
+          "reinjected_centroid": [
+            -6.443729400634766,
+            23.018293380737305,
+            -0.3541615605354309
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 20,
+          "reinjected_centroid": [
+            15.52802848815918,
+            21.964859008789062,
+            0.18568331003189087
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (camera stream unavailable/suppressed)",
+          "bev": "(x\u224824m, y\u22486m)",
+          "isometric": "A large bounding box is predicted at high range (x\u224824m, y\u22486m) but contains absolutely zero LiDAR points inside its volume, and there is no underlying physical object or ground cluster supporting it."
+        },
+        "evidence": [
+          "The predicted bounding box for 'car 0.58' at x\u224824m, y\u22486m envelopes completely empty space with no LiDAR points inside.",
+          "There is no corresponding physical occlusion or structure at that location in either the BEV or isometric views.",
+          "The camera image is completely unavailable/suppressed, indicating a potential sensor-level denial-of-service or attack on the camera feed."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object below detection threshold",
+          "Occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:41.610508"
+}

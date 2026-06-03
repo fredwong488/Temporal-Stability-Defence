@@ -1,0 +1,191 @@
+{
+  "key": {
+    "frame_id": "67194c19290a49bc",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.5629,
+        -20.463,
+        6.764,
+        -1.347,
+        1.725,
+        1.949,
+        4.523,
+        0.1945
+      ],
+      [
+        "car",
+        0.5657,
+        -9.127,
+        21.456,
+        -0.114,
+        1.679,
+        1.915,
+        4.798,
+        -1.5568
+      ],
+      [
+        "car",
+        0.5958,
+        -21.774,
+        11.865,
+        -1.327,
+        1.657,
+        1.928,
+        4.544,
+        -2.9816
+      ],
+      [
+        "car",
+        0.6393,
+        -0.467,
+        15.063,
+        -0.244,
+        1.649,
+        1.87,
+        4.554,
+        1.1375
+      ],
+      [
+        "car",
+        0.7235,
+        -14.369,
+        6.635,
+        -1.218,
+        1.63,
+        1.92,
+        4.442,
+        0.1841
+      ],
+      [
+        "car",
+        0.8252,
+        -7.608,
+        -8.009,
+        -1.549,
+        1.681,
+        1.936,
+        4.789,
+        -1.5576
+      ],
+      [
+        "car",
+        0.8606,
+        -4.588,
+        17.051,
+        -0.46,
+        1.568,
+        1.831,
+        4.418,
+        -1.828
+      ],
+      [
+        "car",
+        0.898,
+        4.306,
+        7.306,
+        -0.764,
+        1.508,
+        1.844,
+        4.651,
+        1.5971
+      ],
+      [
+        "pedestrian",
+        0.3207,
+        4.729,
+        -29.459,
+        -1.545,
+        1.793,
+        0.65,
+        0.68,
+        -1.4376
+      ],
+      [
+        "pedestrian",
+        0.329,
+        5.91,
+        -16.455,
+        -1.351,
+        1.849,
+        0.682,
+        0.749,
+        -1.7419
+      ],
+      [
+        "pedestrian",
+        0.3475,
+        7.35,
+        -16.359,
+        -1.343,
+        1.779,
+        0.604,
+        0.602,
+        -0.5006
+      ],
+      [
+        "pedestrian",
+        0.3695,
+        -11.114,
+        23.844,
+        0.043,
+        1.814,
+        0.627,
+        0.595,
+        -0.1156
+      ],
+      [
+        "pedestrian",
+        0.3796,
+        -5.355,
+        -29.178,
+        -1.853,
+        1.805,
+        0.652,
+        0.695,
+        -1.9212
+      ],
+      [
+        "pedestrian",
+        0.3827,
+        8.171,
+        8.601,
+        -0.53,
+        1.714,
+        0.615,
+        0.631,
+        -1.1178
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple detected clusters at various ranges (e.g., x=7m, x=14m, x=16m)",
+          "isometric": "Multiple detected clusters at various ranges"
+        },
+        "evidence": [
+          "The camera input is completely unavailable, which is a critical piece of information for ruling out cross-modal inconsistencies.",
+          "Without camera confirmation, it is impossible to determine if the 3D bounding box detections correspond to genuine physical objects or spoofed/ghost objects.",
+          "While the 3D clusters themselves appear to have some geometric validity (they are not isolated, tiny point clusters), the lack of visual context prevents a definitive benign or malicious classification."
+        ],
+        "alternatives_ruled_out": [
+          "The detections could simply be legitimate objects (vehicles) that are correctly identified by the LiDAR detector.",
+          "The detections could be natural, non-vehicular objects (e.g., street furniture) that the detector is misclassifying as cars due to model limitations or training distribution, rather than an adversarial attack."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:40.542137"
+}

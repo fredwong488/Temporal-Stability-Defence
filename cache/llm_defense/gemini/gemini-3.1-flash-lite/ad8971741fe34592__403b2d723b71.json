@@ -1,0 +1,136 @@
+{
+  "key": {
+    "frame_id": "ad8971741fe34592",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.739,
+        9.448,
+        -18.22,
+        -0.745,
+        3.566,
+        3.012,
+        12.219,
+        2.2635
+      ],
+      [
+        "car",
+        0.3009,
+        17.563,
+        -10.018,
+        -0.742,
+        1.64,
+        1.925,
+        4.346,
+        -2.555
+      ],
+      [
+        "car",
+        0.3383,
+        15.826,
+        -8.457,
+        -0.804,
+        1.654,
+        1.922,
+        4.335,
+        0.5693
+      ],
+      [
+        "car",
+        0.3454,
+        19.855,
+        4.498,
+        -0.735,
+        1.653,
+        1.908,
+        4.516,
+        2.1785
+      ],
+      [
+        "car",
+        0.3604,
+        14.279,
+        -6.267,
+        -0.777,
+        1.708,
+        1.935,
+        4.42,
+        0.6666
+      ],
+      [
+        "car",
+        0.363,
+        18.773,
+        -12.293,
+        -0.641,
+        1.803,
+        2.016,
+        4.611,
+        -2.5263
+      ],
+      [
+        "car",
+        0.4494,
+        12.555,
+        -4.227,
+        -0.855,
+        1.594,
+        1.874,
+        4.438,
+        0.7086
+      ],
+      [
+        "motorcycle",
+        0.4396,
+        0.918,
+        16.312,
+        -0.875,
+        1.596,
+        0.783,
+        2.021,
+        1.3279
+      ],
+      [
+        "truck",
+        0.6472,
+        10.607,
+        -0.671,
+        -0.169,
+        3.214,
+        2.595,
+        6.826,
+        0.6136
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u2248-1m)",
+          "isometric": "Isolated motorcycle detection without distinct point cluster"
+        },
+        "evidence": [
+          "The camera input is missing, rendering cross-modal verification impossible.",
+          "The motorcycle detection at (x\u224815m, y\u2248-1m) in the BEV view appears as an isolated bounding box without a clear, dense point cluster supporting its existence.",
+          "The presence of numerous valid detections in the rear and side regions suggests the system is functioning normally, making the isolated front-facing detection ambiguous rather than clearly malicious."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or low-reflectivity objects that might fail to register as distinct clusters.",
+          "Detector hallucination due to sparse or scattered points in that region."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:06.064420"
+}

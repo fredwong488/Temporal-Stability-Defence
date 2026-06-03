@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "2829f99455174be4",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4479,
+        -19.962,
+        6.75,
+        -1.212,
+        1.647,
+        1.915,
+        4.554,
+        -3.1021
+      ],
+      [
+        "car",
+        0.4527,
+        -14.342,
+        6.543,
+        -1.178,
+        1.643,
+        1.956,
+        4.52,
+        0.1884
+      ],
+      [
+        "car",
+        0.5864,
+        -21.741,
+        11.789,
+        -1.155,
+        1.644,
+        1.882,
+        4.373,
+        -2.9493
+      ],
+      [
+        "car",
+        0.6222,
+        -0.312,
+        15.21,
+        -0.248,
+        1.666,
+        1.888,
+        4.58,
+        1.1553
+      ],
+      [
+        "car",
+        0.7142,
+        -9.043,
+        21.171,
+        -0.153,
+        1.596,
+        1.854,
+        4.475,
+        -1.594
+      ],
+      [
+        "car",
+        0.8383,
+        -7.623,
+        -8.083,
+        -1.555,
+        1.621,
+        1.906,
+        4.777,
+        -1.5886
+      ],
+      [
+        "car",
+        0.8702,
+        -4.684,
+        16.839,
+        -0.483,
+        1.556,
+        1.816,
+        4.417,
+        -1.8056
+      ],
+      [
+        "car",
+        0.9105,
+        4.323,
+        7.209,
+        -0.791,
+        1.519,
+        1.852,
+        4.654,
+        1.5905
+      ],
+      [
+        "construction_vehicle",
+        0.3622,
+        10.965,
+        50.47,
+        2.006,
+        4.229,
+        3.057,
+        6.736,
+        1.7636
+      ],
+      [
+        "pedestrian",
+        0.3045,
+        -12.015,
+        12.783,
+        -0.726,
+        1.804,
+        0.668,
+        0.683,
+        0.4641
+      ],
+      [
+        "pedestrian",
+        0.3191,
+        -17.356,
+        -27.647,
+        -1.908,
+        1.782,
+        0.644,
+        0.644,
+        -0.6074
+      ],
+      [
+        "pedestrian",
+        0.3221,
+        8.208,
+        8.448,
+        -0.542,
+        1.741,
+        0.638,
+        0.67,
+        -1.186
+      ],
+      [
+        "pedestrian",
+        0.3265,
+        4.695,
+        -29.523,
+        -1.501,
+        1.817,
+        0.672,
+        0.654,
+        -2.877
+      ],
+      [
+        "pedestrian",
+        0.3278,
+        -11.861,
+        14.403,
+        -0.572,
+        1.8,
+        0.671,
+        0.723,
+        1.8143
+      ],
+      [
+        "pedestrian",
+        0.3429,
+        7.337,
+        -26.184,
+        -1.581,
+        1.789,
+        0.658,
+        0.724,
+        -0.0899
+      ],
+      [
+        "pedestrian",
+        0.344,
+        6.126,
+        -26.36,
+        -1.583,
+        1.762,
+        0.65,
+        0.68,
+        -1.6391
+      ],
+      [
+        "pedestrian",
+        0.3571,
+        7.444,
+        -16.372,
+        -1.435,
+        1.799,
+        0.622,
+        0.638,
+        -0.9114
+      ],
+      [
+        "pedestrian",
+        0.3675,
+        -11.124,
+        23.746,
+        0.053,
+        1.789,
+        0.633,
+        0.64,
+        0.0106
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22485m, y\u2248-4m)",
+          "isometric": "Cluster appears at ground level with no significant vertical structure"
+        },
+        "evidence": [
+          "The camera image data is unavailable, preventing cross-modal verification.",
+          "The box at (x\u22485m, y\u2248-4m) contains only a sparse, flat cluster of points with no clear 3D structure or height in the isometric view.",
+          "The cluster lacks an obvious opaque surface structure consistent with a vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or low-reflectivity objects such as road debris.",
+          "Ground plane artifacts being incorrectly classified."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:41.195199"
+}

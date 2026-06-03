@@ -1,0 +1,146 @@
+{
+  "key": {
+    "frame_id": "4adc7956790e4aef",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "barrier",
+        0.3137,
+        16.559,
+        11.631,
+        -0.652,
+        1.037,
+        2.028,
+        0.557,
+        1.5293
+      ],
+      [
+        "barrier",
+        0.3143,
+        20.656,
+        11.115,
+        -0.714,
+        1.041,
+        2.293,
+        0.52,
+        1.3286
+      ],
+      [
+        "bus",
+        0.309,
+        0.321,
+        -21.082,
+        -1.205,
+        3.489,
+        3.168,
+        11.897,
+        1.7599
+      ],
+      [
+        "bus",
+        0.9351,
+        -3.342,
+        31.09,
+        1.657,
+        3.481,
+        3.009,
+        12.545,
+        1.947
+      ],
+      [
+        "car",
+        0.5327,
+        7.68,
+        19.722,
+        0.255,
+        1.646,
+        1.94,
+        4.552,
+        -0.1583
+      ],
+      [
+        "car",
+        0.7625,
+        4.888,
+        16.325,
+        0.007,
+        1.664,
+        2.005,
+        4.786,
+        -0.1615
+      ],
+      [
+        "car",
+        0.9167,
+        0.598,
+        -8.134,
+        -1.335,
+        1.936,
+        2.03,
+        4.806,
+        1.589
+      ],
+      [
+        "construction_vehicle",
+        0.6052,
+        5.08,
+        -10.686,
+        -1.299,
+        2.392,
+        2.136,
+        4.349,
+        -1.5967
+      ],
+      [
+        "traffic_cone",
+        0.4832,
+        6.719,
+        -6.087,
+        -1.339,
+        1.327,
+        0.42,
+        0.434,
+        3.0304
+      ],
+      [
+        "truck",
+        0.6996,
+        -0.143,
+        -18.571,
+        -1.344,
+        3.227,
+        2.664,
+        7.98,
+        1.7227
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 20m, y \u2248 -6m",
+          "isometric": "Bounding box labeled 'car 0.53' contains absolutely zero LiDAR points and lacks any 3D physical structure."
+        },
+        "evidence": [
+          "The predicted bounding box labeled 'car 0.53' at x \u2248 20m, y \u2248 -6m is completely empty in both the BEV projection and the isometric 3D point cloud.",
+          "There is no point cluster, surface boundary, or occlusion shadow associated with this detection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (which would still typically leave a sparse scattering of points)",
+          "Distant or low-reflectivity objects (which would still have some sparse returns or produce occlusion patterns)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:21:14.163432"
+}

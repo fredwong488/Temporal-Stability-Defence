@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "e17e8fffad1c4fe1",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3366,
+        -3.702,
+        42.537,
+        0.8,
+        1.643,
+        1.891,
+        4.494,
+        -1.7352
+      ],
+      [
+        "car",
+        0.4048,
+        22.473,
+        -4.311,
+        -0.964,
+        1.687,
+        1.965,
+        4.49,
+        -0.0958
+      ],
+      [
+        "car",
+        0.6269,
+        0.878,
+        -26.232,
+        -1.157,
+        1.603,
+        1.847,
+        4.377,
+        1.7819
+      ],
+      [
+        "car",
+        0.648,
+        4.485,
+        29.184,
+        0.233,
+        1.627,
+        1.888,
+        4.534,
+        1.581
+      ],
+      [
+        "car",
+        0.8886,
+        -3.931,
+        -2.207,
+        -1.146,
+        1.526,
+        1.832,
+        4.641,
+        -1.6043
+      ],
+      [
+        "car",
+        0.8916,
+        -7.565,
+        13.833,
+        -0.657,
+        1.585,
+        1.913,
+        4.776,
+        -1.5852
+      ],
+      [
+        "pedestrian",
+        0.3217,
+        -8.172,
+        -7.5,
+        -0.935,
+        1.852,
+        0.694,
+        0.716,
+        -0.5058
+      ],
+      [
+        "pedestrian",
+        0.3588,
+        -9.864,
+        -25.354,
+        -1.39,
+        1.805,
+        0.638,
+        0.723,
+        -1.4237
+      ],
+      [
+        "pedestrian",
+        0.3588,
+        7.808,
+        -1.771,
+        -0.98,
+        1.778,
+        0.646,
+        0.654,
+        2.8081
+      ],
+      [
+        "pedestrian",
+        0.3681,
+        6.577,
+        -2.172,
+        -1.088,
+        1.738,
+        0.649,
+        0.683,
+        1.3206
+      ],
+      [
+        "pedestrian",
+        0.3838,
+        8.379,
+        -0.142,
+        -0.958,
+        1.766,
+        0.628,
+        0.606,
+        3.1408
+      ],
+      [
+        "pedestrian",
+        0.4151,
+        7.506,
+        -0.414,
+        -0.924,
+        1.762,
+        0.643,
+        0.641,
+        2.2653
+      ],
+      [
+        "pedestrian",
+        0.4265,
+        6.565,
+        0.243,
+        -0.97,
+        1.701,
+        0.595,
+        0.579,
+        1.0736
+      ],
+      [
+        "pedestrian",
+        0.45,
+        6.857,
+        -12.728,
+        -1.053,
+        1.756,
+        0.655,
+        0.717,
+        1.3738
+      ],
+      [
+        "pedestrian",
+        0.4597,
+        6.872,
+        -5.317,
+        -0.927,
+        1.751,
+        0.634,
+        0.708,
+        1.6986
+      ],
+      [
+        "trailer",
+        0.3844,
+        -33.277,
+        -15.818,
+        -0.174,
+        4.137,
+        2.875,
+        16.1,
+        1.2807
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480-2m, y\u2248-6m to -8m)",
+          "isometric": "Cluster of multiple dense bounding boxes extremely close to ego vehicle"
+        },
+        "evidence": [
+          "Multiple small, dense, and overlapping bounding boxes detected within 2 meters of the ego vehicle.",
+          "The cluster geometry is highly irregular and inconsistent with real pedestrians at that range; there is no plausible physical structure.",
+          "This aligns with the signature of an adversarial LiDAR spoofing attack, which typically involves injecting a small cluster of points (\u2264200 points) near the ego vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Real pedestrians (would not cluster so densely or overlap in this manner at point-blank range).",
+          "Sensor noise (noise typically appears as random scatter, not structured bounding boxes)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:40.719047"
+}

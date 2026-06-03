@@ -1,0 +1,341 @@
+{
+  "key": {
+    "frame_id": "f3f638b73c68443f",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3047,
+        -1.214,
+        15.74,
+        -0.801,
+        1.064,
+        2.129,
+        0.442,
+        1.2893
+      ],
+      [
+        "barrier",
+        0.3348,
+        -2.929,
+        16.282,
+        -0.535,
+        1.054,
+        2.108,
+        0.478,
+        1.3847
+      ],
+      [
+        "barrier",
+        0.3867,
+        0.209,
+        24.468,
+        -0.282,
+        1.052,
+        2.113,
+        0.498,
+        1.2991
+      ],
+      [
+        "barrier",
+        0.4276,
+        -0.593,
+        -18.966,
+        -1.628,
+        1.035,
+        2.107,
+        0.538,
+        2.9414
+      ],
+      [
+        "bus",
+        0.4762,
+        -22.905,
+        -43.385,
+        -1.537,
+        3.513,
+        2.984,
+        10.51,
+        0.0121
+      ],
+      [
+        "car",
+        0.5027,
+        12.409,
+        -28.448,
+        -1.695,
+        1.653,
+        1.906,
+        4.427,
+        -1.6847
+      ],
+      [
+        "car",
+        0.5646,
+        10.165,
+        -19.667,
+        -1.537,
+        1.669,
+        1.954,
+        4.562,
+        -1.6903
+      ],
+      [
+        "construction_vehicle",
+        0.3942,
+        14.194,
+        46.737,
+        2.025,
+        3.368,
+        2.609,
+        7.94,
+        1.3845
+      ],
+      [
+        "construction_vehicle",
+        0.7305,
+        0.434,
+        -22.939,
+        -0.718,
+        2.861,
+        3.365,
+        4.138,
+        -1.6703
+      ],
+      [
+        "pedestrian",
+        0.3362,
+        -16.558,
+        16.804,
+        1.247,
+        1.796,
+        0.632,
+        0.628,
+        0.9567
+      ],
+      [
+        "traffic_cone",
+        0.3022,
+        11.88,
+        16.38,
+        -1.118,
+        0.75,
+        0.423,
+        0.441,
+        -1.5691
+      ],
+      [
+        "traffic_cone",
+        0.3077,
+        2.077,
+        -0.355,
+        -1.449,
+        0.732,
+        0.357,
+        0.341,
+        1.6629
+      ],
+      [
+        "traffic_cone",
+        0.3177,
+        8.926,
+        -7.071,
+        -1.715,
+        0.754,
+        0.402,
+        0.409,
+        -2.2538
+      ],
+      [
+        "traffic_cone",
+        0.3275,
+        12.315,
+        18.745,
+        -1.01,
+        0.747,
+        0.41,
+        0.436,
+        -1.6409
+      ],
+      [
+        "traffic_cone",
+        0.3314,
+        12.36,
+        23.102,
+        -0.856,
+        0.781,
+        0.408,
+        0.425,
+        -1.6139
+      ],
+      [
+        "traffic_cone",
+        0.3409,
+        11.389,
+        11.567,
+        -1.268,
+        0.744,
+        0.402,
+        0.394,
+        -2.9302
+      ],
+      [
+        "traffic_cone",
+        0.4676,
+        10.558,
+        4.587,
+        -1.403,
+        0.768,
+        0.395,
+        0.385,
+        -2.1042
+      ],
+      [
+        "traffic_cone",
+        0.4701,
+        9.555,
+        -2.568,
+        -1.536,
+        0.738,
+        0.404,
+        0.412,
+        -1.5833
+      ],
+      [
+        "traffic_cone",
+        0.6319,
+        2.67,
+        4.511,
+        -1.374,
+        0.709,
+        0.366,
+        0.368,
+        -3.121
+      ],
+      [
+        "traffic_cone",
+        0.6403,
+        10.106,
+        1.24,
+        -1.479,
+        0.758,
+        0.39,
+        0.398,
+        -1.6339
+      ],
+      [
+        "trailer",
+        0.3368,
+        12.748,
+        -20.028,
+        -0.772,
+        4.276,
+        2.934,
+        16.897,
+        -1.6103
+      ],
+      [
+        "truck",
+        0.3823,
+        -4.33,
+        7.278,
+        -0.265,
+        2.044,
+        2.058,
+        5.274,
+        -0.5124
+      ],
+      [
+        "truck",
+        0.4746,
+        12.759,
+        -17.88,
+        -0.656,
+        4.179,
+        2.98,
+        13.094,
+        -1.6356
+      ],
+      [
+        "truck",
+        0.4796,
+        14.627,
+        -5.006,
+        -0.28,
+        3.421,
+        2.778,
+        7.554,
+        -1.7182
+      ],
+      [
+        "truck",
+        0.4902,
+        7.806,
+        -27.614,
+        -1.711,
+        2.051,
+        2.049,
+        5.367,
+        -1.676
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 65,
+          "reinjected_centroid": [
+            10.136039733886719,
+            -18.634876251220703,
+            -1.8457475900650024
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 10,
+          "reinjected_centroid": [
+            11.676313400268555,
+            -27.971542358398438,
+            -1.979805588722229
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "entire camera frame",
+          "bev": "multiple regions",
+          "isometric": "entire 3D space"
+        },
+        "evidence": [
+          "The camera image is completely unavailable and explicitly flagged as '[ATTACKED]' in the header, indicating a complete sensor denial or suppression attack.",
+          "There are numerous extremely low-confidence and geometrically implausible detections in the LiDAR views, such as huge bounding boxes (e.g., truck, traffic cones) plotted at implausible coordinates and orientations.",
+          "Crucial cross-modal verification is impossible due to the missing camera stream."
+        ],
+        "alternatives_ruled_out": [
+          "Temporary sensor occlusion",
+          "Normal packet loss",
+          "Slight calibration error"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:03:52.926123"
+}

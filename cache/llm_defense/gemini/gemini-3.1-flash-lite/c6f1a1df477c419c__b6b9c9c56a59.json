@@ -1,0 +1,315 @@
+{
+  "key": {
+    "frame_id": "c6f1a1df477c419c",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3291,
+        15.787,
+        32.62,
+        0.852,
+        1.708,
+        1.959,
+        4.577,
+        -1.3478
+      ],
+      [
+        "car",
+        0.3772,
+        6.287,
+        -6.349,
+        -1.543,
+        1.605,
+        1.855,
+        4.334,
+        1.4709
+      ],
+      [
+        "car",
+        0.3913,
+        6.788,
+        30.294,
+        0.57,
+        1.675,
+        1.937,
+        4.651,
+        1.3671
+      ],
+      [
+        "car",
+        0.5485,
+        -24.681,
+        -0.138,
+        -1.946,
+        1.555,
+        1.907,
+        4.615,
+        -2.8447
+      ],
+      [
+        "car",
+        0.5804,
+        -17.35,
+        -6.174,
+        -1.756,
+        1.738,
+        1.998,
+        4.687,
+        0.0431
+      ],
+      [
+        "car",
+        0.5925,
+        -8.735,
+        -22.423,
+        -2.286,
+        1.738,
+        1.97,
+        4.823,
+        -1.5268
+      ],
+      [
+        "car",
+        0.7689,
+        -8.589,
+        4.206,
+        -1.375,
+        1.532,
+        1.791,
+        4.188,
+        -2.0587
+      ],
+      [
+        "car",
+        0.8271,
+        4.244,
+        -4.393,
+        -1.303,
+        1.629,
+        1.939,
+        4.803,
+        1.6054
+      ],
+      [
+        "car",
+        0.8929,
+        -6.036,
+        3.142,
+        -1.225,
+        1.495,
+        1.81,
+        4.602,
+        -2.1437
+      ],
+      [
+        "construction_vehicle",
+        0.3018,
+        11.661,
+        -13.507,
+        -0.153,
+        3.817,
+        3.002,
+        6.072,
+        1.9861
+      ],
+      [
+        "pedestrian",
+        0.3115,
+        -11.391,
+        -4.406,
+        -1.581,
+        1.785,
+        0.697,
+        0.676,
+        0.8365
+      ],
+      [
+        "pedestrian",
+        0.3153,
+        8.765,
+        22.11,
+        0.146,
+        1.754,
+        0.662,
+        0.699,
+        1.7553
+      ],
+      [
+        "pedestrian",
+        0.324,
+        8.282,
+        -22.468,
+        -1.108,
+        1.793,
+        0.605,
+        0.594,
+        2.3943
+      ],
+      [
+        "pedestrian",
+        0.3277,
+        8.411,
+        2.032,
+        -0.737,
+        1.789,
+        0.694,
+        0.788,
+        1.6177
+      ],
+      [
+        "pedestrian",
+        0.3542,
+        7.557,
+        -8.676,
+        -1.113,
+        1.776,
+        0.629,
+        0.67,
+        1.6309
+      ],
+      [
+        "traffic_cone",
+        0.3453,
+        -7.656,
+        26.277,
+        -0.675,
+        1.27,
+        0.374,
+        0.391,
+        0.3068
+      ],
+      [
+        "truck",
+        0.325,
+        14.516,
+        12.122,
+        0.235,
+        2.823,
+        2.667,
+        6.705,
+        -0.0431
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            5.516641139984131,
+            -5.836456775665283,
+            -2.0125679969787598
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -7.709463596343994,
+            4.103726863861084,
+            -2.0204644203186035
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 46,
+          "reinjected_centroid": [
+            -8.640586853027344,
+            -20.661710739135742,
+            -2.6352639198303223
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 96,
+          "reinjected_centroid": [
+            -10.341177940368652,
+            11.888484954833984,
+            -1.3857922554016113
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 36,
+          "reinjected_centroid": [
+            -16.399600982666016,
+            -6.098489761352539,
+            -1.9628357887268066
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 10,
+          "reinjected_centroid": [
+            6.177666664123535,
+            29.368602752685547,
+            0.1293673813343048
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 23,
+          "reinjected_centroid": [
+            -22.81964683532715,
+            0.17046773433685303,
+            -2.3140437602996826
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 34,
+          "reinjected_centroid": [
+            -9.876434326171875,
+            17.67539405822754,
+            -1.200942873954773
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 12,
+          "reinjected_centroid": [
+            23.0799617767334,
+            13.965767860412598,
+            0.7232930064201355
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22482m to 4m, y\u22484m to 6m)",
+          "isometric": "Large box detected near origin with sparse point distribution"
+        },
+        "evidence": [
+          "The bounding box near (x\u22483, y\u22485) encompasses very sparse LiDAR returns that lack the dense cluster structure typical of a vehicle.",
+          "The isometric view shows no coherent 3D surface or volume inside this box, just a few scattered, isolated points, which is physically implausible for a car.",
+          "The box orientation and placement seem arbitrary relative to the actual point cloud data density."
+        ],
+        "alternatives_ruled_out": [
+          "Genuine vehicle (due to lack of coherent surface structure in isometric view)",
+          "Standard sensor noise (the box is highly specific and labeled as an object, suggesting an injection rather than background clutter)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:31.676172"
+}

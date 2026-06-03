@@ -1,0 +1,191 @@
+{
+  "key": {
+    "frame_id": "c502570cba9749f7",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3986,
+        -8.602,
+        37.015,
+        1.232,
+        1.781,
+        1.895,
+        4.625,
+        1.6049
+      ],
+      [
+        "car",
+        0.4352,
+        0.166,
+        -32.524,
+        -2.211,
+        1.678,
+        1.937,
+        4.514,
+        1.6319
+      ],
+      [
+        "car",
+        0.5388,
+        -3.811,
+        27.24,
+        0.553,
+        1.643,
+        1.917,
+        4.579,
+        -1.6854
+      ],
+      [
+        "car",
+        0.5518,
+        -3.613,
+        -31.877,
+        -2.205,
+        1.769,
+        2.011,
+        4.665,
+        -1.582
+      ],
+      [
+        "car",
+        0.5659,
+        4.509,
+        16.021,
+        -0.173,
+        1.729,
+        1.931,
+        4.9,
+        1.5723
+      ],
+      [
+        "car",
+        0.5856,
+        -14.559,
+        15.505,
+        -0.452,
+        1.618,
+        1.97,
+        4.671,
+        0.1639
+      ],
+      [
+        "car",
+        0.7579,
+        -6.747,
+        17.594,
+        -0.001,
+        1.643,
+        1.939,
+        4.455,
+        0.1509
+      ],
+      [
+        "car",
+        0.9301,
+        -7.573,
+        0.738,
+        -1.248,
+        1.627,
+        1.923,
+        4.752,
+        -1.5923
+      ],
+      [
+        "pedestrian",
+        0.3255,
+        6.502,
+        -19.552,
+        -1.83,
+        1.819,
+        0.644,
+        0.739,
+        -1.788
+      ],
+      [
+        "pedestrian",
+        0.333,
+        6.236,
+        -16.848,
+        -1.784,
+        1.775,
+        0.638,
+        0.655,
+        1.5687
+      ],
+      [
+        "pedestrian",
+        0.3938,
+        6.223,
+        -14.495,
+        -1.591,
+        1.748,
+        0.62,
+        0.619,
+        -2.6407
+      ],
+      [
+        "pedestrian",
+        0.4164,
+        -8.421,
+        -20.563,
+        -1.791,
+        1.831,
+        0.658,
+        0.685,
+        0.7553
+      ],
+      [
+        "pedestrian",
+        0.4334,
+        7.351,
+        -14.939,
+        -1.481,
+        1.833,
+        0.633,
+        0.657,
+        -2.2189
+      ],
+      [
+        "pedestrian",
+        0.5083,
+        7.73,
+        -12.418,
+        -1.379,
+        1.785,
+        0.629,
+        0.652,
+        -2.0761
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u2248-4.5m)",
+          "isometric": "Cluster appears anomalous and possibly lacks physical support"
+        },
+        "evidence": [
+          "The bounding box at x\u224815m, y\u2248-4.5m encloses a very sparse set of points.",
+          "In the isometric view, this cluster appears disconnected from the ground plane compared to surrounding structural points.",
+          "Cannot verify against camera image, which is unavailable."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise",
+          "Sparse returns from road infrastructure or debris"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:01.144546"
+}

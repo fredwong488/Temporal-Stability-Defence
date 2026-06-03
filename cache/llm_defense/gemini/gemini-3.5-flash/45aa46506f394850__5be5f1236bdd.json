@@ -1,0 +1,170 @@
+{
+  "key": {
+    "frame_id": "45aa46506f394850",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bicycle",
+        0.4992,
+        9.478,
+        13.944,
+        0.124,
+        1.849,
+        0.712,
+        1.812,
+        2.822
+      ],
+      [
+        "car",
+        0.3352,
+        48.408,
+        22.069,
+        1.518,
+        1.833,
+        1.963,
+        4.77,
+        0.176
+      ],
+      [
+        "car",
+        0.3387,
+        10.841,
+        42.714,
+        2.057,
+        1.799,
+        1.927,
+        4.437,
+        1.4036
+      ],
+      [
+        "car",
+        0.3429,
+        -25.394,
+        24.772,
+        -0.491,
+        1.593,
+        1.885,
+        4.396,
+        0.2347
+      ],
+      [
+        "car",
+        0.3679,
+        -22.45,
+        18.253,
+        -0.713,
+        1.565,
+        1.891,
+        4.246,
+        0.0338
+      ],
+      [
+        "car",
+        0.8895,
+        -3.34,
+        0.496,
+        -1.088,
+        1.495,
+        1.904,
+        4.714,
+        1.6121
+      ],
+      [
+        "motorcycle",
+        0.3005,
+        9.469,
+        13.951,
+        0.009,
+        1.692,
+        0.736,
+        1.96,
+        -3.0777
+      ],
+      [
+        "pedestrian",
+        0.4787,
+        -15.729,
+        11.786,
+        -0.609,
+        1.785,
+        0.695,
+        0.764,
+        3.0987
+      ],
+      [
+        "trailer",
+        0.9431,
+        -3.125,
+        -15.934,
+        -0.379,
+        4.221,
+        2.786,
+        14.953,
+        1.6246
+      ],
+      [
+        "truck",
+        0.3419,
+        -40.932,
+        -13.541,
+        -0.788,
+        2.094,
+        2.31,
+        5.813,
+        1.5928
+      ],
+      [
+        "truck",
+        0.6218,
+        -0.169,
+        -7.983,
+        -0.977,
+        2.567,
+        2.186,
+        4.814,
+        1.5641
+      ],
+      [
+        "truck",
+        0.8608,
+        -3.406,
+        -7.722,
+        -0.35,
+        4.041,
+        2.63,
+        6.082,
+        1.6403
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x < 0m, y \u2248 3m to 5m",
+          "isometric": "Multiple bounding boxes (labeled as trucks/cars) stacked vertically in mid-air from z \u2248 0m up to z \u2248 4m with no corresponding physical point clusters of appropriate vertical structure."
+        },
+        "evidence": [
+          "Presence of multiple vertically stacked predicted bounding boxes in the isometric view on the left-rear side (negative x, positive y).",
+          "The floating boxes lack any matching dense 3D point clusters or physical support, showing no realistic vertical structure or ground-plane contact.",
+          "The boxes are located in areas of empty space or extremely sparse clutter, typical of a multi-box ghost injection/spoofing attack."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ego-vehicle body reflections",
+          "Ground classification errors"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:04:11.866344"
+}

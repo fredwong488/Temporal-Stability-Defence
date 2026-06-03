@@ -1,0 +1,245 @@
+{
+  "key": {
+    "frame_id": "6fd68bafa78043c2",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bus",
+        0.3112,
+        9.901,
+        -18.884,
+        -0.9,
+        3.712,
+        2.999,
+        13.266,
+        -1.4731
+      ],
+      [
+        "car",
+        0.321,
+        14.296,
+        -2.778,
+        -0.965,
+        1.69,
+        1.979,
+        4.465,
+        -3.139
+      ],
+      [
+        "car",
+        0.3826,
+        14.665,
+        2.915,
+        -0.56,
+        1.773,
+        2.021,
+        4.683,
+        -3.0397
+      ],
+      [
+        "car",
+        0.656,
+        -4.193,
+        0.665,
+        -1.032,
+        1.719,
+        2.023,
+        5.027,
+        -1.5665
+      ],
+      [
+        "car",
+        0.7639,
+        1.042,
+        -20.651,
+        -1.792,
+        1.662,
+        1.871,
+        4.381,
+        1.7796
+      ],
+      [
+        "car",
+        0.7725,
+        -2.15,
+        27.092,
+        0.39,
+        1.625,
+        1.91,
+        4.592,
+        -1.6742
+      ],
+      [
+        "car",
+        0.821,
+        -6.161,
+        27.838,
+        0.384,
+        1.577,
+        1.874,
+        4.575,
+        -1.7118
+      ],
+      [
+        "pedestrian",
+        0.327,
+        6.123,
+        -8.711,
+        -0.919,
+        1.817,
+        0.697,
+        0.735,
+        0.6853
+      ],
+      [
+        "pedestrian",
+        0.3393,
+        7.384,
+        -18.949,
+        -1.446,
+        1.785,
+        0.659,
+        0.695,
+        -2.681
+      ],
+      [
+        "pedestrian",
+        0.3452,
+        6.862,
+        3.105,
+        -0.731,
+        1.804,
+        0.681,
+        0.721,
+        1.5179
+      ],
+      [
+        "pedestrian",
+        0.357,
+        8.239,
+        12.981,
+        -0.27,
+        1.846,
+        0.71,
+        0.68,
+        2.4945
+      ],
+      [
+        "pedestrian",
+        0.3604,
+        8.749,
+        14.331,
+        -0.205,
+        1.768,
+        0.654,
+        0.603,
+        3.0927
+      ],
+      [
+        "pedestrian",
+        0.3615,
+        -8.225,
+        6.967,
+        -0.531,
+        1.832,
+        0.678,
+        0.706,
+        -0.6842
+      ],
+      [
+        "pedestrian",
+        0.3646,
+        9.774,
+        18.03,
+        0.17,
+        1.763,
+        0.648,
+        0.672,
+        -1.1394
+      ],
+      [
+        "pedestrian",
+        0.3854,
+        7.416,
+        9.364,
+        -0.474,
+        1.71,
+        0.634,
+        0.646,
+        0.9024
+      ],
+      [
+        "pedestrian",
+        0.4057,
+        7.367,
+        12.468,
+        -0.385,
+        1.719,
+        0.63,
+        0.637,
+        1.4848
+      ],
+      [
+        "pedestrian",
+        0.4102,
+        8.316,
+        9.117,
+        -0.358,
+        1.74,
+        0.684,
+        0.733,
+        1.8753
+      ],
+      [
+        "pedestrian",
+        0.424,
+        8.972,
+        10.95,
+        -0.452,
+        1.736,
+        0.636,
+        0.637,
+        2.2613
+      ],
+      [
+        "pedestrian",
+        0.4399,
+        7.676,
+        15.049,
+        -0.288,
+        1.721,
+        0.639,
+        0.636,
+        -1.7288
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480-4m, y\u22483-5m)",
+          "isometric": "Cluster appears dense and boxy, but lacks verification."
+        },
+        "evidence": [
+          "The camera image is missing, preventing critical cross-modal verification.",
+          "While there is a dense cluster in the BEV and isometric view with a bounding box, without the camera feed, it is impossible to determine if this is a ghost object or a legitimate vehicle.",
+          "The isometric view shows a cluster with some vertical extent, which is potentially consistent with a vehicle, but could also be a misclassified stationary object."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (the cluster is too well-defined/structured)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:21.851414"
+}

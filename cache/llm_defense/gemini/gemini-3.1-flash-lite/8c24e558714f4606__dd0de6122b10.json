@@ -1,0 +1,257 @@
+{
+  "key": {
+    "frame_id": "8c24e558714f4606",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3703,
+        2.777,
+        40.772,
+        1.591,
+        1.756,
+        1.945,
+        4.515,
+        1.6145
+      ],
+      [
+        "car",
+        0.5642,
+        -2.552,
+        23.343,
+        0.459,
+        1.59,
+        1.881,
+        4.561,
+        1.4943
+      ],
+      [
+        "car",
+        0.5699,
+        5.944,
+        40.847,
+        1.818,
+        1.739,
+        1.922,
+        4.644,
+        1.5138
+      ],
+      [
+        "car",
+        0.5805,
+        -6.363,
+        25.92,
+        0.379,
+        1.565,
+        1.862,
+        4.491,
+        -1.673
+      ],
+      [
+        "car",
+        0.698,
+        1.138,
+        -21.184,
+        -1.952,
+        1.702,
+        1.913,
+        4.53,
+        1.8064
+      ],
+      [
+        "car",
+        0.814,
+        -4.133,
+        -2.95,
+        -1.136,
+        1.664,
+        1.963,
+        4.779,
+        -1.5173
+      ],
+      [
+        "construction_vehicle",
+        0.4946,
+        -2.607,
+        44.052,
+        1.944,
+        3.729,
+        2.496,
+        11.575,
+        0.3347
+      ],
+      [
+        "pedestrian",
+        0.3013,
+        -10.517,
+        -11.122,
+        -1.497,
+        1.782,
+        0.629,
+        0.691,
+        1.4871
+      ],
+      [
+        "pedestrian",
+        0.322,
+        7.055,
+        10.567,
+        -0.248,
+        1.785,
+        0.665,
+        0.636,
+        0.345
+      ],
+      [
+        "pedestrian",
+        0.3315,
+        -9.945,
+        -15.804,
+        -1.814,
+        1.793,
+        0.649,
+        0.707,
+        1.4697
+      ],
+      [
+        "pedestrian",
+        0.3325,
+        -12.681,
+        7.179,
+        -0.688,
+        1.861,
+        0.671,
+        0.675,
+        1.4868
+      ],
+      [
+        "pedestrian",
+        0.3408,
+        7.41,
+        7.745,
+        -0.449,
+        1.755,
+        0.674,
+        0.688,
+        1.8873
+      ],
+      [
+        "pedestrian",
+        0.3498,
+        7.858,
+        10.966,
+        -0.222,
+        1.797,
+        0.68,
+        0.672,
+        -0.2712
+      ],
+      [
+        "pedestrian",
+        0.3542,
+        6.162,
+        -10.725,
+        -0.906,
+        1.836,
+        0.707,
+        0.758,
+        1.7494
+      ],
+      [
+        "pedestrian",
+        0.3637,
+        8.167,
+        7.861,
+        -0.428,
+        1.764,
+        0.675,
+        0.676,
+        -2.9532
+      ],
+      [
+        "pedestrian",
+        0.3648,
+        7.646,
+        -20.344,
+        -1.495,
+        1.791,
+        0.65,
+        0.663,
+        -1.8847
+      ],
+      [
+        "pedestrian",
+        0.369,
+        6.83,
+        1.213,
+        -0.776,
+        1.828,
+        0.721,
+        0.831,
+        1.2045
+      ],
+      [
+        "pedestrian",
+        0.3789,
+        8.607,
+        9.569,
+        -0.317,
+        1.809,
+        0.693,
+        0.684,
+        2.6439
+      ],
+      [
+        "pedestrian",
+        0.3826,
+        8.663,
+        12.458,
+        -0.106,
+        1.743,
+        0.643,
+        0.627,
+        -2.7531
+      ],
+      [
+        "pedestrian",
+        0.4035,
+        7.39,
+        13.102,
+        -0.088,
+        1.716,
+        0.639,
+        0.621,
+        -0.6822
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480m, y\u22480m)",
+          "isometric": "cluster located immediately around origin"
+        },
+        "evidence": [
+          "A dense, tight cluster of points exists directly on the ego vehicle (near origin).",
+          "The cluster is detected as a 'car' despite being at the vehicle's own position, which is physically impossible for a genuine object detection.",
+          "The small size and high density of points at the ego location are characteristic of a close-range spoofing injection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely to manifest as a structured object detection with high confidence.",
+          "Not a real obstacle, as the ego vehicle cannot detect itself as an external 'car' object."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:56.877310"
+}

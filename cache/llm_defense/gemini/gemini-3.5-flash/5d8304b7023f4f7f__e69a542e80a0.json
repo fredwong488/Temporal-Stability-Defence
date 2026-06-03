@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "5d8304b7023f4f7f",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.312,
+        2.11,
+        9.25,
+        -0.919,
+        1.036,
+        1.918,
+        0.456,
+        -2.3044
+      ],
+      [
+        "barrier",
+        0.3263,
+        10.946,
+        12.381,
+        -0.583,
+        1.139,
+        2.18,
+        0.452,
+        0.2657
+      ],
+      [
+        "barrier",
+        0.3296,
+        3.696,
+        7.759,
+        -0.997,
+        1.032,
+        2.049,
+        0.397,
+        -2.2487
+      ],
+      [
+        "barrier",
+        0.3405,
+        1.106,
+        10.189,
+        -0.9,
+        1.042,
+        2.011,
+        0.428,
+        -2.3923
+      ],
+      [
+        "barrier",
+        0.3545,
+        -0.405,
+        11.711,
+        -0.864,
+        1.026,
+        2.163,
+        0.481,
+        -2.3376
+      ],
+      [
+        "barrier",
+        0.3659,
+        6.867,
+        -18.112,
+        -1.376,
+        0.992,
+        2.018,
+        0.513,
+        2.4272
+      ],
+      [
+        "barrier",
+        0.3771,
+        8.411,
+        -16.456,
+        -1.439,
+        0.972,
+        2.012,
+        0.517,
+        2.4838
+      ],
+      [
+        "bus",
+        0.3912,
+        -17.389,
+        23.956,
+        1.002,
+        3.495,
+        2.917,
+        12.342,
+        -1.8349
+      ],
+      [
+        "car",
+        0.3512,
+        37.49,
+        -48.653,
+        -2.623,
+        1.661,
+        1.977,
+        4.612,
+        -3.0152
+      ],
+      [
+        "car",
+        0.5603,
+        -5.06,
+        12.231,
+        -0.476,
+        1.877,
+        1.972,
+        4.823,
+        2.1935
+      ],
+      [
+        "construction_vehicle",
+        0.3116,
+        -16.359,
+        18.294,
+        0.962,
+        2.609,
+        1.479,
+        2.886,
+        -3.0286
+      ],
+      [
+        "pedestrian",
+        0.3387,
+        -4.197,
+        1.464,
+        -0.735,
+        1.739,
+        0.735,
+        0.739,
+        2.0458
+      ],
+      [
+        "pedestrian",
+        0.3454,
+        6.993,
+        -4.408,
+        -1.047,
+        1.733,
+        0.636,
+        0.724,
+        1.9956
+      ],
+      [
+        "pedestrian",
+        0.3649,
+        14.873,
+        5.913,
+        -0.814,
+        1.792,
+        0.572,
+        0.603,
+        -2.6067
+      ],
+      [
+        "pedestrian",
+        0.395,
+        9.704,
+        3.497,
+        -0.8,
+        1.818,
+        0.7,
+        0.656,
+        0.2098
+      ],
+      [
+        "pedestrian",
+        0.4808,
+        10.917,
+        4.535,
+        -0.72,
+        1.864,
+        0.679,
+        0.676,
+        -2.4325
+      ],
+      [
+        "truck",
+        0.4959,
+        -3.471,
+        31.864,
+        1.208,
+        3.477,
+        2.769,
+        6.713,
+        -0.7548
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not applicable (camera image not available)",
+          "bev": "x \u2248 11.5m, y \u2248 5.0m",
+          "isometric": "Large bounding box (labeled 'car 0.56') floating in mid-air at z \u2248 2.0m to 3.5m, containing no physical point cluster"
+        },
+        "evidence": [
+          "The predicted 'car' box at x \u2248 11.5m, y \u2248 5.0m is completely empty in the BEV projection.",
+          "In the isometric 3D view, this bounding box is located high above the ground plane (floating between z \u2248 2m and 3.5m) with absolutely no underlying point cluster or supporting structure.",
+          "No physical object is casting any LiDAR shadow in that area."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (an empty box of this size floating high in the air is too structured to be simple noise)",
+          "Distant object (the region is well within the high-density LiDAR range)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:58:35.498264"
+}

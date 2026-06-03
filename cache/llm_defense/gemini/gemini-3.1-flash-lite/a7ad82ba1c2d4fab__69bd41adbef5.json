@@ -1,0 +1,323 @@
+{
+  "key": {
+    "frame_id": "a7ad82ba1c2d4fab",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.9188,
+        9.036,
+        -17.738,
+        -0.556,
+        3.294,
+        2.955,
+        12.818,
+        2.6129
+      ],
+      [
+        "car",
+        0.3185,
+        9.165,
+        4.351,
+        -0.897,
+        1.548,
+        1.851,
+        4.475,
+        1.9047
+      ],
+      [
+        "car",
+        0.3245,
+        18.242,
+        12.566,
+        0.211,
+        1.724,
+        1.917,
+        4.65,
+        2.3269
+      ],
+      [
+        "car",
+        0.3296,
+        6.406,
+        18.142,
+        -0.038,
+        1.626,
+        1.876,
+        4.577,
+        -0.7262
+      ],
+      [
+        "car",
+        0.3627,
+        21.374,
+        4.537,
+        -0.544,
+        1.701,
+        1.906,
+        4.342,
+        -0.4948
+      ],
+      [
+        "car",
+        0.367,
+        19.722,
+        1.246,
+        -0.756,
+        1.582,
+        1.915,
+        4.55,
+        -1.4283
+      ],
+      [
+        "car",
+        0.3674,
+        25.211,
+        -7.869,
+        -1.182,
+        1.696,
+        1.978,
+        4.641,
+        1.7245
+      ],
+      [
+        "car",
+        0.3693,
+        12.628,
+        8.219,
+        -0.508,
+        1.656,
+        1.93,
+        4.454,
+        2.2276
+      ],
+      [
+        "car",
+        0.405,
+        24.579,
+        8.742,
+        0.222,
+        1.765,
+        1.951,
+        4.596,
+        2.3344
+      ],
+      [
+        "car",
+        0.4081,
+        11.17,
+        6.012,
+        -0.844,
+        1.686,
+        1.999,
+        4.848,
+        2.1042
+      ],
+      [
+        "car",
+        0.4397,
+        -6.149,
+        9.566,
+        -0.841,
+        1.646,
+        1.907,
+        4.615,
+        -1.014
+      ],
+      [
+        "car",
+        0.462,
+        0.23,
+        14.79,
+        -0.353,
+        1.597,
+        1.86,
+        4.784,
+        -0.7712
+      ],
+      [
+        "car",
+        0.4903,
+        5.536,
+        1.54,
+        -1.112,
+        1.52,
+        1.871,
+        4.691,
+        2.2775
+      ],
+      [
+        "car",
+        0.5645,
+        14.323,
+        -1.566,
+        -1.023,
+        1.591,
+        1.87,
+        4.427,
+        -0.8996
+      ],
+      [
+        "motorcycle",
+        0.4064,
+        -11.458,
+        -2.044,
+        -1.001,
+        1.239,
+        0.642,
+        2.115,
+        1.9693
+      ],
+      [
+        "pedestrian",
+        0.3017,
+        -3.838,
+        -8.718,
+        -0.9,
+        1.767,
+        0.683,
+        0.692,
+        1.3279
+      ],
+      [
+        "pedestrian",
+        0.3514,
+        1.861,
+        -16.614,
+        -1.028,
+        1.731,
+        0.627,
+        0.661,
+        -2.8575
+      ],
+      [
+        "pedestrian",
+        0.3733,
+        -2.161,
+        -11.409,
+        -0.948,
+        1.753,
+        0.608,
+        0.582,
+        -0.4324
+      ],
+      [
+        "pedestrian",
+        0.3748,
+        -2.802,
+        -12.398,
+        -0.818,
+        1.771,
+        0.659,
+        0.629,
+        0.1282
+      ],
+      [
+        "truck",
+        0.3271,
+        20.545,
+        32.642,
+        1.865,
+        3.285,
+        2.575,
+        6.502,
+        -0.7922
+      ],
+      [
+        "truck",
+        0.4523,
+        22.189,
+        -11.221,
+        -0.393,
+        3.109,
+        2.64,
+        6.443,
+        2.282
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 136,
+          "reinjected_centroid": [
+            0.6222485899925232,
+            13.897892951965332,
+            -0.6832452416419983
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 185,
+          "reinjected_centroid": [
+            10.601000785827637,
+            5.61043119430542,
+            -1.09101140499115
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.200444221496582,
+            8.616169929504395,
+            -1.0924378633499146
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 58,
+          "reinjected_centroid": [
+            16.9215145111084,
+            0.8565143346786499,
+            -0.7916165590286255
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -3.651034355163574,
+            10.828041076660156,
+            -1.1988903284072876
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22488m, y\u22485m)",
+          "isometric": "Cluster appears sparse with minimal 3D structure and no clear physical support from the ground plane."
+        },
+        "evidence": [
+          "The bounding box encloses a very sparse and uncharacteristic point cluster that lacks the solid, contiguous surface structure of a vehicle.",
+          "The cluster lacks sufficient density to be a legitimate vehicle reflection.",
+          "The lack of a corresponding camera image (as indicated by the system notice) prevents verification, but the geometric sparsity in the LiDAR data is highly suspicious."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion or sensor noise typically present more coherent point patterns; this appears as an isolated, sparse grouping.",
+          "Infrastructure like poles would appear as vertical lines; this cluster is horizontally distributed but geometrically nonsensical for a vehicle."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:35:46.718334"
+}

@@ -1,0 +1,246 @@
+{
+  "key": {
+    "frame_id": "601eb8581a9946a9",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3128,
+        -31.915,
+        -23.74,
+        -1.5,
+        1.784,
+        1.961,
+        4.54,
+        -1.8231
+      ],
+      [
+        "car",
+        0.3231,
+        -7.654,
+        24.675,
+        -0.055,
+        1.706,
+        1.94,
+        4.552,
+        0.1489
+      ],
+      [
+        "car",
+        0.3938,
+        0.347,
+        -29.112,
+        -1.794,
+        1.855,
+        1.994,
+        4.778,
+        1.5926
+      ],
+      [
+        "car",
+        0.4036,
+        -8.551,
+        44.552,
+        1.368,
+        1.815,
+        1.926,
+        4.592,
+        -1.5349
+      ],
+      [
+        "car",
+        0.4242,
+        -3.583,
+        35.235,
+        0.708,
+        1.68,
+        1.917,
+        4.553,
+        -1.7945
+      ],
+      [
+        "car",
+        0.4669,
+        1.729,
+        41.779,
+        1.457,
+        1.799,
+        1.985,
+        4.603,
+        1.5299
+      ],
+      [
+        "car",
+        0.6396,
+        22.63,
+        -9.981,
+        -1.168,
+        1.629,
+        1.926,
+        4.476,
+        -0.0053
+      ],
+      [
+        "car",
+        0.7988,
+        4.518,
+        23.523,
+        0.015,
+        1.575,
+        1.847,
+        4.551,
+        1.5966
+      ],
+      [
+        "car",
+        0.8475,
+        -3.887,
+        -14.387,
+        -1.673,
+        1.629,
+        1.794,
+        4.252,
+        -1.5284
+      ],
+      [
+        "car",
+        0.9055,
+        -7.511,
+        8.248,
+        -0.873,
+        1.534,
+        1.912,
+        4.839,
+        -1.6138
+      ],
+      [
+        "motorcycle",
+        0.3669,
+        -10.846,
+        -0.199,
+        -1.143,
+        1.262,
+        0.772,
+        1.969,
+        0.1123
+      ],
+      [
+        "pedestrian",
+        0.3265,
+        8.293,
+        -4.982,
+        -0.989,
+        1.81,
+        0.698,
+        0.76,
+        2.6699
+      ],
+      [
+        "pedestrian",
+        0.335,
+        -12.421,
+        15.541,
+        -0.08,
+        1.763,
+        0.672,
+        0.694,
+        -1.3951
+      ],
+      [
+        "pedestrian",
+        0.3703,
+        6.488,
+        -6.006,
+        -1.171,
+        1.739,
+        0.639,
+        0.657,
+        1.9665
+      ],
+      [
+        "pedestrian",
+        0.3867,
+        -8.329,
+        -13.07,
+        -1.399,
+        1.786,
+        0.66,
+        0.709,
+        -1.52
+      ],
+      [
+        "pedestrian",
+        0.3915,
+        6.547,
+        -8.515,
+        -1.302,
+        1.742,
+        0.615,
+        0.645,
+        1.7235
+      ],
+      [
+        "pedestrian",
+        0.4134,
+        7.814,
+        -6.649,
+        -1.032,
+        1.837,
+        0.706,
+        0.721,
+        2.3459
+      ],
+      [
+        "pedestrian",
+        0.4156,
+        7.318,
+        -7.738,
+        -1.163,
+        1.794,
+        0.661,
+        0.657,
+        2.2833
+      ],
+      [
+        "pedestrian",
+        0.4535,
+        6.697,
+        -11.626,
+        -1.372,
+        1.773,
+        0.638,
+        0.735,
+        -1.679
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224824m, y\u2248-5m)",
+          "isometric": "Cluster at x\u224824m shows minimal point density and lacks clear vertical structure or 'L-shape' signature typical of vehicles."
+        },
+        "evidence": [
+          "The bounding box at (x\u224824m, y\u2248-5m) contains extremely sparse LiDAR returns, making it difficult to confirm if this is a genuine vehicle or simply noise/random scatter.",
+          "The camera input is unavailable, preventing verification of object existence or classification.",
+          "The isometric view confirms the point cluster lacks the structural integrity (surface profile, vertical extent) usually required for a high-confidence car detection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or low-reflectivity objects that might appear sparse at range.",
+          "Infrastructure objects (e.g., distant trees or poles) that might be misclassified."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:48.724411"
+}

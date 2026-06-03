@@ -1,0 +1,169 @@
+{
+  "key": {
+    "frame_id": "e1f927a44a3a40a9",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3561,
+        -21.663,
+        12.391,
+        -1.283,
+        1.722,
+        2.025,
+        4.484,
+        -3.0532
+      ],
+      [
+        "car",
+        0.3771,
+        -8.647,
+        28.456,
+        0.23,
+        1.664,
+        1.908,
+        4.772,
+        -1.5713
+      ],
+      [
+        "car",
+        0.3967,
+        -21.442,
+        6.856,
+        -1.393,
+        1.755,
+        1.938,
+        4.518,
+        -0.0085
+      ],
+      [
+        "car",
+        0.5353,
+        -0.839,
+        14.718,
+        -0.194,
+        1.725,
+        1.926,
+        4.594,
+        1.13
+      ],
+      [
+        "car",
+        0.7461,
+        -9.125,
+        21.773,
+        -0.243,
+        1.565,
+        1.892,
+        4.734,
+        -1.59
+      ],
+      [
+        "car",
+        0.8183,
+        -14.311,
+        6.895,
+        -1.143,
+        1.686,
+        1.911,
+        4.443,
+        0.1863
+      ],
+      [
+        "car",
+        0.8192,
+        -4.64,
+        17.287,
+        -0.455,
+        1.587,
+        1.807,
+        4.321,
+        -1.7745
+      ],
+      [
+        "car",
+        0.892,
+        -7.6,
+        -7.738,
+        -1.594,
+        1.641,
+        1.921,
+        4.758,
+        -1.559
+      ],
+      [
+        "car",
+        0.903,
+        4.354,
+        7.593,
+        -0.776,
+        1.491,
+        1.812,
+        4.663,
+        1.5793
+      ],
+      [
+        "pedestrian",
+        0.3117,
+        5.904,
+        -16.259,
+        -1.381,
+        1.807,
+        0.668,
+        0.705,
+        -1.8375
+      ],
+      [
+        "pedestrian",
+        0.3253,
+        -11.897,
+        14.94,
+        -0.596,
+        1.739,
+        0.64,
+        0.658,
+        -1.3975
+      ],
+      [
+        "pedestrian",
+        0.3365,
+        7.479,
+        -16.216,
+        -1.318,
+        1.79,
+        0.638,
+        0.613,
+        -3.0202
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m, y\u2248-4m)",
+          "isometric": "cluster appears isolated with no coherent ground-plane connection or shadow"
+        },
+        "evidence": [
+          "In the BEV, there is a distinct, isolated bounding box at (x\u22486m, y\u2248-4m) that does not align with any clear geometry of surrounding objects.",
+          "The isometric view shows this cluster as detached and lacking structural support or vertical extent typical of a real vehicle.",
+          "The cluster lacks a corresponding visual reference (due to camera unavailability, but structurally it appears as an injection anomaly), and there is no occlusion shadow cast behind it, which is physically inconsistent with a real opaque object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely given the distinct rectangular shape of the box and consistent point density.",
+          "This is not a road sign or greenery as it is positioned in open space, not at the roadside/curb."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:16.414898"
+}

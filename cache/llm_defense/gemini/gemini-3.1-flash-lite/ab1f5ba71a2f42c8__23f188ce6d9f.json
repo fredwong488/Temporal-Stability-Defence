@@ -1,0 +1,201 @@
+{
+  "key": {
+    "frame_id": "ab1f5ba71a2f42c8",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3213,
+        -4.397,
+        30.465,
+        0.651,
+        1.598,
+        1.898,
+        4.484,
+        -1.3041
+      ],
+      [
+        "car",
+        0.4426,
+        -7.263,
+        20.487,
+        -0.002,
+        1.576,
+        1.876,
+        4.414,
+        -2.9396
+      ],
+      [
+        "car",
+        0.647,
+        0.274,
+        -31.055,
+        -2.355,
+        1.766,
+        1.96,
+        4.708,
+        1.8059
+      ],
+      [
+        "car",
+        0.6995,
+        -14.354,
+        18.741,
+        -0.248,
+        1.628,
+        1.977,
+        4.659,
+        0.1475
+      ],
+      [
+        "car",
+        0.7949,
+        4.532,
+        19.135,
+        0.038,
+        1.564,
+        1.868,
+        4.572,
+        1.6468
+      ],
+      [
+        "car",
+        0.8006,
+        -3.807,
+        -23.963,
+        -2.245,
+        1.628,
+        1.881,
+        4.522,
+        -1.5111
+      ],
+      [
+        "car",
+        0.9219,
+        -7.538,
+        3.974,
+        -1.068,
+        1.557,
+        1.916,
+        4.862,
+        -1.5933
+      ],
+      [
+        "pedestrian",
+        0.31,
+        8.67,
+        26.15,
+        0.473,
+        1.75,
+        0.655,
+        0.735,
+        2.5647
+      ],
+      [
+        "pedestrian",
+        0.3323,
+        -17.232,
+        -15.852,
+        -2.187,
+        1.822,
+        0.664,
+        0.688,
+        1.9456
+      ],
+      [
+        "pedestrian",
+        0.348,
+        -12.188,
+        11.831,
+        -0.499,
+        1.777,
+        0.63,
+        0.63,
+        1.2742
+      ],
+      [
+        "pedestrian",
+        0.3822,
+        6.376,
+        -13.241,
+        -1.601,
+        1.784,
+        0.683,
+        0.704,
+        1.6081
+      ],
+      [
+        "pedestrian",
+        0.4151,
+        7.602,
+        -12.494,
+        -1.602,
+        1.808,
+        0.662,
+        0.67,
+        -2.8867
+      ],
+      [
+        "pedestrian",
+        0.4151,
+        8.227,
+        -8.453,
+        -1.325,
+        1.718,
+        0.642,
+        0.676,
+        2.0197
+      ],
+      [
+        "pedestrian",
+        0.4665,
+        6.275,
+        -10.759,
+        -1.373,
+        1.787,
+        0.673,
+        0.7,
+        -0.0431
+      ],
+      [
+        "pedestrian",
+        0.5306,
+        7.854,
+        -9.948,
+        -1.281,
+        1.78,
+        0.643,
+        0.609,
+        -3.1057
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple locations including x\u22482-5m (y\u22485-8m), x\u224820m (y\u22485-7m), x\u224830m (y\u22484m), and x\u224818m (y\u2248-4m)",
+          "isometric": "Multiple bounding boxes with sparse or non-existent point clusters"
+        },
+        "evidence": [
+          "The camera input is unavailable, preventing verification of object existence against visual ground truth.",
+          "Several bounding boxes in the BEV and isometric views appear to be placed in regions with very sparse LiDAR returns or empty space, which is characteristic of potential ghost object attacks.",
+          "The lack of visual data makes it impossible to distinguish between genuine, low-reflectivity objects (like distant or partially occluded vehicles) and spoofed LiDAR points."
+        ],
+        "alternatives_ruled_out": [
+          "It is impossible to rule out legitimate detections of distant or low-reflectivity objects due to the missing camera feed."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:55.406236"
+}

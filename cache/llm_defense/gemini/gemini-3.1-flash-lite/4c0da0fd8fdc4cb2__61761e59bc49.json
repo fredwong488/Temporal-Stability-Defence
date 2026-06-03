@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "4c0da0fd8fdc4cb2",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3049,
+        -28.473,
+        10.278,
+        -0.815,
+        1.695,
+        1.98,
+        4.491,
+        -2.8667
+      ],
+      [
+        "car",
+        0.3062,
+        -1.997,
+        -40.94,
+        -2.552,
+        1.649,
+        1.894,
+        4.343,
+        1.5182
+      ],
+      [
+        "car",
+        0.4438,
+        -20.267,
+        6.305,
+        -1.096,
+        1.66,
+        1.877,
+        4.453,
+        -3.04
+      ],
+      [
+        "car",
+        0.6011,
+        -0.073,
+        15.889,
+        -0.185,
+        1.72,
+        1.935,
+        4.566,
+        1.2488
+      ],
+      [
+        "car",
+        0.6191,
+        6.119,
+        38.817,
+        0.657,
+        1.781,
+        1.95,
+        4.732,
+        1.4436
+      ],
+      [
+        "car",
+        0.6685,
+        -9.071,
+        20.803,
+        -0.244,
+        1.591,
+        1.861,
+        4.539,
+        -1.5367
+      ],
+      [
+        "car",
+        0.6776,
+        -21.726,
+        11.503,
+        -1.013,
+        1.659,
+        1.906,
+        4.345,
+        -3.0038
+      ],
+      [
+        "car",
+        0.7094,
+        -4.758,
+        16.391,
+        -0.456,
+        1.571,
+        1.843,
+        4.606,
+        -1.8639
+      ],
+      [
+        "car",
+        0.7352,
+        -14.335,
+        6.157,
+        -1.195,
+        1.55,
+        1.884,
+        4.431,
+        0.1534
+      ],
+      [
+        "car",
+        0.9106,
+        -7.622,
+        -8.369,
+        -1.583,
+        1.619,
+        1.889,
+        4.665,
+        -1.5806
+      ],
+      [
+        "car",
+        0.9138,
+        4.322,
+        6.793,
+        -0.842,
+        1.524,
+        1.863,
+        4.707,
+        1.5919
+      ],
+      [
+        "construction_vehicle",
+        0.3605,
+        21.232,
+        38.02,
+        2.192,
+        3.345,
+        2.792,
+        5.539,
+        -1.9505
+      ],
+      [
+        "pedestrian",
+        0.313,
+        -11.817,
+        13.796,
+        -0.666,
+        1.779,
+        0.678,
+        0.738,
+        -1.8146
+      ],
+      [
+        "pedestrian",
+        0.3309,
+        7.382,
+        -16.527,
+        -1.243,
+        1.816,
+        0.641,
+        0.654,
+        -1.0051
+      ],
+      [
+        "pedestrian",
+        0.3346,
+        -20.009,
+        -27.02,
+        -1.936,
+        1.745,
+        0.591,
+        0.638,
+        -0.1619
+      ],
+      [
+        "pedestrian",
+        0.3414,
+        8.142,
+        -15.514,
+        -1.125,
+        1.805,
+        0.651,
+        0.661,
+        -1.6759
+      ],
+      [
+        "pedestrian",
+        0.4618,
+        8.27,
+        7.622,
+        -0.528,
+        1.78,
+        0.66,
+        0.653,
+        1.7875
+      ],
+      [
+        "truck",
+        0.335,
+        0.281,
+        -38.683,
+        -2.329,
+        2.36,
+        2.479,
+        6.578,
+        1.7282
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22484m to 9m, y\u2248-3m to -5m)",
+          "isometric": "cluster appears near ground level, potential ghost object"
+        },
+        "evidence": [
+          "The camera image is missing, preventing cross-modal verification.",
+          "The detection 'car 0.91' at (x\u22484m, y\u2248-4m) is in a near-field region where ghost object attacks often occur, but without camera data, we cannot confirm if it's a false positive.",
+          "The surrounding LiDAR points do not show clear structural definition of a vehicle in the isometric view."
+        ],
+        "alternatives_ruled_out": [
+          "The object could be a legitimate but partially occluded vehicle or stationary obstacle.",
+          "The detection could be a standard sensor noise fluctuation common in near-field LiDAR processing."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:21.281703"
+}

@@ -1,0 +1,221 @@
+{
+  "key": {
+    "frame_id": "b7103424b97e4b50",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3201,
+        12.51,
+        -12.467,
+        -1.765,
+        0.851,
+        3.067,
+        0.494,
+        2.9227
+      ],
+      [
+        "barrier",
+        0.3466,
+        14.802,
+        -5.969,
+        -1.259,
+        0.976,
+        3.231,
+        0.527,
+        2.7496
+      ],
+      [
+        "car",
+        0.4896,
+        -9.187,
+        19.778,
+        -0.103,
+        1.664,
+        1.916,
+        4.524,
+        2.9823
+      ],
+      [
+        "car",
+        0.4923,
+        15.164,
+        20.177,
+        0.732,
+        1.737,
+        2.029,
+        4.644,
+        0.1425
+      ],
+      [
+        "car",
+        0.8963,
+        -3.321,
+        0.461,
+        -1.198,
+        1.533,
+        1.912,
+        4.702,
+        1.6041
+      ],
+      [
+        "pedestrian",
+        0.3037,
+        3.166,
+        6.547,
+        -0.605,
+        1.797,
+        0.73,
+        0.795,
+        2.2383
+      ],
+      [
+        "pedestrian",
+        0.3586,
+        -2.653,
+        8.069,
+        -0.586,
+        1.76,
+        0.674,
+        0.696,
+        -2.1993
+      ],
+      [
+        "pedestrian",
+        0.3589,
+        3.525,
+        7.745,
+        -0.608,
+        1.72,
+        0.679,
+        0.742,
+        -3.0941
+      ],
+      [
+        "pedestrian",
+        0.3723,
+        -4.636,
+        8.154,
+        -0.522,
+        1.775,
+        0.704,
+        0.819,
+        0.814
+      ],
+      [
+        "pedestrian",
+        0.3863,
+        1.26,
+        8.306,
+        -0.652,
+        1.715,
+        0.697,
+        0.815,
+        3.0986
+      ],
+      [
+        "pedestrian",
+        0.3973,
+        -1.124,
+        8.824,
+        -0.616,
+        1.796,
+        0.672,
+        0.705,
+        -2.8245
+      ],
+      [
+        "pedestrian",
+        0.4222,
+        -2.61,
+        6.969,
+        -0.745,
+        1.716,
+        0.68,
+        0.728,
+        2.7946
+      ],
+      [
+        "trailer",
+        0.9239,
+        -3.187,
+        -16.156,
+        -0.315,
+        4.28,
+        2.808,
+        15.331,
+        1.6206
+      ],
+      [
+        "truck",
+        0.5642,
+        0.018,
+        -8.079,
+        -1.088,
+        2.243,
+        2.106,
+        4.997,
+        1.684
+      ],
+      [
+        "truck",
+        0.9155,
+        -3.405,
+        -7.843,
+        -0.341,
+        3.965,
+        2.663,
+        6.231,
+        1.6365
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.837967395782471,
+            0.7783549427986145,
+            -2.0522217750549316
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image not available (all objects here are suspicious, particularly the array of pedestrians)",
+          "bev": "(x\u22487m to 9m, y\u2248-4m to 5m)",
+          "isometric": "An array of 6 pedestrian detections (pedestrian 0.30, 0.36, 0.37, 0.39, 0.40) is formed in a perfectly straight line or arc transverse to the sensor's radial direction"
+        },
+        "evidence": [
+          "A regular array of six 'pedestrian' bounding boxes forms a neat arc/line between x\u22487m and 9m.",
+          "There are no underlying physical point clusters or structural surface geometry corresponding to six distinct people in either the BEV or the isometric view; they exist only as empty boxes or minimal noise.",
+          "The regular geometric arrangement of these multiple spurious pedestrian detections is highly characteristic of adversarial point injection / spoofing designed to simulate a barrier of pedestrians across the lanes."
+        ],
+        "alternatives_ruled_out": [
+          "Real pedestrians walking in a perfect transverse line/grid",
+          "Sensor noise (which does not generate multiple, highly organized, and structured bounding box classifications)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:20.490532"
+}

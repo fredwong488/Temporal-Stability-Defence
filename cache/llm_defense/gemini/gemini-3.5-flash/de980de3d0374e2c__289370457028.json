@@ -1,0 +1,182 @@
+{
+  "key": {
+    "frame_id": "de980de3d0374e2c",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.372,
+        -5.825,
+        0.248,
+        -1.375,
+        1.529,
+        1.815,
+        4.26,
+        0.473
+      ],
+      [
+        "car",
+        0.5632,
+        13.557,
+        20.042,
+        0.659,
+        1.65,
+        1.903,
+        4.534,
+        -0.0512
+      ],
+      [
+        "car",
+        0.8621,
+        -3.335,
+        0.443,
+        -1.153,
+        1.529,
+        1.878,
+        4.588,
+        1.6143
+      ],
+      [
+        "construction_vehicle",
+        0.4701,
+        -10.127,
+        49.089,
+        1.111,
+        2.467,
+        2.62,
+        6.787,
+        -1.4368
+      ],
+      [
+        "pedestrian",
+        0.3469,
+        0.981,
+        8.737,
+        -0.525,
+        1.792,
+        0.692,
+        0.771,
+        -1.1815
+      ],
+      [
+        "trailer",
+        0.9476,
+        -3.132,
+        -15.858,
+        -0.393,
+        4.194,
+        2.783,
+        14.829,
+        1.628
+      ],
+      [
+        "truck",
+        0.3066,
+        28.504,
+        24.359,
+        1.339,
+        2.004,
+        2.266,
+        5.437,
+        -2.9888
+      ],
+      [
+        "truck",
+        0.5283,
+        -0.176,
+        -7.995,
+        -1.007,
+        2.463,
+        2.141,
+        4.812,
+        1.5545
+      ],
+      [
+        "truck",
+        0.8737,
+        -3.428,
+        -7.746,
+        -0.312,
+        4.067,
+        2.647,
+        6.063,
+        1.6376
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.128172397613525,
+            0.657948911190033,
+            -1.7430757284164429
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 39,
+          "reinjected_centroid": [
+            13.039801597595215,
+            19.467708587646484,
+            0.19500131905078888
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 18,
+          "reinjected_centroid": [
+            27.45631217956543,
+            23.501800537109375,
+            0.8871855139732361
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 49,
+          "reinjected_centroid": [
+            -1.7411326169967651,
+            10.972768783569336,
+            -1.0537314414978027
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u224825m to 30m, y\u2248-5m to 8m",
+          "isometric": "Floating bounding boxes at z > 2m (above ground plane) at x\u224825m with absolutely no enclosed points"
+        },
+        "evidence": [
+          "In the isometric view, there are highly elevated bounding boxes floating in mid-air (z \u2248 2m to 5m) at approximately x \u2248 25m.",
+          "These boxes contain zero LiDAR points, violating the physical invariant that physical objects must reflect LiDAR pulses.",
+          "The camera image is completely unavailable/denied, marked as '[ATTACKED]', preventing any visual cross-validation of these areas."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (cannot explain perfectly shaped 3D cuboids completely devoid of points)",
+          "Distant vehicles (which would be resting on the ground plane, not floating at high elevations)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:53.180353"
+}

@@ -1,0 +1,186 @@
+{
+  "key": {
+    "frame_id": "987b89b720d74d4e",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3106,
+        13.464,
+        -9.244,
+        -1.62,
+        0.96,
+        3.168,
+        0.513,
+        2.7985
+      ],
+      [
+        "barrier",
+        0.3755,
+        14.803,
+        -5.993,
+        -1.259,
+        0.969,
+        3.225,
+        0.54,
+        2.7865
+      ],
+      [
+        "bicycle",
+        0.3785,
+        -0.442,
+        8.513,
+        -0.826,
+        1.702,
+        0.697,
+        1.64,
+        0.1271
+      ],
+      [
+        "car",
+        0.8314,
+        -3.322,
+        0.465,
+        -1.184,
+        1.544,
+        1.881,
+        4.631,
+        1.6258
+      ],
+      [
+        "pedestrian",
+        0.3143,
+        -7.344,
+        8.218,
+        -0.624,
+        1.734,
+        0.682,
+        0.75,
+        1.4881
+      ],
+      [
+        "pedestrian",
+        0.3292,
+        -4.685,
+        7.212,
+        -0.768,
+        1.769,
+        0.659,
+        0.701,
+        0.6195
+      ],
+      [
+        "pedestrian",
+        0.3984,
+        -4.965,
+        8.627,
+        -0.616,
+        1.823,
+        0.682,
+        0.641,
+        0.533
+      ],
+      [
+        "trailer",
+        0.9352,
+        -3.142,
+        -16.067,
+        -0.399,
+        4.262,
+        2.803,
+        14.868,
+        1.6192
+      ],
+      [
+        "truck",
+        0.6062,
+        -0.511,
+        23.117,
+        0.153,
+        2.032,
+        2.076,
+        5.474,
+        -0.0654
+      ],
+      [
+        "truck",
+        0.6362,
+        -0.109,
+        -7.989,
+        -1.047,
+        2.474,
+        2.148,
+        4.747,
+        1.5747
+      ],
+      [
+        "truck",
+        0.9242,
+        -3.387,
+        -7.817,
+        -0.368,
+        3.909,
+        2.668,
+        6.097,
+        1.644
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.220033168792725,
+            0.7632688283920288,
+            -1.8259309530258179
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 76,
+          "reinjected_centroid": [
+            -0.2514490783214569,
+            22.274444580078125,
+            -0.18408001959323883
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera image is unavailable and labeled as ATTACKED",
+          "bev": "(x\u224823m, y\u22480m)",
+          "isometric": "The truck 0.61 bounding box floats high above the ground plane (z\u22481.5m to 3m) containing only a few sparse points with no vertical structure or physical support"
+        },
+        "evidence": [
+          "The camera image feed is entirely blocked/overwritten with a placeholder indicating it was attacked.",
+          "A truck detection (truck 0.61) is predicted at x\u224823m with no matching 3D vehicle point cluster (the box envelopes empty space/ground reflections).",
+          "Several low-confidence detections (pedestrian 0.31, pedestrian 0.40, bicycle 0.38) are predicted on sparse background points without solid physical signatures."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise",
+          "Distant object occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:52.485427"
+}

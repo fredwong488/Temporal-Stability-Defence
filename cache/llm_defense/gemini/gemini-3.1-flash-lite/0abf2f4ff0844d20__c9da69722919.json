@@ -1,0 +1,147 @@
+{
+  "key": {
+    "frame_id": "0abf2f4ff0844d20",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bicycle",
+        0.406,
+        -9.312,
+        14.315,
+        -0.775,
+        1.821,
+        0.654,
+        1.626,
+        1.6315
+      ],
+      [
+        "bicycle",
+        0.4124,
+        -1.137,
+        14.719,
+        -0.513,
+        1.81,
+        0.673,
+        1.673,
+        1.367
+      ],
+      [
+        "bus",
+        0.8235,
+        10.469,
+        -16.693,
+        -0.638,
+        3.364,
+        2.915,
+        12.521,
+        2.4562
+      ],
+      [
+        "car",
+        0.302,
+        18.864,
+        7.216,
+        -0.687,
+        1.608,
+        1.93,
+        4.489,
+        -2.2781
+      ],
+      [
+        "car",
+        0.3925,
+        14.958,
+        -5.865,
+        -0.814,
+        1.616,
+        1.878,
+        4.41,
+        0.9827
+      ],
+      [
+        "pedestrian",
+        0.3169,
+        2.572,
+        20.687,
+        -0.189,
+        1.832,
+        0.567,
+        0.584,
+        -1.3476
+      ],
+      [
+        "pedestrian",
+        0.3305,
+        1.341,
+        21.531,
+        -0.334,
+        1.871,
+        0.672,
+        0.661,
+        -1.0844
+      ],
+      [
+        "pedestrian",
+        0.3448,
+        7.881,
+        23.122,
+        -0.242,
+        1.822,
+        0.593,
+        0.553,
+        -1.4152
+      ],
+      [
+        "pedestrian",
+        0.3949,
+        3.725,
+        20.815,
+        -0.128,
+        1.879,
+        0.568,
+        0.601,
+        -1.2741
+      ],
+      [
+        "truck",
+        0.39,
+        10.264,
+        -0.872,
+        -0.134,
+        3.242,
+        2.502,
+        6.067,
+        0.9394
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 15-25m, y \u2248 -5 to 2m",
+          "isometric": "Cluster of multiple pedestrian and bicycle bounding boxes positioned in empty space with sparse/random point distribution"
+        },
+        "evidence": [
+          "The isometric view reveals a large number of bounding boxes (pedestrian and bicycle) placed in areas with no coherent physical structures or clusters that resemble vehicles or people.",
+          "The points within these bounding boxes are sparse, scattered, and lack the vertical extent or structural connectivity expected of physical objects.",
+          "The density and pattern of these boxes suggest injected data rather than genuine object detection, as they appear in a group without corresponding physical occlusion or surface profiles."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (these are structured, classified bounding box outputs, not just random point noise).",
+          "Distant genuine objects (no vertical or surface structure visible in the isometric view to support the presence of pedestrians or bicycles)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:23.282440"
+}

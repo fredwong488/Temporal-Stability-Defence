@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "e59451f5ec17450d",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3557,
+        6.774,
+        -3.668,
+        -0.906,
+        1.73,
+        0.648,
+        1.632,
+        1.3702
+      ],
+      [
+        "car",
+        0.4114,
+        -7.124,
+        21.429,
+        -0.023,
+        1.531,
+        1.831,
+        4.441,
+        -1.6391
+      ],
+      [
+        "car",
+        0.4573,
+        5.408,
+        36.562,
+        1.397,
+        1.814,
+        1.935,
+        4.615,
+        1.52
+      ],
+      [
+        "car",
+        0.4963,
+        1.058,
+        -22.943,
+        -1.751,
+        1.732,
+        1.956,
+        4.653,
+        1.7208
+      ],
+      [
+        "car",
+        0.7245,
+        -3.358,
+        14.02,
+        -0.277,
+        1.633,
+        1.836,
+        4.332,
+        -1.6012
+      ],
+      [
+        "car",
+        0.7549,
+        -3.734,
+        -12.197,
+        -1.431,
+        1.734,
+        1.899,
+        4.601,
+        -1.4621
+      ],
+      [
+        "pedestrian",
+        0.3075,
+        9.166,
+        12.234,
+        -0.106,
+        1.757,
+        0.624,
+        0.6,
+        -0.7362
+      ],
+      [
+        "pedestrian",
+        0.3396,
+        -11.874,
+        2.065,
+        -0.871,
+        1.757,
+        0.685,
+        0.678,
+        2.0841
+      ],
+      [
+        "pedestrian",
+        0.3779,
+        -10.348,
+        -16.354,
+        -1.537,
+        1.836,
+        0.669,
+        0.718,
+        -1.6659
+      ],
+      [
+        "pedestrian",
+        0.3981,
+        7.953,
+        4.29,
+        -0.486,
+        1.781,
+        0.683,
+        0.74,
+        -1.7581
+      ],
+      [
+        "pedestrian",
+        0.4047,
+        6.989,
+        2.864,
+        -0.625,
+        1.76,
+        0.685,
+        0.772,
+        2.6749
+      ],
+      [
+        "pedestrian",
+        0.4102,
+        -8.257,
+        0.32,
+        -1.004,
+        1.759,
+        0.634,
+        0.673,
+        -0.9616
+      ],
+      [
+        "pedestrian",
+        0.4387,
+        8.089,
+        7.783,
+        -0.267,
+        1.76,
+        0.667,
+        0.683,
+        -2.4534
+      ],
+      [
+        "pedestrian",
+        0.4718,
+        8.544,
+        6.036,
+        -0.488,
+        1.732,
+        0.673,
+        0.741,
+        1.9537
+      ],
+      [
+        "pedestrian",
+        0.4864,
+        6.942,
+        8.511,
+        -0.54,
+        1.656,
+        0.623,
+        0.625,
+        -1.9127
+      ],
+      [
+        "pedestrian",
+        0.5274,
+        6.828,
+        5.961,
+        -0.485,
+        1.772,
+        0.694,
+        0.781,
+        1.3734
+      ],
+      [
+        "trailer",
+        0.3168,
+        8.362,
+        -35.012,
+        -1.639,
+        3.111,
+        1.993,
+        2.952,
+        1.6923
+      ],
+      [
+        "trailer",
+        0.5713,
+        -36.693,
+        10.871,
+        -0.118,
+        4.279,
+        2.918,
+        16.904,
+        -1.6657
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u22483m)",
+          "isometric": "Cluster at x\u224813m, y\u22483m appears to be a small group of points without distinct structural features"
+        },
+        "evidence": [
+          "The camera input is unavailable, preventing verification of object existence.",
+          "The cluster at (x\u224813m, y\u22483m) labeled as 'car' has very sparse LiDAR returns compared to the expected signature of a vehicle.",
+          "Multiple detections are present in the scene, which makes isolating potential spoofed objects difficult without visual confirmation."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or clustering artifacts in a complex environment",
+          "Sparse returns from small or low-reflectivity objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:03.137467"
+}

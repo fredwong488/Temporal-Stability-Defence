@@ -1,0 +1,158 @@
+{
+  "key": {
+    "frame_id": "53121f39e1a0434d",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bus",
+        0.4376,
+        -23.102,
+        40.115,
+        1.66,
+        3.465,
+        3.133,
+        12.183,
+        0.0288
+      ],
+      [
+        "car",
+        0.4018,
+        -9.659,
+        -50.38,
+        -2.784,
+        1.737,
+        1.974,
+        4.805,
+        0.1588
+      ],
+      [
+        "car",
+        0.4884,
+        -2.561,
+        -32.989,
+        -2.665,
+        1.882,
+        2.013,
+        4.798,
+        -1.4225
+      ],
+      [
+        "car",
+        0.6694,
+        0.368,
+        -19.932,
+        -1.792,
+        1.67,
+        1.909,
+        4.541,
+        1.6108
+      ],
+      [
+        "construction_vehicle",
+        0.3054,
+        -23.947,
+        16.369,
+        0.3,
+        3.634,
+        2.933,
+        6.49,
+        -1.6218
+      ],
+      [
+        "motorcycle",
+        0.3035,
+        14.666,
+        32.553,
+        -0.175,
+        1.713,
+        0.838,
+        2.172,
+        2.893
+      ],
+      [
+        "pedestrian",
+        0.3013,
+        6.244,
+        -3.632,
+        -0.737,
+        1.797,
+        0.672,
+        0.691,
+        -1.015
+      ],
+      [
+        "pedestrian",
+        0.3353,
+        -9.746,
+        13.988,
+        -0.5,
+        1.773,
+        0.684,
+        0.719,
+        1.8087
+      ],
+      [
+        "pedestrian",
+        0.3546,
+        9.193,
+        24.857,
+        -0.284,
+        1.775,
+        0.638,
+        0.655,
+        -2.3828
+      ],
+      [
+        "pedestrian",
+        0.4215,
+        10.066,
+        23.629,
+        -0.154,
+        1.813,
+        0.651,
+        0.702,
+        -2.6896
+      ],
+      [
+        "pedestrian",
+        0.4818,
+        7.006,
+        12.556,
+        -0.539,
+        1.744,
+        0.641,
+        0.686,
+        -2.1143
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812.5, y\u2248-7.5)",
+          "isometric": "Cluster is extremely sparse with no physical depth or surface structure"
+        },
+        "evidence": [
+          "The bounding box identified as 'pedestrian 0.48' is placed over a region with an extremely sparse LiDAR point return (only a few points), lacking the structural density of a human.",
+          "There is no discernible surface geometry or L-shape profile in the isometric view corresponding to the detected object; it appears to be a stochastic cluster.",
+          "Given the sparsity, this fits the pattern of a localized point injection attack intended to trigger false positives in the detector."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: While possible, the presence of a labeled bounding box suggests the perception system has been triggered by these specific points, which are structurally implausible for a pedestrian.",
+          "Partial occlusion: No nearby objects are present to occlude a human figure in that location."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:28.746011"
+}

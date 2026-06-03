@@ -1,0 +1,203 @@
+{
+  "key": {
+    "frame_id": "63eeb316ffd04398",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3102,
+        7.069,
+        -6.018,
+        -1.531,
+        1.059,
+        2.325,
+        0.613,
+        3.0867
+      ],
+      [
+        "barrier",
+        0.3211,
+        8.54,
+        9.304,
+        -0.998,
+        1.176,
+        1.988,
+        0.634,
+        3.0711
+      ],
+      [
+        "barrier",
+        0.325,
+        8.736,
+        11.641,
+        -0.953,
+        1.043,
+        2.514,
+        0.612,
+        3.0816
+      ],
+      [
+        "barrier",
+        0.3376,
+        7.741,
+        -0.395,
+        -1.383,
+        1.17,
+        1.962,
+        0.657,
+        3.0341
+      ],
+      [
+        "barrier",
+        0.3806,
+        6.906,
+        -10.114,
+        -1.561,
+        1.105,
+        1.968,
+        0.61,
+        3.1188
+      ],
+      [
+        "barrier",
+        0.3821,
+        10.065,
+        14.002,
+        -0.815,
+        1.085,
+        1.989,
+        0.533,
+        3.0346
+      ],
+      [
+        "barrier",
+        0.3827,
+        6.957,
+        -8.413,
+        -1.517,
+        1.094,
+        1.976,
+        0.596,
+        3.1201
+      ],
+      [
+        "barrier",
+        0.391,
+        8.442,
+        7.688,
+        -1.09,
+        1.19,
+        1.924,
+        0.632,
+        3.0878
+      ],
+      [
+        "barrier",
+        0.4056,
+        8.387,
+        6.033,
+        -1.143,
+        1.209,
+        1.962,
+        0.691,
+        3.065
+      ],
+      [
+        "car",
+        0.5974,
+        -2.043,
+        28.699,
+        -0.058,
+        1.852,
+        1.953,
+        4.741,
+        1.7445
+      ],
+      [
+        "car",
+        0.6717,
+        7.076,
+        18.955,
+        -0.271,
+        1.67,
+        1.819,
+        4.389,
+        1.5202
+      ],
+      [
+        "construction_vehicle",
+        0.4161,
+        -10.286,
+        50.772,
+        2.271,
+        3.767,
+        2.948,
+        7.341,
+        -1.6044
+      ],
+      [
+        "pedestrian",
+        0.3563,
+        -2.493,
+        -4.251,
+        -1.258,
+        1.809,
+        0.662,
+        0.669,
+        -3.0673
+      ],
+      [
+        "truck",
+        0.6621,
+        -4.656,
+        -6.06,
+        -0.509,
+        3.41,
+        3.082,
+        10.621,
+        1.5665
+      ],
+      [
+        "truck",
+        0.6717,
+        9.449,
+        34.976,
+        0.53,
+        1.873,
+        1.981,
+        5.075,
+        1.3211
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "x\u224828m, y\u22482m",
+          "isometric": "Bounding box for 'car 0.60' is floating high in the air (z between 1.5m and 3.5m) with no underlying ground support or physical point structure."
+        },
+        "evidence": [
+          "The bounding box 'car 0.60' at x\u224828m, y\u22482m contains almost no LiDAR returns.",
+          "In the isometric view, the 'car 0.60' box is suspended high above the ground plane in mid-air.",
+          "There is no physical object or point cluster corresponding to this vehicle detection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion",
+          "Sensor noise",
+          "Distant real object with sparse points"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:10.166813"
+}

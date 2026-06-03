@@ -1,0 +1,209 @@
+{
+  "key": {
+    "frame_id": "6cb743622ae3427d",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3449,
+        14.777,
+        -5.971,
+        -1.233,
+        0.97,
+        3.235,
+        0.546,
+        2.7791
+      ],
+      [
+        "bus",
+        0.5211,
+        -5.216,
+        45.283,
+        1.958,
+        3.042,
+        2.803,
+        9.969,
+        1.5361
+      ],
+      [
+        "car",
+        0.3295,
+        6.791,
+        21.159,
+        0.334,
+        1.547,
+        1.805,
+        4.342,
+        -1.6803
+      ],
+      [
+        "car",
+        0.5912,
+        -15.167,
+        23.483,
+        -0.216,
+        1.598,
+        1.96,
+        4.415,
+        -0.098
+      ],
+      [
+        "car",
+        0.847,
+        -3.322,
+        0.466,
+        -1.178,
+        1.499,
+        1.868,
+        4.595,
+        1.6007
+      ],
+      [
+        "motorcycle",
+        0.3343,
+        10.963,
+        -16.729,
+        -1.169,
+        1.462,
+        0.695,
+        2.089,
+        -1.6379
+      ],
+      [
+        "motorcycle",
+        0.4269,
+        -1.132,
+        7.907,
+        -0.794,
+        1.664,
+        0.815,
+        2.156,
+        1.9746
+      ],
+      [
+        "pedestrian",
+        0.3694,
+        -4.942,
+        9.127,
+        -0.619,
+        1.735,
+        0.69,
+        0.701,
+        1.8126
+      ],
+      [
+        "trailer",
+        0.3723,
+        5.198,
+        41.437,
+        2.05,
+        3.701,
+        3.493,
+        6.068,
+        -1.6007
+      ],
+      [
+        "trailer",
+        0.945,
+        -3.147,
+        -15.883,
+        -0.407,
+        4.207,
+        2.778,
+        14.753,
+        1.6215
+      ],
+      [
+        "truck",
+        0.5025,
+        39.024,
+        17.725,
+        1.85,
+        3.598,
+        2.817,
+        7.916,
+        0.0408
+      ],
+      [
+        "truck",
+        0.6473,
+        -0.141,
+        -8.003,
+        -1.011,
+        2.58,
+        2.213,
+        4.819,
+        1.5615
+      ],
+      [
+        "truck",
+        0.8942,
+        -3.409,
+        -7.745,
+        -0.364,
+        3.96,
+        2.641,
+        6.171,
+        1.6312
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.194113731384277,
+            0.6907550692558289,
+            -1.8281631469726562
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 22,
+          "reinjected_centroid": [
+            -14.598824501037598,
+            22.892681121826172,
+            -0.511826753616333
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image is completely unavailable/blacked out",
+          "bev": "(x\u224821m, y\u2248-7m)",
+          "isometric": "Bounding box for 'car 0.33' is completely empty of LiDAR points, and several other floating boxes in isometric view contain no points or lack vertical 3D structure."
+        },
+        "evidence": [
+          "The bounding box labeled 'car 0.33' at x\u224821m, y\u2248-7m has no points inside it in either BEV or Isometric views.",
+          "Multiple floating prediction boxes are present in the isometric view (e.g., at high z-levels and negative z-levels) with no corresponding physical point clusters.",
+          "The camera image is entirely blank/unavailable and marked as '[ATTACKED]', indicating a cross-modal sensor failure or denial-of-service."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Occlusions"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:25.590739"
+}

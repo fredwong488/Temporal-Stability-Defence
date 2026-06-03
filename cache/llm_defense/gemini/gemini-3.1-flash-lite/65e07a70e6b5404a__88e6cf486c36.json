@@ -1,0 +1,170 @@
+{
+  "key": {
+    "frame_id": "65e07a70e6b5404a",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.8836,
+        8.197,
+        -19.557,
+        -0.75,
+        3.391,
+        3.009,
+        12.181,
+        2.1523
+      ],
+      [
+        "car",
+        0.3391,
+        21.02,
+        4.346,
+        -0.794,
+        1.654,
+        1.967,
+        4.5,
+        -2.771
+      ],
+      [
+        "car",
+        0.3693,
+        14.428,
+        -9.242,
+        -0.865,
+        1.606,
+        1.914,
+        4.292,
+        0.4071
+      ],
+      [
+        "car",
+        0.4259,
+        17.397,
+        -12.661,
+        -0.935,
+        1.715,
+        1.935,
+        4.378,
+        0.4196
+      ],
+      [
+        "car",
+        0.4635,
+        38.499,
+        14.804,
+        -0.592,
+        1.81,
+        1.979,
+        4.72,
+        -2.6602
+      ],
+      [
+        "car",
+        0.579,
+        12.099,
+        -4.269,
+        -0.838,
+        1.662,
+        1.912,
+        4.612,
+        0.4907
+      ],
+      [
+        "car",
+        0.6079,
+        13.496,
+        -6.86,
+        -0.754,
+        1.666,
+        1.891,
+        4.451,
+        0.4484
+      ],
+      [
+        "pedestrian",
+        0.3062,
+        -12.402,
+        15.542,
+        -0.735,
+        1.715,
+        0.609,
+        0.646,
+        0.7144
+      ],
+      [
+        "pedestrian",
+        0.3115,
+        16.517,
+        24.313,
+        -0.184,
+        1.839,
+        0.614,
+        0.603,
+        -1.7794
+      ],
+      [
+        "pedestrian",
+        0.3196,
+        10.984,
+        21.957,
+        0.365,
+        1.901,
+        0.63,
+        0.653,
+        -1.4859
+      ],
+      [
+        "pedestrian",
+        0.4206,
+        15.495,
+        23.085,
+        -0.149,
+        1.86,
+        0.621,
+        0.623,
+        -1.6465
+      ],
+      [
+        "truck",
+        0.643,
+        10.707,
+        -0.484,
+        0.073,
+        3.31,
+        2.674,
+        7.265,
+        0.4872
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22482m to 8m, y\u2248-2m to -6m)",
+          "isometric": "Multiple bounding boxes clustered near the ego vehicle"
+        },
+        "evidence": [
+          "A cluster of multiple, overlapping 3D bounding boxes is present in the near-field (0-10m range) of the LiDAR point cloud.",
+          "The bounding boxes in this region do not align with any clear, high-density point clusters that would constitute a physical object (vehicle or pedestrian).",
+          "The points within these bounding boxes are sparse and lack the consistent 3D structure (e.g., vertical surfaces) typical of real objects.",
+          "There is no evidence of a physical occlusion or shadow behind these boxes, which is a physical invariant for genuine opaque objects."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The density of the boxes and their specific geometry (organized rectangles) suggest an adversarial injection rather than random sensor noise.",
+          "Real objects: No corresponding physical structure is visible in the isometric view to justify such a dense collection of bounding boxes in that immediate space."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:00.768295"
+}

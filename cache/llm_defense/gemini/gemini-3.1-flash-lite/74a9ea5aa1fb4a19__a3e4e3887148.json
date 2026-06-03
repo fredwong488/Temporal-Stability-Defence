@@ -1,0 +1,203 @@
+{
+  "key": {
+    "frame_id": "74a9ea5aa1fb4a19",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3596,
+        -8.38,
+        34.955,
+        0.516,
+        1.624,
+        1.923,
+        4.68,
+        -1.5301
+      ],
+      [
+        "car",
+        0.428,
+        -8.411,
+        31.049,
+        0.508,
+        1.622,
+        1.897,
+        4.652,
+        -1.5567
+      ],
+      [
+        "car",
+        0.4321,
+        6.24,
+        45.411,
+        1.651,
+        1.787,
+        1.953,
+        4.574,
+        1.5098
+      ],
+      [
+        "car",
+        0.4692,
+        -2.813,
+        -40.418,
+        -2.706,
+        1.769,
+        1.959,
+        4.84,
+        -1.4993
+      ],
+      [
+        "car",
+        0.4951,
+        0.213,
+        -33.621,
+        -2.341,
+        1.681,
+        1.903,
+        4.505,
+        1.8439
+      ],
+      [
+        "car",
+        0.5107,
+        -20.319,
+        13.238,
+        -0.718,
+        1.634,
+        1.929,
+        4.468,
+        -0.1193
+      ],
+      [
+        "car",
+        0.5435,
+        -3.931,
+        24.436,
+        0.299,
+        1.637,
+        1.911,
+        4.607,
+        -1.7031
+      ],
+      [
+        "car",
+        0.7089,
+        -6.497,
+        14.877,
+        -0.214,
+        1.705,
+        1.964,
+        4.685,
+        0.2604
+      ],
+      [
+        "car",
+        0.7698,
+        -14.396,
+        12.783,
+        -0.736,
+        1.546,
+        1.861,
+        4.462,
+        0.1317
+      ],
+      [
+        "car",
+        0.9171,
+        4.383,
+        13.332,
+        -0.368,
+        1.544,
+        1.826,
+        4.556,
+        1.609
+      ],
+      [
+        "car",
+        0.9404,
+        -7.581,
+        -1.889,
+        -1.358,
+        1.562,
+        1.874,
+        4.623,
+        -1.5941
+      ],
+      [
+        "pedestrian",
+        0.3162,
+        6.109,
+        -17.841,
+        -1.862,
+        1.762,
+        0.626,
+        0.602,
+        -1.2503
+      ],
+      [
+        "pedestrian",
+        0.3252,
+        8.44,
+        18.656,
+        0.197,
+        1.788,
+        0.639,
+        0.663,
+        1.4521
+      ],
+      [
+        "pedestrian",
+        0.3775,
+        6.181,
+        -20.057,
+        -1.913,
+        1.794,
+        0.643,
+        0.637,
+        1.4514
+      ],
+      [
+        "pedestrian",
+        0.3785,
+        7.2,
+        -18.076,
+        -1.704,
+        1.788,
+        0.633,
+        0.6,
+        -2.3564
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u22485m)",
+          "isometric": "Cluster appears vertically extended and potentially sparse"
+        },
+        "evidence": [
+          "The camera feed is unavailable, making it impossible to verify cross-modal consistency.",
+          "The detected car box at (x\u224814m, y\u22485m) encloses a region with somewhat sparse point returns compared to typical vehicle density.",
+          "Without visual confirmation, it is impossible to determine if this box corresponds to a legitimate vehicle or a hallucination/injection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor occlusion",
+          "Sparse returns due to distance (these are relatively close)",
+          "Standard noise"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:43.746668"
+}

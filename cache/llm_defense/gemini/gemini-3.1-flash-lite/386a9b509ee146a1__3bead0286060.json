@@ -1,0 +1,246 @@
+{
+  "key": {
+    "frame_id": "386a9b509ee146a1",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3135,
+        -11.03,
+        3.469,
+        -1.333,
+        1.209,
+        0.53,
+        1.663,
+        1.9677
+      ],
+      [
+        "bicycle",
+        0.3535,
+        -4.422,
+        -30.872,
+        -1.879,
+        1.748,
+        0.685,
+        1.733,
+        -1.249
+      ],
+      [
+        "car",
+        0.3522,
+        -9.145,
+        19.731,
+        -0.443,
+        1.579,
+        1.852,
+        4.499,
+        -1.4692
+      ],
+      [
+        "car",
+        0.4761,
+        -21.716,
+        10.623,
+        -1.347,
+        1.685,
+        1.946,
+        4.437,
+        -3.015
+      ],
+      [
+        "car",
+        0.4871,
+        -0.148,
+        -38.458,
+        -2.39,
+        1.905,
+        2.031,
+        4.832,
+        1.6359
+      ],
+      [
+        "car",
+        0.6526,
+        6.128,
+        37.791,
+        0.679,
+        1.704,
+        1.905,
+        4.478,
+        1.4361
+      ],
+      [
+        "car",
+        0.6902,
+        -20.298,
+        5.215,
+        -1.356,
+        1.7,
+        1.935,
+        4.47,
+        0.1663
+      ],
+      [
+        "car",
+        0.7067,
+        0.67,
+        17.477,
+        -0.107,
+        1.733,
+        1.945,
+        4.63,
+        1.3112
+      ],
+      [
+        "car",
+        0.8586,
+        -14.442,
+        5.191,
+        -1.172,
+        1.632,
+        1.927,
+        4.567,
+        0.1825
+      ],
+      [
+        "car",
+        0.869,
+        -5.059,
+        14.776,
+        -0.541,
+        1.634,
+        1.912,
+        4.583,
+        -1.932
+      ],
+      [
+        "car",
+        0.8951,
+        -7.667,
+        -9.436,
+        -1.656,
+        1.668,
+        1.965,
+        4.911,
+        -1.6069
+      ],
+      [
+        "car",
+        0.9386,
+        4.354,
+        5.816,
+        -0.868,
+        1.535,
+        1.855,
+        4.697,
+        1.5826
+      ],
+      [
+        "pedestrian",
+        0.3039,
+        3.94,
+        -31.064,
+        -1.689,
+        1.771,
+        0.627,
+        0.681,
+        -1.555
+      ],
+      [
+        "pedestrian",
+        0.3098,
+        11.397,
+        21.43,
+        0.182,
+        1.78,
+        0.658,
+        0.651,
+        -2.118
+      ],
+      [
+        "pedestrian",
+        0.3593,
+        8.74,
+        8.342,
+        -0.263,
+        1.814,
+        0.657,
+        0.687,
+        -2.0926
+      ],
+      [
+        "pedestrian",
+        0.3637,
+        6.641,
+        -29.357,
+        -1.312,
+        1.797,
+        0.652,
+        0.609,
+        1.8737
+      ],
+      [
+        "pedestrian",
+        0.369,
+        -11.855,
+        10.404,
+        -0.956,
+        1.77,
+        0.625,
+        0.68,
+        0.8105
+      ],
+      [
+        "pedestrian",
+        0.4102,
+        -11.798,
+        12.169,
+        -0.716,
+        1.766,
+        0.663,
+        0.702,
+        -1.2194
+      ],
+      [
+        "pedestrian",
+        0.4435,
+        8.19,
+        5.971,
+        -0.513,
+        1.766,
+        0.661,
+        0.678,
+        -1.9407
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u22485m)",
+          "isometric": "Cluster appears dense but lacks clear geometric support in the isometric view."
+        },
+        "evidence": [
+          "The camera image is not available to corroborate the presence of objects, preventing cross-modal verification.",
+          "The LiDAR point cloud contains several valid-looking clusters that are detected by the system, which are consistent with typical road environments.",
+          "There is no clear pattern of sparse, suspicious point injection or disjoint bounding boxes that would definitively signal an attack without the camera context."
+        ],
+        "alternatives_ruled_out": [
+          "The detected objects correspond to plausible geometric clusters in the LiDAR point cloud, suggesting normal environmental detection.",
+          "The lack of camera feed makes it impossible to rule out standard occlusion or legitimate environmental objects."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:27.240780"
+}

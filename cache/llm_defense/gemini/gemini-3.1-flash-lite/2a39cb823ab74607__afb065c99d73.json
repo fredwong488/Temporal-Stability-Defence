@@ -1,0 +1,176 @@
+{
+  "key": {
+    "frame_id": "2a39cb823ab74607",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3521,
+        6.192,
+        2.045,
+        -0.76,
+        2.057,
+        0.652,
+        1.843,
+        1.4244
+      ],
+      [
+        "car",
+        0.3677,
+        1.135,
+        45.963,
+        1.549,
+        1.74,
+        1.933,
+        4.548,
+        -1.7601
+      ],
+      [
+        "car",
+        0.5129,
+        5.068,
+        40.213,
+        1.194,
+        1.765,
+        1.978,
+        4.65,
+        1.4651
+      ],
+      [
+        "car",
+        0.5235,
+        -3.183,
+        20.257,
+        -0.256,
+        1.613,
+        1.824,
+        4.415,
+        -1.772
+      ],
+      [
+        "car",
+        0.6876,
+        0.992,
+        -19.27,
+        -2.073,
+        1.678,
+        1.911,
+        4.545,
+        1.6521
+      ],
+      [
+        "pedestrian",
+        0.3192,
+        6.115,
+        1.914,
+        -0.733,
+        1.827,
+        0.744,
+        0.897,
+        1.3698
+      ],
+      [
+        "pedestrian",
+        0.379,
+        6.752,
+        -11.217,
+        -1.18,
+        1.765,
+        0.646,
+        0.652,
+        1.742
+      ],
+      [
+        "pedestrian",
+        0.4369,
+        8.478,
+        19.441,
+        -0.179,
+        1.797,
+        0.688,
+        0.776,
+        1.5295
+      ],
+      [
+        "pedestrian",
+        0.4402,
+        8.52,
+        22.327,
+        0.059,
+        1.798,
+        0.669,
+        0.679,
+        2.0741
+      ],
+      [
+        "pedestrian",
+        0.4738,
+        7.625,
+        13.883,
+        -0.289,
+        1.778,
+        0.679,
+        0.705,
+        1.6631
+      ],
+      [
+        "pedestrian",
+        0.4909,
+        9.368,
+        18.413,
+        -0.153,
+        1.834,
+        0.663,
+        0.673,
+        1.6705
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u224820m, y\u22483m)",
+          "isometric": "Detected 'car' box is placed in empty space with no underlying point cluster"
+        },
+        "evidence": [
+          "The BEV and isometric views show a 'car' bounding box at approximately (x=20, y=3) that contains no LiDAR points.",
+          "The isometric view confirms the absence of any vertical structure or point cluster corresponding to the detected 'car' object.",
+          "The lack of any point returns for a large object like a car strongly indicates a ghost object injection or an hallucination error, rather than a genuine obstacle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or low reflectivity (a real car would still reflect LiDAR regardless of material).",
+          "Occlusion (there is no shadow or occluding object in front of the box)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u224813m to 25m, y\u2248-8m)",
+          "isometric": "Multiple 'pedestrian' boxes along the edge of the scan range with no point cloud structure"
+        },
+        "evidence": [
+          "Multiple 'pedestrian' bounding boxes appear along the y=-8m line, corresponding to the edge of the sweep, but they do not align with any clear, dense, or physically plausible point clusters.",
+          "These boxes appear to be floating or misaligned with the sparse ground-level points at that range.",
+          "The spatial arrangement is highly unnatural, appearing more like a programmatic injection of boxes than real pedestrian detections."
+        ],
+        "alternatives_ruled_out": [
+          "Genuine pedestrian detection (no consistent 3D point structure supports the detection).",
+          "Sensor artifacts from road edges (the boxes are placed at specific, distinct intervals in the empty region beyond the road curb)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:42.155951"
+}

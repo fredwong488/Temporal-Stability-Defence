@@ -1,0 +1,191 @@
+{
+  "key": {
+    "frame_id": "96fa0ffaea1b4ead",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4885,
+        -19.843,
+        6.836,
+        -1.246,
+        1.766,
+        1.948,
+        4.591,
+        0.0544
+      ],
+      [
+        "car",
+        0.5437,
+        -9.144,
+        21.643,
+        -0.176,
+        1.843,
+        1.961,
+        5.042,
+        1.5995
+      ],
+      [
+        "car",
+        0.7243,
+        -0.521,
+        14.969,
+        -0.255,
+        1.663,
+        1.87,
+        4.48,
+        1.0872
+      ],
+      [
+        "car",
+        0.7435,
+        -14.291,
+        6.699,
+        -1.16,
+        1.672,
+        1.918,
+        4.429,
+        0.1955
+      ],
+      [
+        "car",
+        0.78,
+        -4.586,
+        17.167,
+        -0.412,
+        1.591,
+        1.888,
+        4.66,
+        -1.788
+      ],
+      [
+        "car",
+        0.8634,
+        -7.639,
+        -7.874,
+        -1.593,
+        1.66,
+        1.947,
+        4.817,
+        -1.5566
+      ],
+      [
+        "car",
+        0.9125,
+        4.297,
+        7.351,
+        -0.797,
+        1.471,
+        1.806,
+        4.6,
+        1.5837
+      ],
+      [
+        "pedestrian",
+        0.3062,
+        -11.988,
+        14.662,
+        -0.583,
+        1.759,
+        0.649,
+        0.687,
+        -2.1519
+      ],
+      [
+        "pedestrian",
+        0.3291,
+        -5.348,
+        -29.174,
+        -1.842,
+        1.784,
+        0.637,
+        0.678,
+        -1.4233
+      ],
+      [
+        "pedestrian",
+        0.3325,
+        5.904,
+        -16.388,
+        -1.363,
+        1.825,
+        0.656,
+        0.677,
+        -2.1461
+      ],
+      [
+        "pedestrian",
+        0.3427,
+        4.906,
+        -29.336,
+        -1.468,
+        1.788,
+        0.668,
+        0.68,
+        -1.6457
+      ],
+      [
+        "pedestrian",
+        0.344,
+        7.51,
+        -16.236,
+        -1.264,
+        1.792,
+        0.656,
+        0.664,
+        -2.1453
+      ],
+      [
+        "pedestrian",
+        0.3704,
+        7.135,
+        -27.047,
+        -1.595,
+        1.781,
+        0.658,
+        0.668,
+        -1.6662
+      ],
+      [
+        "traffic_cone",
+        0.3549,
+        -9.301,
+        -27.179,
+        -2.244,
+        1.183,
+        0.401,
+        0.406,
+        1.9067
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x=5-9m, y=-5 to -3m)",
+          "isometric": "Cluster located at x\u22487m, y\u2248-4m, z\u22480m"
+        },
+        "evidence": [
+          "The camera image is unavailable, preventing cross-modal verification of the objects detected by the LiDAR system.",
+          "Several 3D bounding boxes are present in the BEV and isometric views, but without camera data, it is impossible to confirm if these correspond to legitimate objects.",
+          "The detected objects appear to align with clusters of LiDAR points, suggesting standard detection behavior rather than obvious adversarial artifacts like floating ghosts."
+        ],
+        "alternatives_ruled_out": [
+          "The detections might be legitimate objects correctly identified by the LiDAR-only perception pipeline.",
+          "The lack of camera data is a system constraint rather than an indicator of an attack."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:39.986897"
+}

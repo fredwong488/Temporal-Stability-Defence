@@ -1,0 +1,342 @@
+{
+  "key": {
+    "frame_id": "e5bd7485417a4e99",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3353,
+        8.302,
+        10.834,
+        -1.077,
+        1.06,
+        2.013,
+        0.592,
+        -0.8166
+      ],
+      [
+        "bicycle",
+        0.3752,
+        9.05,
+        25.346,
+        -0.214,
+        1.133,
+        0.575,
+        1.693,
+        -0.0832
+      ],
+      [
+        "bus",
+        0.3316,
+        7.683,
+        51.623,
+        1.65,
+        3.468,
+        2.835,
+        9.943,
+        1.4976
+      ],
+      [
+        "car",
+        0.3822,
+        -3.286,
+        8.593,
+        -0.394,
+        1.952,
+        2.015,
+        5.136,
+        2.4038
+      ],
+      [
+        "car",
+        0.4262,
+        10.863,
+        -23.709,
+        -1.888,
+        2.042,
+        2.147,
+        5.363,
+        -1.5735
+      ],
+      [
+        "car",
+        0.6579,
+        14.317,
+        -21.398,
+        -1.788,
+        1.635,
+        1.895,
+        4.59,
+        -1.623
+      ],
+      [
+        "car",
+        0.687,
+        12.395,
+        -15.196,
+        -1.604,
+        1.679,
+        1.996,
+        4.828,
+        -1.5683
+      ],
+      [
+        "construction_vehicle",
+        0.5014,
+        3.067,
+        -19.786,
+        -0.987,
+        2.897,
+        3.263,
+        4.516,
+        -1.6464
+      ],
+      [
+        "pedestrian",
+        0.3038,
+        -5.109,
+        -26.715,
+        -1.568,
+        1.832,
+        0.645,
+        0.592,
+        -3.074
+      ],
+      [
+        "pedestrian",
+        0.305,
+        -6.825,
+        -26.098,
+        -1.46,
+        1.741,
+        0.651,
+        0.705,
+        -2.9578
+      ],
+      [
+        "pedestrian",
+        0.3415,
+        -6.156,
+        -29.151,
+        -1.52,
+        1.759,
+        0.673,
+        0.751,
+        -2.4167
+      ],
+      [
+        "traffic_cone",
+        0.3247,
+        9.517,
+        -3.323,
+        -1.62,
+        0.709,
+        0.389,
+        0.386,
+        -2.4754
+      ],
+      [
+        "traffic_cone",
+        0.3333,
+        9.498,
+        15.569,
+        -1.055,
+        0.734,
+        0.398,
+        0.401,
+        -1.3844
+      ],
+      [
+        "traffic_cone",
+        0.3533,
+        9.399,
+        21.583,
+        -0.848,
+        0.803,
+        0.418,
+        0.422,
+        -1.5074
+      ],
+      [
+        "traffic_cone",
+        0.3635,
+        9.434,
+        -17.434,
+        -1.977,
+        0.77,
+        0.4,
+        0.395,
+        -2.3005
+      ],
+      [
+        "traffic_cone",
+        0.3913,
+        1.787,
+        -6.85,
+        -1.678,
+        0.749,
+        0.386,
+        0.37,
+        1.9795
+      ],
+      [
+        "traffic_cone",
+        0.422,
+        9.514,
+        8.554,
+        -1.141,
+        0.743,
+        0.392,
+        0.386,
+        -2.616
+      ],
+      [
+        "traffic_cone",
+        0.4371,
+        1.897,
+        -1.917,
+        -1.531,
+        0.707,
+        0.355,
+        0.349,
+        1.9311
+      ],
+      [
+        "traffic_cone",
+        0.4482,
+        1.851,
+        2.585,
+        -1.335,
+        0.723,
+        0.381,
+        0.363,
+        2.4153
+      ],
+      [
+        "traffic_cone",
+        0.4675,
+        9.47,
+        22.787,
+        -0.735,
+        0.779,
+        0.416,
+        0.415,
+        -1.5671
+      ],
+      [
+        "traffic_cone",
+        0.4873,
+        1.833,
+        7.507,
+        -1.204,
+        0.733,
+        0.357,
+        0.36,
+        2.2964
+      ],
+      [
+        "traffic_cone",
+        0.5741,
+        9.506,
+        1.299,
+        -1.51,
+        0.72,
+        0.376,
+        0.382,
+        3.0456
+      ],
+      [
+        "trailer",
+        0.5013,
+        14.969,
+        -15.305,
+        -0.454,
+        4.232,
+        2.892,
+        15.766,
+        -1.5378
+      ],
+      [
+        "trailer",
+        0.607,
+        -19.515,
+        17.622,
+        0.955,
+        3.061,
+        3.078,
+        13.441,
+        1.9465
+      ],
+      [
+        "truck",
+        0.3127,
+        14.845,
+        -13.532,
+        -0.514,
+        4.131,
+        3.059,
+        12.641,
+        -1.4831
+      ],
+      [
+        "truck",
+        0.7389,
+        14.854,
+        -0.584,
+        -0.224,
+        3.23,
+        2.675,
+        7.251,
+        -1.5422
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 105,
+          "reinjected_centroid": [
+            11.994889259338379,
+            -14.286765098571777,
+            -2.049729108810425
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not available",
+          "bev": "(x\u22487.5m, y\u22484.5m)",
+          "isometric": "large 'car' bounding box floating in mid-air at z\u22481.5m to 3.5m with no physical points inside or underneath"
+        },
+        "evidence": [
+          "In the BEV view, the predicted 'car' bounding box at x\u22487.5m, y\u22484.5m is empty and does not envelope any vehicle-like point cluster.",
+          "In the isometric view, this bounding box is floating high above the ground plane with zero points inside, violating basic physical constraints of a real ground vehicle.",
+          "There is no point occlusion shadow or structure underneath to support a real physical object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or reflection, because the box is entirely empty and suspended high in mid-air, which does not match typical ground-level sensor clutter.",
+          "Distant object, as this is close to the ego-vehicle (within 8 meters) where LiDAR coverage is extremely dense."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:02:08.738456"
+}

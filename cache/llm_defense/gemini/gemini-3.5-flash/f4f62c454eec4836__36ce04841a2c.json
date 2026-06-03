@@ -1,0 +1,207 @@
+{
+  "key": {
+    "frame_id": "f4f62c454eec4836",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.5438,
+        0.139,
+        22.713,
+        0.343,
+        1.659,
+        2.014,
+        4.873,
+        3.0522
+      ],
+      [
+        "car",
+        0.8256,
+        -3.323,
+        0.466,
+        -1.132,
+        1.492,
+        1.855,
+        4.563,
+        1.6181
+      ],
+      [
+        "pedestrian",
+        0.324,
+        -1.951,
+        7.144,
+        -0.659,
+        1.808,
+        0.689,
+        0.738,
+        1.9392
+      ],
+      [
+        "pedestrian",
+        0.3321,
+        -7.313,
+        7.409,
+        -0.71,
+        1.787,
+        0.689,
+        0.726,
+        1.0608
+      ],
+      [
+        "pedestrian",
+        0.3646,
+        -7.913,
+        9.02,
+        -0.593,
+        1.819,
+        0.681,
+        0.719,
+        1.2982
+      ],
+      [
+        "pedestrian",
+        0.4297,
+        -6.019,
+        9.068,
+        -0.533,
+        1.81,
+        0.701,
+        0.792,
+        0.3537
+      ],
+      [
+        "trailer",
+        0.308,
+        31.975,
+        17.371,
+        1.591,
+        4.148,
+        2.875,
+        11.434,
+        0.0332
+      ],
+      [
+        "trailer",
+        0.3403,
+        27.938,
+        14.778,
+        1.634,
+        3.905,
+        2.903,
+        9.266,
+        -1.559
+      ],
+      [
+        "trailer",
+        0.949,
+        -3.141,
+        -15.898,
+        -0.41,
+        4.211,
+        2.784,
+        14.773,
+        1.6259
+      ],
+      [
+        "truck",
+        0.469,
+        -5.444,
+        39.507,
+        1.959,
+        3.752,
+        2.94,
+        10.668,
+        1.2558
+      ],
+      [
+        "truck",
+        0.6394,
+        -0.156,
+        -8.095,
+        -1.072,
+        2.518,
+        2.23,
+        4.927,
+        1.5972
+      ],
+      [
+        "truck",
+        0.8926,
+        -3.415,
+        -7.872,
+        -0.351,
+        4.002,
+        2.708,
+        6.091,
+        1.6081
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.030258655548096,
+            0.7105956077575684,
+            -1.6672042608261108
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 40,
+          "reinjected_centroid": [
+            0.14437006413936615,
+            22.01463508605957,
+            -0.20498983561992645
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 14,
+          "reinjected_centroid": [
+            15.848143577575684,
+            21.17379379272461,
+            0.13008423149585724
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224822.5m, y\u22480m)",
+          "isometric": "Bounding box for 'car 0.54' floats in mid-air at z\u22481.5m to 3.0m with no corresponding ground-level physical structure or point cluster of a vehicle."
+        },
+        "evidence": [
+          "The bounding box 'car 0.54' is placed around extremely sparse points at x \u2248 22.5m, y \u2248 0m.",
+          "In the isometric view, this bounding box is floating high above the ground plane (z > 1.5m) with no supporting physical point cluster underneath.",
+          "There is no realistic 3D shadow or occlusion pattern associated with a vehicle at this location."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicle",
+          "Ground reflection"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:50.826539"
+}

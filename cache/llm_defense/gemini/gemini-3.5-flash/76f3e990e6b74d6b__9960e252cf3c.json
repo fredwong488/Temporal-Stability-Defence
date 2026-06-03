@@ -1,0 +1,189 @@
+{
+  "key": {
+    "frame_id": "76f3e990e6b74d6b",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3164,
+        14.78,
+        -6.024,
+        -1.327,
+        0.98,
+        3.196,
+        0.556,
+        2.8115
+      ],
+      [
+        "bus",
+        0.3156,
+        3.029,
+        47.03,
+        1.629,
+        3.644,
+        2.919,
+        12.656,
+        1.7354
+      ],
+      [
+        "car",
+        0.3003,
+        13.207,
+        18.997,
+        0.439,
+        1.6,
+        1.889,
+        4.472,
+        -1.7382
+      ],
+      [
+        "car",
+        0.3853,
+        27.158,
+        22.483,
+        1.138,
+        1.628,
+        1.894,
+        4.556,
+        -3.067
+      ],
+      [
+        "car",
+        0.4887,
+        -5.993,
+        -0.191,
+        -1.43,
+        1.621,
+        1.88,
+        4.499,
+        -1.5314
+      ],
+      [
+        "car",
+        0.8855,
+        -3.351,
+        0.536,
+        -1.194,
+        1.513,
+        1.905,
+        4.687,
+        1.6125
+      ],
+      [
+        "pedestrian",
+        0.3299,
+        0.301,
+        8.162,
+        -0.566,
+        1.793,
+        0.696,
+        0.752,
+        2.1745
+      ],
+      [
+        "pedestrian",
+        0.4038,
+        -1.084,
+        8.627,
+        -0.564,
+        1.747,
+        0.668,
+        0.764,
+        -3.0668
+      ],
+      [
+        "pedestrian",
+        0.4234,
+        1.092,
+        8.623,
+        -0.494,
+        1.835,
+        0.691,
+        0.722,
+        -2.3089
+      ],
+      [
+        "trailer",
+        0.9548,
+        -3.073,
+        -15.882,
+        -0.274,
+        4.22,
+        2.777,
+        14.325,
+        1.6288
+      ],
+      [
+        "truck",
+        0.6635,
+        -0.156,
+        -7.979,
+        -1.031,
+        2.527,
+        2.18,
+        4.777,
+        1.5696
+      ],
+      [
+        "truck",
+        0.9094,
+        -3.399,
+        -7.884,
+        -0.368,
+        3.983,
+        2.695,
+        6.006,
+        1.6121
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.436254978179932,
+            0.8048834204673767,
+            -1.884409785270691
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22488m, y\u2248-1m)",
+          "isometric": "Three pedestrian boxes ('pedestrian 0.40', 'pedestrian 0.33', 'pedestrian 0.42') are predicted in empty space where there is no physical LiDAR point cluster matching a pedestrian profile."
+        },
+        "evidence": [
+          "In both BEV and isometric views, three pedestrian bounding boxes are predicted clustered together around x \u2248 8m, y \u2248 -1m.",
+          "There is a complete lack of dense or structured point clusters inside or immediately surrounding these predicted boxes to support the existence of three pedestrians.",
+          "No ground truth style occlusion shadows or vertical structures are observed at this location in the isometric point cloud."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity objects",
+          "Distant objects (the region is very close to the ego vehicle, where LiDAR detection is highly accurate)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:56.749674"
+}

@@ -1,0 +1,246 @@
+{
+  "key": {
+    "frame_id": "22fe8715846d4e2a",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.305,
+        6.244,
+        -8.456,
+        -0.955,
+        1.823,
+        0.708,
+        1.59,
+        -1.7143
+      ],
+      [
+        "car",
+        0.4877,
+        3.636,
+        40.236,
+        1.838,
+        1.673,
+        1.877,
+        4.534,
+        1.3778
+      ],
+      [
+        "car",
+        0.5454,
+        -1.931,
+        28.023,
+        0.805,
+        1.657,
+        1.909,
+        4.499,
+        -1.7368
+      ],
+      [
+        "car",
+        0.5764,
+        -4.285,
+        1.591,
+        -1.022,
+        1.753,
+        2.025,
+        5.017,
+        -1.556
+      ],
+      [
+        "car",
+        0.6514,
+        -6.019,
+        27.976,
+        0.426,
+        1.491,
+        1.808,
+        4.31,
+        -1.694
+      ],
+      [
+        "car",
+        0.7098,
+        1.115,
+        -20.692,
+        -1.943,
+        1.712,
+        1.909,
+        4.489,
+        1.7835
+      ],
+      [
+        "construction_vehicle",
+        0.3281,
+        -8.445,
+        -34.159,
+        -1.618,
+        2.342,
+        1.632,
+        3.275,
+        -1.4666
+      ],
+      [
+        "motorcycle",
+        0.3238,
+        -9.968,
+        16.689,
+        -0.22,
+        1.401,
+        0.78,
+        2.006,
+        0.0746
+      ],
+      [
+        "pedestrian",
+        0.3144,
+        6.306,
+        -18.766,
+        -1.578,
+        1.749,
+        0.663,
+        0.604,
+        0.438
+      ],
+      [
+        "pedestrian",
+        0.3175,
+        7.504,
+        12.819,
+        -0.238,
+        1.798,
+        0.695,
+        0.694,
+        0.7144
+      ],
+      [
+        "pedestrian",
+        0.3361,
+        -10.575,
+        -8.451,
+        -1.386,
+        1.814,
+        0.631,
+        0.718,
+        -1.4465
+      ],
+      [
+        "pedestrian",
+        0.3488,
+        -8.173,
+        7.454,
+        -0.42,
+        1.826,
+        0.673,
+        0.762,
+        -1.5001
+      ],
+      [
+        "pedestrian",
+        0.358,
+        7.493,
+        9.792,
+        -0.468,
+        1.727,
+        0.663,
+        0.676,
+        1.0007
+      ],
+      [
+        "pedestrian",
+        0.3783,
+        8.796,
+        14.847,
+        0.014,
+        1.793,
+        0.65,
+        0.607,
+        -2.7431
+      ],
+      [
+        "pedestrian",
+        0.4227,
+        7.692,
+        15.467,
+        -0.079,
+        1.76,
+        0.644,
+        0.629,
+        -1.5947
+      ],
+      [
+        "pedestrian",
+        0.4345,
+        6.127,
+        -8.322,
+        -1.098,
+        1.836,
+        0.704,
+        0.781,
+        -1.6931
+      ],
+      [
+        "pedestrian",
+        0.4403,
+        8.321,
+        9.512,
+        -0.397,
+        1.744,
+        0.649,
+        0.671,
+        1.2864
+      ],
+      [
+        "pedestrian",
+        0.4438,
+        6.852,
+        3.685,
+        -0.803,
+        1.77,
+        0.699,
+        0.781,
+        1.7748
+      ],
+      [
+        "pedestrian",
+        0.4505,
+        8.324,
+        13.472,
+        -0.246,
+        1.776,
+        0.674,
+        0.657,
+        2.73
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22482m, y\u22484m)",
+          "isometric": "cluster appears as a dense, small block at z\u22480-1m with no vertical structure consistent with a car"
+        },
+        "evidence": [
+          "A small, dense cluster of points is located at (x\u22482m, y\u22484m), which is very close to the ego vehicle.",
+          "The cluster has no discernable 3D vehicle structure (no L-shape, minimal vertical extent) in the isometric view.",
+          "This signature is highly characteristic of a localized, small-scale point injection/spoofing attack often used to trigger false emergency braking."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too localized and structured as a single block).",
+          "Genuine road furniture (no plausible physical object appears at this location in typical road environments that would present as a small, isolated cluster like this)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:53.526246"
+}

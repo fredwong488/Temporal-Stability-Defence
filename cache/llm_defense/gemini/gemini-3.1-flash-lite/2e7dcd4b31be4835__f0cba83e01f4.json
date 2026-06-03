@@ -1,0 +1,297 @@
+{
+  "key": {
+    "frame_id": "2e7dcd4b31be4835",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4212,
+        -0.24,
+        -39.2,
+        -2.478,
+        2.009,
+        2.125,
+        5.188,
+        1.5755
+      ],
+      [
+        "car",
+        0.4926,
+        6.63,
+        39.35,
+        0.989,
+        1.886,
+        2.058,
+        4.776,
+        1.4791
+      ],
+      [
+        "car",
+        0.4948,
+        -23.395,
+        10.801,
+        -1.341,
+        1.674,
+        1.894,
+        4.36,
+        -2.9461
+      ],
+      [
+        "car",
+        0.632,
+        1.117,
+        20.315,
+        0.003,
+        1.689,
+        1.908,
+        4.458,
+        1.2811
+      ],
+      [
+        "car",
+        0.7144,
+        -8.958,
+        -11.654,
+        -1.936,
+        1.734,
+        2.032,
+        4.999,
+        -1.5294
+      ],
+      [
+        "car",
+        0.7196,
+        -16.47,
+        5.309,
+        -1.335,
+        1.787,
+        2.021,
+        4.79,
+        0.2503
+      ],
+      [
+        "car",
+        0.8238,
+        4.289,
+        5.15,
+        -0.877,
+        1.572,
+        1.917,
+        4.875,
+        1.6327
+      ],
+      [
+        "car",
+        0.8659,
+        -6.042,
+        15.826,
+        -0.577,
+        1.663,
+        1.919,
+        4.619,
+        -2.0584
+      ],
+      [
+        "motorcycle",
+        0.4186,
+        -7.632,
+        -7.856,
+        -1.77,
+        1.306,
+        0.834,
+        2.223,
+        -0.1465
+      ],
+      [
+        "pedestrian",
+        0.3015,
+        6.554,
+        -30.233,
+        -1.622,
+        1.776,
+        0.649,
+        0.666,
+        -2.7614
+      ],
+      [
+        "pedestrian",
+        0.3346,
+        -4.164,
+        -31.154,
+        -1.877,
+        1.776,
+        0.649,
+        0.703,
+        -1.5094
+      ],
+      [
+        "pedestrian",
+        0.3379,
+        3.665,
+        -31.584,
+        -1.54,
+        1.825,
+        0.698,
+        0.717,
+        -1.3352
+      ],
+      [
+        "pedestrian",
+        0.339,
+        8.277,
+        -16.192,
+        -1.189,
+        1.834,
+        0.6,
+        0.58,
+        -2.8831
+      ],
+      [
+        "pedestrian",
+        0.3522,
+        8.144,
+        5.127,
+        -0.678,
+        1.724,
+        0.642,
+        0.674,
+        1.7643
+      ],
+      [
+        "pedestrian",
+        0.3551,
+        -11.832,
+        9.428,
+        -1.037,
+        1.767,
+        0.661,
+        0.757,
+        -1.6063
+      ],
+      [
+        "pedestrian",
+        0.3583,
+        -11.647,
+        11.172,
+        -0.809,
+        1.792,
+        0.688,
+        0.727,
+        -0.967
+      ],
+      [
+        "pedestrian",
+        0.3688,
+        7.514,
+        -16.818,
+        -1.155,
+        1.82,
+        0.592,
+        0.578,
+        -0.3939
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            4.971710681915283,
+            5.973129749298096,
+            -1.2889426946640015
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 139,
+          "reinjected_centroid": [
+            -5.55836820602417,
+            15.318192481994629,
+            -0.8929482102394104
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -8.390381813049316,
+            -10.718488693237305,
+            -2.1332969665527344
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 98,
+          "reinjected_centroid": [
+            -15.383357048034668,
+            5.220448970794678,
+            -1.5740691423416138
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 8,
+          "reinjected_centroid": [
+            6.135630130767822,
+            37.36048126220703,
+            0.1077408641576767
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 40,
+          "reinjected_centroid": [
+            0.7843281626701355,
+            18.788219451904297,
+            -0.4187780022621155
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 37,
+          "reinjected_centroid": [
+            -22.1284122467041,
+            10.841085433959961,
+            -1.9116618633270264
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22485m)",
+          "isometric": "Cluster at x\u224815m, y\u22485m is sparse and lacks coherent vertical structure consistent with a vehicle"
+        },
+        "evidence": [
+          "The bounding box at (x\u224815m, y\u22485m) in BEV encloses a very sparse set of points that lacks the typical 'L-shape' or dense surface profile expected of a vehicle.",
+          "The isometric view shows this region contains minimal vertical density, suggesting it does not correspond to a solid physical object.",
+          "The lack of camera data prevents verification, but the geometric sparsity in the LiDAR data is highly suspicious for a ghost object injection."
+        ],
+        "alternatives_ruled_out": [
+          "Occlusion: The point density is too low and the structural integrity is too weak to be a genuine occluded vehicle.",
+          "Sensor Noise: The existence of a distinct, labeled 3D bounding box suggests the detector was triggered by an intentional, albeit sparse, point injection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:52.888687"
+}

@@ -1,0 +1,401 @@
+{
+  "key": {
+    "frame_id": "f978f6da74034443",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3042,
+        -30.304,
+        18.961,
+        -0.198,
+        1.628,
+        0.626,
+        1.795,
+        0.074
+      ],
+      [
+        "car",
+        0.3159,
+        -29.827,
+        2.023,
+        -1.937,
+        1.6,
+        1.907,
+        4.43,
+        0.1879
+      ],
+      [
+        "car",
+        0.4382,
+        16.686,
+        16.149,
+        0.55,
+        1.74,
+        1.925,
+        4.667,
+        1.5537
+      ],
+      [
+        "car",
+        0.4496,
+        19.073,
+        16.115,
+        0.561,
+        1.681,
+        1.9,
+        4.422,
+        1.454
+      ],
+      [
+        "car",
+        0.5455,
+        6.959,
+        33.3,
+        0.776,
+        1.988,
+        2.086,
+        5.121,
+        1.4588
+      ],
+      [
+        "car",
+        0.5557,
+        6.95,
+        -2.077,
+        -1.45,
+        1.632,
+        1.873,
+        4.331,
+        1.5645
+      ],
+      [
+        "car",
+        0.6043,
+        -24.562,
+        3.303,
+        -2.072,
+        1.6,
+        1.926,
+        4.499,
+        -3.006
+      ],
+      [
+        "car",
+        0.6723,
+        -8.784,
+        -19.616,
+        -2.234,
+        1.63,
+        1.899,
+        4.685,
+        -1.4892
+      ],
+      [
+        "car",
+        0.7696,
+        -7.899,
+        8.091,
+        -1.222,
+        1.601,
+        1.839,
+        4.294,
+        -2.1688
+      ],
+      [
+        "car",
+        0.83,
+        -17.53,
+        -2.948,
+        -1.947,
+        1.682,
+        1.983,
+        4.592,
+        0.0101
+      ],
+      [
+        "car",
+        0.9128,
+        -5.863,
+        5.926,
+        -1.104,
+        1.537,
+        1.85,
+        4.623,
+        -2.157
+      ],
+      [
+        "car",
+        0.9415,
+        4.217,
+        -1.616,
+        -1.267,
+        1.575,
+        1.905,
+        4.751,
+        1.5515
+      ],
+      [
+        "construction_vehicle",
+        0.3026,
+        -11.011,
+        -50.995,
+        -2.577,
+        3.478,
+        2.92,
+        7.684,
+        -1.448
+      ],
+      [
+        "construction_vehicle",
+        0.3093,
+        -7.62,
+        48.523,
+        1.541,
+        3.047,
+        2.644,
+        7.552,
+        -1.6695
+      ],
+      [
+        "motorcycle",
+        0.3102,
+        -10.924,
+        -1.109,
+        -1.291,
+        1.245,
+        0.656,
+        1.988,
+        1.5149
+      ],
+      [
+        "pedestrian",
+        0.3076,
+        -11.555,
+        14.385,
+        -0.462,
+        1.738,
+        0.625,
+        0.632,
+        0.9132
+      ],
+      [
+        "pedestrian",
+        0.3099,
+        -11.449,
+        0.667,
+        -1.383,
+        1.846,
+        0.68,
+        0.781,
+        -1.364
+      ],
+      [
+        "pedestrian",
+        0.3788,
+        7.423,
+        -20.613,
+        -1.185,
+        1.805,
+        0.608,
+        0.637,
+        -1.3507
+      ],
+      [
+        "pedestrian",
+        0.3871,
+        7.645,
+        -5.02,
+        -0.962,
+        1.785,
+        0.623,
+        0.649,
+        1.6205
+      ],
+      [
+        "traffic_cone",
+        0.3095,
+        -7.614,
+        33.558,
+        -0.505,
+        1.196,
+        0.389,
+        0.394,
+        1.5868
+      ],
+      [
+        "traffic_cone",
+        0.3496,
+        -7.525,
+        23.041,
+        -0.612,
+        1.262,
+        0.388,
+        0.375,
+        2.9602
+      ],
+      [
+        "traffic_cone",
+        0.3866,
+        -7.744,
+        24.564,
+        -0.544,
+        1.239,
+        0.396,
+        0.405,
+        -0.8426
+      ],
+      [
+        "trailer",
+        0.5762,
+        22.253,
+        -10.72,
+        0.219,
+        3.849,
+        2.78,
+        13.162,
+        -1.2079
+      ],
+      [
+        "truck",
+        0.3384,
+        -7.566,
+        47.708,
+        1.511,
+        2.514,
+        2.225,
+        5.904,
+        1.5642
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.246610641479492,
+            -2.309053421020508,
+            -2.0846691131591797
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -7.31883430480957,
+            7.6990790367126465,
+            -1.6115280389785767
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 34,
+          "reinjected_centroid": [
+            -22.958209991455078,
+            3.2408576011657715,
+            -2.414301633834839
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 66,
+          "reinjected_centroid": [
+            -8.586002349853516,
+            -18.341732025146484,
+            -2.4880268573760986
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 6,
+          "reinjected_centroid": [
+            -28.800310134887695,
+            1.8128844499588013,
+            -2.70123291015625
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 14,
+          "reinjected_centroid": [
+            6.374346733093262,
+            31.535558700561523,
+            0.09009154886007309
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 53,
+          "reinjected_centroid": [
+            -16.13582420349121,
+            -3.069314956665039,
+            -2.0969297885894775
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 27,
+          "reinjected_centroid": [
+            -10.06380844116211,
+            15.900542259216309,
+            -0.7027345299720764
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224821m, y\u22487.5m)",
+          "isometric": "floating cuboid at height z\u22483-4m without ground support"
+        },
+        "evidence": [
+          "The bounding box detected at x\u224821m, y\u22487.5m is floating in mid-air in the isometric view.",
+          "There are no LiDAR points supporting the existence of an object within or beneath the detected cuboid volume.",
+          "A physical vehicle or object would necessarily produce LiDAR returns from the ground plane up, not a floating box of empty space."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is ruled out because the detection is a highly structured, oriented cuboid box.",
+          "Occlusion is ruled out because even if an object were occluded, the detector should not produce a floating cuboid in empty space where no LiDAR returns exist."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22483m)",
+          "isometric": "small box floating at height z\u22481-2m"
+        },
+        "evidence": [
+          "The small cuboid box in the isometric view has no underlying LiDAR point cluster.",
+          "The box is suspended in space with no connectivity to the road surface.",
+          "The absence of any physical object returns at that location suggests a ghost detection."
+        ],
+        "alternatives_ruled_out": [
+          "Low reflectivity surface is ruled out as it would simply result in a miss, not a false detection of a floating object.",
+          "Distant object is ruled out because the box is close enough that LiDAR should have returned points if a physical object were present."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:23.839898"
+}

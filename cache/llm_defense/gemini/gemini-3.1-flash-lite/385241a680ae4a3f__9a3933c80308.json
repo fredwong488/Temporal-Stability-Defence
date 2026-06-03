@@ -1,0 +1,132 @@
+{
+  "key": {
+    "frame_id": "385241a680ae4a3f",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.321,
+        -1.088,
+        50.695,
+        0.437,
+        1.649,
+        1.901,
+        4.377,
+        -1.4503
+      ],
+      [
+        "car",
+        0.5303,
+        -3.4,
+        -24.876,
+        -2.002,
+        1.699,
+        1.927,
+        4.506,
+        -1.6248
+      ],
+      [
+        "car",
+        0.5457,
+        6.758,
+        42.614,
+        0.414,
+        1.616,
+        1.922,
+        4.429,
+        1.2827
+      ],
+      [
+        "car",
+        0.6405,
+        0.132,
+        -19.74,
+        -1.828,
+        1.688,
+        1.914,
+        4.491,
+        1.5861
+      ],
+      [
+        "pedestrian",
+        0.3489,
+        -6.074,
+        31.14,
+        0.011,
+        1.785,
+        0.659,
+        0.708,
+        1.5276
+      ],
+      [
+        "pedestrian",
+        0.4176,
+        7.367,
+        16.42,
+        -0.323,
+        1.784,
+        0.667,
+        0.704,
+        -2.0501
+      ],
+      [
+        "pedestrian",
+        0.458,
+        -9.426,
+        18.086,
+        -0.489,
+        1.828,
+        0.665,
+        0.716,
+        -1.6005
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224831m, y\u22486m)",
+          "isometric": "cluster appears in empty space, lacking support or vertical structure"
+        },
+        "evidence": [
+          "The bounding box in the BEV (x\u224831m, y\u22486m) labeled 'pedestrian' contains no visible cluster of LiDAR points.",
+          "In the isometric view, this region is completely empty of point cloud returns, suggesting a purely hallucinated detection.",
+          "There is no cross-modal evidence (no camera feedback available, but the LiDAR sparsity makes the detection physically impossible)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely to produce a structured, high-confidence bounding box for a pedestrian where no points exist.",
+          "Occlusion does not explain the complete absence of points in the isometric view."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224816m, y\u2248-7m)",
+          "isometric": "very sparse points, no clear human shape"
+        },
+        "evidence": [
+          "The bounding box labeled 'pedestrian' at (x\u224816m, y\u2248-7m) corresponds to an extremely sparse set of points.",
+          "The isometric view confirms the lack of vertical structure or human-like shape necessary for a pedestrian detection.",
+          "The detection appears to be an artifact or injected anomaly rather than a legitimate object."
+        ],
+        "alternatives_ruled_out": [
+          "Low-reflectivity surface is unlikely given the complete absence of shape-defining points.",
+          "Disturbance due to nearby foliage is inconsistent with the standalone bounding box in open space."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:51.997945"
+}

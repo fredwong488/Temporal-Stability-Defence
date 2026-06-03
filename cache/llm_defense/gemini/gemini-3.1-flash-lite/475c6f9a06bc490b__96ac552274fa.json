@@ -1,0 +1,310 @@
+{
+  "key": {
+    "frame_id": "475c6f9a06bc490b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3499,
+        -11.006,
+        2.975,
+        -1.411,
+        1.334,
+        0.584,
+        1.612,
+        2.052
+      ],
+      [
+        "car",
+        0.3556,
+        6.076,
+        6.557,
+        -0.974,
+        1.644,
+        1.865,
+        4.628,
+        1.7307
+      ],
+      [
+        "car",
+        0.3781,
+        6.707,
+        39.491,
+        0.77,
+        1.747,
+        1.966,
+        4.633,
+        1.3552
+      ],
+      [
+        "car",
+        0.3875,
+        -27.138,
+        8.503,
+        -1.403,
+        1.718,
+        1.966,
+        4.509,
+        -2.9806
+      ],
+      [
+        "car",
+        0.4264,
+        -21.634,
+        9.486,
+        -1.548,
+        1.628,
+        1.898,
+        4.471,
+        -2.9716
+      ],
+      [
+        "car",
+        0.4302,
+        -0.169,
+        -39.47,
+        -2.253,
+        1.824,
+        2.003,
+        4.66,
+        1.645
+      ],
+      [
+        "car",
+        0.4959,
+        -17.073,
+        4.987,
+        -1.414,
+        1.854,
+        2.133,
+        5.047,
+        0.2164
+      ],
+      [
+        "car",
+        0.6221,
+        1.208,
+        21.528,
+        0.011,
+        1.86,
+        1.969,
+        4.672,
+        1.3912
+      ],
+      [
+        "car",
+        0.6725,
+        -9.224,
+        -12.241,
+        -1.933,
+        1.631,
+        2.009,
+        4.948,
+        1.5424
+      ],
+      [
+        "car",
+        0.8267,
+        -6.26,
+        15.911,
+        -0.616,
+        1.653,
+        1.942,
+        4.782,
+        -2.0923
+      ],
+      [
+        "car",
+        0.8613,
+        4.33,
+        4.821,
+        -1.018,
+        1.625,
+        1.915,
+        4.79,
+        1.5917
+      ],
+      [
+        "construction_vehicle",
+        0.3487,
+        6.857,
+        39.614,
+        0.891,
+        2.517,
+        2.848,
+        4.689,
+        1.3222
+      ],
+      [
+        "pedestrian",
+        0.3016,
+        8.646,
+        7.967,
+        -0.501,
+        1.813,
+        0.671,
+        0.704,
+        2.0985
+      ],
+      [
+        "pedestrian",
+        0.3099,
+        -11.037,
+        21.431,
+        -0.143,
+        1.765,
+        0.613,
+        0.624,
+        0.2242
+      ],
+      [
+        "pedestrian",
+        0.3382,
+        7.372,
+        -17.106,
+        -1.217,
+        1.803,
+        0.639,
+        0.664,
+        -1.4389
+      ],
+      [
+        "pedestrian",
+        0.3535,
+        -11.873,
+        8.805,
+        -1.07,
+        1.76,
+        0.629,
+        0.709,
+        1.0057
+      ],
+      [
+        "pedestrian",
+        0.369,
+        8.192,
+        -16.429,
+        -1.126,
+        1.772,
+        0.607,
+        0.614,
+        -2.5315
+      ],
+      [
+        "pedestrian",
+        0.3985,
+        8.162,
+        4.386,
+        -0.655,
+        1.782,
+        0.647,
+        0.65,
+        -1.8502
+      ],
+      [
+        "pedestrian",
+        0.4101,
+        -11.604,
+        10.676,
+        -0.942,
+        1.77,
+        0.69,
+        0.777,
+        1.5387
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            5.330414295196533,
+            5.942246913909912,
+            -1.4374573230743408
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 196,
+          "reinjected_centroid": [
+            -8.72083854675293,
+            -11.294490814208984,
+            -2.219722270965576
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 145,
+          "reinjected_centroid": [
+            -5.775068283081055,
+            15.47542953491211,
+            -0.9501283764839172
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 101,
+          "reinjected_centroid": [
+            -15.939309120178223,
+            4.967573642730713,
+            -1.6141912937164307
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 38,
+          "reinjected_centroid": [
+            0.9925407767295837,
+            19.83757781982422,
+            -0.47922948002815247
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 11,
+          "reinjected_centroid": [
+            6.262117385864258,
+            37.76592254638672,
+            0.15944701433181763
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m, y\u2248-6m)",
+          "isometric": "cluster appears as a small, isolated point grouping with no coherent surface structure"
+        },
+        "evidence": [
+          "Small dense cluster of points detected as 'car' at (x\u22486m, y\u2248-6m) without the expected point density or spatial extent for a vehicle.",
+          "The cluster lacks vertical height and geometric consistency in the isometric view compared to other genuine vehicle detections.",
+          "The cluster is located in close proximity (front-near region), which is a characteristic signature for injected ghost object attacks."
+        ],
+        "alternatives_ruled_out": [
+          "Not a real vehicle because of the lack of point distribution and surface volume consistent with vehicle dimensions.",
+          "Not environmental noise as it is detected with high classification confidence by the system as a 'car', suggesting deliberate spoofing."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:54.960172"
+}

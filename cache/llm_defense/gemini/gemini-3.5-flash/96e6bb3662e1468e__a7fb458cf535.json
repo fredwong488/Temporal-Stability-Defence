@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "96e6bb3662e1468e",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3596,
+        14.802,
+        -5.974,
+        -1.272,
+        0.982,
+        3.271,
+        0.549,
+        2.7639
+      ],
+      [
+        "bus",
+        0.3759,
+        -8.17,
+        33.488,
+        1.46,
+        3.408,
+        2.893,
+        10.571,
+        0.9881
+      ],
+      [
+        "car",
+        0.324,
+        32.669,
+        14.136,
+        0.714,
+        1.739,
+        2.016,
+        4.714,
+        2.5146
+      ],
+      [
+        "car",
+        0.4408,
+        -9.732,
+        21.181,
+        -0.038,
+        1.598,
+        1.952,
+        4.628,
+        -0.0882
+      ],
+      [
+        "car",
+        0.6124,
+        7.315,
+        22.351,
+        0.464,
+        1.659,
+        1.929,
+        4.632,
+        -0.1143
+      ],
+      [
+        "car",
+        0.8559,
+        -3.333,
+        0.423,
+        -1.142,
+        1.512,
+        1.844,
+        4.502,
+        1.6166
+      ],
+      [
+        "pedestrian",
+        0.338,
+        -3.435,
+        7.309,
+        -0.677,
+        1.721,
+        0.678,
+        0.733,
+        2.0142
+      ],
+      [
+        "pedestrian",
+        0.3569,
+        -4.349,
+        7.964,
+        -0.703,
+        1.736,
+        0.669,
+        0.689,
+        1.6442
+      ],
+      [
+        "pedestrian",
+        0.3611,
+        -8.559,
+        7.417,
+        -0.804,
+        1.746,
+        0.629,
+        0.677,
+        0.6164
+      ],
+      [
+        "pedestrian",
+        0.4697,
+        -9.18,
+        9.393,
+        -0.763,
+        1.76,
+        0.662,
+        0.697,
+        1.7433
+      ],
+      [
+        "trailer",
+        0.9393,
+        -3.154,
+        -16.133,
+        -0.378,
+        4.255,
+        2.786,
+        14.958,
+        1.6208
+      ],
+      [
+        "truck",
+        0.3024,
+        -40.878,
+        -13.534,
+        -0.92,
+        2.057,
+        2.276,
+        5.554,
+        1.6191
+      ],
+      [
+        "truck",
+        0.562,
+        -0.082,
+        -7.969,
+        -1.013,
+        2.569,
+        2.162,
+        4.703,
+        1.5762
+      ],
+      [
+        "truck",
+        0.8255,
+        20.102,
+        16.574,
+        1.297,
+        3.524,
+        2.819,
+        7.914,
+        0.0756
+      ],
+      [
+        "truck",
+        0.9241,
+        -3.4,
+        -7.819,
+        -0.349,
+        3.962,
+        2.657,
+        6.06,
+        1.6404
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.100551605224609,
+            0.6208566427230835,
+            -1.81243097782135
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 55,
+          "reinjected_centroid": [
+            6.723987579345703,
+            21.710525512695312,
+            -0.08634775131940842
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "(x\u224821m, y\u22487.5m) and (x\u224822m, y\u2248-6m)",
+          "isometric": "Empty boxes with no corresponding physical point clusters or ground-truth reflections"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes are predicted in areas with zero or extremely sparse LiDAR points (e.g., car 0.44 at x\u224821m, y\u22487.5m and car 0.61 at x\u224822m, y\u2248-6m).",
+          "The camera image is completely unavailable/blacked out with an 'ATTACKED' label, preventing cross-modal validation, which is a signature of sensor denial/tampering."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (does not generate perfectly shaped empty bounding boxes far away)",
+          "Distant objects (there are no point clusters whatsoever inside the bounding boxes)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:35.331144"
+}

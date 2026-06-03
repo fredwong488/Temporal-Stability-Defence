@@ -1,0 +1,166 @@
+{
+  "key": {
+    "frame_id": "50086b374eeb4d4d",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.3262,
+        -5.983,
+        0.078,
+        -1.459,
+        1.607,
+        1.862,
+        4.323,
+        -1.6031
+      ],
+      [
+        "car",
+        0.8872,
+        -3.316,
+        0.522,
+        -1.215,
+        1.538,
+        1.907,
+        4.688,
+        1.5957
+      ],
+      [
+        "construction_vehicle",
+        0.7569,
+        -9.984,
+        49.52,
+        1.146,
+        2.68,
+        2.927,
+        7.346,
+        -1.4262
+      ],
+      [
+        "pedestrian",
+        0.3351,
+        3.833,
+        9.401,
+        -0.381,
+        1.745,
+        0.704,
+        0.783,
+        -2.5514
+      ],
+      [
+        "pedestrian",
+        0.3721,
+        3.67,
+        7.039,
+        -0.511,
+        1.811,
+        0.731,
+        0.813,
+        -2.0791
+      ],
+      [
+        "pedestrian",
+        0.3723,
+        10.98,
+        5.13,
+        -0.264,
+        1.798,
+        0.707,
+        0.779,
+        -2.8429
+      ],
+      [
+        "pedestrian",
+        0.4168,
+        10.066,
+        4.346,
+        -0.311,
+        1.815,
+        0.713,
+        0.833,
+        1.1557
+      ],
+      [
+        "trailer",
+        0.9258,
+        -3.158,
+        -15.777,
+        -0.411,
+        4.176,
+        2.769,
+        14.615,
+        1.6277
+      ],
+      [
+        "truck",
+        0.6712,
+        -0.097,
+        -8.141,
+        -1.088,
+        2.481,
+        2.238,
+        4.953,
+        1.6224
+      ],
+      [
+        "truck",
+        0.8714,
+        -3.409,
+        -7.778,
+        -0.339,
+        4.023,
+        2.663,
+        6.356,
+        1.63
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.465167045593262,
+            0.8005403876304626,
+            -1.9251186847686768
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224825m, y\u2248-6m)",
+          "isometric": "Empty bounding box floating high in mid-air at z \u2248 3m with absolutely no supporting LiDAR points inside or below it"
+        },
+        "evidence": [
+          "A 3D bounding box is predicted in the upper right quadrant of the isometric view (x\u224825m, y\u2248-6m, z\u22483m) completely floating in mid-air.",
+          "There are zero LiDAR points contained within or near this predicted bounding box, indicating it is a ghost/spoofed detection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real object (no physical cluster exists at this location)",
+          "Ground reflection"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:48.544460"
+}

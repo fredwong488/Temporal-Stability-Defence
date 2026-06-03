@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "8d8dc28e17954182",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "bus",
+        0.4154,
+        32.437,
+        -48.033,
+        -3.993,
+        3.765,
+        3.191,
+        12.498,
+        -0.1415
+      ],
+      [
+        "car",
+        0.4889,
+        14.95,
+        -23.681,
+        -1.611,
+        1.622,
+        1.92,
+        4.53,
+        1.6187
+      ],
+      [
+        "car",
+        0.7448,
+        11.941,
+        -15.383,
+        -1.617,
+        1.597,
+        1.879,
+        4.56,
+        -1.602
+      ],
+      [
+        "construction_vehicle",
+        0.5206,
+        2.829,
+        -20.324,
+        -0.599,
+        2.773,
+        3.295,
+        4.269,
+        -1.5891
+      ],
+      [
+        "construction_vehicle",
+        0.6054,
+        26.997,
+        -47.769,
+        -3.459,
+        2.699,
+        1.857,
+        4.267,
+        -1.7247
+      ],
+      [
+        "traffic_cone",
+        0.3299,
+        9.528,
+        0.741,
+        -1.439,
+        0.772,
+        0.38,
+        0.402,
+        -0.2386
+      ],
+      [
+        "traffic_cone",
+        0.3783,
+        9.757,
+        22.335,
+        -0.956,
+        0.763,
+        0.439,
+        0.444,
+        -1.4597
+      ],
+      [
+        "traffic_cone",
+        0.3789,
+        9.809,
+        16.718,
+        -1.016,
+        0.771,
+        0.417,
+        0.432,
+        -1.4667
+      ],
+      [
+        "traffic_cone",
+        0.3984,
+        9.798,
+        15.106,
+        -1.04,
+        0.761,
+        0.418,
+        0.431,
+        -1.4828
+      ],
+      [
+        "traffic_cone",
+        0.4403,
+        1.891,
+        -2.315,
+        -1.506,
+        0.724,
+        0.373,
+        0.373,
+        1.5345
+      ],
+      [
+        "truck",
+        0.3471,
+        -3.457,
+        9.632,
+        -0.375,
+        2.29,
+        2.343,
+        5.932,
+        2.2013
+      ],
+      [
+        "truck",
+        0.4519,
+        10.681,
+        -24.114,
+        -1.576,
+        1.867,
+        1.991,
+        5.051,
+        -1.6084
+      ],
+      [
+        "truck",
+        0.6025,
+        14.817,
+        -1.222,
+        -0.057,
+        3.349,
+        2.706,
+        7.118,
+        -1.5768
+      ],
+      [
+        "truck",
+        0.6375,
+        14.635,
+        -13.095,
+        -0.6,
+        3.866,
+        3.091,
+        10.901,
+        -1.5174
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 95,
+          "reinjected_centroid": [
+            11.53206729888916,
+            -14.48849105834961,
+            -1.9100208282470703
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 16,
+          "reinjected_centroid": [
+            14.373641014099121,
+            -23.24376678466797,
+            -1.7443879842758179
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -3.804452896118164,
+            9.02597427368164,
+            -0.839108407497406
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (labeled as [ATTACKED])",
+          "bev": "Region around (x\u22489.5m, y\u22483.8m)",
+          "isometric": "Large empty 3D bounding box predicted as 'truck' at x\u22489.5m, y\u22483.8m without matching dense 3D point cluster or vertical structure"
+        },
+        "evidence": [
+          "A large 3D bounding box is predicted for a 'truck' (confidence 0.35) centered at x\u22489.5m, y\u22483.8m.",
+          "Both the BEV and Isometric views show that this predicted box is virtually empty, containing only a few sparse, flat background points with no 3D L-shape, vertical volume, or physical boundary representing a truck.",
+          "The lack of any physical occlusion or shadow behind this region further indicates there is no solid object present."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant or low-reflectivity objects",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:02:10.776705"
+}

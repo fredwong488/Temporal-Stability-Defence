@@ -1,0 +1,220 @@
+{
+  "key": {
+    "frame_id": "0142650363214199",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4722,
+        0.149,
+        39.331,
+        1.693,
+        1.711,
+        1.924,
+        4.583,
+        1.3507
+      ],
+      [
+        "car",
+        0.4766,
+        -5.149,
+        34.115,
+        1.366,
+        1.726,
+        1.963,
+        4.628,
+        -1.5829
+      ],
+      [
+        "car",
+        0.4983,
+        4.572,
+        39.961,
+        2.025,
+        1.744,
+        1.909,
+        4.451,
+        1.4017
+      ],
+      [
+        "car",
+        0.6343,
+        -3.875,
+        13.279,
+        -0.299,
+        1.757,
+        1.924,
+        4.651,
+        -1.5799
+      ],
+      [
+        "car",
+        0.6415,
+        1.108,
+        -19.475,
+        -2.306,
+        1.689,
+        1.953,
+        4.61,
+        1.6565
+      ],
+      [
+        "construction_vehicle",
+        0.3044,
+        10.582,
+        -6.954,
+        -0.853,
+        3.416,
+        2.147,
+        6.22,
+        0.143
+      ],
+      [
+        "pedestrian",
+        0.3216,
+        9.059,
+        19.261,
+        0.215,
+        1.792,
+        0.652,
+        0.61,
+        2.7508
+      ],
+      [
+        "pedestrian",
+        0.3409,
+        8.097,
+        18.904,
+        0.276,
+        1.764,
+        0.657,
+        0.638,
+        1.8313
+      ],
+      [
+        "pedestrian",
+        0.3608,
+        8.738,
+        13.869,
+        -0.055,
+        1.737,
+        0.659,
+        0.687,
+        1.7068
+      ],
+      [
+        "pedestrian",
+        0.3651,
+        6.004,
+        -2.002,
+        -0.863,
+        1.801,
+        0.686,
+        0.782,
+        -0.4829
+      ],
+      [
+        "pedestrian",
+        0.389,
+        7.376,
+        10.048,
+        -0.484,
+        1.697,
+        0.629,
+        0.706,
+        1.5658
+      ],
+      [
+        "pedestrian",
+        0.4043,
+        7.018,
+        -14.106,
+        -1.618,
+        1.724,
+        0.636,
+        0.676,
+        -1.6707
+      ],
+      [
+        "pedestrian",
+        0.411,
+        9.274,
+        15.572,
+        -0.019,
+        1.751,
+        0.638,
+        0.625,
+        -3.1398
+      ],
+      [
+        "pedestrian",
+        0.4624,
+        7.938,
+        15.746,
+        0.026,
+        1.744,
+        0.653,
+        0.636,
+        -0.6751
+      ],
+      [
+        "traffic_cone",
+        0.3002,
+        12.347,
+        20.541,
+        -0.047,
+        0.889,
+        0.384,
+        0.366,
+        -1.9394
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u22484m)",
+          "isometric": "cluster appears as a sparse set of points with no identifiable vehicle shape"
+        },
+        "evidence": [
+          "The bounding box labeled 'car 0.63' in the BEV view contains almost no point cloud data, which is inconsistent with the expected density for a car.",
+          "The isometric view confirms the lack of structural integrity; the box is essentially empty or contains only noise, lacking the standard dimensions or L-shape of a vehicle.",
+          "There is no point cluster providing an opaque surface, which violates the physical requirement for a LiDAR return detection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise alone typically does not manifest as a confident 3D object detection.",
+          "Occlusion cannot explain the lack of underlying points where a detector has confidently placed a box."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815-20m, y\u2248-6m to -8m)",
+          "isometric": "multiple small boxes along the edge of the scan range"
+        },
+        "evidence": [
+          "There are multiple bounding boxes labeled 'pedestrian' placed in a sequence along the far left edge of the sensor range.",
+          "The isometric view shows that these boxes do not enclose any coherent 3D structures or point clusters representing humans.",
+          "The grouping of small boxes in a line without supporting physical geometry is characteristic of spoofing attempts."
+        ],
+        "alternatives_ruled_out": [
+          "These are not plausible distant background objects (like poles or trees) due to the specific 'pedestrian' labels and lack of point support in the isometric view.",
+          "Sensor range limitations would result in no detections rather than multiple confident, empty-space detections."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:13.943176"
+}

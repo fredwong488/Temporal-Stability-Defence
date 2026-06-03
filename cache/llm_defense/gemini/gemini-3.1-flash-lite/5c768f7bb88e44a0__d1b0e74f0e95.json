@@ -1,0 +1,304 @@
+{
+  "key": {
+    "frame_id": "5c768f7bb88e44a0",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3558,
+        -9.394,
+        24.401,
+        0.051,
+        1.754,
+        1.915,
+        4.725,
+        -1.4472
+      ],
+      [
+        "car",
+        0.3835,
+        -9.342,
+        -30.628,
+        -2.479,
+        1.531,
+        1.848,
+        4.53,
+        -1.5218
+      ],
+      [
+        "car",
+        0.4074,
+        7.561,
+        -3.338,
+        -1.446,
+        1.817,
+        1.889,
+        4.532,
+        1.4413
+      ],
+      [
+        "car",
+        0.4275,
+        -8.865,
+        2.486,
+        -0.766,
+        3.119,
+        2.522,
+        7.862,
+        -1.6061
+      ],
+      [
+        "car",
+        0.4354,
+        -8.714,
+        10.858,
+        -0.869,
+        1.923,
+        1.972,
+        5.083,
+        -1.6195
+      ],
+      [
+        "car",
+        0.5102,
+        5.125,
+        8.874,
+        -0.799,
+        1.695,
+        1.831,
+        4.491,
+        1.6221
+      ],
+      [
+        "car",
+        0.5282,
+        5.896,
+        29.781,
+        0.688,
+        1.807,
+        1.958,
+        4.679,
+        1.5232
+      ],
+      [
+        "car",
+        0.6157,
+        6.706,
+        -10.553,
+        -1.45,
+        2.002,
+        2.105,
+        5.253,
+        1.5037
+      ],
+      [
+        "car",
+        0.6352,
+        6.784,
+        11.455,
+        -0.653,
+        1.801,
+        1.955,
+        4.712,
+        1.6243
+      ],
+      [
+        "car",
+        0.7092,
+        6.27,
+        23.167,
+        -0.014,
+        1.599,
+        1.886,
+        4.621,
+        1.6037
+      ],
+      [
+        "car",
+        0.7228,
+        5.121,
+        -8.218,
+        -1.367,
+        1.833,
+        1.955,
+        4.734,
+        1.5617
+      ],
+      [
+        "car",
+        0.8257,
+        5.212,
+        3.342,
+        -1.032,
+        1.901,
+        1.988,
+        5.077,
+        1.545
+      ],
+      [
+        "car",
+        0.8349,
+        5.984,
+        -16.298,
+        -1.858,
+        1.622,
+        1.834,
+        4.242,
+        1.5061
+      ],
+      [
+        "car",
+        0.8478,
+        -4.275,
+        11.304,
+        -0.873,
+        1.664,
+        1.883,
+        4.375,
+        -1.7584
+      ],
+      [
+        "car",
+        0.9424,
+        5.118,
+        -2.599,
+        -1.226,
+        1.809,
+        1.949,
+        4.731,
+        1.5358
+      ],
+      [
+        "truck",
+        0.3129,
+        7.726,
+        -2.709,
+        -1.22,
+        1.927,
+        2.079,
+        5.39,
+        1.4791
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.8914713859558105,
+            -3.5869638919830322,
+            -1.888930320739746
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.274839401245117,
+            10.575169563293457,
+            -0.9340628981590271
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.771989345550537,
+            4.336678981781006,
+            -1.6476738452911377
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.0531535148620605,
+            -9.671208381652832,
+            -1.8639912605285645
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.010782241821289,
+            10.339922904968262,
+            -1.3631178140640259
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 79,
+          "reinjected_centroid": [
+            5.661462306976318,
+            -15.567816734313965,
+            -2.048466682434082
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 34,
+          "reinjected_centroid": [
+            6.112515926361084,
+            21.541885375976562,
+            -0.7206199765205383
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 13,
+          "reinjected_centroid": [
+            5.506143569946289,
+            28.017534255981445,
+            -0.25739067792892456
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 177,
+          "reinjected_centroid": [
+            14.138819694519043,
+            -2.260686159133911,
+            -0.9284474849700928
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224810m, y\u22484m)",
+          "isometric": "Cluster is isolated with no corresponding ground structure or supporting points"
+        },
+        "evidence": [
+          "The camera input is explicitly marked as compromised/unavailable, preventing cross-modal verification.",
+          "The bounding box at x\u224810m, y\u22484m in the BEV view encompasses a very sparse set of points that do not form a coherent object shape.",
+          "The isometric view confirms the cluster lacks any vertical structural integrity or contact with the ground plane, appearing as a floating, implausible anomaly."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely to produce a structured, localized bounding box detection.",
+          "Ordinary infrastructure (poles/signs) would typically show a continuous vertical line of points, whereas this appears as a sparse, isolated void-like detection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:01.001059"
+}

@@ -1,0 +1,317 @@
+{
+  "key": {
+    "frame_id": "88a3f44a2c2a400e",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3062,
+        2.118,
+        -19.002,
+        -1.757,
+        1.084,
+        1.991,
+        0.587,
+        3.1329
+      ],
+      [
+        "barrier",
+        0.3676,
+        2.178,
+        -14.251,
+        -1.651,
+        1.009,
+        2.345,
+        0.582,
+        3.1024
+      ],
+      [
+        "bicycle",
+        0.3716,
+        -3.62,
+        -9.026,
+        -1.18,
+        1.069,
+        0.595,
+        1.601,
+        1.0469
+      ],
+      [
+        "car",
+        0.3016,
+        -2.114,
+        9.259,
+        -0.55,
+        1.834,
+        1.94,
+        4.682,
+        2.0238
+      ],
+      [
+        "car",
+        0.3918,
+        11.648,
+        -21.11,
+        -1.737,
+        2.097,
+        2.211,
+        5.589,
+        -1.5745
+      ],
+      [
+        "car",
+        0.408,
+        16.844,
+        -20.798,
+        -1.877,
+        1.626,
+        1.865,
+        4.509,
+        -1.5706
+      ],
+      [
+        "construction_vehicle",
+        0.5206,
+        -21.493,
+        21.722,
+        0.862,
+        3.33,
+        3.729,
+        6.95,
+        -1.1846
+      ],
+      [
+        "construction_vehicle",
+        0.7054,
+        3.827,
+        -17.686,
+        -0.76,
+        2.887,
+        3.383,
+        4.217,
+        -1.5926
+      ],
+      [
+        "traffic_cone",
+        0.3036,
+        8.592,
+        24.047,
+        -0.597,
+        0.992,
+        0.434,
+        0.461,
+        -1.4179
+      ],
+      [
+        "traffic_cone",
+        0.343,
+        9.441,
+        3.766,
+        -1.373,
+        0.714,
+        0.375,
+        0.375,
+        -2.6928
+      ],
+      [
+        "traffic_cone",
+        0.3541,
+        1.475,
+        9.567,
+        -1.088,
+        0.8,
+        0.391,
+        0.391,
+        2.3243
+      ],
+      [
+        "traffic_cone",
+        0.3567,
+        8.713,
+        21.233,
+        -0.827,
+        0.788,
+        0.446,
+        0.462,
+        -1.4
+      ],
+      [
+        "traffic_cone",
+        0.3639,
+        8.629,
+        22.733,
+        -0.625,
+        0.913,
+        0.438,
+        0.461,
+        -1.4742
+      ],
+      [
+        "traffic_cone",
+        0.3923,
+        9.084,
+        15.084,
+        -0.982,
+        0.722,
+        0.396,
+        0.371,
+        3.0838
+      ],
+      [
+        "traffic_cone",
+        0.3986,
+        8.53,
+        25.408,
+        -0.483,
+        0.87,
+        0.409,
+        0.424,
+        -1.4305
+      ],
+      [
+        "traffic_cone",
+        0.4189,
+        9.205,
+        11.011,
+        -1.13,
+        0.719,
+        0.389,
+        0.367,
+        -3.0824
+      ],
+      [
+        "traffic_cone",
+        0.427,
+        2.138,
+        -10.296,
+        -1.71,
+        0.742,
+        0.394,
+        0.366,
+        1.4363
+      ],
+      [
+        "traffic_cone",
+        0.4462,
+        1.716,
+        4.671,
+        -1.371,
+        0.734,
+        0.392,
+        0.389,
+        -2.2868
+      ],
+      [
+        "traffic_cone",
+        0.539,
+        2.02,
+        -4.716,
+        -1.561,
+        0.76,
+        0.367,
+        0.365,
+        1.4168
+      ],
+      [
+        "truck",
+        0.3127,
+        11.671,
+        -21.464,
+        -1.675,
+        2.016,
+        2.131,
+        5.689,
+        -1.56
+      ],
+      [
+        "truck",
+        0.6097,
+        15.098,
+        -10.203,
+        -0.6,
+        3.767,
+        3.0,
+        11.283,
+        -1.5195
+      ],
+      [
+        "truck",
+        0.7161,
+        14.686,
+        1.856,
+        -0.361,
+        3.217,
+        2.655,
+        6.877,
+        -1.5396
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 113,
+          "reinjected_centroid": [
+            13.118590354919434,
+            -12.330246925354004,
+            -1.9717258214950562
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            16.134822845458984,
+            -20.646127700805664,
+            -2.0739920139312744
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -2.467076063156128,
+            10.816474914550781,
+            -1.012656569480896
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u22489m, y\u22483m",
+          "isometric": "A cuboid bounding box labeled 'car' floats abnormally high in mid-air at z \u2248 1.5m to 3.5m with no ground-touching structure."
+        },
+        "evidence": [
+          "A 3D bounding box labeled 'car' is detected at x\u22489m, y\u22483m but envelopes an empty region or extremely sparse points in the BEV.",
+          "In the isometric projection, this bounding box is suspended high above the ground plane (z \u2248 1.5m to 3.5m), which violates the physical constraints of a real ground vehicle.",
+          "There is no corresponding physical occlusion shadow behind this suspected object region in the LiDAR point cloud."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant vehicles",
+          "Foliage or overhanging road infrastructure"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:56.737498"
+}

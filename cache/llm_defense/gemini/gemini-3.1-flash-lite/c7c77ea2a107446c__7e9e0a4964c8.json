@@ -1,0 +1,202 @@
+{
+  "key": {
+    "frame_id": "c7c77ea2a107446c",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "barrier",
+        0.3324,
+        -8.317,
+        -19.798,
+        -1.527,
+        0.987,
+        1.997,
+        0.451,
+        -2.9813
+      ],
+      [
+        "bicycle",
+        0.3826,
+        -19.901,
+        -2.068,
+        -0.962,
+        2.007,
+        0.676,
+        1.826,
+        1.5705
+      ],
+      [
+        "car",
+        0.5001,
+        22.543,
+        -2.269,
+        -0.815,
+        1.651,
+        1.929,
+        4.462,
+        -0.0168
+      ],
+      [
+        "car",
+        0.5801,
+        0.948,
+        -25.255,
+        -1.035,
+        1.705,
+        1.901,
+        4.569,
+        1.7252
+      ],
+      [
+        "car",
+        0.5809,
+        4.64,
+        30.925,
+        0.276,
+        1.657,
+        1.898,
+        4.548,
+        1.5707
+      ],
+      [
+        "car",
+        0.5829,
+        -2.631,
+        -24.435,
+        -0.97,
+        1.72,
+        1.963,
+        4.723,
+        1.7566
+      ],
+      [
+        "car",
+        0.8452,
+        -7.436,
+        15.732,
+        -0.58,
+        1.637,
+        1.944,
+        4.73,
+        -1.6427
+      ],
+      [
+        "car",
+        0.8493,
+        -3.87,
+        1.376,
+        -1.043,
+        1.581,
+        1.93,
+        4.815,
+        -1.6016
+      ],
+      [
+        "pedestrian",
+        0.388,
+        6.919,
+        -3.344,
+        -0.883,
+        1.709,
+        0.613,
+        0.7,
+        -3.016
+      ],
+      [
+        "pedestrian",
+        0.4047,
+        6.628,
+        -22.248,
+        -0.795,
+        1.833,
+        0.668,
+        0.728,
+        1.4535
+      ],
+      [
+        "pedestrian",
+        0.4146,
+        6.717,
+        2.279,
+        -0.884,
+        1.665,
+        0.666,
+        0.702,
+        0.9766
+      ],
+      [
+        "pedestrian",
+        0.46,
+        6.801,
+        -10.612,
+        -0.971,
+        1.771,
+        0.647,
+        0.697,
+        1.1677
+      ],
+      [
+        "pedestrian",
+        0.47,
+        8.555,
+        1.338,
+        -0.847,
+        1.767,
+        0.652,
+        0.638,
+        2.8626
+      ],
+      [
+        "pedestrian",
+        0.545,
+        6.656,
+        -0.325,
+        -0.938,
+        1.725,
+        0.662,
+        0.712,
+        -0.873
+      ],
+      [
+        "pedestrian",
+        0.5785,
+        7.515,
+        0.382,
+        -0.84,
+        1.789,
+        0.68,
+        0.671,
+        -2.6175
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480.5m, y\u22480m)",
+          "isometric": "central cluster near ego origin"
+        },
+        "evidence": [
+          "Presence of a hyper-dense, small cluster of points directly at the ego vehicle's location (approx 0.5m forward), which is characteristic of LiDAR injection attacks.",
+          "The cluster is detected as multiple distinct 'pedestrian' bounding boxes in a tiny spatial area, which is physically impossible for real pedestrians.",
+          "The cluster lacks any natural structure or geometric relationship to the surrounding road environment."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The density and geometric clustering are too structured and isolated to be random sensor noise.",
+          "Reflections: No nearby metallic or retroreflective surfaces typically explain this specific pattern of high-density injection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:12.094295"
+}

@@ -1,0 +1,328 @@
+{
+  "key": {
+    "frame_id": "ed548bd2b85f4684",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.408,
+        -6.674,
+        -10.771,
+        -1.552,
+        1.588,
+        0.739,
+        1.728,
+        -1.4557
+      ],
+      [
+        "car",
+        0.333,
+        25.183,
+        -4.497,
+        -0.142,
+        1.926,
+        2.1,
+        4.903,
+        1.5148
+      ],
+      [
+        "car",
+        0.3539,
+        -9.303,
+        29.892,
+        0.398,
+        1.814,
+        1.945,
+        4.757,
+        -1.5882
+      ],
+      [
+        "car",
+        0.3626,
+        -8.963,
+        8.219,
+        -0.509,
+        3.159,
+        2.888,
+        7.552,
+        -1.5791
+      ],
+      [
+        "car",
+        0.4377,
+        4.319,
+        -39.126,
+        -2.437,
+        1.793,
+        1.98,
+        4.636,
+        1.7787
+      ],
+      [
+        "car",
+        0.4532,
+        22.815,
+        -0.647,
+        -0.191,
+        1.738,
+        2.012,
+        4.697,
+        -1.4364
+      ],
+      [
+        "car",
+        0.4629,
+        23.082,
+        -20.114,
+        -0.934,
+        1.658,
+        1.93,
+        4.501,
+        -1.635
+      ],
+      [
+        "car",
+        0.4696,
+        20.448,
+        -1.999,
+        -0.316,
+        1.892,
+        1.991,
+        4.725,
+        -1.5129
+      ],
+      [
+        "car",
+        0.4847,
+        -3.334,
+        19.262,
+        -0.453,
+        1.562,
+        1.887,
+        4.404,
+        -1.5196
+      ],
+      [
+        "car",
+        0.5008,
+        20.621,
+        -20.26,
+        -0.907,
+        1.754,
+        1.941,
+        4.516,
+        -1.5226
+      ],
+      [
+        "car",
+        0.5263,
+        16.376,
+        -21.039,
+        -1.288,
+        1.752,
+        1.96,
+        4.64,
+        -1.3425
+      ],
+      [
+        "car",
+        0.5388,
+        18.337,
+        -20.143,
+        -1.261,
+        1.633,
+        1.804,
+        4.288,
+        1.4822
+      ],
+      [
+        "car",
+        0.564,
+        12.306,
+        3.35,
+        -0.428,
+        1.831,
+        1.965,
+        4.893,
+        -1.588
+      ],
+      [
+        "car",
+        0.5649,
+        14.998,
+        3.217,
+        -0.229,
+        1.898,
+        1.936,
+        4.694,
+        -1.6354
+      ],
+      [
+        "car",
+        0.625,
+        5.273,
+        9.143,
+        -0.456,
+        1.844,
+        1.95,
+        4.892,
+        1.5484
+      ],
+      [
+        "car",
+        0.6356,
+        5.743,
+        26.267,
+        0.216,
+        1.612,
+        1.934,
+        4.631,
+        1.5253
+      ],
+      [
+        "car",
+        0.6366,
+        -9.252,
+        -18.857,
+        -2.2,
+        1.563,
+        1.834,
+        4.544,
+        -1.6051
+      ],
+      [
+        "car",
+        0.6794,
+        -0.451,
+        12.964,
+        -0.599,
+        1.571,
+        1.796,
+        4.257,
+        1.6023
+      ],
+      [
+        "car",
+        0.7103,
+        5.267,
+        15.085,
+        -0.322,
+        1.669,
+        1.888,
+        4.52,
+        1.6087
+      ],
+      [
+        "car",
+        0.749,
+        -8.772,
+        16.486,
+        -0.615,
+        1.884,
+        2.004,
+        4.993,
+        -1.5946
+      ],
+      [
+        "car",
+        0.7624,
+        -9.455,
+        -25.191,
+        -2.307,
+        1.608,
+        1.824,
+        4.485,
+        -1.5591
+      ],
+      [
+        "car",
+        0.7861,
+        15.249,
+        -1.964,
+        -0.675,
+        1.671,
+        1.851,
+        4.351,
+        -1.4944
+      ],
+      [
+        "car",
+        0.8736,
+        5.164,
+        -7.749,
+        -1.359,
+        1.569,
+        1.763,
+        4.109,
+        1.5128
+      ],
+      [
+        "car",
+        0.9296,
+        5.214,
+        -2.613,
+        -1.135,
+        1.896,
+        2.032,
+        4.875,
+        1.6117
+      ],
+      [
+        "car",
+        0.9606,
+        5.158,
+        3.06,
+        -0.86,
+        1.737,
+        1.914,
+        4.657,
+        1.583
+      ],
+      [
+        "truck",
+        0.3304,
+        -8.993,
+        8.209,
+        -0.633,
+        3.128,
+        2.78,
+        7.118,
+        -1.5846
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 118
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u22480m)",
+          "isometric": "cluster floats at z\u22480.5m with no discernible vertical surface structure, appears isolated in space"
+        },
+        "evidence": [
+          "A small, dense cluster of points is located at (x\u224811m, y\u22480m) that does not align with any ground-plane geometry or structural road features.",
+          "The bounding box 'car 0.68' encloses this cluster, but the cluster lacks the characteristic L-shape or 3D surface profile of a vehicle in both BEV and isometric views.",
+          "The point density and isolation in the isometric view are consistent with the classic 'ghost object' spoofing signature (dense points injected to create a false obstacle)."
+        ],
+        "alternatives_ruled_out": [
+          "Standard traffic infrastructure (e.g., road signs, poles) typically exhibit vertical, continuous point returns, which this cluster lacks.",
+          "Sensor noise usually manifests as scattered, sparse points rather than a dense, localized cluster fitting inside a standard vehicle bounding box."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:32:37.311484"
+}

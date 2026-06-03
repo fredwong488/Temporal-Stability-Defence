@@ -1,0 +1,187 @@
+{
+  "key": {
+    "frame_id": "9ab5069c183c492b",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bicycle",
+        0.4513,
+        0.585,
+        16.022,
+        -0.489,
+        1.71,
+        0.653,
+        1.768,
+        1.4463
+      ],
+      [
+        "bus",
+        0.6757,
+        9.557,
+        -18.107,
+        -0.91,
+        3.436,
+        3.084,
+        12.086,
+        2.3024
+      ],
+      [
+        "car",
+        0.3089,
+        14.293,
+        -6.224,
+        -0.776,
+        1.774,
+        1.958,
+        4.465,
+        0.6348
+      ],
+      [
+        "car",
+        0.3172,
+        17.523,
+        -10.036,
+        -0.812,
+        1.608,
+        1.893,
+        4.272,
+        3.0193
+      ],
+      [
+        "car",
+        0.3849,
+        12.595,
+        -4.299,
+        -0.874,
+        1.596,
+        1.874,
+        4.354,
+        0.7196
+      ],
+      [
+        "car",
+        0.3959,
+        15.898,
+        -8.476,
+        -0.844,
+        1.648,
+        1.926,
+        4.336,
+        0.537
+      ],
+      [
+        "car",
+        0.4365,
+        21.285,
+        3.85,
+        -0.847,
+        1.623,
+        1.914,
+        4.462,
+        -2.7784
+      ],
+      [
+        "car",
+        0.4454,
+        19.009,
+        -11.949,
+        -0.729,
+        1.815,
+        1.982,
+        4.597,
+        0.6127
+      ],
+      [
+        "car",
+        0.5637,
+        19.829,
+        6.06,
+        -0.797,
+        1.596,
+        1.925,
+        4.259,
+        -2.5974
+      ],
+      [
+        "pedestrian",
+        0.3196,
+        7.731,
+        22.393,
+        0.226,
+        1.871,
+        0.631,
+        0.687,
+        -2.3637
+      ],
+      [
+        "pedestrian",
+        0.3517,
+        9.46,
+        23.272,
+        0.094,
+        1.869,
+        0.601,
+        0.64,
+        -1.8878
+      ],
+      [
+        "truck",
+        0.5093,
+        10.421,
+        -0.691,
+        -0.118,
+        3.347,
+        2.574,
+        6.605,
+        0.6181
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224816m, y\u22480m)",
+          "isometric": "cluster appears as a tiny, isolated box with no surrounding physical structure or surface returns"
+        },
+        "evidence": [
+          "The bounding box labeled 'bicycle 0.45' in the BEV view contains almost no LiDAR points, which is inconsistent with a real object detection.",
+          "The isometric view confirms the 'bicycle' detection is an isolated, thin cuboid floating in empty space without a ground-level point cluster or supporting physical structure.",
+          "The lack of any occluded 'void' or shadow behind the detection indicates it is not a physical object blocking the LiDAR rays."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: Random noise does not typically manifest as a structured 3D cuboid with a detection label.",
+          "Low reflectivity: An object that doesn't reflect lasers would appear as a hole/shadow, not a floating box in otherwise empty space."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224822m, y\u2248-7m)",
+          "isometric": "cluster floats at z\u22480m with no support structure"
+        },
+        "evidence": [
+          "The bounding box labeled 'pedestrian 0.32' in the BEV view encloses a very sparse region that lacks the expected vertical profile of a human.",
+          "The isometric view shows the detection box positioned over ground-level noise that lacks any coherent 3D shape or surface profile consistent with a pedestrian.",
+          "There is no clear LiDAR return pattern that would trigger a high-confidence pedestrian detection, suggesting a spoofed ghost object."
+        ],
+        "alternatives_ruled_out": [
+          "Distant pedestrian: A real pedestrian would produce a consistent cluster of points across multiple scan lines, not just sparse ground-level points.",
+          "Sensor occlusion: Occlusion would manifest as a lack of data, not a false detection box."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:07.551272"
+}

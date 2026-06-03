@@ -1,0 +1,231 @@
+{
+  "key": {
+    "frame_id": "42135cb2fc5d465d",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.308,
+        5.405,
+        -4.33,
+        -1.49,
+        1.03,
+        1.966,
+        0.533,
+        -2.7251
+      ],
+      [
+        "barrier",
+        0.3286,
+        3.504,
+        0.43,
+        -1.271,
+        1.028,
+        2.02,
+        0.56,
+        -2.7832
+      ],
+      [
+        "barrier",
+        0.3394,
+        4.293,
+        -1.21,
+        -1.322,
+        1.013,
+        2.05,
+        0.551,
+        -2.8547
+      ],
+      [
+        "barrier",
+        0.352,
+        6.014,
+        -5.939,
+        -1.534,
+        1.051,
+        2.054,
+        0.497,
+        -2.759
+      ],
+      [
+        "bus",
+        0.3805,
+        44.467,
+        -13.392,
+        -3.064,
+        3.818,
+        3.137,
+        11.822,
+        0.4012
+      ],
+      [
+        "car",
+        0.4119,
+        -2.685,
+        10.27,
+        -0.51,
+        1.983,
+        2.018,
+        4.95,
+        1.854
+      ],
+      [
+        "pedestrian",
+        0.3002,
+        -4.955,
+        -5.445,
+        -0.735,
+        1.738,
+        0.661,
+        0.754,
+        1.6126
+      ],
+      [
+        "pedestrian",
+        0.3025,
+        9.025,
+        -6.962,
+        -1.185,
+        1.758,
+        0.603,
+        0.609,
+        -1.5914
+      ],
+      [
+        "pedestrian",
+        0.324,
+        2.281,
+        -15.957,
+        -1.341,
+        1.695,
+        0.638,
+        0.682,
+        -1.4693
+      ],
+      [
+        "pedestrian",
+        0.3862,
+        6.169,
+        -10.636,
+        -1.25,
+        1.773,
+        0.658,
+        0.73,
+        1.6297
+      ],
+      [
+        "pedestrian",
+        0.4321,
+        7.528,
+        -10.081,
+        -1.159,
+        1.838,
+        0.696,
+        0.722,
+        2.0506
+      ],
+      [
+        "traffic_cone",
+        0.4488,
+        10.781,
+        3.687,
+        -1.425,
+        0.75,
+        0.378,
+        0.354,
+        3.062
+      ],
+      [
+        "traffic_cone",
+        0.497,
+        1.738,
+        5.44,
+        -1.239,
+        0.766,
+        0.386,
+        0.37,
+        2.8916
+      ],
+      [
+        "truck",
+        0.3008,
+        44.605,
+        15.89,
+        -0.578,
+        2.297,
+        2.482,
+        6.43,
+        1.8118
+      ],
+      [
+        "truck",
+        0.3799,
+        13.967,
+        10.583,
+        0.272,
+        3.712,
+        3.036,
+        11.089,
+        -1.1694
+      ],
+      [
+        "truck",
+        0.6773,
+        9.326,
+        21.472,
+        0.236,
+        3.073,
+        2.537,
+        6.682,
+        -1.1998
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            11.759648323059082,
+            9.211536407470703,
+            -1.15370512008667
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "unknown (camera image unavailable due to attack/failure)",
+          "bev": "x\u22488m to 13m, y\u22482m to 5m",
+          "isometric": "box 'car 0.41' floats with extremely sparse, unstructured points inside and no physical ground-contact structure"
+        },
+        "evidence": [
+          "The bounding box 'car 0.41' at x\u224810m, y\u22483m envelopes an extremely sparse point distribution with no characteristic L-shape or structural signature of a vehicle.",
+          "There is no occlusion shadow (LiDAR shadow) cast behind the detected 'car 0.41' object; laser pulses pass directly through and continue behind the region.",
+          "The camera image is completely unavailable/blank and labeled as '[ATTACKED]', preventing any visual confirmation of this object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or low reflectivity surface (ordinary noise does not typically form a highly confident 3D bounding box of this scale without a physical object or point injection present)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:59:03.830207"
+}

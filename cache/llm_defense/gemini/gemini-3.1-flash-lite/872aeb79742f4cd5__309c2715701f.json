@@ -1,0 +1,125 @@
+{
+  "key": {
+    "frame_id": "872aeb79742f4cd5",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3811,
+        5.982,
+        40.655,
+        0.56,
+        1.626,
+        1.898,
+        4.524,
+        1.3908
+      ],
+      [
+        "car",
+        0.4755,
+        -1.42,
+        -42.873,
+        -2.961,
+        1.763,
+        1.995,
+        4.739,
+        -1.5106
+      ],
+      [
+        "car",
+        0.6059,
+        0.685,
+        -19.573,
+        -1.719,
+        1.68,
+        1.932,
+        4.586,
+        1.6026
+      ],
+      [
+        "construction_vehicle",
+        0.3257,
+        15.874,
+        31.718,
+        0.787,
+        2.722,
+        1.592,
+        2.884,
+        -0.0441
+      ],
+      [
+        "pedestrian",
+        0.3576,
+        9.382,
+        25.177,
+        -0.148,
+        1.809,
+        0.69,
+        0.751,
+        -2.9768
+      ],
+      [
+        "pedestrian",
+        0.3971,
+        6.567,
+        -6.961,
+        -0.938,
+        1.744,
+        0.644,
+        0.659,
+        -2.0412
+      ],
+      [
+        "pedestrian",
+        0.4075,
+        8.445,
+        20.023,
+        -0.274,
+        1.852,
+        0.639,
+        0.614,
+        1.5705
+      ],
+      [
+        "pedestrian",
+        0.4301,
+        9.598,
+        20.545,
+        -0.193,
+        1.796,
+        0.611,
+        0.615,
+        2.2182
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481m, y\u22480m)",
+          "isometric": "cluster located at (x\u22481m, y\u22480m) with high point density relative to surroundings"
+        },
+        "evidence": [
+          "Presence of a small, distinct, dense cluster of points near the ego vehicle origin (x\u22481m, y\u22480m) which is characteristic of LiDAR injection attacks.",
+          "The cluster lacks any coherent 3D shape or surface structure associated with real objects (e.g., vehicles, pedestrians) in the isometric view.",
+          "The cluster appears as an anomaly in the BEV view compared to the surrounding road plane, lacking meaningful spatial extent."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or reflections (the density and clustering are too localized and suspicious for random noise).",
+          "Valid infrastructure (no structures are expected in the middle of the road at this location)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:33.991000"
+}

@@ -1,0 +1,255 @@
+{
+  "key": {
+    "frame_id": "08fa09b1347349da",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3034,
+        10.679,
+        21.538,
+        -0.636,
+        1.028,
+        1.98,
+        0.534,
+        3.0622
+      ],
+      [
+        "barrier",
+        0.3036,
+        8.729,
+        10.74,
+        -0.973,
+        1.184,
+        2.02,
+        0.591,
+        3.0709
+      ],
+      [
+        "barrier",
+        0.3059,
+        8.135,
+        2.142,
+        -1.296,
+        1.243,
+        1.946,
+        0.684,
+        3.0256
+      ],
+      [
+        "barrier",
+        0.3084,
+        9.166,
+        12.472,
+        -0.998,
+        1.072,
+        2.122,
+        0.572,
+        2.8606
+      ],
+      [
+        "barrier",
+        0.315,
+        7.349,
+        -4.336,
+        -1.511,
+        1.053,
+        2.678,
+        0.69,
+        2.9967
+      ],
+      [
+        "barrier",
+        0.3204,
+        10.655,
+        19.52,
+        -0.719,
+        1.039,
+        2.042,
+        0.598,
+        3.0914
+      ],
+      [
+        "barrier",
+        0.3241,
+        7.673,
+        -1.984,
+        -1.426,
+        1.177,
+        1.981,
+        0.675,
+        3.0191
+      ],
+      [
+        "barrier",
+        0.3352,
+        8.566,
+        8.413,
+        -1.052,
+        1.218,
+        1.939,
+        0.612,
+        3.0574
+      ],
+      [
+        "barrier",
+        0.3411,
+        8.356,
+        4.436,
+        -1.205,
+        1.238,
+        1.904,
+        0.669,
+        3.0256
+      ],
+      [
+        "barrier",
+        0.354,
+        8.46,
+        6.808,
+        -1.083,
+        1.235,
+        1.911,
+        0.64,
+        3.0907
+      ],
+      [
+        "barrier",
+        0.3573,
+        6.879,
+        -11.638,
+        -1.665,
+        1.105,
+        2.009,
+        0.641,
+        3.1398
+      ],
+      [
+        "barrier",
+        0.3903,
+        6.929,
+        -9.284,
+        -1.546,
+        1.142,
+        2.002,
+        0.612,
+        3.1125
+      ],
+      [
+        "car",
+        0.4597,
+        7.098,
+        18.522,
+        -0.312,
+        1.619,
+        1.866,
+        4.513,
+        1.4915
+      ],
+      [
+        "car",
+        0.5797,
+        -1.97,
+        28.201,
+        -0.059,
+        1.907,
+        1.99,
+        4.932,
+        1.7158
+      ],
+      [
+        "pedestrian",
+        0.3088,
+        22.089,
+        15.975,
+        -0.658,
+        1.761,
+        0.594,
+        0.564,
+        2.5534
+      ],
+      [
+        "pedestrian",
+        0.3194,
+        -2.504,
+        -5.461,
+        -1.31,
+        1.869,
+        0.659,
+        0.624,
+        -2.9517
+      ],
+      [
+        "traffic_cone",
+        0.3874,
+        6.793,
+        -13.158,
+        -1.881,
+        0.751,
+        0.375,
+        0.377,
+        3.0472
+      ],
+      [
+        "trailer",
+        0.3388,
+        -22.802,
+        8.394,
+        0.454,
+        4.126,
+        2.943,
+        13.453,
+        -0.0949
+      ],
+      [
+        "truck",
+        0.5028,
+        9.618,
+        34.342,
+        0.693,
+        1.942,
+        2.051,
+        5.235,
+        1.3438
+      ],
+      [
+        "truck",
+        0.698,
+        -4.616,
+        -7.324,
+        -0.468,
+        3.245,
+        3.035,
+        10.193,
+        1.5805
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u224828m, y\u22482m",
+          "isometric": "box at x\u224828m, y\u22482m, z\u22481m is floating and completely empty of any LiDAR points"
+        },
+        "evidence": [
+          "The predicted bounding box 'car 0.58' at x\u224828m, y\u22482m contains absolutely no corresponding LiDAR points in either the BEV or isometric views.",
+          "There is no physical shadow/occlusion zone behind the predicted bounding box, which would be expected if an actual opaque vehicle were present."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (an entire bounding box is generated in an area of complete zero point density, which goes beyond standard sensor noise or occlusion issues)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:10.331665"
+}

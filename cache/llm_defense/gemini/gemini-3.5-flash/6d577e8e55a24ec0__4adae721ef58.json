@@ -1,0 +1,176 @@
+{
+  "key": {
+    "frame_id": "6d577e8e55a24ec0",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3255,
+        12.51,
+        -12.479,
+        -1.758,
+        0.847,
+        3.07,
+        0.501,
+        2.9186
+      ],
+      [
+        "barrier",
+        0.3695,
+        14.815,
+        -6.001,
+        -1.279,
+        0.991,
+        3.217,
+        0.547,
+        2.7587
+      ],
+      [
+        "car",
+        0.8526,
+        -3.337,
+        0.452,
+        -1.177,
+        1.541,
+        1.881,
+        4.638,
+        1.6281
+      ],
+      [
+        "construction_vehicle",
+        0.5141,
+        -9.884,
+        49.681,
+        1.598,
+        2.816,
+        2.743,
+        7.656,
+        -1.417
+      ],
+      [
+        "pedestrian",
+        0.3293,
+        1.754,
+        8.435,
+        -0.499,
+        1.731,
+        0.66,
+        0.784,
+        -2.5372
+      ],
+      [
+        "pedestrian",
+        0.3706,
+        -0.184,
+        8.808,
+        -0.477,
+        1.765,
+        0.662,
+        0.685,
+        2.6174
+      ],
+      [
+        "pedestrian",
+        0.3836,
+        6.807,
+        6.543,
+        -0.337,
+        1.736,
+        0.661,
+        0.792,
+        1.3917
+      ],
+      [
+        "trailer",
+        0.939,
+        -3.155,
+        -16.015,
+        -0.391,
+        4.2,
+        2.773,
+        15.326,
+        1.6267
+      ],
+      [
+        "truck",
+        0.4317,
+        20.636,
+        17.493,
+        0.754,
+        1.901,
+        2.065,
+        5.225,
+        -0.0765
+      ],
+      [
+        "truck",
+        0.5777,
+        -0.147,
+        -8.013,
+        -1.031,
+        2.426,
+        2.12,
+        4.748,
+        1.5394
+      ],
+      [
+        "truck",
+        0.8723,
+        -3.424,
+        -7.768,
+        -0.308,
+        3.993,
+        2.625,
+        6.178,
+        1.6235
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.1771559715271,
+            0.6334538459777832,
+            -1.7844358682632446
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224822m, y\u22486m)",
+          "isometric": "A 3D bounding box is floating high in mid-air at x\u224822m, y\u22486m, z\u22483m with no ground support and extremely sparse/spurious points."
+        },
+        "evidence": [
+          "A 3D bounding box is detected floating high above the ground plane in the isometric view (z \u2248 3m).",
+          "There is no physical structure or corresponding dense point cluster to support a vehicle or object detection at this elevated position."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real object"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:04.020110"
+}

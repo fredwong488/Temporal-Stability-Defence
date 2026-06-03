@@ -1,0 +1,233 @@
+{
+  "key": {
+    "frame_id": "bc595b568d8144a4",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3451,
+        14.815,
+        -6.001,
+        -1.232,
+        0.991,
+        3.268,
+        0.561,
+        2.8123
+      ],
+      [
+        "bus",
+        0.3719,
+        -5.136,
+        48.268,
+        2.748,
+        3.327,
+        2.924,
+        11.824,
+        1.5989
+      ],
+      [
+        "car",
+        0.3529,
+        -6.083,
+        0.457,
+        -1.476,
+        1.603,
+        1.808,
+        4.195,
+        -1.9892
+      ],
+      [
+        "car",
+        0.3853,
+        -11.506,
+        21.209,
+        -0.102,
+        1.684,
+        1.981,
+        4.7,
+        -0.071
+      ],
+      [
+        "car",
+        0.4346,
+        10.129,
+        19.87,
+        0.41,
+        1.685,
+        1.97,
+        4.596,
+        2.943
+      ],
+      [
+        "car",
+        0.9083,
+        -3.33,
+        0.481,
+        -1.218,
+        1.529,
+        1.909,
+        4.733,
+        1.6022
+      ],
+      [
+        "motorcycle",
+        0.5439,
+        -0.592,
+        7.752,
+        -0.84,
+        1.699,
+        0.8,
+        1.974,
+        1.7684
+      ],
+      [
+        "pedestrian",
+        0.3002,
+        -6.287,
+        8.726,
+        -0.652,
+        1.789,
+        0.679,
+        0.699,
+        -0.1757
+      ],
+      [
+        "pedestrian",
+        0.3152,
+        -5.84,
+        7.288,
+        -0.718,
+        1.783,
+        0.648,
+        0.665,
+        0.4382
+      ],
+      [
+        "pedestrian",
+        0.3194,
+        -1.707,
+        8.706,
+        -0.633,
+        1.75,
+        0.732,
+        0.824,
+        -2.4746
+      ],
+      [
+        "pedestrian",
+        0.3734,
+        -4.481,
+        9.193,
+        -0.688,
+        1.755,
+        0.678,
+        0.809,
+        1.7386
+      ],
+      [
+        "trailer",
+        0.4522,
+        41.162,
+        17.684,
+        2.395,
+        3.991,
+        2.73,
+        8.327,
+        0.0069
+      ],
+      [
+        "trailer",
+        0.9168,
+        -3.159,
+        -16.286,
+        -0.385,
+        4.282,
+        2.795,
+        15.408,
+        1.6257
+      ],
+      [
+        "truck",
+        0.3109,
+        -5.088,
+        46.24,
+        2.376,
+        3.652,
+        2.767,
+        8.052,
+        1.57
+      ],
+      [
+        "truck",
+        0.6332,
+        -0.138,
+        -8.007,
+        -1.022,
+        2.48,
+        2.143,
+        4.791,
+        1.5678
+      ],
+      [
+        "truck",
+        0.897,
+        -3.409,
+        -7.791,
+        -0.353,
+        3.989,
+        2.669,
+        6.242,
+        1.6344
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.589488506317139,
+            0.7264387607574463,
+            -1.9307159185409546
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 20m to 28m, y \u2248 6m",
+          "isometric": "Large bounding box (car 0.39) floating high in the air at z \u2248 2m to 3m with no ground plane contact or solid structure"
+        },
+        "evidence": [
+          "A bounding box labeled 'car 0.39' is located at x \u2248 21m, y \u2248 7m in the BEV plane.",
+          "In the isometric view, this box is floating extremely high above the ground plane (z \u2248 2m to 3m) containing only sparse, disconnected points.",
+          "The detection lacks any vertical profile, L-shape signature, or LiDAR shadow underneath, indicating a physical impossibility for a vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:28.954392"
+}

@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "12684a0979a94aa7",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3764,
+        -19.849,
+        -4.642,
+        -0.993,
+        1.791,
+        0.594,
+        1.665,
+        -1.7951
+      ],
+      [
+        "car",
+        0.4097,
+        22.506,
+        -4.608,
+        -1.073,
+        1.63,
+        1.907,
+        4.42,
+        -0.0616
+      ],
+      [
+        "car",
+        0.5295,
+        0.893,
+        -26.36,
+        -1.214,
+        1.607,
+        1.868,
+        4.379,
+        1.7975
+      ],
+      [
+        "car",
+        0.691,
+        4.478,
+        28.792,
+        0.01,
+        1.586,
+        1.866,
+        4.511,
+        1.5896
+      ],
+      [
+        "car",
+        0.8815,
+        -7.515,
+        13.32,
+        -0.623,
+        1.528,
+        1.879,
+        4.658,
+        -1.5691
+      ],
+      [
+        "car",
+        0.9388,
+        -3.891,
+        -3.385,
+        -1.215,
+        1.519,
+        1.774,
+        4.314,
+        -1.5909
+      ],
+      [
+        "construction_vehicle",
+        0.3549,
+        -8.175,
+        29.479,
+        0.095,
+        2.24,
+        2.003,
+        3.147,
+        -2.7554
+      ],
+      [
+        "pedestrian",
+        0.3014,
+        -12.389,
+        20.09,
+        -0.198,
+        1.752,
+        0.66,
+        0.656,
+        1.5618
+      ],
+      [
+        "pedestrian",
+        0.3328,
+        7.379,
+        -30.992,
+        -0.981,
+        1.735,
+        0.642,
+        0.658,
+        -0.9798
+      ],
+      [
+        "pedestrian",
+        0.3421,
+        6.566,
+        -0.238,
+        -1.032,
+        1.707,
+        0.61,
+        0.642,
+        -0.5584
+      ],
+      [
+        "pedestrian",
+        0.3513,
+        6.723,
+        -24.825,
+        -0.878,
+        1.8,
+        0.668,
+        0.671,
+        1.4091
+      ],
+      [
+        "pedestrian",
+        0.362,
+        -8.147,
+        -7.907,
+        -0.967,
+        1.828,
+        0.639,
+        0.752,
+        -1.3768
+      ],
+      [
+        "pedestrian",
+        0.3799,
+        6.884,
+        -5.81,
+        -0.98,
+        1.783,
+        0.643,
+        0.722,
+        -1.951
+      ],
+      [
+        "pedestrian",
+        0.4171,
+        8.404,
+        -0.634,
+        -0.934,
+        1.76,
+        0.645,
+        0.646,
+        2.8291
+      ],
+      [
+        "pedestrian",
+        0.4398,
+        6.56,
+        -2.679,
+        -1.059,
+        1.735,
+        0.644,
+        0.669,
+        2.1057
+      ],
+      [
+        "pedestrian",
+        0.4659,
+        6.871,
+        -13.236,
+        -1.054,
+        1.746,
+        0.666,
+        0.735,
+        1.5204
+      ],
+      [
+        "pedestrian",
+        0.4751,
+        7.49,
+        -2.14,
+        -1.014,
+        1.762,
+        0.655,
+        0.65,
+        2.2845
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481.5m, y\u22480.5m)",
+          "isometric": "Cluster at near-field center"
+        },
+        "evidence": [
+          "A small, dense, and physically implausible point cluster exists very close to the ego vehicle (x\u22481.5m, y\u22480.5m).",
+          "The cluster appears as a tight 'blob' or noise-like artifact without any structural definition (e.g., vehicle contours or surface normal orientation) typical of real objects.",
+          "The cluster location corresponds to a pattern often seen in adversarial LiDAR injection attacks (near-field injection of <= 200 points)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor self-reflection noise, which typically appears as rings or rays rather than a localized, high-density cluster.",
+          "Genuine road geometry, as this cluster appears as a localized artifact rather than a ground plane segment."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:41.096767"
+}

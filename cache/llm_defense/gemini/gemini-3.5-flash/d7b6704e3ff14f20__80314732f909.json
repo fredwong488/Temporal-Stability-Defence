@@ -1,0 +1,126 @@
+{
+  "key": {
+    "frame_id": "d7b6704e3ff14f20",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "car",
+        0.3573,
+        -17.49,
+        -7.835,
+        -1.078,
+        1.595,
+        1.896,
+        4.535,
+        1.3738
+      ],
+      [
+        "car",
+        0.3667,
+        -18.46,
+        -27.272,
+        -1.685,
+        1.619,
+        1.814,
+        4.394,
+        2.7286
+      ],
+      [
+        "car",
+        0.7935,
+        0.513,
+        -11.862,
+        -1.495,
+        1.917,
+        2.038,
+        4.887,
+        1.5667
+      ],
+      [
+        "motorcycle",
+        0.336,
+        -4.53,
+        31.73,
+        0.242,
+        1.418,
+        0.76,
+        2.143,
+        -1.3982
+      ],
+      [
+        "traffic_cone",
+        0.3523,
+        2.746,
+        -10.21,
+        -1.9,
+        1.078,
+        0.592,
+        0.631,
+        1.6956
+      ],
+      [
+        "traffic_cone",
+        0.3615,
+        2.346,
+        5.355,
+        -1.02,
+        1.066,
+        0.649,
+        0.659,
+        1.6322
+      ],
+      [
+        "truck",
+        0.3809,
+        19.719,
+        8.996,
+        -0.337,
+        2.16,
+        2.246,
+        5.95,
+        -1.5151
+      ],
+      [
+        "truck",
+        0.4259,
+        -7.457,
+        -23.032,
+        -1.882,
+        2.051,
+        2.304,
+        5.822,
+        1.7177
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not available",
+          "bev": "x\u224831m, y\u22484m",
+          "isometric": "x\u224831m, y\u22484m, z\u22481.5m"
+        },
+        "evidence": [
+          "The predicted motorcycle bounding box at x\u224831m, y\u22484m is completely empty in both the BEV and Isometric views.",
+          "There are no underlying LiDAR points, point clusters, or 3D structural surfaces corresponding to a motorcycle at this location.",
+          "There is no physical shadow (occlusion zone) behind the predicted box along the sensor's line of sight."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low-reflectivity surface",
+          "Distant object (completely empty region with zero returns)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:57.187435"
+}

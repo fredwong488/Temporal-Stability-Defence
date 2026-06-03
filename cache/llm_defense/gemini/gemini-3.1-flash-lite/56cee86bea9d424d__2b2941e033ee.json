@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "56cee86bea9d424d",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.4402,
+        -19.841,
+        -6.956,
+        -1.133,
+        1.949,
+        0.662,
+        1.703,
+        -1.636
+      ],
+      [
+        "car",
+        0.3171,
+        22.639,
+        -6.846,
+        -1.014,
+        1.666,
+        1.932,
+        4.479,
+        -0.0426
+      ],
+      [
+        "car",
+        0.393,
+        -7.935,
+        27.658,
+        0.254,
+        1.678,
+        1.977,
+        4.453,
+        -2.8928
+      ],
+      [
+        "car",
+        0.3964,
+        1.196,
+        42.208,
+        0.957,
+        1.715,
+        1.949,
+        4.474,
+        1.6546
+      ],
+      [
+        "car",
+        0.4179,
+        -3.877,
+        39.058,
+        0.798,
+        1.652,
+        1.9,
+        4.554,
+        1.5309
+      ],
+      [
+        "car",
+        0.4714,
+        0.583,
+        -27.425,
+        -1.614,
+        1.683,
+        1.948,
+        4.614,
+        1.5965
+      ],
+      [
+        "car",
+        0.7892,
+        -3.93,
+        -8.156,
+        -1.372,
+        1.646,
+        1.857,
+        4.542,
+        -1.5405
+      ],
+      [
+        "car",
+        0.8534,
+        4.594,
+        26.404,
+        -0.022,
+        1.556,
+        1.836,
+        4.472,
+        1.5359
+      ],
+      [
+        "car",
+        0.9252,
+        -7.497,
+        11.139,
+        -0.733,
+        1.511,
+        1.879,
+        4.681,
+        -1.6062
+      ],
+      [
+        "motorcycle",
+        0.3126,
+        -10.717,
+        2.987,
+        -0.829,
+        1.226,
+        0.726,
+        1.842,
+        -0.2297
+      ],
+      [
+        "pedestrian",
+        0.3142,
+        8.454,
+        -2.379,
+        -0.994,
+        1.742,
+        0.655,
+        0.667,
+        -2.945
+      ],
+      [
+        "pedestrian",
+        0.3247,
+        -8.192,
+        -10.078,
+        -1.098,
+        1.875,
+        0.689,
+        0.723,
+        1.1597
+      ],
+      [
+        "pedestrian",
+        0.3492,
+        6.506,
+        -2.698,
+        -1.084,
+        1.764,
+        0.635,
+        0.706,
+        -0.2142
+      ],
+      [
+        "pedestrian",
+        0.3745,
+        7.54,
+        -3.262,
+        -1.051,
+        1.776,
+        0.642,
+        0.653,
+        -2.7098
+      ],
+      [
+        "pedestrian",
+        0.376,
+        6.504,
+        -5.143,
+        -1.171,
+        1.73,
+        0.643,
+        0.673,
+        -2.3342
+      ],
+      [
+        "pedestrian",
+        0.376,
+        6.723,
+        -8.267,
+        -1.158,
+        1.786,
+        0.689,
+        0.778,
+        -1.7051
+      ],
+      [
+        "pedestrian",
+        0.4118,
+        6.753,
+        -15.997,
+        -1.259,
+        1.79,
+        0.662,
+        0.694,
+        1.808
+      ],
+      [
+        "pedestrian",
+        0.475,
+        7.47,
+        -4.383,
+        -1.126,
+        1.72,
+        0.631,
+        0.675,
+        -2.8384
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481m, y\u22480m)",
+          "isometric": "cluster of points concentrated at origin"
+        },
+        "evidence": [
+          "A highly dense, distinct cluster of points is visible at (x\u22481m, y\u22480m) in the immediate vicinity of the ego vehicle.",
+          "The cluster has a distinct, artificial geometry (dense circular pattern) not characteristic of natural road features.",
+          "There is no corresponding physical object visible in the environment that would produce such a dense, isolated return so close to the ego vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is typically sparse and scattered, not dense and clustered.",
+          "The ego vehicle itself is filtered out, and this cluster appears distinct from the vehicle's own noise floor."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:44.563833"
+}

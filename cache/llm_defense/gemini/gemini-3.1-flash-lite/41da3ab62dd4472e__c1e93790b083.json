@@ -1,0 +1,257 @@
+{
+  "key": {
+    "frame_id": "41da3ab62dd4472e",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3175,
+        -19.903,
+        -26.306,
+        -1.871,
+        1.492,
+        0.644,
+        1.635,
+        1.599
+      ],
+      [
+        "car",
+        0.3233,
+        -8.768,
+        48.665,
+        1.268,
+        1.729,
+        1.995,
+        4.505,
+        2.9827
+      ],
+      [
+        "car",
+        0.4869,
+        6.009,
+        39.227,
+        0.948,
+        1.789,
+        1.928,
+        4.661,
+        1.4717
+      ],
+      [
+        "car",
+        0.5099,
+        -14.297,
+        6.518,
+        -1.197,
+        1.589,
+        1.935,
+        4.377,
+        0.1625
+      ],
+      [
+        "car",
+        0.53,
+        -19.673,
+        6.648,
+        -1.303,
+        1.683,
+        1.945,
+        4.521,
+        0.0925
+      ],
+      [
+        "car",
+        0.6415,
+        -9.132,
+        21.012,
+        -0.076,
+        1.689,
+        1.883,
+        4.522,
+        -1.5753
+      ],
+      [
+        "car",
+        0.6917,
+        -0.132,
+        15.394,
+        -0.216,
+        1.65,
+        1.875,
+        4.547,
+        1.1456
+      ],
+      [
+        "car",
+        0.6956,
+        -21.834,
+        11.687,
+        -1.266,
+        1.617,
+        1.885,
+        4.308,
+        -2.979
+      ],
+      [
+        "car",
+        0.8261,
+        -4.734,
+        16.638,
+        -0.484,
+        1.584,
+        1.824,
+        4.459,
+        -1.8543
+      ],
+      [
+        "car",
+        0.88,
+        -7.618,
+        -8.124,
+        -1.567,
+        1.648,
+        1.907,
+        4.737,
+        -1.5776
+      ],
+      [
+        "car",
+        0.9425,
+        4.328,
+        7.092,
+        -0.788,
+        1.505,
+        1.854,
+        4.679,
+        1.5898
+      ],
+      [
+        "pedestrian",
+        0.306,
+        6.103,
+        -26.479,
+        -1.7,
+        1.772,
+        0.676,
+        0.703,
+        -1.1674
+      ],
+      [
+        "pedestrian",
+        0.3078,
+        -11.369,
+        23.644,
+        0.056,
+        1.801,
+        0.67,
+        0.675,
+        0.5589
+      ],
+      [
+        "pedestrian",
+        0.3092,
+        5.862,
+        -16.637,
+        -1.383,
+        1.849,
+        0.664,
+        0.628,
+        -2.6419
+      ],
+      [
+        "pedestrian",
+        0.3154,
+        -5.169,
+        -29.418,
+        -2.119,
+        1.809,
+        0.649,
+        0.731,
+        -0.5763
+      ],
+      [
+        "pedestrian",
+        0.3255,
+        8.238,
+        8.383,
+        -0.485,
+        1.75,
+        0.638,
+        0.636,
+        -1.5011
+      ],
+      [
+        "pedestrian",
+        0.3503,
+        7.169,
+        -26.31,
+        -1.62,
+        1.82,
+        0.662,
+        0.675,
+        -1.9186
+      ],
+      [
+        "pedestrian",
+        0.3653,
+        -12.018,
+        12.658,
+        -0.75,
+        1.805,
+        0.657,
+        0.644,
+        -0.7546
+      ],
+      [
+        "pedestrian",
+        0.3909,
+        7.467,
+        -16.461,
+        -1.41,
+        1.798,
+        0.629,
+        0.644,
+        -1.1693
+      ],
+      [
+        "pedestrian",
+        0.4196,
+        -11.916,
+        14.181,
+        -0.619,
+        1.796,
+        0.664,
+        0.711,
+        -1.716
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22481m)",
+          "isometric": "Cluster near x=15m, y=1m lacks clear 3D structure or supporting base"
+        },
+        "evidence": [
+          "The camera input is unavailable, preventing cross-modal verification of existence.",
+          "The cluster in the BEV at (x\u224815m, y\u22481m) has a 3D bounding box, but the point density appears sparse.",
+          "Without camera confirmation, it is impossible to distinguish between a sparse real object and a ghost object injection."
+        ],
+        "alternatives_ruled_out": [
+          "Standard sensor noise can produce sparse clusters that get picked up by detectors.",
+          "Potential occlusions or environmental conditions cannot be assessed without visual context."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:18.867195"
+}

@@ -1,0 +1,214 @@
+{
+  "key": {
+    "frame_id": "0c6121ac5e3c4d31",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.3474,
+        48.393,
+        22.057,
+        1.536,
+        1.843,
+        1.972,
+        4.752,
+        0.1718
+      ],
+      [
+        "car",
+        0.3503,
+        10.831,
+        42.688,
+        2.05,
+        1.796,
+        1.927,
+        4.451,
+        1.4293
+      ],
+      [
+        "car",
+        0.8366,
+        -12.573,
+        17.615,
+        -0.378,
+        1.586,
+        1.937,
+        4.58,
+        -0.1117
+      ],
+      [
+        "car",
+        0.8849,
+        -3.336,
+        0.464,
+        -1.079,
+        1.504,
+        1.905,
+        4.708,
+        1.6107
+      ],
+      [
+        "construction_vehicle",
+        0.3395,
+        -44.196,
+        38.569,
+        2.844,
+        4.793,
+        3.312,
+        12.958,
+        0.0758
+      ],
+      [
+        "construction_vehicle",
+        0.3672,
+        -10.112,
+        48.988,
+        1.077,
+        2.562,
+        2.753,
+        6.633,
+        -1.4149
+      ],
+      [
+        "motorcycle",
+        0.3222,
+        10.985,
+        -16.789,
+        -1.156,
+        1.514,
+        0.725,
+        2.15,
+        -1.6684
+      ],
+      [
+        "motorcycle",
+        0.3456,
+        -18.736,
+        20.486,
+        -0.027,
+        1.762,
+        0.812,
+        2.123,
+        -0.2965
+      ],
+      [
+        "pedestrian",
+        0.3321,
+        -12.021,
+        9.358,
+        -0.67,
+        1.852,
+        0.653,
+        0.698,
+        1.2807
+      ],
+      [
+        "pedestrian",
+        0.3917,
+        -14.841,
+        10.108,
+        -0.815,
+        1.752,
+        0.619,
+        0.677,
+        1.1076
+      ],
+      [
+        "pedestrian",
+        0.4011,
+        -15.841,
+        11.597,
+        -0.855,
+        1.743,
+        0.625,
+        0.658,
+        1.4632
+      ],
+      [
+        "pedestrian",
+        0.4664,
+        -10.891,
+        8.618,
+        -0.657,
+        1.838,
+        0.72,
+        0.753,
+        1.4342
+      ],
+      [
+        "trailer",
+        0.9471,
+        -3.12,
+        -15.926,
+        -0.393,
+        4.208,
+        2.784,
+        14.908,
+        1.6252
+      ],
+      [
+        "truck",
+        0.5057,
+        -26.771,
+        18.014,
+        0.093,
+        3.201,
+        2.667,
+        6.652,
+        0.0153
+      ],
+      [
+        "truck",
+        0.64,
+        -0.166,
+        -7.972,
+        -0.974,
+        2.618,
+        2.219,
+        4.846,
+        1.5634
+      ],
+      [
+        "truck",
+        0.8777,
+        -3.423,
+        -7.733,
+        -0.374,
+        3.998,
+        2.621,
+        5.977,
+        1.6367
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818m, y\u22485m)",
+          "isometric": "Bounding box floating high in the air at z\u22483m with absolutely no underlying point cloud cluster or physical support"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes are generated floating high above the ground plane (z > 2m) with no associated lidar points inside or beneath them.",
+          "A specific prominent box at x\u224818m, y\u22485m is suspended in mid-air with completely empty space inside and around it.",
+          "No physical structure or ground support exists for these floating detections, violating spatial and geometric invariants of real physical objects."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant real vehicles (as there are zero points inside the boxes and they are located high in the air)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:04:28.171709"
+}

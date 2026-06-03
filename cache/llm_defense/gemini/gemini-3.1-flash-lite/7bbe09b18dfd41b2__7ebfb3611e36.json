@@ -1,0 +1,204 @@
+{
+  "key": {
+    "frame_id": "7bbe09b18dfd41b2",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3601,
+        0.967,
+        44.581,
+        1.455,
+        1.792,
+        1.947,
+        4.625,
+        1.4746
+      ],
+      [
+        "car",
+        0.4899,
+        4.941,
+        40.092,
+        1.308,
+        1.776,
+        1.979,
+        4.703,
+        1.459
+      ],
+      [
+        "car",
+        0.5148,
+        -3.436,
+        18.688,
+        -0.235,
+        1.672,
+        1.922,
+        4.79,
+        1.3633
+      ],
+      [
+        "car",
+        0.6251,
+        0.966,
+        -19.422,
+        -2.077,
+        1.688,
+        1.923,
+        4.591,
+        1.6221
+      ],
+      [
+        "pedestrian",
+        0.3054,
+        -18.803,
+        19.498,
+        -0.282,
+        1.833,
+        0.643,
+        0.653,
+        -0.0621
+      ],
+      [
+        "pedestrian",
+        0.3289,
+        9.49,
+        21.843,
+        0.16,
+        1.776,
+        0.672,
+        0.622,
+        -2.7219
+      ],
+      [
+        "pedestrian",
+        0.3332,
+        10.909,
+        25.957,
+        0.647,
+        1.791,
+        0.643,
+        0.62,
+        -2.5517
+      ],
+      [
+        "pedestrian",
+        0.334,
+        7.569,
+        12.965,
+        -0.4,
+        1.79,
+        0.659,
+        0.68,
+        1.8364
+      ],
+      [
+        "pedestrian",
+        0.3399,
+        10.628,
+        23.015,
+        0.14,
+        1.726,
+        0.625,
+        0.613,
+        -2.8498
+      ],
+      [
+        "pedestrian",
+        0.3444,
+        8.379,
+        18.607,
+        -0.175,
+        1.742,
+        0.67,
+        0.703,
+        1.3817
+      ],
+      [
+        "pedestrian",
+        0.3445,
+        8.768,
+        15.837,
+        -0.244,
+        1.713,
+        0.619,
+        0.605,
+        2.2143
+      ],
+      [
+        "pedestrian",
+        0.375,
+        6.057,
+        0.912,
+        -0.832,
+        1.78,
+        0.676,
+        0.745,
+        0.9601
+      ],
+      [
+        "pedestrian",
+        0.4035,
+        6.757,
+        -12.004,
+        -1.272,
+        1.757,
+        0.644,
+        0.655,
+        -1.9649
+      ],
+      [
+        "pedestrian",
+        0.4122,
+        9.354,
+        17.645,
+        -0.107,
+        1.803,
+        0.67,
+        0.641,
+        2.4408
+      ],
+      [
+        "pedestrian",
+        0.4571,
+        8.404,
+        21.422,
+        0.117,
+        1.803,
+        0.67,
+        0.645,
+        0.8106
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "Region x in [15m, 28m], y around -8m",
+          "isometric": "Multiple small boxes placed along an arc of points with no clear physical structure or ground support"
+        },
+        "evidence": [
+          "A large number of 'pedestrian' bounding boxes are placed along a sparse, single-layer curve of points at the edge of the field of view.",
+          "The bounding boxes in the isometric view appear to be floating or lack consistent, dense vertical structure characteristic of actual pedestrians.",
+          "The pattern of multiple, evenly spaced, low-confidence pedestrian detections along a single curved line is highly anomalous and suggestive of spoofing injection rather than distinct individual pedestrians.",
+          "There is no evidence of occlusions or physical objects (like poles or walls) that would generate such a specific, segmented point cluster pattern."
+        ],
+        "alternatives_ruled_out": [
+          "Natural environmental noise (noise typically doesn't manifest as a series of aligned object detections).",
+          "Distant sensor artifacts (the systematic, repetitive placement of boxes suggests an adversarial injection).",
+          "Occlusion (no underlying physical objects are present)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:09.653250"
+}

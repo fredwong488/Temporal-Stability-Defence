@@ -1,0 +1,183 @@
+{
+  "key": {
+    "frame_id": "7c2e947717ea49b1",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3022,
+        14.79,
+        -5.958,
+        -1.159,
+        0.974,
+        3.204,
+        0.518,
+        2.7675
+      ],
+      [
+        "bicycle",
+        0.3091,
+        8.445,
+        5.839,
+        -0.616,
+        1.835,
+        0.754,
+        1.701,
+        -0.3973
+      ],
+      [
+        "car",
+        0.3563,
+        -46.481,
+        36.842,
+        0.232,
+        1.641,
+        1.856,
+        4.495,
+        -3.0951
+      ],
+      [
+        "car",
+        0.9001,
+        -3.331,
+        0.504,
+        -1.199,
+        1.53,
+        1.895,
+        4.726,
+        1.6159
+      ],
+      [
+        "pedestrian",
+        0.3321,
+        11.647,
+        3.714,
+        -0.348,
+        1.817,
+        0.709,
+        0.793,
+        0.828
+      ],
+      [
+        "pedestrian",
+        0.3367,
+        5.178,
+        6.984,
+        -0.538,
+        1.781,
+        0.71,
+        0.823,
+        -2.4919
+      ],
+      [
+        "pedestrian",
+        0.4533,
+        6.796,
+        7.623,
+        -0.316,
+        1.814,
+        0.717,
+        0.789,
+        -2.5939
+      ],
+      [
+        "trailer",
+        0.9292,
+        -3.16,
+        -15.962,
+        -0.389,
+        4.255,
+        2.785,
+        15.013,
+        1.6258
+      ],
+      [
+        "truck",
+        0.5535,
+        -0.143,
+        -7.998,
+        -0.994,
+        2.494,
+        2.143,
+        4.777,
+        1.5644
+      ],
+      [
+        "truck",
+        0.8769,
+        -3.414,
+        -7.781,
+        -0.365,
+        4.045,
+        2.647,
+        6.207,
+        1.6335
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.578526496887207,
+            0.6381783485412598,
+            -1.8869924545288086
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22485m to 9m, y\u2248-5m to -8m)",
+          "isometric": "Multiple bounding boxes for 'pedestrian' and 'bicycle' are predicted in regions containing no plausible point clusters or only empty space."
+        },
+        "evidence": [
+          "Bounding boxes for 'pedestrian 0.34', 'pedestrian 0.45', and 'bicycle 0.31' are generated over empty space or extremely sparse ground noise.",
+          "A real, dense point cluster is visible further down the road at (x\u224811m, y\u2248-4m) but remains unboxed, while fake boxes are generated closer to the ego-vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant real pedestrians"
+        ]
+      },
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u2248-3m to 3m, y\u22481m to 5m)",
+          "isometric": "Multiple overlapping and stacked bounding boxes ('car', 'truck') are generated around the same point cluster."
+        },
+        "evidence": [
+          "Multiple heavily overlapping bounding boxes ('car 0.90', 'truck 0.88', 'truck 0.55') are generated on the left side of the ego vehicle.",
+          "The boxes fail to align properly with a single physical vehicle cluster, indicating corrupted/spoofed point inputs creating redundant, conflicting predictions."
+        ],
+        "alternatives_ruled_out": [
+          "Multi-path interference",
+          "Normal object proximity"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:13:14.563990"
+}

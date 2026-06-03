@@ -1,0 +1,102 @@
+{
+  "key": {
+    "frame_id": "e0c01c67fc1342d8",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.5256,
+        6.767,
+        42.428,
+        0.533,
+        1.683,
+        1.948,
+        4.563,
+        1.2854
+      ],
+      [
+        "car",
+        0.5644,
+        0.202,
+        -19.834,
+        -1.718,
+        1.752,
+        1.945,
+        4.588,
+        1.6648
+      ],
+      [
+        "car",
+        0.5754,
+        -3.064,
+        -25.765,
+        -2.122,
+        1.716,
+        1.877,
+        4.371,
+        -1.4843
+      ],
+      [
+        "pedestrian",
+        0.3152,
+        -10.341,
+        13.36,
+        -0.775,
+        1.742,
+        0.633,
+        0.667,
+        -1.2431
+      ],
+      [
+        "pedestrian",
+        0.3384,
+        5.782,
+        -1.189,
+        -0.894,
+        1.777,
+        0.686,
+        0.732,
+        -1.2699
+      ],
+      [
+        "truck",
+        0.3137,
+        28.289,
+        11.454,
+        -0.867,
+        2.405,
+        2.375,
+        6.037,
+        -3.14
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u2248-1.5, y\u2248-5.5)",
+          "isometric": "Small isolated cluster with bounding box near (x\u2248-1.5, y\u2248-5.5)"
+        },
+        "evidence": [
+          "The camera image data is unavailable, preventing crucial cross-modal verification of the predicted pedestrian detection.",
+          "The pedestrian detection in the BEV/Isometric view is isolated with minimal supporting point cloud density, making it difficult to distinguish between a sparse real detection and a potential ghost object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: Possible, but cannot be fully distinguished from ghosting without image verification.",
+          "Low reflectivity: Real object might be present but poorly sensed."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:26:34.165232"
+}

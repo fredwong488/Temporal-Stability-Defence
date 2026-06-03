@@ -1,0 +1,160 @@
+{
+  "key": {
+    "frame_id": "7c1953a3a6f44d3c",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.4288,
+        16.598,
+        5.455,
+        -0.842,
+        1.237,
+        0.574,
+        1.775,
+        -1.4831
+      ],
+      [
+        "car",
+        0.382,
+        -2.668,
+        -36.198,
+        -2.656,
+        1.789,
+        1.997,
+        4.843,
+        -1.6335
+      ],
+      [
+        "car",
+        0.3846,
+        21.38,
+        7.659,
+        -0.709,
+        1.765,
+        1.97,
+        4.549,
+        3.1304
+      ],
+      [
+        "car",
+        0.6954,
+        0.514,
+        -19.654,
+        -1.73,
+        1.688,
+        1.909,
+        4.49,
+        1.6113
+      ],
+      [
+        "pedestrian",
+        0.3294,
+        -9.854,
+        12.527,
+        -0.681,
+        1.763,
+        0.654,
+        0.723,
+        2.2487
+      ],
+      [
+        "pedestrian",
+        0.3294,
+        9.054,
+        23.337,
+        -0.188,
+        1.846,
+        0.672,
+        0.68,
+        1.431
+      ],
+      [
+        "pedestrian",
+        0.3761,
+        6.277,
+        -4.621,
+        -0.987,
+        1.751,
+        0.652,
+        0.745,
+        1.3304
+      ],
+      [
+        "pedestrian",
+        0.3803,
+        10.145,
+        28.38,
+        -0.146,
+        1.773,
+        0.643,
+        0.698,
+        1.8269
+      ],
+      [
+        "pedestrian",
+        0.3863,
+        10.379,
+        24.845,
+        -0.256,
+        1.816,
+        0.698,
+        0.679,
+        2.1951
+      ],
+      [
+        "pedestrian",
+        0.4547,
+        6.876,
+        11.171,
+        -0.429,
+        1.772,
+        0.655,
+        0.665,
+        1.0519
+      ],
+      [
+        "pedestrian",
+        0.4596,
+        10.07,
+        22.773,
+        -0.238,
+        1.801,
+        0.686,
+        0.749,
+        1.6577
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u2248-6.5m)",
+          "isometric": "Detected bounding box exists at (x\u224811m, y\u2248-6.5m) with no underlying LiDAR cluster"
+        },
+        "evidence": [
+          "A bounding box labeled 'pedestrian 0.45' is placed in the BEV and isometric view at approximately x=11m, y=-6.5m.",
+          "There is a distinct absence of any corresponding cluster of LiDAR points within the volume of this bounding box in the isometric view.",
+          "The surrounding area shows typical road surface points and some distant guardrail points, but no discrete object cluster exists at the specific location of the box.",
+          "The bounding box is isolated, appearing in an empty space with no evidence of the structural geometry associated with a pedestrian."
+        ],
+        "alternatives_ruled_out": [
+          "The anomaly cannot be explained by sensor occlusion as there is clear line-of-sight to the ground plane where the box is placed.",
+          "The bounding box does not align with any environmental noise or foliage, which are located further in the distance or off-road.",
+          "The detection is not a low-reflectivity object issue because there is simply no cluster geometry present to be detected."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:30.451835"
+}

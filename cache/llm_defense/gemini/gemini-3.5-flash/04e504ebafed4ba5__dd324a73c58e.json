@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "04e504ebafed4ba5",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3361,
+        14.803,
+        -6.073,
+        -1.279,
+        0.99,
+        3.192,
+        0.534,
+        2.7448
+      ],
+      [
+        "bicycle",
+        0.414,
+        0.575,
+        7.582,
+        -0.731,
+        1.853,
+        0.609,
+        1.813,
+        1.7198
+      ],
+      [
+        "car",
+        0.3339,
+        -2.909,
+        20.649,
+        0.144,
+        1.703,
+        2.023,
+        4.903,
+        -0.0782
+      ],
+      [
+        "car",
+        0.4612,
+        -27.795,
+        20.705,
+        -0.464,
+        1.741,
+        1.991,
+        4.686,
+        0.0891
+      ],
+      [
+        "car",
+        0.7904,
+        -3.307,
+        0.472,
+        -1.147,
+        1.533,
+        1.891,
+        4.657,
+        1.6366
+      ],
+      [
+        "pedestrian",
+        0.3128,
+        -3.524,
+        8.958,
+        -0.626,
+        1.748,
+        0.709,
+        0.817,
+        -1.0435
+      ],
+      [
+        "pedestrian",
+        0.3255,
+        -5.006,
+        7.139,
+        -0.663,
+        1.795,
+        0.702,
+        0.724,
+        -0.2978
+      ],
+      [
+        "pedestrian",
+        0.4643,
+        -7.709,
+        8.182,
+        -0.619,
+        1.79,
+        0.7,
+        0.79,
+        1.9087
+      ],
+      [
+        "trailer",
+        0.489,
+        53.046,
+        17.557,
+        1.954,
+        4.226,
+        2.803,
+        13.03,
+        -0.0142
+      ],
+      [
+        "trailer",
+        0.9504,
+        -3.114,
+        -15.899,
+        -0.403,
+        4.195,
+        2.783,
+        14.764,
+        1.626
+      ],
+      [
+        "truck",
+        0.3401,
+        -3.211,
+        20.602,
+        0.039,
+        1.906,
+        1.964,
+        5.191,
+        3.0724
+      ],
+      [
+        "truck",
+        0.3462,
+        -40.928,
+        -13.54,
+        -0.792,
+        2.094,
+        2.313,
+        5.825,
+        1.5921
+      ],
+      [
+        "truck",
+        0.6568,
+        -0.166,
+        -7.994,
+        -1.032,
+        2.518,
+        2.184,
+        4.827,
+        1.5633
+      ],
+      [
+        "truck",
+        0.8676,
+        -3.421,
+        -7.711,
+        -0.382,
+        3.981,
+        2.626,
+        6.05,
+        1.6413
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.014108657836914,
+            0.6688352227210999,
+            -1.7142157554626465
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 15,
+          "reinjected_centroid": [
+            16.826793670654297,
+            21.73832893371582,
+            0.12412258237600327
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 26,
+          "reinjected_centroid": [
+            -6.4708733558654785,
+            10.575333595275879,
+            -0.7789096832275391
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image frame (Camera sensor stream is disabled/blocked, labeled [ATTACKED])",
+          "bev": "Multiple regions, including x\u224820m, y\u22484m (overlapping truck/car) and x\u22487-9m, y\u2248-1m to 7m (multiple pedestrian/bicycle detections)",
+          "isometric": "Floating bounding boxes corresponding to pedestrians and cars with highly sparse, non-physical point distributions"
+        },
+        "evidence": [
+          "The camera image is completely unavailable and explicitly marked as [ATTACKED].",
+          "Multiple high-confidence ghost detections (pedestrians, bicycle, and overlapping truck/car) appear in the BEV and isometric views without matching physical point structures.",
+          "Detections at x\u224820m, y\u22484m (truck 0.34 and car 0.35) overlap and enclose highly sparse, linear points floating above the ground plane."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground clutter",
+          "Normal occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:46.409413"
+}

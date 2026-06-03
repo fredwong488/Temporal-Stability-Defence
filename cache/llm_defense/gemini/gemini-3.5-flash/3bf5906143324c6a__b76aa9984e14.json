@@ -1,0 +1,250 @@
+{
+  "key": {
+    "frame_id": "3bf5906143324c6a",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.3699,
+        8.316,
+        -25.71,
+        -1.55,
+        3.326,
+        2.719,
+        10.196,
+        -1.6052
+      ],
+      [
+        "bus",
+        0.9353,
+        4.085,
+        -30.913,
+        -1.673,
+        3.559,
+        3.108,
+        12.595,
+        1.5287
+      ],
+      [
+        "car",
+        0.3087,
+        -22.694,
+        -15.789,
+        -1.494,
+        1.727,
+        1.912,
+        4.582,
+        -0.5593
+      ],
+      [
+        "car",
+        0.3306,
+        13.62,
+        -27.826,
+        -2.529,
+        1.677,
+        2.006,
+        4.591,
+        2.9682
+      ],
+      [
+        "car",
+        0.3591,
+        15.515,
+        -22.014,
+        -2.278,
+        1.711,
+        2.005,
+        4.742,
+        3.0321
+      ],
+      [
+        "car",
+        0.3675,
+        35.075,
+        27.802,
+        0.37,
+        1.673,
+        1.962,
+        4.595,
+        -3.1331
+      ],
+      [
+        "car",
+        0.4102,
+        -2.981,
+        7.303,
+        -0.615,
+        1.707,
+        1.864,
+        4.47,
+        -1.4854
+      ],
+      [
+        "car",
+        0.4375,
+        -19.304,
+        -10.292,
+        -0.952,
+        2.153,
+        2.143,
+        5.475,
+        -0.6286
+      ],
+      [
+        "car",
+        0.5625,
+        -3.764,
+        9.847,
+        -0.499,
+        1.82,
+        1.952,
+        4.679,
+        -1.6491
+      ],
+      [
+        "car",
+        0.6121,
+        16.221,
+        -18.376,
+        -2.033,
+        1.658,
+        1.935,
+        4.618,
+        3.0697
+      ],
+      [
+        "construction_vehicle",
+        0.6005,
+        -11.408,
+        -31.858,
+        -1.967,
+        2.356,
+        2.425,
+        6.968,
+        3.0888
+      ],
+      [
+        "traffic_cone",
+        0.3053,
+        -5.969,
+        -9.103,
+        -1.892,
+        0.725,
+        0.354,
+        0.356,
+        1.247
+      ],
+      [
+        "traffic_cone",
+        0.5625,
+        -4.295,
+        -11.624,
+        -1.902,
+        0.746,
+        0.374,
+        0.359,
+        0.7956
+      ],
+      [
+        "trailer",
+        0.435,
+        -11.688,
+        7.093,
+        0.613,
+        3.473,
+        2.365,
+        2.712,
+        -1.1894
+      ],
+      [
+        "truck",
+        0.3016,
+        -19.45,
+        -10.234,
+        -0.907,
+        2.017,
+        2.137,
+        5.49,
+        -0.6261
+      ],
+      [
+        "truck",
+        0.398,
+        24.415,
+        -12.013,
+        -1.549,
+        2.035,
+        2.236,
+        5.791,
+        -1.5904
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 49,
+          "reinjected_centroid": [
+            15.733226776123047,
+            -17.729883193969727,
+            -2.4632978439331055
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -3.482804775238037,
+            9.076133728027344,
+            -0.9377169013023376
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            14.283143043518066,
+            -21.509288787841797,
+            -2.6060235500335693
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u22486m to 12m, y\u22482m to 5m",
+          "isometric": "Overlapping cuboids enclosing the same vehicle point cluster, with one box shifted significantly in range (shifted further forward along the same direction)."
+        },
+        "evidence": [
+          "In the BEV and isometric views, there is only a single physical vehicle point cluster visible at approximately x\u22487.5m, y\u22483.5m.",
+          "The perception system has output two overlapping 3D bounding boxes for cars: 'car 0.41' and 'car 0.56'.",
+          "The box 'car 0.56' is translated further along the x-axis (x\u224810m, y\u22484m) where there is no corresponding high-density vehicle point cluster, effectively creating a fake secondary detection (translated/frustum-like duplicate) from the same physical target points."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Multiple real vehicles (only one L-shaped return cluster is present)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:35.962436"
+}

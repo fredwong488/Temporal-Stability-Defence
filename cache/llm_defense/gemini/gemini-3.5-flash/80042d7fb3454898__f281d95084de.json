@@ -1,0 +1,220 @@
+{
+  "key": {
+    "frame_id": "80042d7fb3454898",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3159,
+        13.404,
+        -9.338,
+        -1.664,
+        0.978,
+        3.155,
+        0.52,
+        2.7967
+      ],
+      [
+        "barrier",
+        0.3344,
+        14.834,
+        -6.014,
+        -1.285,
+        0.972,
+        3.24,
+        0.562,
+        2.752
+      ],
+      [
+        "bus",
+        0.3352,
+        11.467,
+        25.069,
+        0.517,
+        3.693,
+        2.811,
+        12.015,
+        1.5875
+      ],
+      [
+        "bus",
+        0.5151,
+        -15.306,
+        27.672,
+        0.831,
+        3.444,
+        3.144,
+        11.052,
+        0.3774
+      ],
+      [
+        "car",
+        0.568,
+        -9.316,
+        23.526,
+        0.016,
+        1.68,
+        1.973,
+        4.613,
+        -0.0323
+      ],
+      [
+        "car",
+        0.9007,
+        -3.33,
+        0.474,
+        -1.214,
+        1.575,
+        1.914,
+        4.69,
+        1.62
+      ],
+      [
+        "pedestrian",
+        0.3581,
+        -10.515,
+        8.339,
+        -0.719,
+        1.865,
+        0.665,
+        0.709,
+        1.2416
+      ],
+      [
+        "pedestrian",
+        0.3615,
+        -5.928,
+        9.095,
+        -0.718,
+        1.809,
+        0.654,
+        0.703,
+        2.2323
+      ],
+      [
+        "pedestrian",
+        0.3842,
+        -6.752,
+        8.098,
+        -0.766,
+        1.815,
+        0.684,
+        0.693,
+        1.2811
+      ],
+      [
+        "pedestrian",
+        0.4087,
+        -9.209,
+        9.75,
+        -0.597,
+        1.875,
+        0.689,
+        0.76,
+        1.3002
+      ],
+      [
+        "trailer",
+        0.9255,
+        -3.158,
+        -15.974,
+        -0.373,
+        4.208,
+        2.774,
+        15.469,
+        1.627
+      ],
+      [
+        "truck",
+        0.5804,
+        -0.147,
+        -8.034,
+        -1.061,
+        2.376,
+        2.129,
+        4.768,
+        1.5508
+      ],
+      [
+        "truck",
+        0.7183,
+        4.996,
+        16.518,
+        0.601,
+        3.058,
+        2.578,
+        7.093,
+        -0.0289
+      ],
+      [
+        "truck",
+        0.8707,
+        -3.419,
+        -7.773,
+        -0.306,
+        4.029,
+        2.642,
+        6.185,
+        1.63
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.567996978759766,
+            0.7158334851264954,
+            -1.965307354927063
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 34,
+          "reinjected_centroid": [
+            -9.112937927246094,
+            22.951343536376953,
+            -0.4715425372123718
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22486m)",
+          "isometric": "Large bounding box floating in mid-air at z\u22482m to 4m, completely detached from the ground plane with no substantial or structurally plausible point cluster inside."
+        },
+        "evidence": [
+          "In the isometric view, a large bounding box is located high above the ground plane (z between 2m and 4m) with no supporting physical structure underneath.",
+          "The box is virtually empty, containing only a few sparse, high-altitude noise points, failing the physical invariant of having a dense, structured cluster representing an actual vehicle.",
+          "The camera image is unavailable and flagged as attacked, preventing cross-modal verification of any object at this location."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant real obstacles"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:13.508888"
+}

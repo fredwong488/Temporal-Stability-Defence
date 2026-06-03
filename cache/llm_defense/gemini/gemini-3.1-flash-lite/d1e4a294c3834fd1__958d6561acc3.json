@@ -1,0 +1,144 @@
+{
+  "key": {
+    "frame_id": "d1e4a294c3834fd1",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4981,
+        5.107,
+        40.095,
+        1.053,
+        1.693,
+        1.941,
+        4.657,
+        1.4387
+      ],
+      [
+        "car",
+        0.6334,
+        -3.068,
+        21.042,
+        -0.233,
+        1.622,
+        1.832,
+        4.416,
+        -1.699
+      ],
+      [
+        "car",
+        0.7057,
+        0.984,
+        -19.312,
+        -2.007,
+        1.733,
+        1.891,
+        4.497,
+        1.6637
+      ],
+      [
+        "pedestrian",
+        0.3719,
+        9.382,
+        18.705,
+        -0.005,
+        1.772,
+        0.645,
+        0.644,
+        2.3505
+      ],
+      [
+        "pedestrian",
+        0.3882,
+        7.674,
+        14.342,
+        -0.208,
+        1.821,
+        0.7,
+        0.718,
+        1.5937
+      ],
+      [
+        "pedestrian",
+        0.3951,
+        -10.348,
+        2.819,
+        -0.989,
+        1.806,
+        0.654,
+        0.734,
+        -1.4186
+      ],
+      [
+        "pedestrian",
+        0.4496,
+        6.757,
+        -10.987,
+        -1.199,
+        1.752,
+        0.651,
+        0.727,
+        -1.5619
+      ],
+      [
+        "pedestrian",
+        0.4981,
+        8.479,
+        19.87,
+        0.059,
+        1.829,
+        0.684,
+        0.717,
+        1.4275
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820m, y\u22483m)",
+          "isometric": "car-labeled box floating at x=20m, y=3m; contains no dense point cluster typical of a vehicle"
+        },
+        "evidence": [
+          "The bounding box labeled 'car' at (20m, 3m) contains almost no LiDAR returns; the points present appear to be ground or barrier noise, lacking the dense L-shape or volumetric surface structure of a vehicle.",
+          "There is no corresponding physical mass or structure in the isometric view to justify the dimensions of the car bounding box.",
+          "The surrounding area contains significant noise, and the detection is likely triggering on sparse, non-vehicular LiDAR points."
+        ],
+        "alternatives_ruled_out": [
+          "Occlusion: The region is clear, and there is no structure suggesting a vehicle behind an occluder.",
+          "Sensor noise: While there is noise, the presence of a specific 'car' bounding box classification on empty space suggests an adversarial injection or a high-false-positive trigger on sparse artifacts.",
+          "Natural objects: No roadside infrastructure or trees are visible at that location in the isometric view."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "multiple locations around x=14m to x=20m",
+          "isometric": "multiple 'pedestrian' boxes along the road path with no underlying volumetric point clusters"
+        },
+        "evidence": [
+          "Multiple bounding boxes labeled 'pedestrian' are placed at various locations (e.g., x\u224814m, x\u224820m) where there are no clear, vertically-extended point clusters.",
+          "In the isometric view, these boxes appear to enclose empty air or sparse ground returns that lack the vertical profile of a pedestrian (a human being would show a distinct vertical cluster).",
+          "The lack of consistent surface geometry suggests these are ghost detections triggering on sparse noise or artifacts."
+        ],
+        "alternatives_ruled_out": [
+          "Natural pedestrians: There is no physical structure or point density characteristic of humans in the isometric view.",
+          "Sensor noise: While noise is present, the specific clustering into 'pedestrian' labeled boxes suggests an issue with the detector's sensitivity or malicious spoofing."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:09.405029"
+}

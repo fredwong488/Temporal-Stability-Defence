@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "39d8e5ba82ac4707",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3678,
+        14.802,
+        -5.993,
+        -1.324,
+        0.987,
+        3.233,
+        0.527,
+        2.7635
+      ],
+      [
+        "car",
+        0.3306,
+        48.633,
+        22.106,
+        1.414,
+        1.967,
+        2.066,
+        5.039,
+        0.1805
+      ],
+      [
+        "car",
+        0.5242,
+        -16.465,
+        21.054,
+        -0.078,
+        1.769,
+        2.052,
+        4.828,
+        -0.0373
+      ],
+      [
+        "car",
+        0.8847,
+        -3.321,
+        0.45,
+        -1.082,
+        1.476,
+        1.887,
+        4.661,
+        1.6089
+      ],
+      [
+        "car",
+        0.8977,
+        -8.541,
+        17.389,
+        -0.326,
+        1.582,
+        1.945,
+        4.648,
+        -0.0365
+      ],
+      [
+        "pedestrian",
+        0.3254,
+        -12.941,
+        11.15,
+        -0.752,
+        1.93,
+        0.726,
+        0.741,
+        1.4973
+      ],
+      [
+        "pedestrian",
+        0.3277,
+        -9.265,
+        9.731,
+        -0.746,
+        1.794,
+        0.7,
+        0.752,
+        1.1744
+      ],
+      [
+        "pedestrian",
+        0.3803,
+        -14.36,
+        9.899,
+        -0.963,
+        1.823,
+        0.67,
+        0.716,
+        1.2544
+      ],
+      [
+        "pedestrian",
+        0.4934,
+        -10.279,
+        8.386,
+        -0.687,
+        1.822,
+        0.726,
+        0.807,
+        1.7928
+      ],
+      [
+        "trailer",
+        0.9381,
+        -3.147,
+        -16.083,
+        -0.371,
+        4.255,
+        2.81,
+        14.94,
+        1.6281
+      ],
+      [
+        "truck",
+        0.3063,
+        49.057,
+        22.233,
+        1.315,
+        2.206,
+        2.344,
+        5.871,
+        -2.9565
+      ],
+      [
+        "truck",
+        0.3255,
+        -40.904,
+        -13.508,
+        -0.93,
+        2.051,
+        2.3,
+        5.597,
+        1.6153
+      ],
+      [
+        "truck",
+        0.3757,
+        -10.091,
+        48.912,
+        1.277,
+        2.254,
+        2.18,
+        5.849,
+        1.7394
+      ],
+      [
+        "truck",
+        0.597,
+        -0.141,
+        -7.998,
+        -1.005,
+        2.537,
+        2.134,
+        4.713,
+        1.5584
+      ],
+      [
+        "truck",
+        0.6112,
+        -24.431,
+        17.908,
+        0.016,
+        3.388,
+        2.791,
+        7.758,
+        -0.0046
+      ],
+      [
+        "truck",
+        0.9012,
+        -3.42,
+        -7.774,
+        -0.363,
+        4.01,
+        2.65,
+        6.027,
+        1.6376
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u22487m)",
+          "isometric": "Empty bounding box floating in mid-air at x\u224817m, y\u22487m, z\u22482m to 4m with absolutely no LiDAR returns inside or beneath it."
+        },
+        "evidence": [
+          "A high-confidence 3D bounding box ('car 0.90') is detected at x\u224817m, y\u22487m.",
+          "The isometric view confirms the box is floating high above the ground plane and contains zero LiDAR points.",
+          "There is no physical object or point cluster at this location, violating LiDAR physical invariants (no reflections and no occlusion shadow)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (an empty box with zero points cannot be explained by random noise clusters)",
+          "Distant real object (the region is completely clear and lacks any ground returns or reflections)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:04:33.301695"
+}

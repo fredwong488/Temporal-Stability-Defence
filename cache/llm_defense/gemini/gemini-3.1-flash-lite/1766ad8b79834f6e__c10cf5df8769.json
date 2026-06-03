@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "1766ad8b79834f6e",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "barrier",
+        0.3046,
+        6.621,
+        29.443,
+        -0.902,
+        1.07,
+        2.107,
+        0.496,
+        -0.4368
+      ],
+      [
+        "bicycle",
+        0.3736,
+        -4.686,
+        11.092,
+        -0.733,
+        1.837,
+        0.66,
+        1.765,
+        1.6613
+      ],
+      [
+        "bus",
+        0.9575,
+        10.886,
+        -14.64,
+        -0.25,
+        3.324,
+        2.867,
+        12.652,
+        2.7694
+      ],
+      [
+        "car",
+        0.3009,
+        30.008,
+        3.661,
+        -0.011,
+        1.725,
+        1.979,
+        4.551,
+        1.4204
+      ],
+      [
+        "car",
+        0.4006,
+        19.743,
+        6.861,
+        -0.674,
+        1.652,
+        1.888,
+        4.543,
+        -1.8808
+      ],
+      [
+        "car",
+        0.4356,
+        27.1,
+        3.757,
+        -0.41,
+        1.643,
+        1.925,
+        4.389,
+        -2.6225
+      ],
+      [
+        "car",
+        0.4851,
+        19.808,
+        15.686,
+        -0.572,
+        1.648,
+        1.928,
+        4.595,
+        -1.9476
+      ],
+      [
+        "car",
+        0.5891,
+        18.149,
+        7.693,
+        -0.727,
+        1.654,
+        1.937,
+        4.493,
+        -2.011
+      ],
+      [
+        "car",
+        0.7646,
+        15.971,
+        8.658,
+        -0.778,
+        1.562,
+        1.898,
+        4.449,
+        -1.9652
+      ],
+      [
+        "car",
+        0.8017,
+        24.599,
+        4.47,
+        -0.52,
+        1.748,
+        1.918,
+        4.597,
+        -1.9786
+      ],
+      [
+        "pedestrian",
+        0.3066,
+        -1.941,
+        19.02,
+        -0.526,
+        1.752,
+        0.515,
+        0.499,
+        -0.5971
+      ],
+      [
+        "pedestrian",
+        0.3323,
+        0.417,
+        21.722,
+        -0.522,
+        1.771,
+        0.628,
+        0.594,
+        -0.4828
+      ],
+      [
+        "pedestrian",
+        0.3517,
+        -5.194,
+        -13.055,
+        -1.148,
+        1.705,
+        0.6,
+        0.611,
+        0.6336
+      ],
+      [
+        "pedestrian",
+        0.3794,
+        0.725,
+        20.556,
+        -0.54,
+        1.76,
+        0.616,
+        0.58,
+        -0.2324
+      ],
+      [
+        "pedestrian",
+        0.3902,
+        -11.943,
+        7.658,
+        -1.066,
+        1.727,
+        0.594,
+        0.668,
+        1.7517
+      ],
+      [
+        "trailer",
+        0.35,
+        38.297,
+        -40.004,
+        1.434,
+        4.061,
+        2.874,
+        12.228,
+        -2.4794
+      ],
+      [
+        "truck",
+        0.5158,
+        10.263,
+        -1.844,
+        -0.143,
+        3.159,
+        2.576,
+        6.273,
+        1.0985
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818-22m, y\u22480-2m)",
+          "isometric": "Several bounding boxes labeled 'pedestrian' are clustered in mid-air with no underlying point density or ground contact."
+        },
+        "evidence": [
+          "In the isometric view, there are multiple bounding boxes labeled 'pedestrian' (near x=20m, y=1m) that do not contain any coherent point clusters.",
+          "The bounding boxes in this region lack any vertical structure or physical support from the ground plane, indicating they are likely injected ghost objects.",
+          "The density of points in the isometric view at these locations is negligible compared to the expected shape of a pedestrian, suggesting the boxes were generated without corresponding physical LiDAR returns."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: This is a structured pattern of multiple boxes, not random noise.",
+          "Occlusion: There is no physical evidence of an object occluding these regions; the space is empty."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:24.525961"
+}

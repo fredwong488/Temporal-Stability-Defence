@@ -1,0 +1,210 @@
+{
+  "key": {
+    "frame_id": "f4aa200c3377475c",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3265,
+        3.063,
+        1.982,
+        -1.278,
+        0.996,
+        1.988,
+        0.554,
+        -2.7695
+      ],
+      [
+        "barrier",
+        0.3372,
+        4.324,
+        -1.233,
+        -1.407,
+        1.014,
+        2.043,
+        0.568,
+        -2.837
+      ],
+      [
+        "barrier",
+        0.3431,
+        5.949,
+        -5.48,
+        -1.538,
+        1.058,
+        2.105,
+        0.555,
+        -2.7002
+      ],
+      [
+        "barrier",
+        0.359,
+        5.162,
+        -3.637,
+        -1.492,
+        1.038,
+        2.08,
+        0.525,
+        -2.7225
+      ],
+      [
+        "barrier",
+        0.3648,
+        3.594,
+        0.436,
+        -1.281,
+        1.044,
+        2.045,
+        0.578,
+        -2.788
+      ],
+      [
+        "bicycle",
+        0.3327,
+        16.481,
+        -9.091,
+        -1.093,
+        1.44,
+        0.633,
+        1.829,
+        -1.4052
+      ],
+      [
+        "car",
+        0.4744,
+        -2.736,
+        10.267,
+        -0.562,
+        1.941,
+        1.992,
+        4.832,
+        1.8739
+      ],
+      [
+        "motorcycle",
+        0.3042,
+        9.402,
+        -41.332,
+        -2.291,
+        1.701,
+        0.979,
+        2.23,
+        -1.3689
+      ],
+      [
+        "motorcycle",
+        0.3917,
+        -6.782,
+        2.11,
+        -0.592,
+        1.449,
+        0.746,
+        2.08,
+        -1.5354
+      ],
+      [
+        "motorcycle",
+        0.4442,
+        16.545,
+        -9.212,
+        -1.078,
+        1.509,
+        0.698,
+        2.036,
+        -1.3218
+      ],
+      [
+        "pedestrian",
+        0.3139,
+        7.718,
+        -9.774,
+        -1.256,
+        1.818,
+        0.645,
+        0.712,
+        0.5849
+      ],
+      [
+        "trailer",
+        0.6605,
+        -3.6,
+        35.438,
+        0.456,
+        2.874,
+        2.991,
+        13.523,
+        1.9105
+      ],
+      [
+        "truck",
+        0.4298,
+        13.125,
+        11.262,
+        0.432,
+        3.869,
+        3.0,
+        10.608,
+        -1.2255
+      ],
+      [
+        "truck",
+        0.701,
+        9.082,
+        21.898,
+        0.409,
+        3.171,
+        2.568,
+        6.658,
+        -1.1995
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 189,
+          "reinjected_centroid": [
+            12.173371315002441,
+            9.857735633850098,
+            -1.1640379428863525
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224831m, y\u22482m)",
+          "isometric": "Large bounding box predicted as 'trailer' floating high above the ground plane (z \u2248 1.5m to 3.0m) with virtually no enclosing or supporting point cloud structure."
+        },
+        "evidence": [
+          "The predicted 'trailer' bounding box at x\u224831m, y\u22482m is completely empty of significant physical point clusters in both the BEV and Isometric views.",
+          "In the isometric view, the box is positioned abnormally high above the ground plane without any physical support structures, typical of a spoofed cluster or ghost injection that tricked the 3D detector."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object occlusion",
+          "Low reflectivity surfaces"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:59:01.807862"
+}

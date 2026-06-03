@@ -1,0 +1,236 @@
+{
+  "key": {
+    "frame_id": "fc3b5d4c5aaf491b",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.9677,
+        10.534,
+        -14.502,
+        -0.453,
+        3.191,
+        2.875,
+        12.415,
+        2.8244
+      ],
+      [
+        "car",
+        0.3343,
+        2.585,
+        28.877,
+        -0.596,
+        1.609,
+        1.89,
+        4.377,
+        -0.1861
+      ],
+      [
+        "car",
+        0.3957,
+        17.37,
+        29.701,
+        -0.448,
+        1.65,
+        1.869,
+        4.37,
+        1.5423
+      ],
+      [
+        "car",
+        0.4735,
+        29.254,
+        3.929,
+        0.325,
+        1.827,
+        2.035,
+        4.892,
+        -1.9063
+      ],
+      [
+        "car",
+        0.5231,
+        24.062,
+        5.147,
+        -0.235,
+        1.607,
+        1.894,
+        4.534,
+        -1.8868
+      ],
+      [
+        "car",
+        0.5458,
+        26.295,
+        4.381,
+        -0.02,
+        1.597,
+        1.848,
+        4.439,
+        -1.8029
+      ],
+      [
+        "car",
+        0.5636,
+        15.077,
+        30.284,
+        -0.473,
+        1.621,
+        1.873,
+        4.389,
+        1.2532
+      ],
+      [
+        "car",
+        0.6289,
+        19.758,
+        7.012,
+        -0.347,
+        1.675,
+        1.883,
+        4.402,
+        -1.9024
+      ],
+      [
+        "car",
+        0.6495,
+        15.255,
+        8.748,
+        -0.618,
+        1.506,
+        1.82,
+        4.378,
+        -2.004
+      ],
+      [
+        "car",
+        0.6662,
+        18.79,
+        16.05,
+        -0.695,
+        1.607,
+        1.909,
+        4.482,
+        1.3142
+      ],
+      [
+        "car",
+        0.7945,
+        17.498,
+        7.766,
+        -0.411,
+        1.638,
+        1.831,
+        4.343,
+        -1.9601
+      ],
+      [
+        "pedestrian",
+        0.3169,
+        -4.282,
+        17.368,
+        -0.547,
+        1.83,
+        0.602,
+        0.51,
+        -0.3621
+      ],
+      [
+        "pedestrian",
+        0.3492,
+        -1.297,
+        22.332,
+        -0.388,
+        1.795,
+        0.609,
+        0.565,
+        -0.87
+      ],
+      [
+        "pedestrian",
+        0.3624,
+        -3.66,
+        18.15,
+        -0.605,
+        1.781,
+        0.563,
+        0.49,
+        -0.6722
+      ],
+      [
+        "pedestrian",
+        0.4549,
+        -3.086,
+        17.242,
+        -0.492,
+        1.769,
+        0.57,
+        0.54,
+        -0.3412
+      ],
+      [
+        "pedestrian",
+        0.5038,
+        -3.703,
+        15.853,
+        -0.493,
+        1.795,
+        0.631,
+        0.61,
+        0.1205
+      ],
+      [
+        "pedestrian",
+        0.5104,
+        -1.237,
+        20.67,
+        -0.444,
+        1.73,
+        0.593,
+        0.549,
+        -0.0895
+      ],
+      [
+        "truck",
+        0.5061,
+        10.378,
+        -2.177,
+        0.09,
+        3.2,
+        2.5,
+        6.659,
+        1.2281
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "multiple detections at x > 15m",
+          "isometric": "multiple detections at x > 15m"
+        },
+        "evidence": [
+          "The scene shows multiple detections for pedestrians and vehicles at significant distances (15m+).",
+          "The LiDAR point cloud data appears consistent with typical road infrastructure and environmental noise at these ranges.",
+          "There is no evidence of manipulated clusters (e.g., small dense clumps at close range) or structural anomalies like floating objects.",
+          "The bounding boxes generally align with the underlying geometry of the detected point clusters."
+        ],
+        "alternatives_ruled_out": [
+          "The lack of a camera image prevents full cross-modal verification, but the LiDAR evidence alone suggests typical environmental perception rather than adversarial manipulation.",
+          "The point clusters are sparse and distributed in a way consistent with natural scene geometry rather than injected spoofing patterns."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:27.427093"
+}

@@ -1,0 +1,147 @@
+{
+  "key": {
+    "frame_id": "4c39ef6737ce4fda",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bicycle",
+        0.3152,
+        2.941,
+        17.144,
+        -0.398,
+        1.065,
+        0.608,
+        1.584,
+        -1.9332
+      ],
+      [
+        "bus",
+        0.7746,
+        8.447,
+        -19.591,
+        -0.838,
+        3.43,
+        3.068,
+        12.256,
+        2.166
+      ],
+      [
+        "car",
+        0.308,
+        17.874,
+        -12.534,
+        -0.866,
+        1.831,
+        1.992,
+        4.584,
+        0.4511
+      ],
+      [
+        "car",
+        0.3177,
+        14.172,
+        -9.183,
+        -0.841,
+        1.672,
+        1.932,
+        4.474,
+        -3.0814
+      ],
+      [
+        "car",
+        0.566,
+        13.376,
+        -6.759,
+        -0.776,
+        1.629,
+        1.883,
+        4.429,
+        -2.7087
+      ],
+      [
+        "car",
+        0.6187,
+        12.329,
+        -4.348,
+        -0.827,
+        1.712,
+        1.935,
+        4.542,
+        0.4305
+      ],
+      [
+        "construction_vehicle",
+        0.3331,
+        39.446,
+        9.466,
+        1.676,
+        3.463,
+        2.789,
+        6.565,
+        -1.9212
+      ],
+      [
+        "pedestrian",
+        0.4177,
+        15.151,
+        23.135,
+        -0.038,
+        1.879,
+        0.616,
+        0.596,
+        -1.9005
+      ],
+      [
+        "truck",
+        0.3828,
+        17.749,
+        -12.571,
+        -0.963,
+        1.923,
+        2.035,
+        5.352,
+        0.47
+      ],
+      [
+        "truck",
+        0.6452,
+        10.725,
+        -0.496,
+        0.096,
+        3.41,
+        2.702,
+        7.41,
+        0.4963
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u2248-2.5m)",
+          "isometric": "Empty box near x=17m"
+        },
+        "evidence": [
+          "The bounding box labeled 'bicycle' at approximately (x=17m, y=-2.5m) encloses an area with virtually no coherent LiDAR point cluster structure.",
+          "The lack of a corresponding physical cluster suggests the detection is a ghost object rather than a genuine entity.",
+          "The isometric view confirms the absence of any structural returns (vertical points) that would define a bicycle or any vehicle shape at that location."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor occlusion",
+          "Sparse returns from a valid object that missed detection"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:13.152227"
+}

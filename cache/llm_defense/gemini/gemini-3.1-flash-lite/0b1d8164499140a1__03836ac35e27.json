@@ -1,0 +1,306 @@
+{
+  "key": {
+    "frame_id": "0b1d8164499140a1",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.342,
+        -6.572,
+        -0.581,
+        -1.247,
+        1.779,
+        0.718,
+        1.847,
+        -1.56
+      ],
+      [
+        "car",
+        0.3379,
+        15.196,
+        9.868,
+        0.358,
+        1.769,
+        1.951,
+        4.63,
+        -1.5886
+      ],
+      [
+        "car",
+        0.3884,
+        23.747,
+        -13.694,
+        -0.453,
+        1.683,
+        1.91,
+        4.528,
+        1.7756
+      ],
+      [
+        "car",
+        0.4043,
+        -8.525,
+        -27.636,
+        -2.244,
+        1.803,
+        2.053,
+        4.758,
+        0.6192
+      ],
+      [
+        "car",
+        0.4235,
+        15.416,
+        4.251,
+        -0.252,
+        1.719,
+        1.949,
+        4.537,
+        1.449
+      ],
+      [
+        "car",
+        0.4611,
+        -8.803,
+        14.169,
+        -0.375,
+        3.117,
+        2.406,
+        7.373,
+        -1.5784
+      ],
+      [
+        "car",
+        0.4647,
+        -10.023,
+        -40.873,
+        -3.473,
+        1.724,
+        1.985,
+        4.689,
+        -1.4708
+      ],
+      [
+        "car",
+        0.4775,
+        21.167,
+        -14.246,
+        -0.448,
+        1.708,
+        1.956,
+        4.574,
+        1.6241
+      ],
+      [
+        "car",
+        0.4823,
+        16.304,
+        -14.971,
+        -0.748,
+        1.68,
+        1.954,
+        4.571,
+        1.6355
+      ],
+      [
+        "car",
+        0.4911,
+        5.754,
+        32.242,
+        0.635,
+        1.659,
+        1.921,
+        4.646,
+        1.4963
+      ],
+      [
+        "car",
+        0.5228,
+        -7.612,
+        -48.499,
+        -3.682,
+        1.813,
+        2.02,
+        4.748,
+        -1.6195
+      ],
+      [
+        "car",
+        0.5602,
+        -8.703,
+        22.509,
+        -0.389,
+        1.762,
+        1.987,
+        4.959,
+        -1.5806
+      ],
+      [
+        "car",
+        0.5737,
+        18.782,
+        -14.84,
+        -0.683,
+        1.676,
+        1.924,
+        4.507,
+        1.6539
+      ],
+      [
+        "car",
+        0.5987,
+        12.247,
+        -15.181,
+        -1.059,
+        1.773,
+        1.988,
+        4.864,
+        1.5836
+      ],
+      [
+        "car",
+        0.6608,
+        -0.406,
+        12.743,
+        -0.597,
+        1.566,
+        1.812,
+        4.388,
+        1.5061
+      ],
+      [
+        "car",
+        0.7382,
+        -9.251,
+        -12.405,
+        -1.643,
+        1.711,
+        1.891,
+        4.577,
+        -1.5814
+      ],
+      [
+        "car",
+        0.7647,
+        -9.326,
+        -19.117,
+        -2.155,
+        1.531,
+        1.828,
+        4.526,
+        -1.558
+      ],
+      [
+        "car",
+        0.821,
+        5.272,
+        21.105,
+        -0.115,
+        1.677,
+        1.859,
+        4.485,
+        1.5346
+      ],
+      [
+        "car",
+        0.8391,
+        5.239,
+        15.234,
+        -0.294,
+        1.779,
+        1.905,
+        4.569,
+        1.5535
+      ],
+      [
+        "car",
+        0.8465,
+        5.245,
+        9.028,
+        -0.604,
+        1.768,
+        1.931,
+        4.707,
+        1.6015
+      ],
+      [
+        "car",
+        0.9331,
+        5.256,
+        3.197,
+        -0.843,
+        1.808,
+        1.947,
+        4.749,
+        1.6202
+      ],
+      [
+        "car",
+        0.9377,
+        5.249,
+        -1.705,
+        -1.169,
+        1.485,
+        1.726,
+        4.067,
+        1.4946
+      ],
+      [
+        "trailer",
+        0.3045,
+        -34.017,
+        7.613,
+        -0.372,
+        2.767,
+        2.986,
+        19.034,
+        0.0111
+      ],
+      [
+        "truck",
+        0.3344,
+        26.123,
+        -12.693,
+        -0.158,
+        1.928,
+        2.194,
+        5.719,
+        -1.47
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 115
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "The bounding box at x\u224812m contains no substantial LiDAR point returns that form a coherent object structure. It appears empty or contains only sparse, unrelated noise."
+        },
+        "evidence": [
+          "In the BEV view, the box at x\u224812m is isolated from any significant point clusters.",
+          "The isometric view confirms the lack of vertical structure or a supporting base plane for the detected 'car' in this region.",
+          "The ghost object is detected in an area where no corresponding point cluster exists, characteristic of a spoofed injection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is ruled out as the detector has assigned a high-confidence bounding box to an empty region.",
+          "The box is not coincident with infrastructure or ground-level geometry that would explain the false detection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:32:24.472930"
+}

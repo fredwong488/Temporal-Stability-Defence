@@ -1,0 +1,434 @@
+{
+  "key": {
+    "frame_id": "eb9fb608f3bb43a9",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "car",
+        0.3187,
+        -11.588,
+        -23.943,
+        -1.078,
+        1.717,
+        1.943,
+        4.54,
+        2.914
+      ],
+      [
+        "car",
+        0.3424,
+        -2.066,
+        -34.936,
+        -1.312,
+        1.637,
+        1.961,
+        4.521,
+        2.7225
+      ],
+      [
+        "car",
+        0.3548,
+        8.516,
+        -3.371,
+        -1.175,
+        1.698,
+        1.893,
+        4.562,
+        2.7235
+      ],
+      [
+        "car",
+        0.3587,
+        26.777,
+        28.106,
+        0.732,
+        1.755,
+        1.98,
+        4.614,
+        0.1466
+      ],
+      [
+        "car",
+        0.3854,
+        9.811,
+        22.921,
+        0.205,
+        1.631,
+        1.918,
+        4.522,
+        0.4528
+      ],
+      [
+        "car",
+        0.4204,
+        1.074,
+        -28.413,
+        -1.331,
+        1.561,
+        1.899,
+        4.435,
+        2.7702
+      ],
+      [
+        "car",
+        0.4249,
+        22.37,
+        23.222,
+        -0.584,
+        1.584,
+        1.906,
+        4.338,
+        -2.8137
+      ],
+      [
+        "car",
+        0.4451,
+        11.33,
+        20.448,
+        0.123,
+        1.597,
+        1.909,
+        4.344,
+        -2.6677
+      ],
+      [
+        "car",
+        0.455,
+        21.281,
+        25.674,
+        -0.464,
+        1.527,
+        1.873,
+        4.178,
+        -2.7735
+      ],
+      [
+        "car",
+        0.4821,
+        4.13,
+        -16.839,
+        -1.496,
+        1.731,
+        1.964,
+        4.92,
+        2.9234
+      ],
+      [
+        "car",
+        0.4988,
+        -0.033,
+        -30.737,
+        -1.249,
+        1.698,
+        1.999,
+        4.648,
+        2.7535
+      ],
+      [
+        "car",
+        0.5043,
+        16.055,
+        -7.779,
+        -1.209,
+        1.719,
+        1.945,
+        4.535,
+        -0.2864
+      ],
+      [
+        "car",
+        0.5051,
+        17.199,
+        -2.143,
+        -1.11,
+        1.762,
+        1.924,
+        4.57,
+        -0.2931
+      ],
+      [
+        "car",
+        0.5806,
+        -2.969,
+        18.123,
+        -0.206,
+        1.637,
+        1.881,
+        4.638,
+        -1.815
+      ],
+      [
+        "car",
+        0.6069,
+        15.356,
+        -10.393,
+        -1.21,
+        1.615,
+        1.915,
+        4.52,
+        2.8872
+      ],
+      [
+        "car",
+        0.6401,
+        5.375,
+        -6.944,
+        -1.175,
+        1.707,
+        1.896,
+        4.411,
+        2.9725
+      ],
+      [
+        "car",
+        0.669,
+        2.178,
+        -23.774,
+        -1.364,
+        1.645,
+        1.938,
+        4.623,
+        2.7925
+      ],
+      [
+        "car",
+        0.6822,
+        16.823,
+        14.901,
+        -0.222,
+        1.809,
+        1.997,
+        4.738,
+        -2.8648
+      ],
+      [
+        "car",
+        0.7586,
+        7.177,
+        -9.194,
+        -1.252,
+        1.87,
+        2.018,
+        4.833,
+        2.9981
+      ],
+      [
+        "car",
+        0.8,
+        7.788,
+        12.707,
+        -0.931,
+        1.513,
+        1.869,
+        4.563,
+        -2.8902
+      ],
+      [
+        "motorcycle",
+        0.4255,
+        15.757,
+        -14.152,
+        -1.34,
+        1.558,
+        0.734,
+        2.075,
+        2.97
+      ],
+      [
+        "truck",
+        0.651,
+        -8.398,
+        -10.123,
+        -1.044,
+        2.091,
+        2.15,
+        5.771,
+        -0.2321
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.498508453369141,
+            -8.473154067993164,
+            -1.779937744140625
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 161,
+          "reinjected_centroid": [
+            4.207042694091797,
+            -16.2524356842041,
+            -1.6863137483596802
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 71,
+          "reinjected_centroid": [
+            -2.917144775390625,
+            17.008134841918945,
+            -0.7265522480010986
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 53,
+          "reinjected_centroid": [
+            16.14596939086914,
+            14.295586585998535,
+            -0.5794039964675903
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 116,
+          "reinjected_centroid": [
+            14.277493476867676,
+            -10.291119575500488,
+            -1.4553942680358887
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 46,
+          "reinjected_centroid": [
+            1.9424477815628052,
+            -23.03645133972168,
+            -1.6094261407852173
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 94,
+          "reinjected_centroid": [
+            15.985297203063965,
+            -1.9118276834487915,
+            -1.3063207864761353
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 19,
+          "reinjected_centroid": [
+            -0.4171915054321289,
+            -30.02440071105957,
+            -1.1951074600219727
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 21,
+          "reinjected_centroid": [
+            27.540864944458008,
+            15.182899475097656,
+            -1.1047296524047852
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 10,
+          "reinjected_centroid": [
+            0.49875736236572266,
+            -27.392602920532227,
+            -1.5194895267486572
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 56,
+          "reinjected_centroid": [
+            15.66838264465332,
+            -12.989972114562988,
+            -1.5125330686569214
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 145,
+          "reinjected_centroid": [
+            7.423344135284424,
+            12.1477632522583,
+            -1.4359147548675537
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 26,
+          "reinjected_centroid": [
+            29.832088470458984,
+            4.277966022491455,
+            -1.569918155670166
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            7.315347671508789,
+            -2.6665549278259277,
+            -2.1363866329193115
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            11.067723274230957,
+            -27.508337020874023,
+            -1.2251396179199219
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 32,
+          "reinjected_centroid": [
+            14.333345413208008,
+            -7.504430294036865,
+            -1.439415693283081
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818m, y\u22483m)",
+          "isometric": "cluster appears as a sparse, vertically thin line of points with no clear physical vehicle structure"
+        },
+        "evidence": [
+          "The bounding box 'car 0.58' at x\u224818m, y\u22483m does not enclose a coherent cluster of points that resembles a vehicle.",
+          "The points within and around the 'car 0.58' bounding box form a sparse line or scattered pattern inconsistent with the volume and surface reflectivity of a real vehicle.",
+          "The isometric view confirms the lack of 3D structural integrity, showing a vertically thin feature that does not represent a physical car.",
+          "The absence of a 3D shadow behind this cluster suggests it is not an opaque physical object, characteristic of ghost object spoofing."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or occlusion, as the pattern is too distinct and structured to be random noise, and there is no physical object occluding the area.",
+          "Distant object limitations, as the detector is outputting a high-confidence bounding box for an area devoid of valid object-like point density."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:39:38.996335"
+}

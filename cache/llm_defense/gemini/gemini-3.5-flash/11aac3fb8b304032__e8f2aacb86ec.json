@@ -1,0 +1,206 @@
+{
+  "key": {
+    "frame_id": "11aac3fb8b304032",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3504,
+        14.785,
+        -6.018,
+        -1.18,
+        0.991,
+        3.235,
+        0.546,
+        2.7694
+      ],
+      [
+        "bus",
+        0.5611,
+        -5.06,
+        43.908,
+        2.243,
+        3.223,
+        2.888,
+        10.752,
+        1.5055
+      ],
+      [
+        "car",
+        0.513,
+        -17.886,
+        23.752,
+        -0.188,
+        1.667,
+        1.977,
+        4.537,
+        -0.1607
+      ],
+      [
+        "car",
+        0.8641,
+        -3.303,
+        0.465,
+        -1.175,
+        1.493,
+        1.857,
+        4.553,
+        1.6165
+      ],
+      [
+        "construction_vehicle",
+        0.3488,
+        19.046,
+        21.592,
+        0.798,
+        2.955,
+        2.241,
+        5.356,
+        -1.4543
+      ],
+      [
+        "motorcycle",
+        0.3754,
+        -1.387,
+        7.894,
+        -0.802,
+        1.704,
+        0.84,
+        2.118,
+        1.847
+      ],
+      [
+        "pedestrian",
+        0.3729,
+        -7.054,
+        8.758,
+        -0.578,
+        1.791,
+        0.674,
+        0.665,
+        1.0969
+      ],
+      [
+        "pedestrian",
+        0.3772,
+        -9.798,
+        8.432,
+        -0.789,
+        1.741,
+        0.614,
+        0.652,
+        1.6028
+      ],
+      [
+        "pedestrian",
+        0.4028,
+        -5.203,
+        9.15,
+        -0.555,
+        1.773,
+        0.687,
+        0.811,
+        -1.6773
+      ],
+      [
+        "trailer",
+        0.9451,
+        -3.117,
+        -15.91,
+        -0.386,
+        4.209,
+        2.779,
+        15.038,
+        1.6266
+      ],
+      [
+        "truck",
+        0.5624,
+        -0.174,
+        -7.985,
+        -1.018,
+        2.49,
+        2.18,
+        4.811,
+        1.5532
+      ],
+      [
+        "truck",
+        0.8713,
+        -3.411,
+        -7.775,
+        -0.35,
+        4.062,
+        2.63,
+        6.037,
+        1.6354
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.132585525512695,
+            0.6871337890625,
+            -1.7724623680114746
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 24,
+          "reinjected_centroid": [
+            6.079706192016602,
+            21.823328018188477,
+            -0.08492592722177505
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 12,
+          "reinjected_centroid": [
+            -16.983041763305664,
+            23.2396240234375,
+            -0.49554184079170227
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera frame (denial of service / missing image marked as [ATTACKED])",
+          "bev": "Region around x \u2248 7m to 10m, y \u2248 1m to 7m",
+          "isometric": "Multiple tall boxes ('pedestrian' and 'motorcycle' detections) floating above the ground plane (z > 0m) with extremely sparse, non-structural point support"
+        },
+        "evidence": [
+          "The camera stream is completely unavailable and explicitly flagged as [ATTACKED].",
+          "Multiple low-confidence detections ('pedestrian 0.37', 'pedestrian 0.40', 'motorcycle 0.38') are clustered closely together in the BEV view.",
+          "In the isometric view, these bounding boxes are floating significantly above the ground surface and do not correspond to any realistic, physically grounded 3D point clusters or object profiles."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground truth vegetation or road barriers (which would be situated on the ground plane, not floating in mid-air)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:23.263403"
+}

@@ -1,0 +1,198 @@
+{
+  "key": {
+    "frame_id": "89f907d80a7742a1",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3537,
+        14.825,
+        -5.957,
+        -1.286,
+        0.963,
+        3.213,
+        0.532,
+        2.776
+      ],
+      [
+        "bicycle",
+        0.4311,
+        1.997,
+        8.416,
+        -0.715,
+        1.734,
+        0.68,
+        1.631,
+        0.1207
+      ],
+      [
+        "car",
+        0.3177,
+        -5.385,
+        0.343,
+        -1.319,
+        1.559,
+        1.796,
+        4.059,
+        1.5597
+      ],
+      [
+        "car",
+        0.4202,
+        17.057,
+        20.468,
+        0.726,
+        1.706,
+        1.974,
+        4.631,
+        0.1548
+      ],
+      [
+        "car",
+        0.5542,
+        -5.923,
+        21.666,
+        0.048,
+        1.628,
+        1.965,
+        4.674,
+        -0.0909
+      ],
+      [
+        "car",
+        0.8045,
+        -3.317,
+        0.434,
+        -1.129,
+        1.498,
+        1.88,
+        4.641,
+        1.6255
+      ],
+      [
+        "pedestrian",
+        0.3187,
+        -2.179,
+        8.0,
+        -0.685,
+        1.773,
+        0.687,
+        0.747,
+        2.9959
+      ],
+      [
+        "pedestrian",
+        0.3371,
+        -0.588,
+        8.912,
+        -0.595,
+        1.773,
+        0.701,
+        0.811,
+        1.3983
+      ],
+      [
+        "pedestrian",
+        0.4178,
+        -2.285,
+        7.021,
+        -0.73,
+        1.728,
+        0.683,
+        0.774,
+        2.261
+      ],
+      [
+        "trailer",
+        0.9332,
+        -3.16,
+        -15.93,
+        -0.397,
+        4.216,
+        2.788,
+        14.921,
+        1.626
+      ],
+      [
+        "truck",
+        0.5971,
+        -0.112,
+        -8.093,
+        -1.042,
+        2.444,
+        2.183,
+        4.886,
+        1.6002
+      ],
+      [
+        "truck",
+        0.8946,
+        -3.404,
+        -7.801,
+        -0.302,
+        4.008,
+        2.628,
+        6.139,
+        1.6329
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.912325859069824,
+            0.6262068748474121,
+            -1.7359813451766968
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 33,
+          "reinjected_centroid": [
+            -5.552218914031982,
+            21.031951904296875,
+            -0.3824099898338318
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 21.5m, y \u2248 5.5m",
+          "isometric": "Bounding box for 'car 0.55' floats in mid-air at z \u2248 1.5m to 2.5m, completely detached from the ground plane with no substantial or structurally sound point cluster supporting it."
+        },
+        "evidence": [
+          "In the isometric view, the 3D bounding box for 'car 0.55' is suspended at an elevated z-level (well above the ground plane).",
+          "There is a severe lack of a coherent point cluster inside the box representing a physical vehicle (only a few sparse points at that height).",
+          "The object lacks any corresponding physical shadow behind it along the line of sight from the LiDAR sensor."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object",
+          "Ground reflection"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:26.839677"
+}

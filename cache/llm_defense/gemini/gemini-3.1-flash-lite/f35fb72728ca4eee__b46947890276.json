@@ -1,0 +1,230 @@
+{
+  "key": {
+    "frame_id": "f35fb72728ca4eee",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.8684,
+        9.079,
+        -18.927,
+        -0.992,
+        3.461,
+        3.124,
+        12.455,
+        2.2191
+      ],
+      [
+        "car",
+        0.3147,
+        20.341,
+        5.48,
+        -0.698,
+        1.633,
+        1.923,
+        4.5,
+        -2.5425
+      ],
+      [
+        "car",
+        0.3405,
+        32.444,
+        21.386,
+        -0.527,
+        1.645,
+        1.92,
+        4.47,
+        -0.8878
+      ],
+      [
+        "car",
+        0.3709,
+        18.039,
+        -12.488,
+        -0.686,
+        1.723,
+        1.948,
+        4.489,
+        0.5131
+      ],
+      [
+        "car",
+        0.3956,
+        15.644,
+        -9.081,
+        -0.838,
+        1.72,
+        1.956,
+        4.531,
+        0.5189
+      ],
+      [
+        "car",
+        0.511,
+        14.032,
+        -6.634,
+        -0.766,
+        1.762,
+        1.943,
+        4.505,
+        0.5824
+      ],
+      [
+        "car",
+        0.5827,
+        12.519,
+        -4.317,
+        -0.832,
+        1.636,
+        1.878,
+        4.438,
+        0.535
+      ],
+      [
+        "motorcycle",
+        0.5462,
+        1.757,
+        16.758,
+        -0.623,
+        1.627,
+        0.77,
+        2.093,
+        1.5271
+      ],
+      [
+        "pedestrian",
+        0.3089,
+        6.723,
+        23.212,
+        0.333,
+        1.863,
+        0.667,
+        0.651,
+        -1.6869
+      ],
+      [
+        "pedestrian",
+        0.3267,
+        9.171,
+        23.654,
+        0.405,
+        1.915,
+        0.648,
+        0.675,
+        -1.5699
+      ],
+      [
+        "pedestrian",
+        0.3293,
+        13.387,
+        23.461,
+        -0.119,
+        1.843,
+        0.579,
+        0.581,
+        -2.9954
+      ],
+      [
+        "pedestrian",
+        0.3335,
+        26.213,
+        22.691,
+        -0.263,
+        1.798,
+        0.645,
+        0.693,
+        0.166
+      ],
+      [
+        "pedestrian",
+        0.3412,
+        11.642,
+        23.437,
+        0.049,
+        1.843,
+        0.632,
+        0.637,
+        -1.7424
+      ],
+      [
+        "pedestrian",
+        0.3558,
+        -6.216,
+        17.898,
+        -0.44,
+        1.729,
+        0.599,
+        0.641,
+        1.497
+      ],
+      [
+        "trailer",
+        0.3334,
+        42.977,
+        -16.629,
+        2.508,
+        4.212,
+        2.821,
+        10.877,
+        -0.4094
+      ],
+      [
+        "truck",
+        0.575,
+        10.557,
+        -0.636,
+        -0.065,
+        3.483,
+        2.594,
+        6.793,
+        0.5533
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224822m, y\u2248-7m), (x\u224824m, y\u2248-8m), (x\u224828m, y\u2248-8m), (x\u224830m, y\u2248-8m)",
+          "isometric": "Multiple tall vertical boxes at x > 20m, y < -5m which enclose no distinct physical clusters or surfaces"
+        },
+        "evidence": [
+          "The bounding boxes in the far right/bottom right region (x > 20m) contain sparse or non-existent point clusters.",
+          "There is no geometric consistency or surface structure corresponding to these 'pedestrian' detections in the isometric view.",
+          "The boxes appear to be floating or misaligned with the ground plane in the isometric projection, lacking the supporting points typical of real objects."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise: The detections are structured as specific bounding boxes for 'pedestrians' rather than scattered random noise.",
+          "Occlusion: The lack of points within the boxes cannot be explained by occlusion, as LiDAR would still return points on the visible surface faces of an object."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224816m, y\u2248-1.5m)",
+          "isometric": "Box labeled 'motorcycle' at x\u224816m, y\u2248-1.5m contains no underlying cluster"
+        },
+        "evidence": [
+          "The bounding box is placed in an area where the LiDAR returns are completely absent in the isometric view.",
+          "There is no point cluster to justify the existence of a 'motorcycle' detection, indicating a ghost object spoofing attack."
+        ],
+        "alternatives_ruled_out": [
+          "Low reflectivity: While a surface might have low reflectivity, it would typically still return some sporadic points; here, the box is completely empty of point returns.",
+          "Distance: The object is well within the typical operating range of the LiDAR sensor."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:16.299149"
+}

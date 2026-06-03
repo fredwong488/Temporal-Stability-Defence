@@ -1,0 +1,144 @@
+{
+  "key": {
+    "frame_id": "de815087b02645f5",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.8049,
+        -3.355,
+        0.492,
+        -1.161,
+        1.499,
+        1.893,
+        4.679,
+        1.6477
+      ],
+      [
+        "pedestrian",
+        0.3117,
+        1.756,
+        7.125,
+        -0.599,
+        1.797,
+        0.696,
+        0.75,
+        -2.3021
+      ],
+      [
+        "pedestrian",
+        0.3572,
+        8.456,
+        5.888,
+        -0.47,
+        1.672,
+        0.639,
+        0.708,
+        1.3311
+      ],
+      [
+        "pedestrian",
+        0.3592,
+        3.06,
+        8.222,
+        -0.513,
+        1.842,
+        0.691,
+        0.72,
+        3.0966
+      ],
+      [
+        "pedestrian",
+        0.426,
+        1.482,
+        9.231,
+        -0.477,
+        1.805,
+        0.68,
+        0.785,
+        1.9715
+      ],
+      [
+        "trailer",
+        0.9365,
+        -3.11,
+        -15.851,
+        -0.355,
+        4.202,
+        2.781,
+        15.019,
+        1.624
+      ],
+      [
+        "truck",
+        0.6227,
+        -0.172,
+        -7.959,
+        -0.992,
+        2.619,
+        2.214,
+        4.852,
+        1.565
+      ],
+      [
+        "truck",
+        0.8552,
+        -3.414,
+        -7.716,
+        -0.362,
+        4.062,
+        2.63,
+        6.082,
+        1.6359
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.997546195983887,
+            0.6693539619445801,
+            -1.640457272529602
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22487m to 9m, y\u2248-2m to -4m)",
+          "isometric": "Multiple pedestrian bounding boxes predicted in empty space with absolutely no corresponding 3D LiDAR point clusters"
+        },
+        "evidence": [
+          "Four pedestrian bounding boxes are predicted at x\u22487m to 9m, y\u2248-2m to -4m, but both the BEV and isometric views show no lidar point clusters or physical objects inside these boxes.",
+          "The lack of any supporting 3D points or physical structure indicates these detections are entirely fabricated (ghost objects)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant or occluded objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:23.668169"
+}

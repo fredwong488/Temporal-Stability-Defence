@@ -1,0 +1,348 @@
+{
+  "key": {
+    "frame_id": "bd10d8d1303e4e15",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.31,
+        7.839,
+        13.321,
+        -0.833,
+        1.089,
+        2.166,
+        0.527,
+        1.2242
+      ],
+      [
+        "barrier",
+        0.3326,
+        10.214,
+        -21.558,
+        -1.866,
+        1.039,
+        2.039,
+        0.494,
+        0.0846
+      ],
+      [
+        "barrier",
+        0.4407,
+        2.139,
+        -14.212,
+        -1.725,
+        0.933,
+        3.019,
+        0.526,
+        3.1157
+      ],
+      [
+        "bicycle",
+        0.3056,
+        -3.628,
+        -8.702,
+        -1.257,
+        1.069,
+        0.53,
+        1.617,
+        1.173
+      ],
+      [
+        "bus",
+        0.3357,
+        5.969,
+        53.739,
+        1.561,
+        3.433,
+        2.804,
+        10.907,
+        1.5113
+      ],
+      [
+        "car",
+        0.314,
+        2.055,
+        36.583,
+        0.294,
+        1.685,
+        1.887,
+        4.477,
+        -1.6707
+      ],
+      [
+        "car",
+        0.3754,
+        -2.793,
+        11.94,
+        -0.527,
+        1.872,
+        1.999,
+        4.931,
+        2.0877
+      ],
+      [
+        "car",
+        0.5139,
+        13.257,
+        -12.345,
+        -1.408,
+        1.721,
+        1.967,
+        4.879,
+        -1.5623
+      ],
+      [
+        "car",
+        0.7424,
+        16.73,
+        -20.484,
+        -1.743,
+        1.61,
+        1.882,
+        4.571,
+        -1.6399
+      ],
+      [
+        "construction_vehicle",
+        0.32,
+        -26.259,
+        -25.43,
+        1.219,
+        3.737,
+        3.55,
+        7.124,
+        -1.7714
+      ],
+      [
+        "construction_vehicle",
+        0.6613,
+        3.772,
+        -17.693,
+        -0.843,
+        2.937,
+        3.364,
+        4.251,
+        -1.5878
+      ],
+      [
+        "traffic_cone",
+        0.3227,
+        9.346,
+        7.943,
+        -1.209,
+        0.927,
+        0.4,
+        0.398,
+        -2.0965
+      ],
+      [
+        "traffic_cone",
+        0.3319,
+        8.655,
+        21.508,
+        -0.876,
+        0.781,
+        0.432,
+        0.444,
+        -1.5291
+      ],
+      [
+        "traffic_cone",
+        0.339,
+        1.387,
+        15.913,
+        -0.968,
+        0.733,
+        0.378,
+        0.383,
+        -2.5397
+      ],
+      [
+        "traffic_cone",
+        0.3476,
+        8.568,
+        24.323,
+        -0.748,
+        0.755,
+        0.401,
+        0.412,
+        -1.4295
+      ],
+      [
+        "traffic_cone",
+        0.3506,
+        1.739,
+        4.912,
+        -1.387,
+        0.752,
+        0.39,
+        0.384,
+        2.4553
+      ],
+      [
+        "traffic_cone",
+        0.3702,
+        8.604,
+        22.936,
+        -0.767,
+        0.795,
+        0.414,
+        0.434,
+        -1.5221
+      ],
+      [
+        "traffic_cone",
+        0.3799,
+        9.205,
+        11.151,
+        -1.209,
+        0.724,
+        0.388,
+        0.386,
+        -1.8019
+      ],
+      [
+        "traffic_cone",
+        0.4165,
+        9.568,
+        -0.57,
+        -1.52,
+        0.738,
+        0.393,
+        0.398,
+        -3.1003
+      ],
+      [
+        "traffic_cone",
+        0.6439,
+        2.051,
+        -4.498,
+        -1.566,
+        0.728,
+        0.356,
+        0.366,
+        1.4274
+      ],
+      [
+        "trailer",
+        0.3246,
+        15.558,
+        -12.291,
+        -0.537,
+        4.077,
+        2.954,
+        15.676,
+        -1.4617
+      ],
+      [
+        "truck",
+        0.4827,
+        15.134,
+        -10.295,
+        -0.654,
+        3.854,
+        2.965,
+        11.358,
+        -1.5352
+      ],
+      [
+        "truck",
+        0.544,
+        13.209,
+        -23.176,
+        -1.538,
+        2.062,
+        2.12,
+        5.395,
+        -1.4833
+      ],
+      [
+        "truck",
+        0.7064,
+        14.712,
+        2.099,
+        -0.23,
+        3.345,
+        2.698,
+        7.144,
+        -1.5359
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 32,
+          "reinjected_centroid": [
+            15.953272819519043,
+            -20.285114288330078,
+            -2.018195629119873
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 114,
+          "reinjected_centroid": [
+            12.868378639221191,
+            -11.851938247680664,
+            -1.902716040611267
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -2.227836847305298,
+            10.397093772888184,
+            -0.9725818037986755
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 44,
+          "reinjected_centroid": [
+            13.039693832397461,
+            -21.963245391845703,
+            -1.7413268089294434
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "(x\u224811m, y\u22483m)",
+          "isometric": "Box centered at x\u224811m, y\u22483m contains no points, while a prominent point cluster is located closer at x\u22486m, y\u22483m along the same longitudinal line"
+        },
+        "evidence": [
+          "The predicted bounding box 'car 0.38' is empty and does not envelope any point cluster.",
+          "A dense, elevated LiDAR point cluster is visible at x\u22486m, y\u22483m but has no bounding box associated with it.",
+          "The 3D bounding box is translated forward along the range axis away from the physical point cluster."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflection",
+          "Opaque object occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:53.492022"
+}

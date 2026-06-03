@@ -1,0 +1,125 @@
+{
+  "key": {
+    "frame_id": "1663ce4f509641f5",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "bus",
+        0.5804,
+        -1.886,
+        -30.24,
+        -1.012,
+        3.553,
+        3.02,
+        11.739,
+        1.4056
+      ],
+      [
+        "car",
+        0.3732,
+        7.053,
+        22.443,
+        0.085,
+        1.847,
+        1.983,
+        4.958,
+        1.4129
+      ],
+      [
+        "car",
+        0.437,
+        0.562,
+        -12.238,
+        -1.413,
+        1.864,
+        1.977,
+        4.68,
+        1.6009
+      ],
+      [
+        "car",
+        0.6721,
+        -18.785,
+        -25.371,
+        -1.569,
+        1.647,
+        1.906,
+        4.297,
+        2.6776
+      ],
+      [
+        "traffic_cone",
+        0.3342,
+        4.543,
+        -9.091,
+        -1.634,
+        1.251,
+        0.389,
+        0.393,
+        1.812
+      ],
+      [
+        "traffic_cone",
+        0.4701,
+        2.692,
+        -8.535,
+        -1.594,
+        1.116,
+        0.506,
+        0.515,
+        1.7336
+      ],
+      [
+        "truck",
+        0.3592,
+        0.529,
+        -12.565,
+        -1.478,
+        1.877,
+        2.074,
+        5.202,
+        1.6304
+      ],
+      [
+        "truck",
+        0.5894,
+        -7.762,
+        -21.069,
+        -1.737,
+        1.973,
+        2.229,
+        5.656,
+        1.6896
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not applicable (camera image not available / empty black region)",
+          "bev": "x \u2248 20m to 25m, y \u2248 -6m to -7.5m",
+          "isometric": "Empty bounding box labeled 'car' at x \u2248 22.5m, y \u2248 -6.5m with no physical point cluster inside"
+        },
+        "evidence": [
+          "A 3D bounding box labeled 'car' (confidence 0.37) is predicted at (x \u2248 22.5m, y \u2248 -6.5m) in both BEV and isometric views.",
+          "There is no point cluster or structure inside this bounding box in either the BEV or the Isometric view.",
+          "There is no occlusion shadow projected behind this predicted vehicle, which violates physical LiDAR invariants for real opaque objects."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (the area is completely devoid of matching clusters, ruling out noise-based false positives)",
+          "Low-reflectivity surface (even dark cars return some boundary/ground points; here there is nothing inside the box)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:50.433157"
+}

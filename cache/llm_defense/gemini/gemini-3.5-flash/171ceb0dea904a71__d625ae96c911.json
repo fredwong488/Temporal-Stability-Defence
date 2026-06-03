@@ -1,0 +1,244 @@
+{
+  "key": {
+    "frame_id": "171ceb0dea904a71",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3649,
+        14.815,
+        -5.978,
+        -1.278,
+        0.977,
+        3.201,
+        0.519,
+        2.7295
+      ],
+      [
+        "bicycle",
+        0.3667,
+        1.865,
+        8.336,
+        -0.673,
+        1.512,
+        0.66,
+        1.57,
+        -2.9952
+      ],
+      [
+        "car",
+        0.4048,
+        -8.51,
+        19.652,
+        -0.156,
+        1.626,
+        1.869,
+        4.398,
+        2.966
+      ],
+      [
+        "car",
+        0.4712,
+        15.501,
+        20.25,
+        0.76,
+        1.794,
+        1.999,
+        4.65,
+        0.0791
+      ],
+      [
+        "car",
+        0.7446,
+        -3.36,
+        0.445,
+        -1.144,
+        1.487,
+        1.884,
+        4.646,
+        1.6409
+      ],
+      [
+        "pedestrian",
+        0.3023,
+        1.461,
+        8.336,
+        -0.622,
+        1.712,
+        0.714,
+        0.826,
+        1.463
+      ],
+      [
+        "pedestrian",
+        0.3111,
+        3.304,
+        6.6,
+        -0.609,
+        1.756,
+        0.689,
+        0.783,
+        1.7991
+      ],
+      [
+        "pedestrian",
+        0.3167,
+        3.577,
+        7.735,
+        -0.58,
+        1.706,
+        0.685,
+        0.801,
+        2.6559
+      ],
+      [
+        "pedestrian",
+        0.3275,
+        -2.644,
+        8.084,
+        -0.575,
+        1.766,
+        0.701,
+        0.768,
+        -2.8741
+      ],
+      [
+        "pedestrian",
+        0.3524,
+        -2.677,
+        7.033,
+        -0.717,
+        1.731,
+        0.696,
+        0.8,
+        2.8554
+      ],
+      [
+        "pedestrian",
+        0.3667,
+        -1.041,
+        8.804,
+        -0.607,
+        1.778,
+        0.674,
+        0.703,
+        -2.9184
+      ],
+      [
+        "pedestrian",
+        0.3866,
+        -4.578,
+        8.157,
+        -0.603,
+        1.725,
+        0.656,
+        0.721,
+        -1.4347
+      ],
+      [
+        "trailer",
+        0.3039,
+        5.222,
+        41.543,
+        2.165,
+        3.612,
+        3.322,
+        6.01,
+        -1.6596
+      ],
+      [
+        "trailer",
+        0.9392,
+        -3.14,
+        -16.031,
+        -0.37,
+        4.235,
+        2.781,
+        14.8,
+        1.6198
+      ],
+      [
+        "truck",
+        0.3147,
+        -10.023,
+        48.789,
+        1.107,
+        2.326,
+        2.21,
+        5.709,
+        1.729
+      ],
+      [
+        "truck",
+        0.6014,
+        -0.14,
+        -8.008,
+        -1.015,
+        2.518,
+        2.142,
+        4.75,
+        1.5505
+      ],
+      [
+        "truck",
+        0.9223,
+        -3.423,
+        -7.788,
+        -0.387,
+        3.941,
+        2.661,
+        6.077,
+        1.6365
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.791388988494873,
+            0.6352781057357788,
+            -1.663282036781311
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "unknown (camera image not available)",
+          "bev": "array of detections around x\u22487m to 10m, y\u2248-4m to 4m",
+          "isometric": "multiple tall vertical pedestrian/bicycle bounding boxes arranged in an arc around the ego vehicle with no matching 3D point clusters inside them"
+        },
+        "evidence": [
+          "A series of 'pedestrian' (confidences 0.30 - 0.39) and 'bicycle' (confidence 0.37) bounding boxes are predicted in a semi-circular arc ahead of the ego vehicle.",
+          "Both BEV and isometric views show no corresponding physical point clusters or vertical structure at these locations; the ground ring patterns of the LiDAR sweep pass completely unhindered through these boxes.",
+          "No physical occlusion shadows are cast behind these alleged objects."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Low-reflectivity pedestrians (which would still show some vertical points or block ground returns behind them)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:22.844030"
+}

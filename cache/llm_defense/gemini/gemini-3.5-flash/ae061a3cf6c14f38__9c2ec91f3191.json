@@ -1,0 +1,170 @@
+{
+  "key": {
+    "frame_id": "ae061a3cf6c14f38",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3293,
+        14.794,
+        -6.026,
+        -1.216,
+        0.974,
+        3.194,
+        0.541,
+        2.77
+      ],
+      [
+        "bicycle",
+        0.3463,
+        5.754,
+        14.056,
+        0.057,
+        1.823,
+        0.722,
+        1.657,
+        3.0269
+      ],
+      [
+        "car",
+        0.8833,
+        -3.324,
+        0.453,
+        -1.074,
+        1.489,
+        1.893,
+        4.654,
+        1.6026
+      ],
+      [
+        "pedestrian",
+        0.3348,
+        -18.261,
+        11.058,
+        -0.846,
+        1.882,
+        0.667,
+        0.681,
+        1.0324
+      ],
+      [
+        "pedestrian",
+        0.3737,
+        -15.844,
+        10.349,
+        -0.899,
+        1.808,
+        0.608,
+        0.636,
+        1.1828
+      ],
+      [
+        "pedestrian",
+        0.3864,
+        -17.15,
+        11.987,
+        -0.727,
+        1.944,
+        0.669,
+        0.691,
+        1.4532
+      ],
+      [
+        "pedestrian",
+        0.3913,
+        -14.702,
+        9.247,
+        -0.81,
+        1.782,
+        0.67,
+        0.718,
+        2.8524
+      ],
+      [
+        "trailer",
+        0.955,
+        -3.142,
+        -15.846,
+        -0.375,
+        4.211,
+        2.794,
+        14.66,
+        1.629
+      ],
+      [
+        "truck",
+        0.3164,
+        -10.03,
+        48.854,
+        1.197,
+        2.308,
+        2.206,
+        5.708,
+        1.7267
+      ],
+      [
+        "truck",
+        0.3628,
+        48.906,
+        22.247,
+        1.322,
+        2.289,
+        2.398,
+        6.016,
+        0.1058
+      ],
+      [
+        "truck",
+        0.6765,
+        -0.148,
+        -7.989,
+        -1.017,
+        2.552,
+        2.203,
+        4.817,
+        1.5636
+      ],
+      [
+        "truck",
+        0.8992,
+        -3.421,
+        -7.887,
+        -0.375,
+        3.971,
+        2.692,
+        6.024,
+        1.5987
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224823m, y\u22486m)",
+          "isometric": "Empty 3D bounding box floating in mid-air at z\u22483m with zero supporting LiDAR points inside or near it."
+        },
+        "evidence": [
+          "A 3D bounding box is predicted high above the ground plane (z\u22483m) around coordinate x\u224823m, y\u22486m.",
+          "The box is completely empty of any LiDAR points and has no supporting physical structure underneath.",
+          "There is no physical occlusion or sensor shadow indicating an object could be hiding there."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (which would still have some sparse points)",
+          "Distant object (which would be closer to the ground plane)",
+          "Ground reflections or clutter"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:03:57.824895"
+}

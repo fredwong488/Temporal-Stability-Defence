@@ -1,0 +1,275 @@
+{
+  "key": {
+    "frame_id": "f785ae9dd5fd4561",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.4161,
+        -6.757,
+        -17.653,
+        -1.457,
+        1.912,
+        0.726,
+        1.788,
+        -1.6442
+      ],
+      [
+        "car",
+        0.3001,
+        22.324,
+        -3.448,
+        -0.288,
+        1.537,
+        1.831,
+        4.398,
+        1.5222
+      ],
+      [
+        "car",
+        0.3215,
+        20.595,
+        -24.818,
+        -0.787,
+        1.761,
+        1.966,
+        4.498,
+        -1.4508
+      ],
+      [
+        "car",
+        0.3831,
+        15.218,
+        -6.009,
+        -0.853,
+        1.783,
+        1.884,
+        4.439,
+        -1.5649
+      ],
+      [
+        "car",
+        0.4433,
+        3.881,
+        -43.084,
+        -2.752,
+        1.787,
+        1.959,
+        4.616,
+        1.4933
+      ],
+      [
+        "car",
+        0.4868,
+        12.211,
+        -0.245,
+        -0.674,
+        1.737,
+        1.936,
+        4.624,
+        -1.5431
+      ],
+      [
+        "car",
+        0.4983,
+        -8.827,
+        4.313,
+        -0.725,
+        3.078,
+        2.465,
+        7.652,
+        -1.5932
+      ],
+      [
+        "car",
+        0.5151,
+        14.814,
+        -0.593,
+        -0.598,
+        1.766,
+        1.921,
+        4.662,
+        -1.4633
+      ],
+      [
+        "car",
+        0.5896,
+        -9.409,
+        -29.379,
+        -2.324,
+        1.565,
+        1.834,
+        4.617,
+        1.1869
+      ],
+      [
+        "car",
+        0.6037,
+        -8.748,
+        12.422,
+        -0.71,
+        1.955,
+        1.98,
+        5.03,
+        -1.5931
+      ],
+      [
+        "car",
+        0.6212,
+        5.453,
+        28.466,
+        0.197,
+        1.654,
+        1.879,
+        4.636,
+        1.6135
+      ],
+      [
+        "car",
+        0.7852,
+        -0.309,
+        13.233,
+        -0.652,
+        1.602,
+        1.837,
+        4.337,
+        1.5121
+      ],
+      [
+        "car",
+        0.7869,
+        -3.303,
+        11.692,
+        -0.723,
+        1.579,
+        1.86,
+        4.384,
+        -1.6247
+      ],
+      [
+        "car",
+        0.7942,
+        5.182,
+        -11.782,
+        -1.513,
+        1.637,
+        1.809,
+        4.137,
+        1.5077
+      ],
+      [
+        "car",
+        0.8234,
+        5.541,
+        22.093,
+        -0.134,
+        1.541,
+        1.875,
+        4.747,
+        1.6111
+      ],
+      [
+        "car",
+        0.8743,
+        5.258,
+        5.058,
+        -0.799,
+        1.891,
+        2.002,
+        4.903,
+        1.5218
+      ],
+      [
+        "car",
+        0.8891,
+        5.222,
+        -6.636,
+        -1.213,
+        1.908,
+        2.017,
+        4.852,
+        1.6215
+      ],
+      [
+        "car",
+        0.8918,
+        5.305,
+        10.925,
+        -0.658,
+        1.664,
+        1.876,
+        4.586,
+        1.5534
+      ],
+      [
+        "car",
+        0.9586,
+        5.164,
+        -1.079,
+        -1.035,
+        1.781,
+        1.892,
+        4.601,
+        1.5817
+      ],
+      [
+        "motorcycle",
+        0.4695,
+        12.302,
+        5.254,
+        -0.91,
+        1.265,
+        0.674,
+        1.841,
+        2.997
+      ],
+      [
+        "pedestrian",
+        0.352,
+        -11.651,
+        2.161,
+        -1.191,
+        1.768,
+        0.614,
+        0.629,
+        -1.0043
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 100
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u22480m)",
+          "isometric": "cluster appears as a isolated, sparse floating box"
+        },
+        "evidence": [
+          "The isometric view reveals that the bounding box centered around (x=11, y=0) contains a sparse, disconnected point cluster with no vertical structure consistent with a vehicle.",
+          "The cluster lacks any connection to the ground plane, appearing to 'float' in isolation.",
+          "The camera input is explicitly flagged as [ATTACKED] and unavailable, which is highly suspicious in conjunction with the questionable 3D detection.",
+          "There is no occlusion or shadow cast by this object, which is physically implausible for a genuine solid vehicle at that range."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too localized and structured as a box)",
+          "Distant static infrastructure (the object is mid-range and lacks the characteristic surface profile of road furniture)",
+          "Occluded object (no shadow indicates lack of physical depth/opacity)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:32:45.126238"
+}

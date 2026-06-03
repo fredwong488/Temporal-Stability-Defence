@@ -1,0 +1,297 @@
+{
+  "key": {
+    "frame_id": "d6df09b7c5a54cec",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3153,
+        -19.955,
+        -11.815,
+        -1.601,
+        1.757,
+        0.657,
+        1.641,
+        -1.6631
+      ],
+      [
+        "car",
+        0.3233,
+        22.433,
+        -11.915,
+        -1.182,
+        1.685,
+        1.893,
+        4.361,
+        0.0347
+      ],
+      [
+        "car",
+        0.3647,
+        -8.477,
+        42.384,
+        1.704,
+        1.75,
+        1.883,
+        4.588,
+        1.6579
+      ],
+      [
+        "car",
+        0.3904,
+        1.823,
+        42.24,
+        1.377,
+        1.73,
+        1.945,
+        4.557,
+        1.4507
+      ],
+      [
+        "car",
+        0.4232,
+        -3.859,
+        32.911,
+        0.764,
+        1.729,
+        1.959,
+        4.632,
+        -1.5657
+      ],
+      [
+        "car",
+        0.5564,
+        0.32,
+        -29.927,
+        -2.073,
+        1.804,
+        1.984,
+        4.722,
+        1.6015
+      ],
+      [
+        "car",
+        0.6048,
+        -14.393,
+        20.858,
+        -0.188,
+        1.593,
+        1.9,
+        4.567,
+        0.0988
+      ],
+      [
+        "car",
+        0.622,
+        -7.407,
+        22.681,
+        0.2,
+        1.582,
+        1.909,
+        4.458,
+        0.2089
+      ],
+      [
+        "car",
+        0.8416,
+        -3.91,
+        -18.83,
+        -1.932,
+        1.597,
+        1.841,
+        4.39,
+        -1.537
+      ],
+      [
+        "car",
+        0.8529,
+        4.518,
+        21.487,
+        0.116,
+        1.711,
+        1.904,
+        4.694,
+        1.64
+      ],
+      [
+        "car",
+        0.9312,
+        -7.512,
+        6.164,
+        -0.966,
+        1.546,
+        1.906,
+        4.857,
+        -1.6063
+      ],
+      [
+        "pedestrian",
+        0.3048,
+        -18.066,
+        -19.134,
+        -2.013,
+        1.798,
+        0.636,
+        0.639,
+        2.0325
+      ],
+      [
+        "pedestrian",
+        0.311,
+        6.337,
+        -33.443,
+        -2.137,
+        1.807,
+        0.644,
+        0.661,
+        -2.0788
+      ],
+      [
+        "pedestrian",
+        0.3141,
+        -21.332,
+        -6.371,
+        -1.267,
+        1.787,
+        0.603,
+        0.646,
+        1.4678
+      ],
+      [
+        "pedestrian",
+        0.3284,
+        -8.404,
+        -15.215,
+        -1.604,
+        1.782,
+        0.648,
+        0.745,
+        -1.4691
+      ],
+      [
+        "pedestrian",
+        0.3316,
+        -19.219,
+        -14.228,
+        -1.989,
+        1.778,
+        0.617,
+        0.627,
+        0.8493
+      ],
+      [
+        "pedestrian",
+        0.3424,
+        8.189,
+        -6.63,
+        -1.113,
+        1.787,
+        0.667,
+        0.664,
+        -2.9336
+      ],
+      [
+        "pedestrian",
+        0.3481,
+        6.5,
+        -10.8,
+        -1.421,
+        1.753,
+        0.655,
+        0.664,
+        2.2881
+      ],
+      [
+        "pedestrian",
+        0.3663,
+        6.695,
+        -13.762,
+        -1.495,
+        1.803,
+        0.662,
+        0.701,
+        -1.6307
+      ],
+      [
+        "pedestrian",
+        0.4007,
+        6.374,
+        -8.302,
+        -1.298,
+        1.722,
+        0.634,
+        0.609,
+        -1.3941
+      ],
+      [
+        "pedestrian",
+        0.4262,
+        7.683,
+        -8.415,
+        -1.206,
+        1.805,
+        0.61,
+        0.566,
+        -3.0009
+      ],
+      [
+        "pedestrian",
+        0.4427,
+        7.393,
+        -10.054,
+        -1.33,
+        1.788,
+        0.656,
+        0.608,
+        2.853
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22487m, y\u22487m)",
+          "isometric": "cluster appears as a line of points consistent with a road barrier, not a car"
+        },
+        "evidence": [
+          "The bounding box at x\u22487, y\u22487 is placed over a linear structure of points characteristic of a static road barrier or wall, not a car.",
+          "The detector misclassifies a static infrastructure element as a dynamic 'car' object, indicating a failure mode consistent with spoofing or model misinterpretation.",
+          "Lack of 3D volumetric shape consistent with a vehicle; the point cluster is thin and elongated."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (the points are too structured and dense).",
+          "Genuine vehicle (the geometry is planar/linear, not consistent with a vehicle's dimensions)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224822m, y\u22486m)",
+          "isometric": "floating cluster with no clear surface connection"
+        },
+        "evidence": [
+          "The bounding box at x\u224822, y\u22486 contains a sparse cluster of points that lacks the coherent structural surface required for a vehicle.",
+          "The points within this box do not exhibit the typical L-shape or volumetric density expected for a car.",
+          "The box appears to be floating without a clear ground-level connection or consistent vertical profile in the isometric view."
+        ],
+        "alternatives_ruled_out": [
+          "Distant vehicle (the density and distribution of points are too sparse to confirm a real vehicle).",
+          "Occlusion (no underlying structure suggests a real vehicle is hidden)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:27.464914"
+}

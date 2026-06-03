@@ -1,0 +1,205 @@
+{
+  "key": {
+    "frame_id": "8a7b171675d24b45",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.339,
+        13.406,
+        -9.388,
+        -1.648,
+        0.976,
+        3.154,
+        0.489,
+        2.8046
+      ],
+      [
+        "barrier",
+        0.401,
+        14.789,
+        -5.992,
+        -1.29,
+        0.987,
+        3.202,
+        0.545,
+        2.7934
+      ],
+      [
+        "bus",
+        0.5529,
+        -8.681,
+        32.968,
+        1.316,
+        3.53,
+        2.885,
+        11.606,
+        0.8642
+      ],
+      [
+        "car",
+        0.5653,
+        5.224,
+        22.543,
+        0.518,
+        1.701,
+        1.959,
+        4.717,
+        -0.0677
+      ],
+      [
+        "car",
+        0.8539,
+        -3.342,
+        0.483,
+        -1.176,
+        1.503,
+        1.855,
+        4.587,
+        1.609
+      ],
+      [
+        "pedestrian",
+        0.3584,
+        -7.608,
+        9.178,
+        -0.581,
+        1.816,
+        0.68,
+        0.718,
+        0.3426
+      ],
+      [
+        "pedestrian",
+        0.3675,
+        -3.702,
+        7.383,
+        -0.595,
+        1.724,
+        0.636,
+        0.688,
+        1.0283
+      ],
+      [
+        "pedestrian",
+        0.3908,
+        -12.459,
+        8.967,
+        -0.721,
+        1.755,
+        0.626,
+        0.674,
+        1.3623
+      ],
+      [
+        "trailer",
+        0.9244,
+        -3.128,
+        -16.095,
+        -0.395,
+        4.266,
+        2.796,
+        15.199,
+        1.6345
+      ],
+      [
+        "truck",
+        0.6165,
+        -0.141,
+        -8.035,
+        -1.045,
+        2.471,
+        2.146,
+        4.826,
+        1.5643
+      ],
+      [
+        "truck",
+        0.8568,
+        18.006,
+        16.396,
+        1.355,
+        3.536,
+        2.847,
+        7.656,
+        0.0324
+      ],
+      [
+        "truck",
+        0.8907,
+        -3.4,
+        -7.822,
+        -0.358,
+        3.957,
+        2.638,
+        6.24,
+        1.6331
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.3261871337890625,
+            0.616970419883728,
+            -1.7812198400497437
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 68,
+          "reinjected_centroid": [
+            4.672657489776611,
+            21.950313568115234,
+            -0.1455899477005005
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 16,
+          "reinjected_centroid": [
+            -11.251283645629883,
+            11.188843727111816,
+            -0.9505085349082947
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "unknown (camera image unavailable)",
+          "bev": "x \u2248 18m to 25m, y \u2248 3m to 7m",
+          "isometric": "Large bounding box floating at z \u2248 2m to 3.5m, enclosing a highly sparse cluster of points with no ground connection or structural vehicle cues"
+        },
+        "evidence": [
+          "In the isometric view, a large bounding box is predicted at an elevated height (z \u2248 2m to 3.5m) containing only sparse, disconnected points.",
+          "The object lacks any structural L-shape, solid vertical surfaces, or a physical connection to the road surface, which violates the physical invariants of a real ground vehicle.",
+          "The camera image is completely unavailable and marked as '[ATTACKED]', suggesting a multi-modal denial or sensor-level attack to prevent visual cross-verification."
+        ],
+        "alternatives_ruled_out": [
+          "Natural overhead infrastructure (e.g., a sign or bridge) - while infrastructure could produce high-z points, a high-confidence vehicle/bus box enclosing floating sparse noise points is anomalous and indicates a target spoofing or classifier exploitation."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:33.552048"
+}

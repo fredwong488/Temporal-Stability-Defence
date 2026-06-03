@@ -1,0 +1,336 @@
+{
+  "key": {
+    "frame_id": "b875c6cbd7784630",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3265,
+        -14.097,
+        -37.446,
+        -0.835,
+        1.102,
+        1.89,
+        0.608,
+        1.6802
+      ],
+      [
+        "barrier",
+        0.3381,
+        10.23,
+        -18.189,
+        -1.602,
+        1.033,
+        2.045,
+        0.453,
+        0.0743
+      ],
+      [
+        "barrier",
+        0.3463,
+        2.201,
+        -14.942,
+        -1.521,
+        1.046,
+        2.025,
+        0.522,
+        3.1204
+      ],
+      [
+        "barrier",
+        0.3645,
+        2.212,
+        -11.586,
+        -1.533,
+        1.017,
+        2.278,
+        0.575,
+        3.1285
+      ],
+      [
+        "barrier",
+        0.3679,
+        2.243,
+        -16.538,
+        -1.55,
+        1.066,
+        2.043,
+        0.534,
+        -3.1079
+      ],
+      [
+        "barrier",
+        0.4326,
+        2.164,
+        -13.307,
+        -1.516,
+        1.062,
+        2.028,
+        0.545,
+        3.121
+      ],
+      [
+        "car",
+        0.3139,
+        13.545,
+        -20.592,
+        -1.23,
+        2.155,
+        2.116,
+        5.224,
+        1.5415
+      ],
+      [
+        "car",
+        0.7352,
+        17.169,
+        -17.689,
+        -1.529,
+        1.682,
+        1.947,
+        4.691,
+        -1.5679
+      ],
+      [
+        "construction_vehicle",
+        0.3638,
+        -14.054,
+        18.011,
+        1.033,
+        3.787,
+        2.985,
+        11.062,
+        3.1122
+      ],
+      [
+        "construction_vehicle",
+        0.764,
+        3.965,
+        -14.619,
+        -0.856,
+        2.679,
+        3.433,
+        4.162,
+        -1.581
+      ],
+      [
+        "motorcycle",
+        0.5772,
+        -6.798,
+        -7.707,
+        -0.865,
+        1.376,
+        0.761,
+        2.117,
+        1.2161
+      ],
+      [
+        "traffic_cone",
+        0.3284,
+        8.46,
+        26.92,
+        -0.982,
+        0.774,
+        0.401,
+        0.414,
+        -1.5042
+      ],
+      [
+        "traffic_cone",
+        0.3619,
+        9.453,
+        2.173,
+        -1.465,
+        0.713,
+        0.343,
+        0.375,
+        -1.9526
+      ],
+      [
+        "traffic_cone",
+        0.4335,
+        1.45,
+        12.521,
+        -1.23,
+        0.751,
+        0.375,
+        0.386,
+        -1.995
+      ],
+      [
+        "traffic_cone",
+        0.4369,
+        9.773,
+        -2.818,
+        -1.591,
+        0.741,
+        0.398,
+        0.399,
+        -1.3784
+      ],
+      [
+        "traffic_cone",
+        0.4501,
+        1.763,
+        7.58,
+        -1.298,
+        0.698,
+        0.384,
+        0.407,
+        -2.8516
+      ],
+      [
+        "traffic_cone",
+        0.453,
+        1.872,
+        3.099,
+        -1.389,
+        0.759,
+        0.384,
+        0.371,
+        3.1132
+      ],
+      [
+        "traffic_cone",
+        0.459,
+        2.01,
+        -1.806,
+        -1.462,
+        0.736,
+        0.385,
+        0.377,
+        1.6727
+      ],
+      [
+        "traffic_cone",
+        0.5132,
+        2.156,
+        -7.469,
+        -1.676,
+        0.727,
+        0.388,
+        0.349,
+        2.7336
+      ],
+      [
+        "traffic_cone",
+        0.5188,
+        9.438,
+        6.714,
+        -1.361,
+        0.669,
+        0.373,
+        0.38,
+        -2.3671
+      ],
+      [
+        "truck",
+        0.3001,
+        13.6,
+        -20.901,
+        -1.247,
+        2.099,
+        2.113,
+        5.585,
+        -1.5363
+      ],
+      [
+        "truck",
+        0.6054,
+        15.054,
+        -7.21,
+        -0.461,
+        3.837,
+        3.01,
+        11.494,
+        -1.56
+      ],
+      [
+        "truck",
+        0.7987,
+        14.744,
+        5.039,
+        -0.278,
+        3.21,
+        2.681,
+        7.088,
+        -1.5424
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 172,
+          "reinjected_centroid": [
+            13.291919708251953,
+            -8.98659610748291,
+            -1.784568428993225
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 47,
+          "reinjected_centroid": [
+            16.539766311645508,
+            -17.02773666381836,
+            -1.8397098779678345
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -0.809572696685791,
+            10.321280479431152,
+            -0.9151135087013245
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 58,
+          "reinjected_centroid": [
+            13.55704402923584,
+            -19.952468872070312,
+            -1.1949008703231812
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22485m)",
+          "isometric": "Large bounding box labeled 'construction_vehicle' floating in mid-air at z \u2248 2m to 3m with no substantial vertical support or corresponding physical structure on the ground plane."
+        },
+        "evidence": [
+          "A 3D bounding box for 'construction_vehicle' is predicted high above the ground plane (z \u2248 2.5m) containing only sparse, disconnected points.",
+          "There is no corresponding continuous structure or shadow beneath this cluster on the ground plane.",
+          "The camera image is entirely unavailable/suppressed ('ATTACKED' frame status)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Overhead infrastructure (the cluster shape and isolated nature do not resemble a bridge or signpost)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:36.252636"
+}

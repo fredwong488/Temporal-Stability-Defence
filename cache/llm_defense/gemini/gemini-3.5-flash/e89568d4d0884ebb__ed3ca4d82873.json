@@ -1,0 +1,317 @@
+{
+  "key": {
+    "frame_id": "e89568d4d0884ebb",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.3407,
+        4.231,
+        -26.253,
+        -1.32,
+        3.522,
+        2.888,
+        9.001,
+        -1.5963
+      ],
+      [
+        "bus",
+        0.6767,
+        4.515,
+        -19.361,
+        -1.223,
+        3.486,
+        2.925,
+        11.804,
+        -1.5917
+      ],
+      [
+        "car",
+        0.3054,
+        -21.711,
+        1.114,
+        -0.432,
+        2.406,
+        2.304,
+        5.71,
+        2.4274
+      ],
+      [
+        "car",
+        0.3122,
+        44.594,
+        -14.099,
+        -1.697,
+        1.755,
+        1.929,
+        4.389,
+        0.1181
+      ],
+      [
+        "car",
+        0.3682,
+        -23.423,
+        -1.892,
+        -0.7,
+        1.714,
+        1.953,
+        4.556,
+        -0.5419
+      ],
+      [
+        "car",
+        0.4282,
+        16.618,
+        -14.885,
+        -2.352,
+        1.592,
+        1.939,
+        4.477,
+        3.1001
+      ],
+      [
+        "car",
+        0.4312,
+        27.167,
+        -0.558,
+        -1.838,
+        1.728,
+        2.008,
+        4.799,
+        1.6602
+      ],
+      [
+        "car",
+        0.5269,
+        17.302,
+        -5.724,
+        -1.724,
+        1.816,
+        2.054,
+        4.927,
+        3.0627
+      ],
+      [
+        "car",
+        0.606,
+        15.765,
+        -12.424,
+        -2.059,
+        1.625,
+        1.912,
+        4.465,
+        -3.1406
+      ],
+      [
+        "car",
+        0.6513,
+        16.413,
+        -9.461,
+        -1.874,
+        1.621,
+        1.925,
+        4.37,
+        3.0717
+      ],
+      [
+        "construction_vehicle",
+        0.7869,
+        -5.777,
+        -14.093,
+        -1.16,
+        2.39,
+        2.534,
+        7.122,
+        -1.5627
+      ],
+      [
+        "traffic_cone",
+        0.3541,
+        -8.4,
+        2.093,
+        -1.071,
+        0.847,
+        0.365,
+        0.388,
+        2.0546
+      ],
+      [
+        "traffic_cone",
+        0.3598,
+        -7.705,
+        2.24,
+        -1.081,
+        0.779,
+        0.365,
+        0.358,
+        1.932
+      ],
+      [
+        "traffic_cone",
+        0.3903,
+        -3.444,
+        -9.531,
+        -1.755,
+        0.754,
+        0.381,
+        0.397,
+        1.6037
+      ],
+      [
+        "traffic_cone",
+        0.5098,
+        -5.917,
+        2.205,
+        -1.212,
+        0.744,
+        0.366,
+        0.374,
+        2.0715
+      ],
+      [
+        "traffic_cone",
+        0.5403,
+        -4.178,
+        -0.215,
+        -1.395,
+        0.759,
+        0.373,
+        0.39,
+        1.7637
+      ],
+      [
+        "traffic_cone",
+        0.6046,
+        -3.666,
+        -4.463,
+        -1.587,
+        0.791,
+        0.393,
+        0.404,
+        1.7266
+      ],
+      [
+        "truck",
+        0.334,
+        43.446,
+        37.048,
+        1.17,
+        2.947,
+        2.486,
+        6.326,
+        -1.0536
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 103,
+          "reinjected_centroid": [
+            15.691410064697266,
+            -5.372316360473633,
+            -2.0752198696136475
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 58,
+          "reinjected_centroid": [
+            14.71493911743164,
+            -11.992731094360352,
+            -2.202956438064575
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 38,
+          "reinjected_centroid": [
+            26.262500762939453,
+            -0.4580991268157959,
+            -2.120668888092041
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 30,
+          "reinjected_centroid": [
+            15.090473175048828,
+            -9.22592830657959,
+            -2.0337512493133545
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 25,
+          "reinjected_centroid": [
+            15.394664764404297,
+            -14.502019882202148,
+            -2.451608180999756
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 27,
+          "reinjected_centroid": [
+            -21.838621139526367,
+            -1.2918264865875244,
+            -1.3389060497283936
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 7,
+          "reinjected_centroid": [
+            -28.235654830932617,
+            -11.101296424865723,
+            -0.9962033033370972
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 98,
+          "reinjected_centroid": [
+            -20.927352905273438,
+            1.4150346517562866,
+            -0.4865492284297943
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "unknown (camera image not available, but camera frame marked ATTACKED)",
+          "bev": "(x\u22481m, y\u22481m)",
+          "isometric": "Cluster of green-colored points centered around (x\u22481m, y\u22481m, z\u22480m) resembling a vehicle shape or a tight artificial cluster near the origin, with multiple traffic_cone bounding boxes overlapping or nearby (e.g., traffic_cone 0.35, 0.36, 0.51, 0.54, 0.60, 0.39) despite lacking visual plausibility and being extremely close to the ego vehicle."
+        },
+        "evidence": [
+          "A highly anomalous cluster of bright green points exists near the ego vehicle center at (x\u22481m, y\u22480m to 1m).",
+          "Multiple spurious 'traffic_cone' 3D bounding boxes are generated directly over and around this dense cluster (with labels traffic_cone 0.35, 0.36, 0.51, 0.54, 0.60, etc.)",
+          "The camera image is completely suppressed or marked as ATTACKED, hiding physical verification while LiDAR-level spoofed points trigger multiple ghost detections."
+        ],
+        "alternatives_ruled_out": [
+          "Natural traffic cones (the point density, shape, and overlap pattern are highly unnatural and localized directly next to the ego-vehicle center)",
+          "Sensor noise (the cluster is dense, structured, and has high intensity/z-difference inconsistent with random noise)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:14.767818"
+}

@@ -1,0 +1,155 @@
+{
+  "key": {
+    "frame_id": "d1dec5ad14cf4cfe",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3659,
+        14.793,
+        -6.044,
+        -1.156,
+        0.998,
+        3.243,
+        0.565,
+        2.7543
+      ],
+      [
+        "bicycle",
+        0.3102,
+        8.378,
+        5.872,
+        -0.598,
+        1.931,
+        0.794,
+        1.717,
+        -0.3503
+      ],
+      [
+        "car",
+        0.3577,
+        -46.548,
+        36.852,
+        0.179,
+        1.628,
+        1.853,
+        4.498,
+        3.1087
+      ],
+      [
+        "car",
+        0.8604,
+        -3.339,
+        0.467,
+        -1.162,
+        1.506,
+        1.876,
+        4.594,
+        1.6289
+      ],
+      [
+        "pedestrian",
+        0.3309,
+        11.528,
+        3.68,
+        -0.41,
+        1.755,
+        0.679,
+        0.692,
+        0.9276
+      ],
+      [
+        "pedestrian",
+        0.3866,
+        6.767,
+        7.584,
+        -0.233,
+        1.813,
+        0.718,
+        0.79,
+        -2.5698
+      ],
+      [
+        "trailer",
+        0.9309,
+        -3.099,
+        -16.012,
+        -0.298,
+        4.263,
+        2.775,
+        14.745,
+        1.6313
+      ],
+      [
+        "truck",
+        0.5638,
+        -0.136,
+        -7.988,
+        -0.984,
+        2.482,
+        2.121,
+        4.776,
+        1.56
+      ],
+      [
+        "truck",
+        0.8989,
+        -3.424,
+        -7.788,
+        -0.37,
+        4.022,
+        2.666,
+        6.148,
+        1.6336
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.105591297149658,
+            0.6827037930488586,
+            -1.7243316173553467
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m to 8m, y\u2248-6m to -8m)",
+          "isometric": "Empty boxes for pedestrian and bicycle at x\u22486-8m, y\u2248-7m with absolutely no matching 3D point clusters inside them"
+        },
+        "evidence": [
+          "Multiple predicted bounding boxes (pedestrian 0.39, bicycle 0.31) are generated in regions with no physical LiDAR point clusters in both BEV and isometric views.",
+          "The camera image is completely unavailable/suppressed, indicating a multi-modal disruption or denial-of-service style attack."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low-reflectivity objects",
+          "Occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:13:12.280411"
+}

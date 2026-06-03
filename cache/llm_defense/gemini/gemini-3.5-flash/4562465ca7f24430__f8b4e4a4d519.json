@@ -1,0 +1,217 @@
+{
+  "key": {
+    "frame_id": "4562465ca7f24430",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3264,
+        14.797,
+        -5.963,
+        -1.309,
+        0.985,
+        3.221,
+        0.562,
+        2.7959
+      ],
+      [
+        "barrier",
+        0.3328,
+        -2.687,
+        -0.493,
+        -1.296,
+        0.912,
+        1.868,
+        0.539,
+        0.0208
+      ],
+      [
+        "bicycle",
+        0.35,
+        2.933,
+        8.246,
+        -0.577,
+        1.549,
+        0.665,
+        1.663,
+        0.0458
+      ],
+      [
+        "car",
+        0.4889,
+        24.479,
+        23.226,
+        1.287,
+        1.696,
+        1.975,
+        4.584,
+        -2.9791
+      ],
+      [
+        "car",
+        0.5942,
+        5.518,
+        20.407,
+        0.24,
+        1.705,
+        2.01,
+        4.783,
+        -0.0536
+      ],
+      [
+        "car",
+        0.6956,
+        -3.382,
+        0.444,
+        -1.17,
+        1.514,
+        1.9,
+        4.64,
+        1.6423
+      ],
+      [
+        "construction_vehicle",
+        0.4276,
+        -10.165,
+        49.01,
+        1.598,
+        2.569,
+        2.618,
+        6.483,
+        -1.4311
+      ],
+      [
+        "pedestrian",
+        0.3755,
+        -2.53,
+        8.441,
+        -0.573,
+        1.727,
+        0.662,
+        0.729,
+        1.3988
+      ],
+      [
+        "pedestrian",
+        0.3914,
+        -1.06,
+        7.116,
+        -0.654,
+        1.752,
+        0.697,
+        0.794,
+        2.8951
+      ],
+      [
+        "pedestrian",
+        0.4634,
+        0.38,
+        8.742,
+        -0.562,
+        1.783,
+        0.669,
+        0.694,
+        -1.3156
+      ],
+      [
+        "trailer",
+        0.946,
+        -3.147,
+        -15.873,
+        -0.415,
+        4.2,
+        2.778,
+        14.806,
+        1.6195
+      ],
+      [
+        "truck",
+        0.6193,
+        -0.146,
+        -7.984,
+        -1.048,
+        2.51,
+        2.211,
+        4.854,
+        1.5679
+      ],
+      [
+        "truck",
+        0.89,
+        -3.421,
+        -7.837,
+        -0.363,
+        4.022,
+        2.712,
+        6.095,
+        1.6093
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.683361053466797,
+            0.620557963848114,
+            -1.6112585067749023
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 76,
+          "reinjected_centroid": [
+            5.137279510498047,
+            19.76189613342285,
+            -0.17549407482147217
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 18,
+          "reinjected_centroid": [
+            23.722713470458984,
+            22.61435317993164,
+            0.8031510710716248
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "x\u224825m, y\u22485m",
+          "isometric": "Floating bounding box at z\u22482.5m to 4m with absolutely no LiDAR point returns inside or near it"
+        },
+        "evidence": [
+          "A highly elevated bounding box is present in the isometric view (x\u224825m, y\u22485m, z\u22483m) without any associated point cluster or physical structure.",
+          "The camera image is completely unavailable/blacked out, marked as [ATTACKED] in the header, preventing cross-modal validation of any detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant vehicles (which would be resting on the ground plane, not floating in mid-air)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:41.938365"
+}

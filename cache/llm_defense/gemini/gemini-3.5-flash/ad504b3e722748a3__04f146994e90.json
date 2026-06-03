@@ -1,0 +1,199 @@
+{
+  "key": {
+    "frame_id": "ad504b3e722748a3",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3118,
+        12.546,
+        -12.427,
+        -1.789,
+        0.828,
+        3.085,
+        0.466,
+        2.8935
+      ],
+      [
+        "barrier",
+        0.376,
+        14.808,
+        -6.014,
+        -1.317,
+        0.988,
+        3.255,
+        0.541,
+        2.7492
+      ],
+      [
+        "car",
+        0.3034,
+        -46.541,
+        36.815,
+        0.218,
+        1.671,
+        1.853,
+        4.516,
+        -3.058
+      ],
+      [
+        "car",
+        0.3411,
+        13.458,
+        17.503,
+        0.384,
+        1.636,
+        1.896,
+        4.512,
+        2.8602
+      ],
+      [
+        "car",
+        0.3734,
+        27.012,
+        22.481,
+        1.069,
+        1.675,
+        1.92,
+        4.602,
+        -3.0916
+      ],
+      [
+        "car",
+        0.8731,
+        -3.315,
+        0.491,
+        -1.217,
+        1.501,
+        1.873,
+        4.669,
+        1.6176
+      ],
+      [
+        "pedestrian",
+        0.3043,
+        0.249,
+        8.156,
+        -0.563,
+        1.801,
+        0.696,
+        0.75,
+        0.6862
+      ],
+      [
+        "pedestrian",
+        0.3244,
+        5.892,
+        6.59,
+        -0.405,
+        1.756,
+        0.728,
+        0.86,
+        -2.8315
+      ],
+      [
+        "pedestrian",
+        0.3925,
+        -1.134,
+        8.584,
+        -0.592,
+        1.729,
+        0.659,
+        0.732,
+        3.0223
+      ],
+      [
+        "pedestrian",
+        0.4429,
+        1.118,
+        8.649,
+        -0.497,
+        1.838,
+        0.694,
+        0.734,
+        -1.5757
+      ],
+      [
+        "trailer",
+        0.9251,
+        -3.165,
+        -16.111,
+        -0.368,
+        4.296,
+        2.796,
+        15.286,
+        1.6246
+      ],
+      [
+        "truck",
+        0.5954,
+        -0.169,
+        -8.033,
+        -1.023,
+        2.467,
+        2.147,
+        4.807,
+        1.5499
+      ],
+      [
+        "truck",
+        0.9005,
+        -3.415,
+        -7.803,
+        -0.306,
+        4.028,
+        2.662,
+        6.202,
+        1.6324
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.322960376739502,
+            0.7609876394271851,
+            -1.841098666191101
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image unavailable",
+          "bev": "Region around (x\u22488m to 9m, y\u2248-2m to 2m) containing three pedestrian detections",
+          "isometric": "Empty vertical boxes (pedestrian 0.30, 0.39, 0.44) with no underlying LiDAR point clusters or vertical structure"
+        },
+        "evidence": [
+          "Three pedestrian detections are clustered close together at (x \u2248 8m to 9m, y \u2248 -2m to 2m) in empty space on the roadway.",
+          "There are no corresponding LiDAR point clusters, geometric patterns, or occlusions/shadows inside or behind these boxes in either the BEV or Isometric views.",
+          "Additional empty detections such as 'pedestrian 0.32' at (x\u22486m, y\u2248-6m) and 'car 0.34' are present without any physical point clusters."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (too many structured false bounding boxes in empty space)",
+          "Distant or low-reflectivity objects (the regions are close to the ego vehicle and well within the active scanning rings where returns should be highly visible)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:55.117591"
+}

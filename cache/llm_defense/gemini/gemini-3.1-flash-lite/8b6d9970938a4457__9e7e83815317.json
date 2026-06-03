@@ -1,0 +1,136 @@
+{
+  "key": {
+    "frame_id": "8b6d9970938a4457",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bicycle",
+        0.332,
+        -1.448,
+        14.657,
+        -0.735,
+        1.754,
+        0.648,
+        1.762,
+        1.5595
+      ],
+      [
+        "bicycle",
+        0.3508,
+        19.027,
+        26.293,
+        -0.213,
+        1.857,
+        0.708,
+        1.554,
+        1.6885
+      ],
+      [
+        "bus",
+        0.8482,
+        10.51,
+        -16.471,
+        -0.66,
+        3.568,
+        2.986,
+        12.85,
+        2.4775
+      ],
+      [
+        "car",
+        0.3509,
+        -0.233,
+        -13.602,
+        -1.238,
+        1.673,
+        1.856,
+        4.369,
+        -1.3663
+      ],
+      [
+        "motorcycle",
+        0.3295,
+        11.647,
+        -5.235,
+        -1.123,
+        1.378,
+        0.686,
+        2.142,
+        2.0948
+      ],
+      [
+        "pedestrian",
+        0.3002,
+        7.72,
+        25.912,
+        -0.26,
+        1.819,
+        0.598,
+        0.611,
+        -2.2249
+      ],
+      [
+        "pedestrian",
+        0.3075,
+        2.018,
+        20.616,
+        -0.298,
+        1.895,
+        0.644,
+        0.691,
+        -1.4227
+      ],
+      [
+        "pedestrian",
+        0.3429,
+        3.361,
+        20.581,
+        -0.257,
+        1.85,
+        0.581,
+        0.587,
+        -1.5474
+      ],
+      [
+        "truck",
+        0.4689,
+        10.213,
+        -0.826,
+        -0.22,
+        3.051,
+        2.423,
+        5.983,
+        0.8537
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u22481m) for bicycle, and multiple pedestrian/bicycle detections between x\u224820-30m",
+          "isometric": "Several detections placed in regions with very sparse point returns and no clear structural support"
+        },
+        "evidence": [
+          "The camera input is missing, rendering cross-modal verification impossible.",
+          "Multiple detections in the BEV (bicycle at x\u224814, pedestrians at x\u224820-25) lack clear, dense structural point clusters in the isometric view that would typically define these objects.",
+          "The LiDAR returns in the vicinity of these detections appear sparse and noisy, making it difficult to distinguish between genuine, distant/occluded objects and potential ghost objects."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise in a sparse environment",
+          "Genuine detection of distant objects that are poorly resolved by the LiDAR"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:11.939457"
+}

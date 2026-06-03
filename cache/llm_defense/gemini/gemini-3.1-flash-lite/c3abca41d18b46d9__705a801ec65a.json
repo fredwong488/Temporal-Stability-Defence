@@ -1,0 +1,346 @@
+{
+  "key": {
+    "frame_id": "c3abca41d18b46d9",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3373,
+        -9.438,
+        36.256,
+        0.571,
+        1.887,
+        1.959,
+        4.82,
+        -1.5637
+      ],
+      [
+        "car",
+        0.375,
+        -7.564,
+        -48.124,
+        -3.66,
+        1.793,
+        1.99,
+        4.707,
+        -1.5604
+      ],
+      [
+        "car",
+        0.3825,
+        -8.711,
+        22.963,
+        -0.322,
+        1.903,
+        2.024,
+        5.08,
+        -1.5581
+      ],
+      [
+        "car",
+        0.3941,
+        20.527,
+        4.341,
+        -0.047,
+        1.747,
+        1.959,
+        4.646,
+        -1.6094
+      ],
+      [
+        "car",
+        0.4025,
+        -8.822,
+        14.509,
+        -0.344,
+        3.116,
+        2.414,
+        7.386,
+        -1.5888
+      ],
+      [
+        "car",
+        0.4414,
+        -8.457,
+        -27.039,
+        -2.372,
+        1.73,
+        2.001,
+        4.663,
+        0.5929
+      ],
+      [
+        "car",
+        0.4437,
+        5.498,
+        32.708,
+        0.465,
+        1.619,
+        1.877,
+        4.683,
+        1.5543
+      ],
+      [
+        "car",
+        0.447,
+        16.325,
+        -14.533,
+        -0.636,
+        1.647,
+        1.911,
+        4.436,
+        1.6534
+      ],
+      [
+        "car",
+        0.448,
+        15.213,
+        10.146,
+        0.493,
+        1.742,
+        1.948,
+        4.601,
+        -1.5903
+      ],
+      [
+        "car",
+        0.4634,
+        15.248,
+        4.958,
+        -0.245,
+        1.728,
+        1.887,
+        4.414,
+        -1.565
+      ],
+      [
+        "car",
+        0.515,
+        26.215,
+        -11.857,
+        -0.145,
+        1.76,
+        1.908,
+        4.566,
+        -1.4737
+      ],
+      [
+        "car",
+        0.5307,
+        21.27,
+        -13.782,
+        -0.331,
+        1.685,
+        1.95,
+        4.64,
+        1.764
+      ],
+      [
+        "car",
+        0.5483,
+        23.783,
+        -13.235,
+        -0.354,
+        1.612,
+        1.884,
+        4.536,
+        1.8779
+      ],
+      [
+        "car",
+        0.5777,
+        -9.988,
+        -40.267,
+        -3.263,
+        1.722,
+        1.948,
+        4.53,
+        -1.4241
+      ],
+      [
+        "car",
+        0.6047,
+        -9.293,
+        -12.04,
+        -1.549,
+        1.787,
+        1.92,
+        4.627,
+        -1.565
+      ],
+      [
+        "car",
+        0.6331,
+        18.834,
+        -14.468,
+        -0.541,
+        1.639,
+        1.91,
+        4.467,
+        1.7017
+      ],
+      [
+        "car",
+        0.6823,
+        -0.373,
+        13.177,
+        -0.577,
+        1.557,
+        1.817,
+        4.329,
+        1.5395
+      ],
+      [
+        "car",
+        0.6999,
+        12.231,
+        -14.795,
+        -1.019,
+        1.68,
+        1.944,
+        4.617,
+        1.6229
+      ],
+      [
+        "car",
+        0.7165,
+        -9.204,
+        -18.738,
+        -2.308,
+        1.537,
+        1.836,
+        4.509,
+        -1.517
+      ],
+      [
+        "car",
+        0.8551,
+        5.264,
+        21.34,
+        -0.055,
+        1.63,
+        1.829,
+        4.394,
+        1.5731
+      ],
+      [
+        "car",
+        0.8688,
+        5.307,
+        15.621,
+        -0.263,
+        1.797,
+        1.937,
+        4.737,
+        1.5296
+      ],
+      [
+        "car",
+        0.8781,
+        5.206,
+        9.568,
+        -0.621,
+        1.685,
+        1.915,
+        4.782,
+        1.6096
+      ],
+      [
+        "car",
+        0.9185,
+        5.285,
+        3.647,
+        -0.797,
+        1.838,
+        2.0,
+        4.959,
+        1.616
+      ],
+      [
+        "car",
+        0.9349,
+        5.262,
+        -1.25,
+        -1.171,
+        1.488,
+        1.684,
+        3.902,
+        1.5322
+      ],
+      [
+        "motorcycle",
+        0.4003,
+        -6.56,
+        0.166,
+        -1.223,
+        1.648,
+        0.752,
+        1.976,
+        2.1588
+      ],
+      [
+        "pedestrian",
+        0.3674,
+        -11.752,
+        11.045,
+        -0.977,
+        1.778,
+        0.589,
+        0.612,
+        0.8344
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 114
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "Small isolated point cluster at x\u224812m, y\u22480.5m, z\u22480m not associated with a vehicle-like structure."
+        },
+        "evidence": [
+          "A singular 'car 0.68' detection exists at (x\u224812, y\u22480.5) in the middle of a clear drivable area with no corresponding physical structure in the point cloud.",
+          "The cluster lacks the spatial extent or surface profile of a vehicle.",
+          "There is no corresponding camera object available to verify this, but the LiDAR evidence alone suggests a spoofed ghost object."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or reflections, as the detection is an isolated, structured bounding box in a sparse region.",
+          "Infrastructure, as there is no object present to justify a vehicle detection."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": "null",
+          "bev": "Along the wall at y\u2248-5m",
+          "isometric": "Series of 'car' boxes placed along a flat wall surface."
+        },
+        "evidence": [
+          "Multiple 'car' detections (0.93, 0.92, 0.88, 0.87, 0.86, 0.44) are aligned perfectly along a linear wall feature at y \u2248 -5m.",
+          "These are clearly wall segments or guardrails being misclassified as individual vehicles, suggesting a failure or injection anomaly where segments of the wall are hallucinated as cars.",
+          "No individual physical vehicles are visible to correspond with these multiple boxes."
+        ],
+        "alternatives_ruled_out": [
+          "Actual traffic, as vehicles would not be parked or driving perfectly aligned inside a wall or barrier structure.",
+          "Simple sensor noise, as these are consistent, high-confidence bounding box outputs."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:32:24.736526"
+}

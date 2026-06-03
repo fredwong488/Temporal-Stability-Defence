@@ -1,0 +1,225 @@
+{
+  "key": {
+    "frame_id": "39fbb5e7e8f54386",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3338,
+        14.809,
+        -5.995,
+        -1.309,
+        0.981,
+        3.22,
+        0.537,
+        2.7695
+      ],
+      [
+        "bicycle",
+        0.4997,
+        12.56,
+        13.946,
+        0.404,
+        1.768,
+        0.756,
+        1.842,
+        3.0896
+      ],
+      [
+        "car",
+        0.3035,
+        48.634,
+        22.09,
+        1.482,
+        1.938,
+        2.047,
+        4.945,
+        0.2121
+      ],
+      [
+        "car",
+        0.4254,
+        -17.157,
+        17.959,
+        -0.479,
+        1.597,
+        1.921,
+        4.647,
+        -0.0486
+      ],
+      [
+        "car",
+        0.5073,
+        -20.172,
+        25.617,
+        0.03,
+        1.767,
+        1.981,
+        4.735,
+        0.0638
+      ],
+      [
+        "car",
+        0.8771,
+        -3.335,
+        0.474,
+        -1.072,
+        1.479,
+        1.884,
+        4.658,
+        1.605
+      ],
+      [
+        "construction_vehicle",
+        0.6471,
+        -10.229,
+        49.139,
+        1.315,
+        2.553,
+        2.705,
+        6.943,
+        -1.4142
+      ],
+      [
+        "pedestrian",
+        0.3228,
+        -16.645,
+        11.81,
+        -0.85,
+        1.771,
+        0.648,
+        0.658,
+        1.0173
+      ],
+      [
+        "pedestrian",
+        0.3245,
+        -15.703,
+        10.323,
+        -0.773,
+        1.822,
+        0.679,
+        0.737,
+        1.4976
+      ],
+      [
+        "pedestrian",
+        0.3489,
+        -14.428,
+        11.567,
+        -0.651,
+        1.775,
+        0.667,
+        0.709,
+        0.1648
+      ],
+      [
+        "pedestrian",
+        0.3514,
+        -11.747,
+        8.766,
+        -0.72,
+        1.785,
+        0.64,
+        0.685,
+        0.3508
+      ],
+      [
+        "pedestrian",
+        0.3922,
+        -10.366,
+        10.204,
+        -0.635,
+        1.748,
+        0.662,
+        0.659,
+        1.1251
+      ],
+      [
+        "trailer",
+        0.9254,
+        -3.104,
+        -15.927,
+        -0.308,
+        4.262,
+        2.773,
+        14.776,
+        1.6293
+      ],
+      [
+        "truck",
+        0.3475,
+        -40.927,
+        -13.539,
+        -0.796,
+        2.093,
+        2.313,
+        5.828,
+        1.5925
+      ],
+      [
+        "truck",
+        0.5718,
+        -0.136,
+        -7.984,
+        -0.988,
+        2.49,
+        2.128,
+        4.769,
+        1.5621
+      ],
+      [
+        "truck",
+        0.6254,
+        -30.419,
+        18.228,
+        -0.262,
+        3.639,
+        2.945,
+        8.337,
+        0.0007
+      ],
+      [
+        "truck",
+        0.8645,
+        -3.417,
+        -7.771,
+        -0.361,
+        4.074,
+        2.642,
+        6.158,
+        1.6322
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Multiple regions, e.g., (x\u224825m, y\u22488m), (x\u224815m, y\u2248-5m) and extreme vertical heights",
+          "isometric": "Multiple bounding cuboids floating in mid-air with zero underlying LiDAR point clusters, particularly at high z values (z > 3m)"
+        },
+        "evidence": [
+          "Presence of multiple 3D bounding boxes floating in mid-air far above the ground plane where no LiDAR returns exist.",
+          "Multiple predicted labels (such as pedestrian, car, truck, bicycle) scattered across empty areas with zero point density.",
+          "Complete lack of L-shaped features or physical structures within the predicted floating cuboids."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Infrastructural objects (bridges, signs) since the boxes are in completely empty space with no point support"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:04:20.347833"
+}

@@ -1,0 +1,256 @@
+{
+  "key": {
+    "frame_id": "33ca2d224df847ad",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.9285,
+        10.711,
+        -15.098,
+        -0.359,
+        3.294,
+        2.933,
+        12.473,
+        2.6809
+      ],
+      [
+        "car",
+        0.3126,
+        23.831,
+        27.807,
+        0.086,
+        1.618,
+        1.874,
+        4.4,
+        -1.9451
+      ],
+      [
+        "car",
+        0.324,
+        7.228,
+        30.324,
+        0.152,
+        1.641,
+        1.896,
+        4.434,
+        -0.3461
+      ],
+      [
+        "car",
+        0.4256,
+        25.145,
+        3.968,
+        -0.302,
+        1.817,
+        1.981,
+        4.621,
+        1.1362
+      ],
+      [
+        "car",
+        0.4474,
+        20.359,
+        29.733,
+        0.307,
+        1.729,
+        1.925,
+        4.628,
+        1.0335
+      ],
+      [
+        "car",
+        0.4682,
+        20.559,
+        6.023,
+        -0.286,
+        1.649,
+        1.909,
+        4.508,
+        -2.0035
+      ],
+      [
+        "car",
+        0.5125,
+        18.902,
+        7.313,
+        -0.231,
+        1.658,
+        1.916,
+        4.486,
+        -2.0933
+      ],
+      [
+        "car",
+        0.6163,
+        21.391,
+        15.009,
+        0.043,
+        1.695,
+        1.924,
+        4.567,
+        1.0815
+      ],
+      [
+        "car",
+        0.7898,
+        16.671,
+        8.333,
+        -0.429,
+        1.539,
+        1.821,
+        4.306,
+        -2.0933
+      ],
+      [
+        "pedestrian",
+        0.3079,
+        -0.254,
+        19.472,
+        -0.319,
+        1.831,
+        0.562,
+        0.578,
+        -1.3035
+      ],
+      [
+        "pedestrian",
+        0.3273,
+        -0.71,
+        18.348,
+        -0.316,
+        1.829,
+        0.644,
+        0.605,
+        -0.5561
+      ],
+      [
+        "pedestrian",
+        0.3456,
+        -0.914,
+        18.824,
+        -0.349,
+        1.826,
+        0.59,
+        0.565,
+        -0.8916
+      ],
+      [
+        "pedestrian",
+        0.3517,
+        -6.097,
+        -11.524,
+        -1.114,
+        1.747,
+        0.62,
+        0.627,
+        1.6118
+      ],
+      [
+        "pedestrian",
+        0.3829,
+        2.281,
+        24.568,
+        -0.058,
+        1.776,
+        0.626,
+        0.602,
+        -1.9094
+      ],
+      [
+        "pedestrian",
+        0.4058,
+        2.526,
+        22.872,
+        0.02,
+        1.83,
+        0.634,
+        0.591,
+        -1.3522
+      ],
+      [
+        "pedestrian",
+        0.4075,
+        1.066,
+        20.861,
+        -0.116,
+        1.84,
+        0.607,
+        0.616,
+        -0.5467
+      ],
+      [
+        "pedestrian",
+        0.4148,
+        -0.332,
+        20.777,
+        -0.357,
+        1.805,
+        0.548,
+        0.565,
+        -1.055
+      ],
+      [
+        "pedestrian",
+        0.4179,
+        2.692,
+        21.613,
+        -0.076,
+        1.795,
+        0.64,
+        0.626,
+        -0.6276
+      ],
+      [
+        "traffic_cone",
+        0.3186,
+        -17.461,
+        0.986,
+        -0.963,
+        1.255,
+        0.41,
+        0.405,
+        -3.0689
+      ],
+      [
+        "truck",
+        0.5438,
+        10.261,
+        -1.24,
+        -0.055,
+        3.127,
+        2.426,
+        5.918,
+        1.0323
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820m, y\u22480m)",
+          "isometric": "Cluster of pedestrian bounding boxes near x=20m"
+        },
+        "evidence": [
+          "The camera input is missing, making it impossible to cross-verify the presence of the pedestrians detected in the BEV/isometric views.",
+          "There is a dense grouping of multiple 'pedestrian' bounding boxes in a small area around (x\u224820m, y\u22480m), which could be a legitimate cluster of people or a sensing artifact.",
+          "Without visual confirmation, one cannot rule out ghost object injection or legitimate multi-object detection in this region."
+        ],
+        "alternatives_ruled_out": [
+          "Cannot rule out legitimate multi-pedestrian detection due to lack of camera ground truth."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:31.303979"
+}

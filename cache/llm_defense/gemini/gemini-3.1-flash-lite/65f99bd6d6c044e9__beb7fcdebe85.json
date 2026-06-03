@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "65f99bd6d6c044e9",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3211,
+        4.191,
+        40.044,
+        1.941,
+        1.84,
+        1.952,
+        4.616,
+        1.5923
+      ],
+      [
+        "car",
+        0.488,
+        -14.135,
+        -3.52,
+        -1.359,
+        1.622,
+        1.934,
+        4.542,
+        0.0661
+      ],
+      [
+        "car",
+        0.5123,
+        -5.39,
+        31.37,
+        1.347,
+        1.769,
+        1.974,
+        4.738,
+        -1.6962
+      ],
+      [
+        "car",
+        0.6639,
+        1.01,
+        -19.81,
+        -2.477,
+        1.716,
+        1.963,
+        4.651,
+        1.6919
+      ],
+      [
+        "car",
+        0.7663,
+        -4.129,
+        7.907,
+        -0.527,
+        1.804,
+        1.954,
+        4.671,
+        -1.5942
+      ],
+      [
+        "construction_vehicle",
+        0.3395,
+        -9.106,
+        -31.055,
+        -2.3,
+        2.073,
+        1.624,
+        3.146,
+        -1.489
+      ],
+      [
+        "pedestrian",
+        0.3031,
+        -20.613,
+        4.703,
+        -1.2,
+        1.789,
+        0.644,
+        0.706,
+        -1.0324
+      ],
+      [
+        "pedestrian",
+        0.3039,
+        9.022,
+        13.639,
+        -0.092,
+        1.814,
+        0.67,
+        0.664,
+        -2.3683
+      ],
+      [
+        "pedestrian",
+        0.3076,
+        12.351,
+        19.723,
+        0.334,
+        1.825,
+        0.571,
+        0.591,
+        -2.9478
+      ],
+      [
+        "pedestrian",
+        0.3315,
+        7.118,
+        6.976,
+        -0.493,
+        1.786,
+        0.705,
+        0.768,
+        -2.347
+      ],
+      [
+        "pedestrian",
+        0.3339,
+        -12.202,
+        13.461,
+        0.045,
+        1.84,
+        0.66,
+        0.704,
+        1.4229
+      ],
+      [
+        "pedestrian",
+        0.3471,
+        -11.576,
+        13.42,
+        0.046,
+        1.791,
+        0.653,
+        0.679,
+        1.4479
+      ],
+      [
+        "pedestrian",
+        0.3691,
+        7.823,
+        16.005,
+        0.121,
+        1.79,
+        0.656,
+        0.645,
+        1.3406
+      ],
+      [
+        "pedestrian",
+        0.4134,
+        8.541,
+        11.95,
+        -0.236,
+        1.789,
+        0.685,
+        0.702,
+        2.0079
+      ],
+      [
+        "pedestrian",
+        0.4363,
+        8.719,
+        16.467,
+        0.117,
+        1.764,
+        0.645,
+        0.608,
+        2.8154
+      ],
+      [
+        "pedestrian",
+        0.4614,
+        7.685,
+        13.052,
+        -0.118,
+        1.811,
+        0.707,
+        0.709,
+        0.4482
+      ],
+      [
+        "pedestrian",
+        0.471,
+        -18.88,
+        15.086,
+        -0.098,
+        1.809,
+        0.656,
+        0.703,
+        2.1546
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22487m, y\u22483m)",
+          "isometric": "cluster is sparse and lacks defined physical structure consistent with a car"
+        },
+        "evidence": [
+          "The bounding box 'car 0.77' contains a very sparse cluster of points in the BEV view.",
+          "The isometric view confirms the cluster is essentially a flat, disconnected set of points with no coherent volume or L-shape typical of a vehicle.",
+          "The cluster size is very small (\u2264200 points) and located in the 5\u20138m 'near-field' zone, which is a classic signature of ghost object injection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural noise: The box is placed with high confidence (0.77) despite the lack of structural evidence.",
+          "Occluded object: There is no supporting geometry or shadow cast by a legitimate object at that location."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:16.491937"
+}

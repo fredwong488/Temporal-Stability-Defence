@@ -1,0 +1,241 @@
+{
+  "key": {
+    "frame_id": "05025b73f38242ef",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3612,
+        16.598,
+        18.601,
+        0.583,
+        1.668,
+        1.94,
+        4.633,
+        -1.5817
+      ],
+      [
+        "car",
+        0.3767,
+        21.49,
+        18.09,
+        0.672,
+        1.616,
+        1.879,
+        4.488,
+        -1.6514
+      ],
+      [
+        "car",
+        0.4246,
+        19.087,
+        18.334,
+        0.752,
+        1.661,
+        1.899,
+        4.451,
+        -1.6547
+      ],
+      [
+        "car",
+        0.4971,
+        -28.358,
+        -2.094,
+        -2.003,
+        1.688,
+        1.963,
+        4.49,
+        -2.9242
+      ],
+      [
+        "car",
+        0.6193,
+        -0.433,
+        13.613,
+        -0.609,
+        1.573,
+        1.834,
+        4.455,
+        1.547
+      ],
+      [
+        "car",
+        0.6313,
+        -21.741,
+        5.46,
+        -1.68,
+        1.61,
+        1.84,
+        4.321,
+        -3.1369
+      ],
+      [
+        "car",
+        0.6946,
+        6.149,
+        32.659,
+        0.646,
+        1.712,
+        1.929,
+        4.61,
+        1.4139
+      ],
+      [
+        "car",
+        0.7097,
+        -14.335,
+        0.101,
+        -1.641,
+        1.627,
+        1.964,
+        4.393,
+        0.0886
+      ],
+      [
+        "car",
+        0.8366,
+        -7.742,
+        -14.517,
+        -1.898,
+        1.68,
+        1.923,
+        4.713,
+        -1.5646
+      ],
+      [
+        "car",
+        0.8402,
+        -27.071,
+        4.463,
+        -1.771,
+        1.58,
+        1.911,
+        4.486,
+        -2.9834
+      ],
+      [
+        "car",
+        0.8976,
+        -5.773,
+        8.543,
+        -0.9,
+        1.609,
+        1.86,
+        4.502,
+        -2.0964
+      ],
+      [
+        "car",
+        0.9424,
+        4.301,
+        0.674,
+        -1.067,
+        1.573,
+        1.901,
+        4.811,
+        1.5813
+      ],
+      [
+        "pedestrian",
+        0.3008,
+        -11.452,
+        2.755,
+        -1.461,
+        1.808,
+        0.724,
+        0.747,
+        2.1494
+      ],
+      [
+        "pedestrian",
+        0.3138,
+        8.494,
+        5.53,
+        -0.548,
+        1.782,
+        0.676,
+        0.748,
+        -2.2153
+      ],
+      [
+        "pedestrian",
+        0.3449,
+        8.223,
+        -18.808,
+        -1.222,
+        1.839,
+        0.618,
+        0.608,
+        2.9084
+      ],
+      [
+        "pedestrian",
+        0.3539,
+        7.908,
+        -1.836,
+        -0.8,
+        1.777,
+        0.662,
+        0.749,
+        -1.4789
+      ],
+      [
+        "pedestrian",
+        0.3756,
+        8.943,
+        25.483,
+        0.234,
+        1.786,
+        0.651,
+        0.688,
+        -2.3393
+      ],
+      [
+        "pedestrian",
+        0.3934,
+        7.398,
+        -19.03,
+        -1.251,
+        1.819,
+        0.61,
+        0.639,
+        -1.5472
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 122
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481.5m, y\u22480m)",
+          "isometric": "Small cluster near ego vehicle origin"
+        },
+        "evidence": [
+          "A dense, small cluster of points exists at (x\u22481.5m, y\u22480m) right in front of the ego vehicle, which is a classic signature of a LiDAR injection attack.",
+          "The cluster has no vertical structure resembling a real object (like a car or pedestrian) in the isometric view.",
+          "There is no physical occlusion shadow cast by this object, which is expected for a real opaque object.",
+          "The header of the image metadata explicitly labels the frame as [ATTACKED]."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor calibration error (the cluster is too localized and anomalous compared to the surrounding road plane).",
+          "Natural debris (the cluster is perfectly centered in the ego-path and lacks physical volume)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:53.269012"
+}

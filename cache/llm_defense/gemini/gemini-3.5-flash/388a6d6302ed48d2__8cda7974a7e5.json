@@ -1,0 +1,173 @@
+{
+  "key": {
+    "frame_id": "388a6d6302ed48d2",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3165,
+        12.51,
+        -12.447,
+        -1.726,
+        0.857,
+        3.074,
+        0.503,
+        2.9419
+      ],
+      [
+        "barrier",
+        0.3837,
+        14.784,
+        -5.984,
+        -1.223,
+        0.992,
+        3.189,
+        0.568,
+        2.7432
+      ],
+      [
+        "car",
+        0.3274,
+        -46.843,
+        36.839,
+        0.131,
+        1.804,
+        1.963,
+        4.683,
+        3.1343
+      ],
+      [
+        "car",
+        0.3735,
+        -15.025,
+        22.15,
+        -0.059,
+        1.649,
+        1.969,
+        4.64,
+        -0.2234
+      ],
+      [
+        "car",
+        0.8323,
+        -3.336,
+        0.508,
+        -1.139,
+        1.541,
+        1.886,
+        4.599,
+        1.6302
+      ],
+      [
+        "trailer",
+        0.9421,
+        -3.14,
+        -16.083,
+        -0.348,
+        4.268,
+        2.808,
+        14.98,
+        1.6295
+      ],
+      [
+        "truck",
+        0.3028,
+        -40.88,
+        -13.543,
+        -0.902,
+        2.061,
+        2.276,
+        5.556,
+        1.6196
+      ],
+      [
+        "truck",
+        0.6549,
+        -0.134,
+        -7.977,
+        -0.996,
+        2.562,
+        2.148,
+        4.722,
+        1.5641
+      ],
+      [
+        "truck",
+        0.904,
+        -3.407,
+        -7.808,
+        -0.37,
+        3.996,
+        2.657,
+        6.037,
+        1.6358
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.0560832023620605,
+            0.7291966080665588,
+            -1.7984380722045898
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 40,
+          "reinjected_centroid": [
+            11.914440155029297,
+            21.371417999267578,
+            0.11238707602024078
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 6,
+          "reinjected_centroid": [
+            -14.41945743560791,
+            21.521188735961914,
+            -0.603257954120636
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image not available (labeled as [ATTACKED] in the header)",
+          "bev": "Multiple empty bounding boxes scattered in the vicinity of the ego vehicle, such as at x\u22487m, y\u22484m and x\u22485m, y\u2248-5m",
+          "isometric": "Several bounding boxes floating in mid-air (e.g., x\u22487m, y\u22484m, z\u22483m) or located below the ground plane (e.g., x\u22485m, y\u2248-5m, z\u2248-2.5m) with no underlying LiDAR points."
+        },
+        "evidence": [
+          "Bounding boxes are generated in completely empty space with zero supporting point clusters in both BEV and isometric views.",
+          "The detected boxes have highly implausible 3D coordinates, floating multiple meters above the ground plane or existing underneath the road surface.",
+          "No camera data is available to verify the existence of these objects, with the image labeled explicitly as attacked."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or reflections, as the bounding boxes are completely devoid of points and are positioned at impossible vertical heights/depths.",
+          "Distant or unclassified infrastructure (like overhead signs), as there are no points corresponding to any physical structures in those regions."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:13.254663"
+}

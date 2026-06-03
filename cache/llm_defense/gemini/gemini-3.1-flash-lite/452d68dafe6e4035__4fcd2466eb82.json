@@ -1,0 +1,214 @@
+{
+  "key": {
+    "frame_id": "452d68dafe6e4035",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3383,
+        -8.467,
+        29.269,
+        0.33,
+        1.663,
+        1.892,
+        4.661,
+        -1.6296
+      ],
+      [
+        "car",
+        0.3873,
+        -2.09,
+        13.304,
+        -0.311,
+        1.781,
+        1.918,
+        4.625,
+        0.7744
+      ],
+      [
+        "car",
+        0.4541,
+        -0.142,
+        -35.792,
+        -2.29,
+        1.823,
+        2.011,
+        4.8,
+        1.5328
+      ],
+      [
+        "car",
+        0.5279,
+        -19.96,
+        8.184,
+        -0.996,
+        1.704,
+        1.961,
+        4.48,
+        0.149
+      ],
+      [
+        "car",
+        0.613,
+        -21.787,
+        13.277,
+        -0.992,
+        1.65,
+        1.886,
+        4.314,
+        -2.9743
+      ],
+      [
+        "car",
+        0.6985,
+        -8.952,
+        22.777,
+        -0.294,
+        1.605,
+        1.905,
+        4.635,
+        -1.6183
+      ],
+      [
+        "car",
+        0.7836,
+        -14.391,
+        7.905,
+        -1.027,
+        1.569,
+        1.876,
+        4.464,
+        0.2165
+      ],
+      [
+        "car",
+        0.8456,
+        -7.612,
+        -6.614,
+        -1.567,
+        1.65,
+        1.884,
+        4.691,
+        -1.5824
+      ],
+      [
+        "car",
+        0.9273,
+        4.336,
+        8.54,
+        -0.765,
+        1.521,
+        1.853,
+        4.678,
+        1.5973
+      ],
+      [
+        "construction_vehicle",
+        0.363,
+        8.245,
+        -45.851,
+        -2.077,
+        3.153,
+        3.156,
+        6.052,
+        1.2609
+      ],
+      [
+        "pedestrian",
+        0.3143,
+        7.189,
+        -25.379,
+        -1.653,
+        1.794,
+        0.661,
+        0.635,
+        2.3696
+      ],
+      [
+        "pedestrian",
+        0.3422,
+        5.951,
+        -15.184,
+        -1.335,
+        1.839,
+        0.641,
+        0.684,
+        3.0184
+      ],
+      [
+        "pedestrian",
+        0.3928,
+        7.436,
+        -16.069,
+        -1.386,
+        1.852,
+        0.611,
+        0.604,
+        -2.6981
+      ],
+      [
+        "pedestrian",
+        0.4086,
+        7.835,
+        -14.997,
+        -1.338,
+        1.841,
+        0.618,
+        0.644,
+        -2.5387
+      ],
+      [
+        "pedestrian",
+        0.423,
+        8.293,
+        10.787,
+        -0.317,
+        1.749,
+        0.66,
+        0.674,
+        -1.5618
+      ],
+      [
+        "pedestrian",
+        0.431,
+        8.779,
+        9.333,
+        -0.339,
+        1.74,
+        0.632,
+        0.642,
+        2.136
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812, y\u22482.5)",
+          "isometric": "cluster appears sparse and lacks clear 3D structure"
+        },
+        "evidence": [
+          "The bounding box 'car 0.39' in the BEV view does not encompass a dense, coherent cluster of points.",
+          "The isometric view shows this region contains very sparse points that do not resemble the typical 3D structure or volume of a car.",
+          "The low confidence score of 0.39 suggests the detector itself is struggling to classify this region, which could be noise or a sparse reflection rather than an attack."
+        ],
+        "alternatives_ruled_out": [
+          "sensor noise or low reflectivity",
+          "distant atmospheric interference",
+          "reflections from infrastructure"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:08.596371"
+}

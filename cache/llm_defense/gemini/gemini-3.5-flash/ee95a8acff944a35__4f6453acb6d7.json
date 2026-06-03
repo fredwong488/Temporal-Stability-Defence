@@ -1,0 +1,185 @@
+{
+  "key": {
+    "frame_id": "ee95a8acff944a35",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.372,
+        14.803,
+        -6.02,
+        -1.277,
+        1.002,
+        3.177,
+        0.549,
+        2.7275
+      ],
+      [
+        "car",
+        0.4233,
+        -0.994,
+        19.092,
+        0.198,
+        1.712,
+        1.955,
+        4.723,
+        -0.0027
+      ],
+      [
+        "car",
+        0.4282,
+        21.427,
+        22.79,
+        1.212,
+        1.748,
+        2.026,
+        4.682,
+        -2.9924
+      ],
+      [
+        "car",
+        0.7895,
+        -3.358,
+        0.439,
+        -1.156,
+        1.502,
+        1.888,
+        4.654,
+        1.6308
+      ],
+      [
+        "pedestrian",
+        0.3753,
+        -1.695,
+        6.959,
+        -0.604,
+        1.779,
+        0.682,
+        0.768,
+        2.1024
+      ],
+      [
+        "pedestrian",
+        0.3813,
+        -0.177,
+        8.814,
+        -0.533,
+        1.797,
+        0.668,
+        0.707,
+        -2.1583
+      ],
+      [
+        "pedestrian",
+        0.3994,
+        2.043,
+        8.288,
+        -0.648,
+        1.688,
+        0.675,
+        0.789,
+        2.873
+      ],
+      [
+        "pedestrian",
+        0.4387,
+        -3.462,
+        8.268,
+        -0.621,
+        1.751,
+        0.7,
+        0.821,
+        2.6793
+      ],
+      [
+        "trailer",
+        0.9399,
+        -3.158,
+        -16.014,
+        -0.353,
+        4.212,
+        2.779,
+        15.182,
+        1.6227
+      ],
+      [
+        "truck",
+        0.4976,
+        -0.152,
+        -8.034,
+        -1.019,
+        2.433,
+        2.143,
+        4.817,
+        1.5627
+      ],
+      [
+        "truck",
+        0.8778,
+        -3.428,
+        -7.805,
+        -0.298,
+        4.07,
+        2.664,
+        6.184,
+        1.6355
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.970776557922363,
+            0.5606239438056946,
+            -1.6289515495300293
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 22,
+          "reinjected_centroid": [
+            20.871885299682617,
+            22.03093147277832,
+            0.867358386516571
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image unavailable",
+          "bev": "x \u2248 7m to 9m, y \u2248 -2m to 4m",
+          "isometric": "Multiple small vertical boxes (labeled pedestrian) containing no corresponding 3D point clusters or physical heights"
+        },
+        "evidence": [
+          "Four pedestrian detections (confidence scores 0.38 to 0.44) are generated in a semi-circular arc around the front of the ego vehicle.",
+          "Both BEV and Isometric views show these pedestrian bounding boxes enclose empty space with only flat ground-level LiDAR ring reflections.",
+          "There is another suspicious detection 'car 0.42' at x\u224819m, y\u22481m enclosing a thin, linear point distribution representing road infrastructure or a wall rather than a physical vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Ground reflections or sensor noise, which do not consistently trigger multiple high-confidence pedestrian and vehicle classifications in organized spatial patterns."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:33.133073"
+}

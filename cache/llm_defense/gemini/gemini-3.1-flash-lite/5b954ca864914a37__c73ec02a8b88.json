@@ -1,0 +1,245 @@
+{
+  "key": {
+    "frame_id": "5b954ca864914a37",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3384,
+        -19.913,
+        -24.431,
+        -2.089,
+        2.018,
+        0.705,
+        1.725,
+        1.4693
+      ],
+      [
+        "car",
+        0.3239,
+        -21.657,
+        13.422,
+        -0.962,
+        1.712,
+        1.961,
+        4.538,
+        -2.9386
+      ],
+      [
+        "car",
+        0.4439,
+        -20.082,
+        8.459,
+        -1.078,
+        1.758,
+        2.004,
+        4.499,
+        0.1805
+      ],
+      [
+        "car",
+        0.4812,
+        6.077,
+        40.972,
+        1.294,
+        1.723,
+        1.89,
+        4.624,
+        1.4606
+      ],
+      [
+        "car",
+        0.5258,
+        -9.095,
+        22.878,
+        -0.265,
+        1.679,
+        1.84,
+        4.539,
+        -1.5402
+      ],
+      [
+        "car",
+        0.6332,
+        -2.563,
+        13.007,
+        -0.322,
+        1.764,
+        1.941,
+        4.747,
+        -2.45
+      ],
+      [
+        "car",
+        0.6994,
+        -14.578,
+        8.231,
+        -1.084,
+        1.693,
+        1.997,
+        4.759,
+        0.1684
+      ],
+      [
+        "car",
+        0.8556,
+        -7.616,
+        -6.324,
+        -1.538,
+        1.607,
+        1.865,
+        4.653,
+        -1.5684
+      ],
+      [
+        "car",
+        0.9298,
+        4.354,
+        8.795,
+        -0.761,
+        1.486,
+        1.849,
+        4.627,
+        1.5934
+      ],
+      [
+        "construction_vehicle",
+        0.3731,
+        23.437,
+        40.89,
+        2.143,
+        3.029,
+        3.95,
+        8.075,
+        -3.0312
+      ],
+      [
+        "pedestrian",
+        0.3037,
+        9.005,
+        28.46,
+        0.582,
+        1.834,
+        0.674,
+        0.693,
+        1.7667
+      ],
+      [
+        "pedestrian",
+        0.304,
+        11.436,
+        24.437,
+        0.502,
+        1.853,
+        0.676,
+        0.674,
+        -1.4875
+      ],
+      [
+        "pedestrian",
+        0.3094,
+        8.228,
+        11.34,
+        -0.428,
+        1.775,
+        0.646,
+        0.64,
+        -0.1815
+      ],
+      [
+        "pedestrian",
+        0.3125,
+        7.428,
+        -16.091,
+        -1.479,
+        1.815,
+        0.667,
+        0.686,
+        2.3105
+      ],
+      [
+        "pedestrian",
+        0.3209,
+        -12.534,
+        -32.148,
+        -1.853,
+        1.796,
+        0.643,
+        0.655,
+        -0.1634
+      ],
+      [
+        "pedestrian",
+        0.3369,
+        7.115,
+        -24.022,
+        -1.593,
+        1.809,
+        0.656,
+        0.681,
+        -1.7929
+      ],
+      [
+        "pedestrian",
+        0.3603,
+        5.867,
+        -26.186,
+        -1.648,
+        1.793,
+        0.681,
+        0.661,
+        -2.4869
+      ],
+      [
+        "pedestrian",
+        0.4062,
+        7.799,
+        -14.887,
+        -1.251,
+        1.81,
+        0.652,
+        0.702,
+        -2.4385
+      ],
+      [
+        "pedestrian",
+        0.4438,
+        -12.223,
+        15.742,
+        -0.517,
+        1.766,
+        0.614,
+        0.643,
+        -0.9221
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple detection regions",
+          "isometric": "Multiple detection regions"
+        },
+        "evidence": [
+          "The camera image is missing, preventing cross-modal verification of the LiDAR detections.",
+          "Without camera input, it is impossible to distinguish between genuine detections of vehicles/pedestrians and ghost objects or misclassifications.",
+          "The LiDAR point cloud appears to contain legitimate structural data consistent with urban environments, but validation against visual features cannot be performed."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor operation (the data is technically sound, but missing the critical cross-modal confirmation)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:07.255275"
+}

@@ -1,0 +1,220 @@
+{
+  "key": {
+    "frame_id": "85183d4fb8914dff",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bicycle",
+        0.445,
+        0.49,
+        8.518,
+        -0.721,
+        1.745,
+        0.721,
+        1.689,
+        0.351
+      ],
+      [
+        "car",
+        0.4976,
+        -18.299,
+        20.477,
+        -0.237,
+        1.69,
+        1.982,
+        4.714,
+        -0.1314
+      ],
+      [
+        "car",
+        0.8588,
+        -3.315,
+        0.494,
+        -1.18,
+        1.497,
+        1.852,
+        4.588,
+        1.5952
+      ],
+      [
+        "construction_vehicle",
+        0.6103,
+        -10.147,
+        49.575,
+        1.552,
+        2.559,
+        2.672,
+        7.431,
+        -1.4577
+      ],
+      [
+        "motorcycle",
+        0.31,
+        11.005,
+        -16.773,
+        -1.194,
+        1.52,
+        0.729,
+        2.162,
+        -1.6512
+      ],
+      [
+        "pedestrian",
+        0.3109,
+        -6.191,
+        7.987,
+        -0.559,
+        1.8,
+        0.697,
+        0.754,
+        -1.1889
+      ],
+      [
+        "pedestrian",
+        0.3137,
+        -2.252,
+        8.834,
+        -0.555,
+        1.821,
+        0.665,
+        0.702,
+        -0.9118
+      ],
+      [
+        "pedestrian",
+        0.3506,
+        -3.966,
+        8.371,
+        -0.611,
+        1.795,
+        0.731,
+        0.763,
+        -0.1958
+      ],
+      [
+        "pedestrian",
+        0.3899,
+        -3.839,
+        7.151,
+        -0.747,
+        1.751,
+        0.709,
+        0.81,
+        2.7336
+      ],
+      [
+        "pedestrian",
+        0.4581,
+        1.933,
+        6.777,
+        -0.643,
+        1.713,
+        0.68,
+        0.804,
+        2.3648
+      ],
+      [
+        "trailer",
+        0.943,
+        -3.096,
+        -15.913,
+        -0.369,
+        4.22,
+        2.783,
+        14.988,
+        1.6279
+      ],
+      [
+        "truck",
+        0.3253,
+        -40.916,
+        -13.589,
+        -0.844,
+        2.06,
+        2.308,
+        5.805,
+        1.5856
+      ],
+      [
+        "truck",
+        0.5945,
+        -0.161,
+        -7.975,
+        -0.99,
+        2.554,
+        2.206,
+        4.849,
+        1.5723
+      ],
+      [
+        "truck",
+        0.8699,
+        -3.411,
+        -7.719,
+        -0.349,
+        4.027,
+        2.632,
+        6.036,
+        1.6432
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.307564735412598,
+            0.692893385887146,
+            -1.8326005935668945
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 45,
+          "reinjected_centroid": [
+            8.212869644165039,
+            22.114978790283203,
+            -0.1537049114704132
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image unavailable",
+          "bev": "Semicircle region in front of ego vehicle (x\u22485m to 10m, y\u2248-3m to 6m)",
+          "isometric": "Multiple bounding boxes (pedestrian, bicycle) containing empty space or extremely sparse, unstructured points, and several boxes floating high above the ground plane (z > 2m)"
+        },
+        "evidence": [
+          "Multiple pedestrian and bicycle detections are scattered in a semicircle in front of the vehicle with no coherent physical point clusters corresponding to real objects.",
+          "In the isometric view, several bounding boxes are completely empty or floating mid-air at physically impossible heights (e.g., z \u2248 3m).",
+          "The lack of typical L-shaped physical contours or 3D height profiles inside these boxes indicates spoofed or hallucinated detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant vehicles outside LiDAR range"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:01.141118"
+}

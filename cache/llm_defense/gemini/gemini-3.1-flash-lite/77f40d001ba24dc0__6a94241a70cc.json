@@ -1,0 +1,297 @@
+{
+  "key": {
+    "frame_id": "77f40d001ba24dc0",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3244,
+        1.274,
+        20.756,
+        -0.098,
+        1.666,
+        1.947,
+        4.532,
+        1.5529
+      ],
+      [
+        "car",
+        0.3278,
+        -28.611,
+        1.184,
+        -1.75,
+        1.985,
+        2.12,
+        5.158,
+        0.1698
+      ],
+      [
+        "car",
+        0.3646,
+        6.573,
+        5.445,
+        -1.136,
+        1.643,
+        1.881,
+        4.468,
+        1.7285
+      ],
+      [
+        "car",
+        0.6104,
+        -17.411,
+        3.715,
+        -1.593,
+        1.706,
+        1.993,
+        4.794,
+        0.2063
+      ],
+      [
+        "car",
+        0.7231,
+        -9.332,
+        -13.847,
+        -1.992,
+        1.684,
+        2.009,
+        5.019,
+        -1.4811
+      ],
+      [
+        "car",
+        0.7699,
+        -6.695,
+        14.881,
+        -0.722,
+        1.616,
+        1.953,
+        4.8,
+        -2.1603
+      ],
+      [
+        "car",
+        0.9244,
+        4.301,
+        3.764,
+        -1.084,
+        1.608,
+        1.894,
+        4.734,
+        1.5849
+      ],
+      [
+        "pedestrian",
+        0.312,
+        5.93,
+        -19.978,
+        -1.384,
+        1.81,
+        0.649,
+        0.707,
+        -2.4296
+      ],
+      [
+        "pedestrian",
+        0.334,
+        -11.776,
+        7.179,
+        -1.073,
+        1.809,
+        0.625,
+        0.68,
+        0.1028
+      ],
+      [
+        "pedestrian",
+        0.3393,
+        2.847,
+        -33.179,
+        -1.633,
+        1.772,
+        0.683,
+        0.735,
+        -1.3498
+      ],
+      [
+        "pedestrian",
+        0.3464,
+        8.595,
+        7.38,
+        -0.447,
+        1.797,
+        0.637,
+        0.654,
+        -2.908
+      ],
+      [
+        "pedestrian",
+        0.3568,
+        6.028,
+        -32.134,
+        -1.337,
+        1.792,
+        0.605,
+        0.607,
+        1.0463
+      ],
+      [
+        "pedestrian",
+        0.3613,
+        7.985,
+        2.78,
+        -0.917,
+        1.784,
+        0.67,
+        0.684,
+        -2.1198
+      ],
+      [
+        "pedestrian",
+        0.365,
+        8.323,
+        -16.871,
+        -1.129,
+        1.8,
+        0.613,
+        0.603,
+        -3.0059
+      ],
+      [
+        "pedestrian",
+        0.3855,
+        -11.632,
+        8.768,
+        -0.994,
+        1.803,
+        0.658,
+        0.694,
+        1.653
+      ],
+      [
+        "pedestrian",
+        0.4016,
+        7.333,
+        -17.416,
+        -1.184,
+        1.792,
+        0.61,
+        0.619,
+        1.4598
+      ],
+      [
+        "pedestrian",
+        0.4327,
+        6.848,
+        -30.948,
+        -1.336,
+        1.847,
+        0.656,
+        0.645,
+        2.8566
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            5.87037467956543,
+            5.072933673858643,
+            -1.7302669286727905
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 150,
+          "reinjected_centroid": [
+            -8.838902473449707,
+            -12.914648056030273,
+            -2.2506320476531982
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 164,
+          "reinjected_centroid": [
+            -6.221902847290039,
+            14.334877967834473,
+            -1.1839157342910767
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 9,
+          "reinjected_centroid": [
+            -28.047683715820312,
+            8.626323699951172,
+            -1.9234436750411987
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 87,
+          "reinjected_centroid": [
+            -16.514827728271484,
+            3.7850661277770996,
+            -1.7088053226470947
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 34,
+          "reinjected_centroid": [
+            -22.816692352294922,
+            9.524693489074707,
+            -1.9583618640899658
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 9,
+          "reinjected_centroid": [
+            6.257539749145508,
+            36.74327087402344,
+            0.0872248113155365
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224819, y\u2248-1)",
+          "isometric": "Detected box encompasses sparse, low-density region with minimal structural verticality compared to actual vehicles."
+        },
+        "evidence": [
+          "The bounding box at (x\u224819, y\u2248-1) encompasses a region with very sparse point returns that lack the characteristic shape or density of a vehicle.",
+          "There is a lack of clear 3D shadow or surface profile in the isometric view, which is inconsistent with a physical vehicle at that range.",
+          "The low confidence score (0.32) coupled with the sparse LiDAR return suggests an erroneous detection (ghost)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The consistency of the box suggests an algorithmic detection trigger rather than random noise.",
+          "Occlusion: The region is relatively open with sufficient line-of-sight."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:00.677811"
+}

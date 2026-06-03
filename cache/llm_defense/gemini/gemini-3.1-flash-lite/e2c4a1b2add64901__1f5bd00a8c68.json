@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "e2c4a1b2add64901",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3399,
+        16.369,
+        39.725,
+        1.597,
+        1.762,
+        1.912,
+        4.592,
+        -1.7525
+      ],
+      [
+        "car",
+        0.4105,
+        1.405,
+        22.466,
+        0.204,
+        1.685,
+        1.915,
+        4.514,
+        1.611
+      ],
+      [
+        "car",
+        0.5578,
+        -21.579,
+        7.386,
+        -1.643,
+        1.647,
+        1.953,
+        4.399,
+        -2.9821
+      ],
+      [
+        "car",
+        0.5808,
+        -0.371,
+        13.238,
+        -0.588,
+        1.643,
+        1.856,
+        4.413,
+        1.5102
+      ],
+      [
+        "car",
+        0.6203,
+        -28.229,
+        -0.231,
+        -1.894,
+        1.666,
+        1.922,
+        4.404,
+        0.2217
+      ],
+      [
+        "car",
+        0.6365,
+        6.151,
+        34.503,
+        0.763,
+        1.71,
+        1.912,
+        4.538,
+        1.4637
+      ],
+      [
+        "car",
+        0.7259,
+        -27.172,
+        6.23,
+        -1.834,
+        1.64,
+        1.913,
+        4.507,
+        -2.998
+      ],
+      [
+        "car",
+        0.7612,
+        -5.708,
+        10.664,
+        -0.772,
+        1.618,
+        1.903,
+        4.595,
+        -2.015
+      ],
+      [
+        "car",
+        0.884,
+        -14.345,
+        1.916,
+        -1.621,
+        1.595,
+        1.912,
+        4.432,
+        0.2045
+      ],
+      [
+        "car",
+        0.898,
+        -7.68,
+        -12.697,
+        -1.772,
+        1.607,
+        1.89,
+        4.674,
+        -1.5899
+      ],
+      [
+        "car",
+        0.9546,
+        4.302,
+        2.519,
+        -1.017,
+        1.565,
+        1.904,
+        4.809,
+        1.5809
+      ],
+      [
+        "pedestrian",
+        0.3272,
+        7.273,
+        -18.162,
+        -1.125,
+        1.743,
+        0.605,
+        0.653,
+        -1.0819
+      ],
+      [
+        "pedestrian",
+        0.3358,
+        8.281,
+        -17.639,
+        -1.02,
+        1.767,
+        0.624,
+        0.624,
+        2.1229
+      ],
+      [
+        "pedestrian",
+        0.3473,
+        -11.622,
+        5.446,
+        -1.372,
+        1.777,
+        0.678,
+        0.77,
+        1.7472
+      ],
+      [
+        "pedestrian",
+        0.3729,
+        7.956,
+        1.065,
+        -0.822,
+        1.738,
+        0.609,
+        0.702,
+        -1.6627
+      ],
+      [
+        "pedestrian",
+        0.4144,
+        8.552,
+        6.688,
+        -0.425,
+        1.772,
+        0.673,
+        0.743,
+        2.6631
+      ],
+      [
+        "pedestrian",
+        0.4631,
+        -11.588,
+        6.875,
+        -1.292,
+        1.706,
+        0.648,
+        0.7,
+        2.6404
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 119
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "Cluster at x\u224812m, y\u22480.5m appears isolated in space without ground contact or geometric continuity with surrounding road features."
+        },
+        "evidence": [
+          "The camera image is explicitly unavailable and flagged as [ATTACKED], preventing cross-modal verification.",
+          "The cluster in the BEV and isometric views is highly localized and dense, characteristic of injected LiDAR points rather than a natural object scan.",
+          "The isometric view shows this 'car' detection has no visible structure or support; it appears as a floating artifact."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (the cluster is too well-defined and bounding-box-aligned).",
+          "Occlusion (no preceding objects are blocking the view)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:44.955049"
+}

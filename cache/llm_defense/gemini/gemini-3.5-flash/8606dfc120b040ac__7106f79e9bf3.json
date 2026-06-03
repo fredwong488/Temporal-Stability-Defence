@@ -1,0 +1,307 @@
+{
+  "key": {
+    "frame_id": "8606dfc120b040ac",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.9126,
+        4.729,
+        -9.62,
+        -0.653,
+        3.544,
+        3.004,
+        10.748,
+        1.5278
+      ],
+      [
+        "car",
+        0.3165,
+        -0.274,
+        -35.631,
+        -2.515,
+        1.878,
+        1.994,
+        4.715,
+        1.6025
+      ],
+      [
+        "car",
+        0.3471,
+        -22.746,
+        7.715,
+        -0.286,
+        1.623,
+        1.899,
+        4.56,
+        2.6411
+      ],
+      [
+        "car",
+        0.3676,
+        27.594,
+        -10.829,
+        -1.617,
+        1.724,
+        1.996,
+        4.391,
+        3.1297
+      ],
+      [
+        "car",
+        0.3725,
+        -26.218,
+        1.312,
+        -0.66,
+        1.633,
+        1.924,
+        4.457,
+        -0.5927
+      ],
+      [
+        "car",
+        0.3788,
+        14.525,
+        -10.064,
+        -1.627,
+        1.64,
+        1.9,
+        4.53,
+        2.8576
+      ],
+      [
+        "car",
+        0.4435,
+        15.925,
+        -5.346,
+        -1.554,
+        1.942,
+        2.134,
+        5.015,
+        3.0891
+      ],
+      [
+        "car",
+        0.5584,
+        15.932,
+        -2.689,
+        -1.572,
+        1.707,
+        2.01,
+        4.778,
+        3.0452
+      ],
+      [
+        "car",
+        0.6205,
+        16.414,
+        0.621,
+        -1.369,
+        1.731,
+        2.01,
+        4.667,
+        3.0805
+      ],
+      [
+        "car",
+        0.6631,
+        16.794,
+        4.27,
+        -1.278,
+        1.761,
+        1.948,
+        4.621,
+        -0.057
+      ],
+      [
+        "car",
+        0.7096,
+        15.888,
+        -8.158,
+        -1.71,
+        1.645,
+        1.987,
+        4.632,
+        3.0467
+      ],
+      [
+        "construction_vehicle",
+        0.8911,
+        -5.511,
+        -5.471,
+        -0.907,
+        2.325,
+        2.616,
+        7.059,
+        -1.6146
+      ],
+      [
+        "traffic_cone",
+        0.4556,
+        -4.154,
+        8.474,
+        -1.018,
+        0.769,
+        0.378,
+        0.387,
+        2.2979
+      ],
+      [
+        "traffic_cone",
+        0.4942,
+        -3.347,
+        -0.94,
+        -1.508,
+        0.736,
+        0.372,
+        0.385,
+        1.6537
+      ],
+      [
+        "traffic_cone",
+        0.522,
+        -3.654,
+        4.213,
+        -1.205,
+        0.71,
+        0.409,
+        0.415,
+        1.533
+      ],
+      [
+        "traffic_cone",
+        0.6507,
+        -3.368,
+        -4.285,
+        -1.621,
+        0.738,
+        0.36,
+        0.329,
+        -1.6875
+      ],
+      [
+        "truck",
+        0.4759,
+        -23.303,
+        4.308,
+        -0.133,
+        2.099,
+        2.247,
+        6.154,
+        2.4971
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 95,
+          "reinjected_centroid": [
+            15.56714153289795,
+            4.067650318145752,
+            -1.5149343013763428
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 87,
+          "reinjected_centroid": [
+            14.851091384887695,
+            0.7481224536895752,
+            -1.5571147203445435
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 58,
+          "reinjected_centroid": [
+            13.856943130493164,
+            -2.5018179416656494,
+            -2.0515050888061523
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 53,
+          "reinjected_centroid": [
+            14.407567024230957,
+            -5.188155174255371,
+            -1.8138080835342407
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 57,
+          "reinjected_centroid": [
+            14.702141761779785,
+            -7.737704753875732,
+            -1.865653157234192
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 26,
+          "reinjected_centroid": [
+            -24.77648162841797,
+            0.8320835828781128,
+            -0.8697629570960999
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 26,
+          "reinjected_centroid": [
+            -28.15836524963379,
+            -3.951961040496826,
+            -0.9177466034889221
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 16,
+          "reinjected_centroid": [
+            -23.636974334716797,
+            6.419637680053711,
+            -0.4915211498737335
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (marked as attacked)",
+          "bev": "y \u2248 -6m to -8m, x \u2248 0m to 15m",
+          "isometric": "A series of empty 3D bounding boxes labeled as cars (car 0.71, car 0.44, etc.) are generated in a straight row with zero underlying point clusters"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes for cars are predicted in the isometric view spanning x \u2248 0m to 15m and y \u2248 -6m to -8m.",
+          "These predicted bounding boxes are completely empty and do not contain any LiDAR returns or surface structures.",
+          "There are no physical objects or corresponding LiDAR shadows in the region, indicating a ghost object injection attack."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low-reflectivity targets",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:04.190653"
+}

@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "1d38033115b749bb",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3761,
+        14.804,
+        -6.052,
+        -1.273,
+        1.002,
+        3.276,
+        0.569,
+        2.8036
+      ],
+      [
+        "car",
+        0.3261,
+        10.857,
+        42.746,
+        2.06,
+        1.786,
+        1.925,
+        4.421,
+        1.4057
+      ],
+      [
+        "car",
+        0.7574,
+        -5.744,
+        17.152,
+        -0.209,
+        1.578,
+        1.959,
+        4.649,
+        -0.0682
+      ],
+      [
+        "car",
+        0.876,
+        -3.337,
+        0.47,
+        -1.078,
+        1.489,
+        1.89,
+        4.646,
+        1.598
+      ],
+      [
+        "construction_vehicle",
+        0.6165,
+        -9.882,
+        49.467,
+        1.295,
+        2.77,
+        2.895,
+        7.428,
+        -1.4049
+      ],
+      [
+        "motorcycle",
+        0.319,
+        17.417,
+        13.55,
+        0.375,
+        1.718,
+        0.79,
+        2.138,
+        2.9072
+      ],
+      [
+        "pedestrian",
+        0.3046,
+        -9.027,
+        9.556,
+        -0.769,
+        1.739,
+        0.692,
+        0.671,
+        0.2722
+      ],
+      [
+        "pedestrian",
+        0.3364,
+        -13.878,
+        9.768,
+        -1.038,
+        1.787,
+        0.651,
+        0.715,
+        0.6696
+      ],
+      [
+        "pedestrian",
+        0.3508,
+        -14.726,
+        11.129,
+        -0.941,
+        1.84,
+        0.704,
+        0.754,
+        0.1818
+      ],
+      [
+        "pedestrian",
+        0.353,
+        -11.001,
+        8.982,
+        -0.827,
+        1.812,
+        0.718,
+        0.753,
+        0.6834
+      ],
+      [
+        "pedestrian",
+        0.4065,
+        -12.629,
+        11.047,
+        -0.714,
+        1.866,
+        0.696,
+        0.708,
+        1.6236
+      ],
+      [
+        "pedestrian",
+        0.4136,
+        -9.804,
+        8.332,
+        -0.681,
+        1.821,
+        0.715,
+        0.742,
+        0.9281
+      ],
+      [
+        "trailer",
+        0.9254,
+        -3.138,
+        -16.209,
+        -0.352,
+        4.293,
+        2.777,
+        15.308,
+        1.6311
+      ],
+      [
+        "truck",
+        0.3024,
+        -40.874,
+        -13.532,
+        -0.918,
+        2.059,
+        2.282,
+        5.569,
+        1.6175
+      ],
+      [
+        "truck",
+        0.5222,
+        -22.178,
+        17.859,
+        0.464,
+        3.386,
+        2.818,
+        7.723,
+        -0.0038
+      ],
+      [
+        "truck",
+        0.636,
+        -0.128,
+        -7.995,
+        -1.007,
+        2.541,
+        2.162,
+        4.787,
+        1.5747
+      ],
+      [
+        "truck",
+        0.6688,
+        -14.62,
+        21.041,
+        0.003,
+        2.031,
+        2.356,
+        5.81,
+        -0.0506
+      ],
+      [
+        "truck",
+        0.9091,
+        -3.404,
+        -7.783,
+        -0.355,
+        3.948,
+        2.637,
+        6.108,
+        1.6308
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 22m, y \u2248 6m",
+          "isometric": "Empty bounding box floating in mid-air at z \u2248 2m to 4m with no underlying point cluster or physical ground support"
+        },
+        "evidence": [
+          "A 3D bounding box is predicted high above the ground plane (z \u2248 3m) with absolutely no underlying point cluster or physical structure inside it.",
+          "There is no corresponding lidar shadow/occlusion zone that would suggest a real physical object exists at this position."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real object with sparse points",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:04:36.596132"
+}

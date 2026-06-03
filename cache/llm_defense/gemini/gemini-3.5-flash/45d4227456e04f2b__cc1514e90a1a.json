@@ -1,0 +1,201 @@
+{
+  "key": {
+    "frame_id": "45d4227456e04f2b",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3178,
+        14.781,
+        -6.043,
+        -1.344,
+        0.997,
+        3.193,
+        0.571,
+        2.7731
+      ],
+      [
+        "car",
+        0.3688,
+        2.011,
+        20.259,
+        0.271,
+        1.701,
+        2.006,
+        4.723,
+        3.0108
+      ],
+      [
+        "car",
+        0.8576,
+        -3.305,
+        0.44,
+        -1.201,
+        1.503,
+        1.862,
+        4.612,
+        1.6123
+      ],
+      [
+        "construction_vehicle",
+        0.4305,
+        -10.34,
+        49.637,
+        1.872,
+        2.761,
+        2.6,
+        7.475,
+        -1.3748
+      ],
+      [
+        "motorcycle",
+        0.3,
+        -0.197,
+        8.529,
+        -0.741,
+        1.525,
+        0.645,
+        1.784,
+        -2.945
+      ],
+      [
+        "pedestrian",
+        0.3555,
+        -2.899,
+        8.792,
+        -0.647,
+        1.764,
+        0.668,
+        0.762,
+        -1.4547
+      ],
+      [
+        "pedestrian",
+        0.3882,
+        -6.844,
+        8.145,
+        -0.534,
+        1.762,
+        0.671,
+        0.733,
+        1.2349
+      ],
+      [
+        "pedestrian",
+        0.4052,
+        1.269,
+        6.976,
+        -0.66,
+        1.784,
+        0.745,
+        0.873,
+        2.7134
+      ],
+      [
+        "pedestrian",
+        0.4646,
+        -4.406,
+        7.111,
+        -0.764,
+        1.726,
+        0.62,
+        0.643,
+        -0.6702
+      ],
+      [
+        "pedestrian",
+        0.4882,
+        -4.679,
+        8.498,
+        -0.634,
+        1.784,
+        0.663,
+        0.683,
+        -0.4083
+      ],
+      [
+        "trailer",
+        0.9337,
+        -3.181,
+        -15.734,
+        -0.414,
+        4.167,
+        2.773,
+        14.376,
+        1.6196
+      ],
+      [
+        "truck",
+        0.6447,
+        -0.122,
+        -8.087,
+        -1.048,
+        2.429,
+        2.17,
+        4.87,
+        1.5956
+      ],
+      [
+        "truck",
+        0.8663,
+        -3.401,
+        -7.769,
+        -0.328,
+        3.998,
+        2.637,
+        6.225,
+        1.625
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.143431186676025,
+            0.6679904460906982,
+            -1.7971200942993164
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image is unavailable (indicated as attacked)",
+          "bev": "x \u2248 20m, y \u2248 5m and x \u2248 7m to 10m, y \u2248 -1m to 7m",
+          "isometric": "A bounding box is floating high in mid-air at x \u2248 20m, y \u2248 5m, z \u2248 3m with no underlying point cluster. Additionally, multiple pedestrian and motorcycle boxes at x \u2248 7-10m envelope extremely sparse or non-existent point clusters."
+        },
+        "evidence": [
+          "A highly elevated bounding box at x \u2248 20m, y \u2248 5m, z \u2248 3m floats in mid-air with no structural point cluster supporting it.",
+          "A series of pedestrian and motorcycle detections (at x \u2248 7-10m) are generated over empty space or extremely sparse noise points.",
+          "The camera image is entirely unavailable and labeled as attacked, preventing cross-modal verification."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant real objects",
+          "Tall infrastructure (no corresponding structure is present in the point cloud)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:55.170988"
+}

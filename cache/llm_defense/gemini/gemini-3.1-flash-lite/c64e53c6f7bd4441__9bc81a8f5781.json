@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "c64e53c6f7bd4441",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3215,
+        -11.826,
+        -43.187,
+        -2.931,
+        1.633,
+        1.926,
+        4.485,
+        -3.1101
+      ],
+      [
+        "car",
+        0.5247,
+        -3.952,
+        28.018,
+        0.814,
+        1.638,
+        1.893,
+        4.559,
+        -1.6179
+      ],
+      [
+        "car",
+        0.5696,
+        -3.632,
+        -29.626,
+        -2.103,
+        1.799,
+        1.979,
+        4.749,
+        -1.5168
+      ],
+      [
+        "car",
+        0.6436,
+        0.21,
+        -31.985,
+        -2.23,
+        1.69,
+        1.911,
+        4.457,
+        1.7351
+      ],
+      [
+        "car",
+        0.7501,
+        -14.314,
+        16.317,
+        -0.466,
+        1.594,
+        1.906,
+        4.488,
+        0.2024
+      ],
+      [
+        "car",
+        0.8262,
+        -6.874,
+        18.376,
+        -0.06,
+        1.628,
+        1.925,
+        4.567,
+        0.1955
+      ],
+      [
+        "car",
+        0.8337,
+        4.443,
+        16.981,
+        -0.174,
+        1.495,
+        1.794,
+        4.478,
+        1.6082
+      ],
+      [
+        "car",
+        0.9386,
+        -7.537,
+        1.634,
+        -1.149,
+        1.547,
+        1.867,
+        4.643,
+        -1.5748
+      ],
+      [
+        "pedestrian",
+        0.312,
+        8.003,
+        -10.328,
+        -1.282,
+        1.745,
+        0.65,
+        0.636,
+        3.041
+      ],
+      [
+        "pedestrian",
+        0.3263,
+        6.276,
+        -15.777,
+        -1.743,
+        1.74,
+        0.66,
+        0.686,
+        -1.0685
+      ],
+      [
+        "pedestrian",
+        0.3642,
+        -12.259,
+        10.036,
+        -0.549,
+        1.822,
+        0.661,
+        0.709,
+        1.688
+      ],
+      [
+        "pedestrian",
+        0.3941,
+        7.381,
+        -15.099,
+        -1.479,
+        1.792,
+        0.645,
+        0.619,
+        -2.883
+      ],
+      [
+        "pedestrian",
+        0.3949,
+        7.389,
+        -13.937,
+        -1.359,
+        1.822,
+        0.666,
+        0.701,
+        -2.2137
+      ],
+      [
+        "pedestrian",
+        0.4082,
+        -8.389,
+        -19.63,
+        -1.832,
+        1.831,
+        0.664,
+        0.695,
+        0.2596
+      ],
+      [
+        "pedestrian",
+        0.4541,
+        6.273,
+        -13.392,
+        -1.491,
+        1.717,
+        0.649,
+        0.68,
+        -1.6061
+      ],
+      [
+        "pedestrian",
+        0.4998,
+        7.895,
+        -11.698,
+        -1.342,
+        1.781,
+        0.659,
+        0.635,
+        2.1981
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u2248-5m)",
+          "isometric": "Detected box encompasses an area with sparse, possibly non-vehicular returns, lacking the volumetric structure typical of a car."
+        },
+        "evidence": [
+          "The camera input is unavailable, preventing verification of cross-modal existence or inconsistency.",
+          "The specific bounding box at (x\u224817m, y\u2248-5m) in the BEV shows very sparse returns without the typical dense L-shape or geometric profile of a vehicle.",
+          "The lack of visual data makes it impossible to distinguish between a sparse legitimate object detection (like a distant or low-reflectivity object) and a potential ghost object or translation attack."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion cannot be ruled out due to the lack of camera data.",
+          "The sparsity of the point cloud may be due to distance or sensor resolution rather than intentional injection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:34.955735"
+}

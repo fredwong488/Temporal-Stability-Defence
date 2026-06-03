@@ -1,0 +1,236 @@
+{
+  "key": {
+    "frame_id": "d93b60b3afca40b1",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3503,
+        -21.708,
+        14.173,
+        -0.775,
+        1.725,
+        2.001,
+        4.546,
+        -2.9931
+      ],
+      [
+        "car",
+        0.6117,
+        -20.021,
+        9.076,
+        -1.177,
+        1.635,
+        1.923,
+        4.396,
+        0.1764
+      ],
+      [
+        "car",
+        0.6763,
+        -3.405,
+        12.8,
+        -0.297,
+        1.658,
+        1.922,
+        4.555,
+        0.5424
+      ],
+      [
+        "car",
+        0.7184,
+        -14.362,
+        8.954,
+        -1.042,
+        1.646,
+        1.954,
+        4.571,
+        0.1556
+      ],
+      [
+        "car",
+        0.8603,
+        4.333,
+        9.574,
+        -0.624,
+        1.576,
+        1.85,
+        4.74,
+        1.6147
+      ],
+      [
+        "car",
+        0.9112,
+        -7.653,
+        -5.57,
+        -1.457,
+        1.627,
+        1.887,
+        4.671,
+        -1.5916
+      ],
+      [
+        "construction_vehicle",
+        0.3016,
+        20.891,
+        40.659,
+        2.576,
+        3.357,
+        2.632,
+        6.736,
+        -1.6804
+      ],
+      [
+        "pedestrian",
+        0.3102,
+        -12.222,
+        17.199,
+        -0.343,
+        1.781,
+        0.667,
+        0.71,
+        2.7779
+      ],
+      [
+        "pedestrian",
+        0.3144,
+        8.96,
+        28.599,
+        0.309,
+        1.8,
+        0.681,
+        0.723,
+        2.4325
+      ],
+      [
+        "pedestrian",
+        0.3375,
+        8.359,
+        12.65,
+        -0.38,
+        1.763,
+        0.69,
+        0.733,
+        -1.2362
+      ],
+      [
+        "pedestrian",
+        0.3527,
+        6.206,
+        -22.777,
+        -1.858,
+        1.778,
+        0.599,
+        0.602,
+        -2.3672
+      ],
+      [
+        "pedestrian",
+        0.3847,
+        5.872,
+        -27.031,
+        -1.907,
+        1.815,
+        0.658,
+        0.694,
+        -1.6329
+      ],
+      [
+        "pedestrian",
+        0.3848,
+        8.394,
+        -14.885,
+        -1.375,
+        1.759,
+        0.578,
+        0.583,
+        -2.3909
+      ],
+      [
+        "pedestrian",
+        0.3872,
+        7.132,
+        -22.923,
+        -1.745,
+        1.803,
+        0.617,
+        0.602,
+        -2.4834
+      ],
+      [
+        "pedestrian",
+        0.3886,
+        6.047,
+        -25.154,
+        -1.871,
+        1.8,
+        0.631,
+        0.643,
+        -2.4502
+      ],
+      [
+        "pedestrian",
+        0.4276,
+        -7.08,
+        -27.051,
+        -1.992,
+        1.817,
+        0.68,
+        0.718,
+        -2.3662
+      ],
+      [
+        "pedestrian",
+        0.4381,
+        7.784,
+        -14.788,
+        -1.323,
+        1.845,
+        0.616,
+        0.631,
+        -1.6642
+      ],
+      [
+        "pedestrian",
+        0.4452,
+        7.49,
+        -16.052,
+        -1.493,
+        1.811,
+        0.58,
+        0.569,
+        -1.1037
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22483m)",
+          "isometric": "cluster appears sparse and lacks clear vehicle structure in 3D"
+        },
+        "evidence": [
+          "The bounding box encloses a very sparse, unstructured collection of points that does not resemble a typical vehicle signature.",
+          "Without the camera image, it is impossible to verify if this is a genuine object (like a vehicle or sign) or a ghost object injection.",
+          "The lack of a clear 3D shadow or surface profile makes it difficult to distinguish between sensor noise and a deliberate spoofing attempt."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise",
+          "Distant/low-reflectivity objects",
+          "Occluded objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:25.731217"
+}

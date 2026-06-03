@@ -1,0 +1,73 @@
+{
+  "notes": "Evaluate llm defense gemini on mini_val ora",
+  "git_commit": "808af4391fb93e7de4575141a53bbc1fc0a3fba8",
+  "timestamp": "2026-06-03-01-09-35",
+  "cmd_args": [
+    "scripts/run_sweep.py",
+    "--dataset",
+    "nuscenes",
+    "--nuscenes-split",
+    "mini_train",
+    "--attack",
+    "ora",
+    "--attack-fraction",
+    "1.0",
+    "--defense",
+    "llm",
+    "--detector",
+    "pointpillars_nuscenes",
+    "--metric-types",
+    "defense_effectiveness",
+    "llm_attack_type_accuracy",
+    "--writeable-cache",
+    "--precomputed-cache-dir",
+    "precomputed/nuscenes-minitrain-pointpillars-ora-withnoise-b200-1.0-fixed_reinject_dist",
+    "--use-cached-attacks",
+    "--save-frames",
+    "--use-predicted-labels",
+    "--notes",
+    "Evaluate llm defense gemini on mini_val ora"
+  ],
+  "precomputed_cache_dir": "precomputed/nuscenes-minitrain-pointpillars-ora-withnoise-b200-1.0-fixed_reinject_dist",
+  "sweep": null,
+  "dataset_type": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_train"
+  },
+  "attack_type": "ora",
+  "attack_params": {
+    "target_types": [
+      "car",
+      "pedestrian",
+      "bicycle"
+    ],
+    "noise_preset": "worst_case"
+  },
+  "attack_fraction": 1.0,
+  "attack_fraction_seed": 0,
+  "min_unattacked_frames": 6,
+  "min_attacked_frames": 6,
+  "detector_type": "pointpillars_nuscenes",
+  "detector_params": {
+    "score_threshold": 0.3
+  },
+  "defense_type": "llm",
+  "defense_params": {},
+  "metric_types": [
+    "defense_effectiveness",
+    "llm_attack_type_accuracy"
+  ],
+  "difficulties": [
+    "Easy",
+    "Moderate",
+    "Hard"
+  ],
+  "recall_iou_confidence_threshold": 0.3,
+  "save_frame_results": true,
+  "read_only_cache": true,
+  "use_cached_attacks": true,
+  "use_predicted_labels": true,
+  "pred_label_score_threshold": 0.5
+}

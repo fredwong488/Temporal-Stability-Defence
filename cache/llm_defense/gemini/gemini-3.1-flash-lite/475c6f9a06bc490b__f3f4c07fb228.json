@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "475c6f9a06bc490b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3594,
+        -10.969,
+        2.945,
+        -1.401,
+        1.203,
+        0.558,
+        1.579,
+        1.9712
+      ],
+      [
+        "car",
+        0.3812,
+        -27.156,
+        8.502,
+        -1.376,
+        1.712,
+        1.964,
+        4.511,
+        -2.9767
+      ],
+      [
+        "car",
+        0.4301,
+        -0.169,
+        -39.47,
+        -2.253,
+        1.824,
+        2.003,
+        4.66,
+        1.645
+      ],
+      [
+        "car",
+        0.4422,
+        -21.607,
+        9.495,
+        -1.521,
+        1.623,
+        1.892,
+        4.474,
+        -2.9792
+      ],
+      [
+        "car",
+        0.4552,
+        -20.537,
+        4.283,
+        -1.413,
+        1.727,
+        1.973,
+        4.485,
+        0.1243
+      ],
+      [
+        "car",
+        0.6534,
+        6.12,
+        36.765,
+        0.638,
+        1.693,
+        1.875,
+        4.445,
+        1.4559
+      ],
+      [
+        "car",
+        0.7234,
+        1.067,
+        18.946,
+        -0.133,
+        1.701,
+        1.892,
+        4.427,
+        1.4373
+      ],
+      [
+        "car",
+        0.7353,
+        -0.428,
+        12.833,
+        -0.62,
+        1.516,
+        1.796,
+        4.282,
+        1.5245
+      ],
+      [
+        "car",
+        0.8322,
+        -14.383,
+        4.282,
+        -1.254,
+        1.714,
+        1.975,
+        4.541,
+        0.1801
+      ],
+      [
+        "car",
+        0.8964,
+        -5.283,
+        13.473,
+        -0.643,
+        1.549,
+        1.853,
+        4.537,
+        -1.9892
+      ],
+      [
+        "car",
+        0.9254,
+        -7.694,
+        -10.288,
+        -1.673,
+        1.59,
+        1.88,
+        4.622,
+        -1.5831
+      ],
+      [
+        "car",
+        0.9432,
+        4.31,
+        4.829,
+        -0.924,
+        1.517,
+        1.845,
+        4.685,
+        1.589
+      ],
+      [
+        "pedestrian",
+        0.3383,
+        7.372,
+        -17.106,
+        -1.217,
+        1.803,
+        0.639,
+        0.664,
+        -1.4394
+      ],
+      [
+        "pedestrian",
+        0.3424,
+        -11.865,
+        8.935,
+        -1.105,
+        1.723,
+        0.617,
+        0.681,
+        1.438
+      ],
+      [
+        "pedestrian",
+        0.369,
+        8.193,
+        -16.429,
+        -1.126,
+        1.772,
+        0.607,
+        0.614,
+        -2.534
+      ],
+      [
+        "pedestrian",
+        0.4016,
+        8.143,
+        4.369,
+        -0.602,
+        1.757,
+        0.644,
+        0.671,
+        -1.6186
+      ],
+      [
+        "pedestrian",
+        0.41,
+        -11.604,
+        10.676,
+        -0.958,
+        1.782,
+        0.694,
+        0.787,
+        1.6295
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 116
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811.5m, y\u22480.5m)",
+          "isometric": "Cluster appears dense and isolated in mid-air with no structural connection to the ground plane"
+        },
+        "evidence": [
+          "A highly dense, localized cluster of points exists at (x\u224811.5m, y\u22480.5m) that is uncharacteristic of typical road noise or environmental features.",
+          "The cluster is detected as a 'car' but lacks any corresponding visual confirmation or shadow logic consistent with a physical object at that range.",
+          "The isometric view confirms the cluster is spatially isolated with no points beneath it on the ground plane, indicating a lack of physical support."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too localized and structured)",
+          "Distant road sign or infrastructure (isometric view shows it 'floating' rather than attached to ground/pole)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:33.157150"
+}

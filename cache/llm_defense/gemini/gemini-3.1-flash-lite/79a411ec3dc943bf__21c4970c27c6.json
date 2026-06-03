@@ -1,0 +1,186 @@
+{
+  "key": {
+    "frame_id": "79a411ec3dc943bf",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3627,
+        -35.224,
+        -9.891,
+        -2.931,
+        1.699,
+        1.946,
+        4.463,
+        1.7174
+      ],
+      [
+        "car",
+        0.3735,
+        -0.349,
+        40.124,
+        1.332,
+        1.694,
+        1.925,
+        4.553,
+        -1.5337
+      ],
+      [
+        "car",
+        0.6997,
+        1.054,
+        -19.629,
+        -2.255,
+        1.617,
+        1.924,
+        4.693,
+        1.6843
+      ],
+      [
+        "car",
+        0.8042,
+        -3.789,
+        14.221,
+        -0.378,
+        1.712,
+        1.954,
+        4.725,
+        -1.6281
+      ],
+      [
+        "pedestrian",
+        0.3093,
+        5.824,
+        -13.849,
+        -1.566,
+        1.749,
+        0.649,
+        0.63,
+        -0.8559
+      ],
+      [
+        "pedestrian",
+        0.3106,
+        7.967,
+        19.146,
+        0.16,
+        1.741,
+        0.646,
+        0.608,
+        0.4393
+      ],
+      [
+        "pedestrian",
+        0.3115,
+        8.141,
+        16.246,
+        -0.122,
+        1.745,
+        0.623,
+        0.626,
+        1.2782
+      ],
+      [
+        "pedestrian",
+        0.3277,
+        14.204,
+        22.384,
+        0.234,
+        1.731,
+        0.602,
+        0.6,
+        2.0809
+      ],
+      [
+        "pedestrian",
+        0.3758,
+        6.953,
+        -13.826,
+        -1.579,
+        1.746,
+        0.638,
+        0.635,
+        -1.627
+      ],
+      [
+        "pedestrian",
+        0.3906,
+        9.128,
+        19.599,
+        0.27,
+        1.76,
+        0.685,
+        0.648,
+        2.7386
+      ],
+      [
+        "pedestrian",
+        0.4173,
+        8.686,
+        14.233,
+        -0.185,
+        1.732,
+        0.645,
+        0.676,
+        -2.1818
+      ],
+      [
+        "pedestrian",
+        0.4489,
+        9.207,
+        15.999,
+        -0.186,
+        1.727,
+        0.628,
+        0.593,
+        2.5023
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22484m)",
+          "isometric": "Large bounding box for 'car' contains very sparse/no point density, lacking vehicle structure."
+        },
+        "evidence": [
+          "The bounding box labeled 'car' at (x\u224812m, y\u22484m) is placed in a region devoid of any significant point cluster corresponding to a vehicle's geometry.",
+          "The isometric view confirms the lack of vertical or surface structure within the bounding box volume, suggesting a hallucinated detection.",
+          "There is no clear shadow cast behind the bounding box, which is a physical requirement for a solid object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The detection is highly structured (bounding box) despite zero support in raw data, indicating a systematic failure/injection rather than transient noise.",
+          "Occlusion: No nearby objects are present to cause such an occlusion, and the region is clear of valid returns."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815-20m, y\u2248-8m)",
+          "isometric": "Multiple pedestrian bounding boxes aligned in a line, containing almost no point returns."
+        },
+        "evidence": [
+          "A series of 'pedestrian' bounding boxes are placed along the edge of the scan range with minimal to no supporting LiDAR points.",
+          "The boxes appear to be floating or are placed over ground/empty regions rather than on defined obstacles.",
+          "The clustered placement of multiple boxes without underlying point clusters suggests injected detections."
+        ],
+        "alternatives_ruled_out": [
+          "Ground reflections: The detections are too high/distinct to be ground plane noise, and are categorized as 'pedestrian' despite no visible pedestrian structure."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:13.490959"
+}

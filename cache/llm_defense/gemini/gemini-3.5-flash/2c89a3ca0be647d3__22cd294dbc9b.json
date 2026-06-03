@@ -1,0 +1,210 @@
+{
+  "key": {
+    "frame_id": "2c89a3ca0be647d3",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3266,
+        14.836,
+        -5.992,
+        -1.289,
+        0.967,
+        3.21,
+        0.536,
+        2.7702
+      ],
+      [
+        "barrier",
+        0.3355,
+        -2.693,
+        -0.415,
+        -1.279,
+        0.944,
+        1.952,
+        0.579,
+        0.0224
+      ],
+      [
+        "bus",
+        0.5399,
+        -14.481,
+        28.01,
+        0.829,
+        3.305,
+        2.935,
+        10.078,
+        0.4285
+      ],
+      [
+        "car",
+        0.3941,
+        -6.83,
+        22.689,
+        -0.064,
+        1.607,
+        1.927,
+        4.571,
+        -0.0771
+      ],
+      [
+        "car",
+        0.6838,
+        -3.345,
+        0.437,
+        -1.162,
+        1.495,
+        1.878,
+        4.564,
+        1.6483
+      ],
+      [
+        "pedestrian",
+        0.3542,
+        -5.486,
+        7.489,
+        -0.767,
+        1.724,
+        0.691,
+        0.776,
+        1.5009
+      ],
+      [
+        "pedestrian",
+        0.3597,
+        -10.283,
+        8.228,
+        -0.741,
+        1.806,
+        0.705,
+        0.783,
+        1.034
+      ],
+      [
+        "pedestrian",
+        0.3683,
+        -13.969,
+        9.509,
+        -0.916,
+        1.79,
+        0.662,
+        0.714,
+        1.3743
+      ],
+      [
+        "pedestrian",
+        0.4075,
+        -11.033,
+        9.521,
+        -0.765,
+        1.857,
+        0.661,
+        0.647,
+        1.4011
+      ],
+      [
+        "trailer",
+        0.9439,
+        -3.173,
+        -15.688,
+        -0.335,
+        4.172,
+        2.772,
+        14.256,
+        1.6242
+      ],
+      [
+        "truck",
+        0.5997,
+        -0.135,
+        -8.003,
+        -1.022,
+        2.468,
+        2.13,
+        4.721,
+        1.5523
+      ],
+      [
+        "truck",
+        0.8899,
+        -3.413,
+        -7.82,
+        -0.299,
+        4.034,
+        2.644,
+        6.144,
+        1.6272
+      ],
+      [
+        "truck",
+        0.9046,
+        7.122,
+        16.431,
+        0.657,
+        3.342,
+        2.693,
+        7.602,
+        -0.0083
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.881408214569092,
+            0.5757383704185486,
+            -1.6228437423706055
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 44,
+          "reinjected_centroid": [
+            -6.434859752655029,
+            22.040666580200195,
+            -0.6299260258674622
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire frame (camera image sensor feed is unavailable / suppressed, marked as ATTACKED)",
+          "bev": "Multiple locations, including x \u2248 7.5m, y \u2248 3.5m ('pedestrian 0.35') and x \u2248 23m, y \u2248 6m ('car 0.39')",
+          "isometric": "Several bounding boxes float in mid-air (e.g., z \u2248 2.5m) enclosing extremely sparse point clusters with no physical support on the ground plane"
+        },
+        "evidence": [
+          "The camera image is completely unavailable and explicitly marked as [ATTACKED], representing a sensory denial-of-service/spoofing attack.",
+          "In the isometric LiDAR view, multiple bounding boxes (such as the pedestrian detection at x\u22487.5m, y\u22483.5m) are suspended high above the road surface (z > 2m) with no underlying ground-level support structure.",
+          "The bounding box 'car 0.39' at x \u2248 23m, y \u2248 6m represents a sparse cluster lacking physical features or L-shapes typical of vehicles."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant vehicles",
+          "Normal object detection errors"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:17.640734"
+}

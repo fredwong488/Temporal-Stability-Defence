@@ -1,0 +1,220 @@
+{
+  "key": {
+    "frame_id": "f8ad950ab77a43ff",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3054,
+        12.538,
+        -12.439,
+        -1.784,
+        0.851,
+        3.093,
+        0.485,
+        2.9097
+      ],
+      [
+        "barrier",
+        0.3152,
+        14.816,
+        -6.044,
+        -1.246,
+        0.972,
+        3.2,
+        0.514,
+        2.743
+      ],
+      [
+        "car",
+        0.4104,
+        27.742,
+        22.654,
+        1.191,
+        1.725,
+        2.058,
+        4.668,
+        -3.071
+      ],
+      [
+        "car",
+        0.4582,
+        15.584,
+        17.888,
+        0.701,
+        1.812,
+        2.06,
+        4.8,
+        -0.0867
+      ],
+      [
+        "car",
+        0.8869,
+        -3.318,
+        0.515,
+        -1.204,
+        1.487,
+        1.877,
+        4.68,
+        1.6187
+      ],
+      [
+        "construction_vehicle",
+        0.5186,
+        -9.915,
+        49.722,
+        1.631,
+        2.84,
+        2.729,
+        7.663,
+        -1.42
+      ],
+      [
+        "pedestrian",
+        0.3284,
+        0.25,
+        7.553,
+        -0.62,
+        1.785,
+        0.669,
+        0.726,
+        1.9242
+      ],
+      [
+        "pedestrian",
+        0.3353,
+        6.075,
+        6.641,
+        -0.391,
+        1.719,
+        0.682,
+        0.82,
+        -2.9903
+      ],
+      [
+        "pedestrian",
+        0.3868,
+        -0.895,
+        8.627,
+        -0.576,
+        1.705,
+        0.632,
+        0.666,
+        -2.7759
+      ],
+      [
+        "pedestrian",
+        0.388,
+        0.368,
+        8.143,
+        -0.583,
+        1.815,
+        0.649,
+        0.651,
+        -2.5658
+      ],
+      [
+        "pedestrian",
+        0.4296,
+        1.218,
+        8.598,
+        -0.545,
+        1.838,
+        0.701,
+        0.713,
+        -2.2544
+      ],
+      [
+        "trailer",
+        0.3598,
+        4.457,
+        41.007,
+        1.937,
+        3.381,
+        3.313,
+        4.215,
+        -1.6056
+      ],
+      [
+        "trailer",
+        0.9281,
+        -3.142,
+        -16.0,
+        -0.411,
+        4.208,
+        2.773,
+        15.149,
+        1.6253
+      ],
+      [
+        "truck",
+        0.5837,
+        -0.149,
+        -8.005,
+        -1.003,
+        2.452,
+        2.139,
+        4.809,
+        1.5573
+      ],
+      [
+        "truck",
+        0.8675,
+        -3.398,
+        -7.737,
+        -0.289,
+        4.038,
+        2.647,
+        6.159,
+        1.623
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.355782508850098,
+            0.672508716583252,
+            -1.8055821657180786
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera stream is completely unavailable/blocked",
+          "bev": "Far regions (x > 25m, y > 5m)",
+          "isometric": "Several bounding boxes are floating in mid-air at high z-values (z \u2248 1m to 3m) at x \u2248 25-30m with extremely sparse or completely absent underlying point clusters."
+        },
+        "evidence": [
+          "The camera image is entirely unavailable and explicitly marked as [ATTACKED].",
+          "Multiple 3D bounding boxes are generated at long range (x > 25m) without any corresponding physical structures or point clusters in the LiDAR data, floating significantly above the ground plane."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too many structured ghost detections at high elevation)",
+          "Ground reflections (the floating boxes are far above the ground plane)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:58.016901"
+}

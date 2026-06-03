@@ -1,0 +1,321 @@
+{
+  "key": {
+    "frame_id": "cc10e45d4d394788",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3188,
+        1.791,
+        -15.769,
+        -1.689,
+        1.032,
+        2.033,
+        0.565,
+        3.1039
+      ],
+      [
+        "bicycle",
+        0.3344,
+        -3.853,
+        -10.623,
+        -1.179,
+        1.106,
+        0.555,
+        1.663,
+        1.1352
+      ],
+      [
+        "car",
+        0.3003,
+        14.631,
+        -20.601,
+        -1.907,
+        1.708,
+        2.006,
+        4.767,
+        -1.6361
+      ],
+      [
+        "car",
+        0.3716,
+        12.645,
+        -14.938,
+        -1.698,
+        1.642,
+        1.935,
+        4.767,
+        -1.5409
+      ],
+      [
+        "car",
+        0.4334,
+        -2.989,
+        8.774,
+        -0.327,
+        1.864,
+        1.956,
+        4.788,
+        2.2866
+      ],
+      [
+        "construction_vehicle",
+        0.3914,
+        22.515,
+        -27.758,
+        -0.46,
+        2.934,
+        1.899,
+        2.868,
+        2.9392
+      ],
+      [
+        "construction_vehicle",
+        0.4373,
+        3.464,
+        -19.48,
+        -0.633,
+        2.853,
+        3.222,
+        4.264,
+        -1.5675
+      ],
+      [
+        "pedestrian",
+        0.346,
+        -5.83,
+        -28.748,
+        -1.485,
+        1.771,
+        0.635,
+        0.681,
+        -1.059
+      ],
+      [
+        "traffic_cone",
+        0.3039,
+        9.231,
+        20.687,
+        -0.696,
+        0.793,
+        0.427,
+        0.436,
+        -1.5329
+      ],
+      [
+        "traffic_cone",
+        0.3239,
+        9.554,
+        -7.718,
+        -1.729,
+        0.735,
+        0.395,
+        0.396,
+        -1.8917
+      ],
+      [
+        "traffic_cone",
+        0.3334,
+        1.881,
+        -1.543,
+        -1.471,
+        0.724,
+        0.368,
+        0.369,
+        2.1512
+      ],
+      [
+        "traffic_cone",
+        0.3358,
+        1.855,
+        -6.531,
+        -1.681,
+        0.747,
+        0.376,
+        0.365,
+        1.6657
+      ],
+      [
+        "traffic_cone",
+        0.405,
+        9.459,
+        5.752,
+        -1.246,
+        0.741,
+        0.394,
+        0.393,
+        -2.7355
+      ],
+      [
+        "traffic_cone",
+        0.428,
+        1.829,
+        2.884,
+        -1.331,
+        0.692,
+        0.406,
+        0.408,
+        2.1223
+      ],
+      [
+        "traffic_cone",
+        0.4365,
+        9.352,
+        15.997,
+        -1.083,
+        0.731,
+        0.399,
+        0.391,
+        -1.7186
+      ],
+      [
+        "traffic_cone",
+        0.4623,
+        9.192,
+        22.045,
+        -0.795,
+        0.782,
+        0.416,
+        0.432,
+        -1.4956
+      ],
+      [
+        "traffic_cone",
+        0.4759,
+        1.758,
+        7.835,
+        -1.163,
+        0.723,
+        0.386,
+        0.383,
+        2.5639
+      ],
+      [
+        "traffic_cone",
+        0.6062,
+        9.496,
+        -2.819,
+        -1.574,
+        0.738,
+        0.404,
+        0.406,
+        -1.5995
+      ],
+      [
+        "traffic_cone",
+        0.6422,
+        9.455,
+        1.756,
+        -1.41,
+        0.74,
+        0.401,
+        0.407,
+        -1.6766
+      ],
+      [
+        "trailer",
+        0.312,
+        15.025,
+        -15.362,
+        -0.855,
+        4.107,
+        3.056,
+        16.678,
+        -1.5666
+      ],
+      [
+        "trailer",
+        0.4074,
+        -19.464,
+        17.438,
+        0.75,
+        3.524,
+        2.946,
+        13.522,
+        2.025
+      ],
+      [
+        "truck",
+        0.3819,
+        11.132,
+        -23.726,
+        -1.868,
+        2.073,
+        2.206,
+        5.902,
+        -1.5682
+      ],
+      [
+        "truck",
+        0.4584,
+        14.96,
+        -12.472,
+        -0.701,
+        3.873,
+        3.028,
+        12.237,
+        -1.52
+      ],
+      [
+        "truck",
+        0.7828,
+        14.706,
+        -0.164,
+        -0.18,
+        3.309,
+        2.659,
+        6.954,
+        -1.5712
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 109,
+          "reinjected_centroid": [
+            12.404186248779297,
+            -14.071192741394043,
+            -2.080667018890381
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "x \u2248 7.5m to 11m, y \u2248 2.5m to 5.5m",
+          "isometric": "Floating tilted bounding box at z \u2248 1m to 3.5m, containing almost no point cloud density"
+        },
+        "evidence": [
+          "A 3D bounding box labeled 'car 0.43' is predicted high above the ground plane, tilted at an unrealistic angle.",
+          "The isometric view confirms the box is floating in mid-air (z > 1.0m) and does not encapsulate any realistic vehicle point cluster.",
+          "There is no occlusion or physical shadow beneath or behind this predicted bounding box, which violates physical invariants for an opaque vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise / dust particles",
+          "Ground reflections",
+          "Distant vehicles or legitimate elevated infrastructure (e.g., traffic signs, overpasses)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:02:05.095040"
+}

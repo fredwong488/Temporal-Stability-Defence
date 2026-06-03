@@ -1,0 +1,186 @@
+{
+  "key": {
+    "frame_id": "e69f68dd6c9a408a",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.4028,
+        14.782,
+        -5.963,
+        -1.137,
+        0.996,
+        3.223,
+        0.537,
+        2.7955
+      ],
+      [
+        "car",
+        0.8476,
+        -3.324,
+        0.493,
+        -1.188,
+        1.532,
+        1.865,
+        4.623,
+        1.6164
+      ],
+      [
+        "pedestrian",
+        0.3088,
+        -5.882,
+        8.099,
+        -0.66,
+        1.718,
+        0.672,
+        0.71,
+        1.7668
+      ],
+      [
+        "pedestrian",
+        0.3756,
+        0.432,
+        8.456,
+        -0.603,
+        1.782,
+        0.761,
+        0.889,
+        1.5887
+      ],
+      [
+        "pedestrian",
+        0.3845,
+        -3.827,
+        8.335,
+        -0.621,
+        1.824,
+        0.715,
+        0.782,
+        1.0948
+      ],
+      [
+        "pedestrian",
+        0.4242,
+        -3.628,
+        7.134,
+        -0.723,
+        1.755,
+        0.668,
+        0.76,
+        1.7311
+      ],
+      [
+        "pedestrian",
+        0.4509,
+        -2.071,
+        8.75,
+        -0.546,
+        1.808,
+        0.655,
+        0.718,
+        -1.6931
+      ],
+      [
+        "pedestrian",
+        0.4932,
+        2.068,
+        6.731,
+        -0.716,
+        1.746,
+        0.689,
+        0.785,
+        2.5312
+      ],
+      [
+        "trailer",
+        0.9253,
+        -3.152,
+        -16.124,
+        -0.37,
+        4.273,
+        2.81,
+        15.13,
+        1.6241
+      ],
+      [
+        "truck",
+        0.5551,
+        -0.142,
+        -7.975,
+        -0.994,
+        2.484,
+        2.129,
+        4.78,
+        1.5591
+      ],
+      [
+        "truck",
+        0.8981,
+        -3.411,
+        -7.806,
+        -0.339,
+        4.035,
+        2.651,
+        6.064,
+        1.6382
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.357138633728027,
+            0.6646367907524109,
+            -1.8506324291229248
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            9.502266883850098,
+            21.652780532836914,
+            0.0875709280371666
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Region spanning x \u2248 6m to 9m, y \u2248 -2m to 7m",
+          "isometric": "Multiple tall, vertical pedestrian bounding boxes aligned in a curve"
+        },
+        "evidence": [
+          "Multiple pedestrian detections (pedestrian 0.49, 0.38, 0.45, 0.38, 0.32, 0.31) are predicted along a curved pattern around 6-9 meters in front of the ego vehicle.",
+          "Both BEV and Isometric views show that these bounding boxes are completely empty or contain no physical point clusters corresponding to pedestrians.",
+          "There are no physical L-shapes, vertical point profiles, or ground-level reflections within these boxes, and they do not cast any LiDAR shadows."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (too many structured, highly confident false positives matching a circular spoofing array)",
+          "Ground reflections or road debris (the boxes have vertical height in isometric view with zero points inside them)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:05.354142"
+}

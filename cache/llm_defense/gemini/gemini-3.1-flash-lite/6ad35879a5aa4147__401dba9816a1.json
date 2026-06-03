@@ -1,0 +1,159 @@
+{
+  "key": {
+    "frame_id": "6ad35879a5aa4147",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.8551,
+        9.148,
+        -18.841,
+        -0.794,
+        3.444,
+        3.049,
+        12.537,
+        2.2454
+      ],
+      [
+        "car",
+        0.3366,
+        31.889,
+        21.885,
+        -0.593,
+        1.615,
+        1.912,
+        4.396,
+        1.9815
+      ],
+      [
+        "car",
+        0.3432,
+        15.581,
+        -8.544,
+        -0.845,
+        1.624,
+        1.898,
+        4.43,
+        0.5428
+      ],
+      [
+        "car",
+        0.4821,
+        14.225,
+        -6.583,
+        -0.755,
+        1.703,
+        1.923,
+        4.445,
+        0.5104
+      ],
+      [
+        "car",
+        0.5074,
+        12.572,
+        -4.353,
+        -0.805,
+        1.648,
+        1.891,
+        4.533,
+        0.5206
+      ],
+      [
+        "pedestrian",
+        0.3062,
+        9.883,
+        22.698,
+        0.35,
+        1.902,
+        0.589,
+        0.62,
+        -1.8574
+      ],
+      [
+        "pedestrian",
+        0.3271,
+        13.908,
+        26.128,
+        -0.023,
+        1.791,
+        0.6,
+        0.588,
+        -1.9459
+      ],
+      [
+        "pedestrian",
+        0.3272,
+        13.581,
+        24.669,
+        0.095,
+        1.867,
+        0.641,
+        0.622,
+        -2.3626
+      ],
+      [
+        "pedestrian",
+        0.3279,
+        5.03,
+        24.655,
+        -0.056,
+        1.823,
+        0.631,
+        0.62,
+        -1.2278
+      ],
+      [
+        "truck",
+        0.3963,
+        18.758,
+        -12.345,
+        -0.729,
+        1.934,
+        2.163,
+        5.325,
+        0.4711
+      ],
+      [
+        "truck",
+        0.594,
+        10.477,
+        -0.618,
+        -0.085,
+        3.487,
+        2.616,
+        6.856,
+        0.5794
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple detections at x=[20-30m], y=[-8 to -5m]",
+          "isometric": "Detected objects are floating or lack clear ground support"
+        },
+        "evidence": [
+          "The camera image is unavailable, preventing verification of the bounding boxes against visual data.",
+          "Several 3D bounding boxes in the BEV/Isometric view appear to have no corresponding dense point clusters indicating a physical object.",
+          "The isometric view shows some bounding boxes appearing to contain very sparse or seemingly random point noise rather than coherent vehicle/pedestrian structures."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or calibration issues affecting the detector's confidence in low-density point regions.",
+          "Distant objects where LiDAR resolution is too sparse for accurate 3D structural reconstruction.",
+          "Incorrect classification by the detector due to transient environmental conditions."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:04.053993"
+}

@@ -1,0 +1,207 @@
+{
+  "key": {
+    "frame_id": "b454bbc8c3a6496b",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3029,
+        14.832,
+        -5.945,
+        -1.235,
+        0.972,
+        3.203,
+        0.518,
+        2.7665
+      ],
+      [
+        "barrier",
+        0.3294,
+        12.488,
+        -12.481,
+        -1.699,
+        0.916,
+        3.141,
+        0.491,
+        2.925
+      ],
+      [
+        "car",
+        0.4382,
+        10.379,
+        20.557,
+        0.623,
+        1.767,
+        2.021,
+        4.785,
+        2.8334
+      ],
+      [
+        "car",
+        0.843,
+        -3.325,
+        0.469,
+        -1.189,
+        1.513,
+        1.876,
+        4.637,
+        1.6142
+      ],
+      [
+        "pedestrian",
+        0.3289,
+        -0.294,
+        8.129,
+        -0.616,
+        1.805,
+        0.687,
+        0.739,
+        0.6521
+      ],
+      [
+        "pedestrian",
+        0.33,
+        0.768,
+        8.649,
+        -0.652,
+        1.779,
+        0.709,
+        0.81,
+        0.117
+      ],
+      [
+        "pedestrian",
+        0.3524,
+        -0.533,
+        7.148,
+        -0.72,
+        1.741,
+        0.656,
+        0.715,
+        2.8118
+      ],
+      [
+        "pedestrian",
+        0.4786,
+        -1.852,
+        8.509,
+        -0.537,
+        1.792,
+        0.663,
+        0.748,
+        1.7208
+      ],
+      [
+        "trailer",
+        0.9328,
+        -3.096,
+        -15.985,
+        -0.295,
+        4.253,
+        2.767,
+        14.768,
+        1.6257
+      ],
+      [
+        "truck",
+        0.3045,
+        -40.876,
+        -13.541,
+        -0.918,
+        2.045,
+        2.276,
+        5.539,
+        1.6224
+      ],
+      [
+        "truck",
+        0.5651,
+        -0.156,
+        -7.988,
+        -0.974,
+        2.541,
+        2.136,
+        4.759,
+        1.5529
+      ],
+      [
+        "truck",
+        0.8838,
+        -3.429,
+        -7.781,
+        -0.358,
+        4.05,
+        2.669,
+        6.184,
+        1.6287
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.208101272583008,
+            0.6969881653785706,
+            -1.7951579093933105
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 39,
+          "reinjected_centroid": [
+            10.342552185058594,
+            19.859033584594727,
+            -0.002278528641909361
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 18,
+          "reinjected_centroid": [
+            26.047481536865234,
+            23.3746337890625,
+            0.8579117655754089
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image is unavailable (marked as ATTACKED)",
+          "bev": "Region around (x\u22488m to 9m, y\u2248-1.5m to 2m)",
+          "isometric": "Multiple pedestrian bounding boxes clustered near x\u22488m without any underlying LiDAR points"
+        },
+        "evidence": [
+          "Four pedestrian detections ('pedestrian 0.48', 'pedestrian 0.35', 'pedestrian 0.33', 'pedestrian 0.33') are clustered between x=8m and x=9m, but contain zero physical LiDAR point returns.",
+          "There are several other empty bounding boxes (e.g., at x\u224820m, y\u2248-6m and at negative x coordinates) with no supporting point cloud clusters or L-shape profiles, which is physically impossible for opaque objects.",
+          "The lack of localized point clouds or downstream shadows behind these boxes confirms they do not represent real physical obstacles."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity surfaces",
+          "Occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:48.371609"
+}

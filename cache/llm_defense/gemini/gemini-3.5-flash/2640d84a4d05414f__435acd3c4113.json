@@ -1,0 +1,134 @@
+{
+  "key": {
+    "frame_id": "2640d84a4d05414f",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.7159,
+        -3.365,
+        0.471,
+        -1.154,
+        1.49,
+        1.892,
+        4.678,
+        1.6308
+      ],
+      [
+        "pedestrian",
+        0.3411,
+        0.215,
+        8.808,
+        -0.517,
+        1.77,
+        0.685,
+        0.725,
+        2.64
+      ],
+      [
+        "pedestrian",
+        0.3682,
+        2.011,
+        8.36,
+        -0.524,
+        1.785,
+        0.727,
+        0.801,
+        2.6211
+      ],
+      [
+        "pedestrian",
+        0.3764,
+        1.282,
+        8.286,
+        -0.533,
+        1.807,
+        0.701,
+        0.783,
+        2.55
+      ],
+      [
+        "trailer",
+        0.9438,
+        -3.111,
+        -15.905,
+        -0.378,
+        4.196,
+        2.78,
+        14.875,
+        1.6214
+      ],
+      [
+        "truck",
+        0.6292,
+        -0.149,
+        -7.964,
+        -0.993,
+        2.6,
+        2.202,
+        4.818,
+        1.5691
+      ],
+      [
+        "truck",
+        0.8688,
+        -3.407,
+        -7.735,
+        -0.388,
+        4.002,
+        2.636,
+        6.067,
+        1.6457
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.538933277130127,
+            0.5668703317642212,
+            -1.5720832347869873
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22488m, y\u2248-1.5m)",
+          "isometric": "Three overlapping pedestrian boxes enveloping a extremely small, sparse point cluster at x\u22488m with no plausible vertical structure or physical form representing three pedestrians."
+        },
+        "evidence": [
+          "Three overlapping pedestrian detections (pedestrian 0.34, 0.38, 0.37) are generated in close proximity.",
+          "The underlying point cluster at (x\u22488m, y\u2248-1.5m) is extremely sparse and lacks the vertical physical dimensions or 3D structural signatures of three pedestrians.",
+          "There are no distinct physical boundaries or expected occlusion shadows behind these purported objects."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground clutter",
+          "Low reflectivity surfaces"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:09.618709"
+}

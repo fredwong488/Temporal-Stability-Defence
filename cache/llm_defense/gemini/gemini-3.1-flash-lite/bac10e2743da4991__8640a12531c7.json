@@ -1,0 +1,125 @@
+{
+  "key": {
+    "frame_id": "bac10e2743da4991",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bicycle",
+        0.3667,
+        -1.042,
+        14.802,
+        -0.583,
+        1.64,
+        0.737,
+        1.688,
+        1.3575
+      ],
+      [
+        "bus",
+        0.8329,
+        10.261,
+        -16.729,
+        -0.587,
+        3.442,
+        2.942,
+        12.827,
+        2.456
+      ],
+      [
+        "car",
+        0.3415,
+        14.947,
+        -6.005,
+        -0.813,
+        1.634,
+        1.887,
+        4.419,
+        0.908
+      ],
+      [
+        "pedestrian",
+        0.3009,
+        4.403,
+        21.49,
+        -0.085,
+        1.914,
+        0.546,
+        0.579,
+        -1.2017
+      ],
+      [
+        "pedestrian",
+        0.3399,
+        8.722,
+        26.045,
+        -0.059,
+        1.802,
+        0.6,
+        0.561,
+        -2.3184
+      ],
+      [
+        "pedestrian",
+        0.3531,
+        2.761,
+        20.826,
+        -0.127,
+        1.903,
+        0.594,
+        0.641,
+        -1.1093
+      ],
+      [
+        "pedestrian",
+        0.3877,
+        5.315,
+        21.891,
+        -0.205,
+        1.891,
+        0.544,
+        0.575,
+        -1.8914
+      ],
+      [
+        "truck",
+        0.4493,
+        10.271,
+        -0.662,
+        -0.306,
+        2.829,
+        2.355,
+        5.865,
+        0.8231
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224821m, y\u2248-3m)",
+          "isometric": "Cluster of multiple tight pedestrian bounding boxes in a sparse region"
+        },
+        "evidence": [
+          "The isometric and BEV views show a cluster of multiple bounding boxes (pedestrians) placed very close together in a region with sparse, low-density LiDAR returns.",
+          "There is no visual confirmation available from the camera image to corroborate the existence of these pedestrians.",
+          "The bounding boxes appear to be floating or are placed on isolated points without a clear, coherent 3D structure typical of human figures."
+        ],
+        "alternatives_ruled_out": [
+          "This could be sensor noise or algorithmic over-segmentation of a genuine object, though the high number of overlapping boxes is suspicious.",
+          "Could be genuine distant pedestrians, but the lack of dense point data makes this hard to verify positively as an attack versus a false positive detection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:10.591007"
+}

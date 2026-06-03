@@ -1,0 +1,125 @@
+{
+  "key": {
+    "frame_id": "77a8aed752ce470f",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "barrier",
+        0.3072,
+        20.344,
+        13.407,
+        -0.709,
+        1.063,
+        2.073,
+        0.472,
+        1.3728
+      ],
+      [
+        "bus",
+        0.5841,
+        -0.498,
+        -22.391,
+        -1.206,
+        3.604,
+        3.174,
+        12.144,
+        1.5306
+      ],
+      [
+        "bus",
+        0.6463,
+        -0.6,
+        28.136,
+        1.947,
+        3.891,
+        2.984,
+        12.925,
+        2.2973
+      ],
+      [
+        "car",
+        0.6841,
+        -3.298,
+        20.833,
+        0.174,
+        1.726,
+        1.956,
+        4.899,
+        -0.3033
+      ],
+      [
+        "car",
+        0.9152,
+        0.404,
+        -9.032,
+        -1.412,
+        1.912,
+        2.016,
+        4.864,
+        1.5568
+      ],
+      [
+        "construction_vehicle",
+        0.5223,
+        4.982,
+        -8.213,
+        -1.259,
+        2.407,
+        2.245,
+        4.291,
+        1.3739
+      ],
+      [
+        "traffic_cone",
+        0.3323,
+        2.317,
+        -12.319,
+        -2.012,
+        1.063,
+        0.591,
+        0.569,
+        1.8598
+      ],
+      [
+        "truck",
+        0.3721,
+        -0.356,
+        -20.369,
+        -1.31,
+        3.263,
+        2.683,
+        8.802,
+        1.5465
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not applicable (camera image not available)",
+          "bev": "x\u224820m, y\u22483m",
+          "isometric": "Bounding box predicted as 'car 0.68' floats in mid-air with virtually no matching points inside or beneath it."
+        },
+        "evidence": [
+          "The bounding box predicted as 'car' at x\u224820m, y\u22483m in BEV and isometric views is almost completely devoid of points.",
+          "There is no L-shape or typical surface profile of a vehicle in either BEV or isometric projection at this location.",
+          "The predicted box floats above the ground plane without any vertical structure or physical point cluster supporting it."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Occlusion (as there are clear line-of-sight laser returns both in front of and behind this region, indicating no physical blocker exists)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:21:00.854896"
+}

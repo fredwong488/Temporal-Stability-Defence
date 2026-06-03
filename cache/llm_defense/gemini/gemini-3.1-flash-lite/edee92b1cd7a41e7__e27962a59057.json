@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "edee92b1cd7a41e7",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3757,
+        0.284,
+        36.743,
+        1.338,
+        1.712,
+        1.914,
+        4.542,
+        1.562
+      ],
+      [
+        "car",
+        0.4788,
+        -1.731,
+        29.812,
+        1.205,
+        1.724,
+        1.936,
+        4.641,
+        1.5373
+      ],
+      [
+        "car",
+        0.4935,
+        -5.868,
+        29.231,
+        1.139,
+        1.685,
+        1.949,
+        4.645,
+        -1.6353
+      ],
+      [
+        "car",
+        0.681,
+        1.042,
+        -20.556,
+        -2.146,
+        1.748,
+        1.984,
+        4.722,
+        1.7052
+      ],
+      [
+        "car",
+        0.8555,
+        -4.248,
+        3.601,
+        -0.861,
+        1.703,
+        1.948,
+        4.739,
+        -1.5818
+      ],
+      [
+        "construction_vehicle",
+        0.372,
+        10.274,
+        -30.233,
+        -1.948,
+        2.474,
+        1.82,
+        3.829,
+        1.7523
+      ],
+      [
+        "pedestrian",
+        0.3061,
+        -19.702,
+        1.5,
+        -1.071,
+        1.864,
+        0.644,
+        0.649,
+        2.7825
+      ],
+      [
+        "pedestrian",
+        0.3083,
+        8.731,
+        11.992,
+        -0.287,
+        1.819,
+        0.668,
+        0.672,
+        2.6952
+      ],
+      [
+        "pedestrian",
+        0.3285,
+        6.921,
+        4.657,
+        -0.764,
+        1.759,
+        0.678,
+        0.752,
+        1.9587
+      ],
+      [
+        "pedestrian",
+        0.3335,
+        6.102,
+        -7.167,
+        -1.115,
+        1.802,
+        0.686,
+        0.761,
+        -1.6341
+      ],
+      [
+        "pedestrian",
+        0.3435,
+        7.906,
+        16.392,
+        0.033,
+        1.713,
+        0.65,
+        0.655,
+        -1.1112
+      ],
+      [
+        "pedestrian",
+        0.3481,
+        7.52,
+        10.784,
+        -0.329,
+        1.763,
+        0.694,
+        0.731,
+        0.3076
+      ],
+      [
+        "pedestrian",
+        0.3838,
+        7.448,
+        13.811,
+        -0.082,
+        1.798,
+        0.686,
+        0.666,
+        0.9483
+      ],
+      [
+        "pedestrian",
+        0.3852,
+        8.921,
+        15.765,
+        0.09,
+        1.748,
+        0.639,
+        0.598,
+        -2.5162
+      ],
+      [
+        "pedestrian",
+        0.3879,
+        6.227,
+        -18.057,
+        -1.752,
+        1.771,
+        0.671,
+        0.652,
+        -1.4288
+      ],
+      [
+        "pedestrian",
+        0.4331,
+        8.43,
+        10.045,
+        -0.411,
+        1.739,
+        0.674,
+        0.712,
+        2.03
+      ],
+      [
+        "pedestrian",
+        0.4743,
+        8.444,
+        14.345,
+        -0.11,
+        1.776,
+        0.658,
+        0.629,
+        2.9349
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22483m, y\u22483m)",
+          "isometric": "Cluster at (3, 3) lacks discernible 3D surface structure and sits in isolation"
+        },
+        "evidence": [
+          "A cluster of LiDAR points exists near the ego vehicle (x\u22483m, y\u22483m) which is boxed as a car.",
+          "The isometric view shows this cluster is sparse and lacks the typical volumetric structure of a vehicle (no clear L-shape or vertical definition).",
+          "The isolated nature of this small cluster without supporting infrastructure or vehicle geometry is characteristic of LiDAR injection attacks."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The object is clearly labeled as a 'car' with a high confidence score of 0.86, suggesting the detector is reacting to a persistent, localized signal rather than random noise.",
+          "Infrastructure: There are no nearby road signs, poles, or barriers in the surrounding point cloud that would explain this isolated cluster."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:19.573274"
+}

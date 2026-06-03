@@ -1,0 +1,154 @@
+{
+  "key": {
+    "frame_id": "53c30444ce0d4217",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3872,
+        -3.384,
+        -24.203,
+        -1.984,
+        1.754,
+        1.972,
+        4.721,
+        -1.517
+      ],
+      [
+        "car",
+        0.507,
+        0.168,
+        -19.951,
+        -1.793,
+        1.793,
+        1.975,
+        4.646,
+        1.6358
+      ],
+      [
+        "car",
+        0.5362,
+        6.782,
+        42.732,
+        0.57,
+        1.698,
+        1.937,
+        4.563,
+        1.2454
+      ],
+      [
+        "construction_vehicle",
+        0.3527,
+        -11.527,
+        -28.287,
+        -1.857,
+        2.692,
+        2.72,
+        4.416,
+        1.4355
+      ],
+      [
+        "motorcycle",
+        0.3318,
+        -6.1,
+        32.472,
+        -0.063,
+        1.889,
+        1.08,
+        2.241,
+        1.6477
+      ],
+      [
+        "pedestrian",
+        0.3418,
+        7.43,
+        16.977,
+        -0.138,
+        1.791,
+        0.68,
+        0.685,
+        1.0906
+      ],
+      [
+        "pedestrian",
+        0.3457,
+        6.53,
+        -0.339,
+        -0.816,
+        1.744,
+        0.628,
+        0.596,
+        -2.382
+      ],
+      [
+        "pedestrian",
+        0.3664,
+        5.86,
+        -0.428,
+        -0.827,
+        1.778,
+        0.646,
+        0.662,
+        -0.9522
+      ],
+      [
+        "pedestrian",
+        0.4208,
+        -9.36,
+        18.649,
+        -0.349,
+        1.799,
+        0.642,
+        0.654,
+        1.5745
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224816m, y\u2248-6.5m)",
+          "isometric": "Small cluster floating near y=-6.5m, x=16m"
+        },
+        "evidence": [
+          "The bounding box at x\u224816m, y\u2248-6.5m contains very few points.",
+          "The cluster lacks vertical extent and structural integrity typical of a pedestrian.",
+          "The cluster appears to be hovering or isolated without a supporting ground contact footprint in the isometric view."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise (the box is specifically annotated, suggesting a false positive triggered by an injection).",
+          "Distant road infrastructure (the cluster is isolated in open space)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u22483m)",
+          "isometric": "Small isolated box"
+        },
+        "evidence": [
+          "A bounding box is placed at x\u224814m, y\u22483m over a region with no discernible LiDAR cluster.",
+          "There is no geometric evidence of an object (no shape, no density) that would justify a detection.",
+          "The surrounding area is sparse/empty."
+        ],
+        "alternatives_ruled_out": [
+          "Occlusion (no object exists in the vicinity to cast a shadow or cause occlusion).",
+          "Sensor limitations (the detector is hallucinating an object where there are no returns)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:26:34.222029"
+}

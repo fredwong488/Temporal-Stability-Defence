@@ -1,0 +1,191 @@
+{
+  "key": {
+    "frame_id": "ff33af5647674f13",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.321,
+        -8.35,
+        47.544,
+        1.603,
+        1.724,
+        1.912,
+        4.552,
+        1.6871
+      ],
+      [
+        "car",
+        0.5426,
+        0.336,
+        -30.79,
+        -2.26,
+        1.807,
+        2.005,
+        4.828,
+        1.6914
+      ],
+      [
+        "car",
+        0.5445,
+        -14.717,
+        19.273,
+        -0.127,
+        1.634,
+        1.929,
+        4.635,
+        -3.0138
+      ],
+      [
+        "car",
+        0.7325,
+        -7.166,
+        21.166,
+        0.13,
+        1.606,
+        1.914,
+        4.55,
+        -2.9163
+      ],
+      [
+        "car",
+        0.8132,
+        -3.858,
+        -22.179,
+        -2.092,
+        1.592,
+        1.819,
+        4.269,
+        -1.5312
+      ],
+      [
+        "car",
+        0.8691,
+        4.551,
+        19.865,
+        0.018,
+        1.526,
+        1.852,
+        4.551,
+        1.579
+      ],
+      [
+        "car",
+        0.918,
+        -7.484,
+        4.692,
+        -1.046,
+        1.554,
+        1.929,
+        4.846,
+        -1.6128
+      ],
+      [
+        "pedestrian",
+        0.3079,
+        8.16,
+        -7.925,
+        -1.296,
+        1.785,
+        0.67,
+        0.7,
+        -2.2603
+      ],
+      [
+        "pedestrian",
+        0.3178,
+        6.4,
+        -12.481,
+        -1.596,
+        1.775,
+        0.667,
+        0.704,
+        -1.5236
+      ],
+      [
+        "pedestrian",
+        0.3282,
+        6.674,
+        -15.242,
+        -1.564,
+        1.805,
+        0.635,
+        0.664,
+        1.906
+      ],
+      [
+        "pedestrian",
+        0.3766,
+        -8.352,
+        -16.561,
+        -1.646,
+        1.824,
+        0.624,
+        0.65,
+        -0.9269
+      ],
+      [
+        "pedestrian",
+        0.3807,
+        8.722,
+        26.988,
+        0.568,
+        1.782,
+        0.66,
+        0.681,
+        2.2205
+      ],
+      [
+        "pedestrian",
+        0.3975,
+        7.895,
+        -9.452,
+        -1.347,
+        1.746,
+        0.631,
+        0.629,
+        2.8179
+      ],
+      [
+        "pedestrian",
+        0.423,
+        6.315,
+        -9.984,
+        -1.32,
+        1.755,
+        0.63,
+        0.633,
+        -1.3674
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x \u2248 0, y \u2248 -6 to -7)",
+          "isometric": "multiple small boxes clustered at the ground level near the ego vehicle with no associated physical structure"
+        },
+        "evidence": [
+          "A tight cluster of multiple small bounding boxes is located extremely close to the ego vehicle (near 0, -6).",
+          "These boxes contain very few, if any, substantial LiDAR point returns, which is characteristic of sparse spoofed injections.",
+          "The boxes appear in a region where genuine object detections would typically be more distinct or filtered, suggesting artificial injection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely to produce such a specific, repeated pattern of structured bounding boxes.",
+          "The proximity to the ego vehicle makes it highly improbable that these are genuine distant objects or artifacts of occlusion."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:54.303027"
+}

@@ -1,0 +1,329 @@
+{
+  "key": {
+    "frame_id": "2c2389e5f1e14755",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.4662,
+        -47.688,
+        -44.154,
+        -0.041,
+        3.081,
+        3.034,
+        10.795,
+        2.0512
+      ],
+      [
+        "car",
+        0.3037,
+        19.752,
+        -4.193,
+        0.221,
+        1.679,
+        1.894,
+        4.414,
+        -0.4243
+      ],
+      [
+        "car",
+        0.3077,
+        -2.026,
+        -23.392,
+        -0.256,
+        1.702,
+        1.93,
+        4.658,
+        1.983
+      ],
+      [
+        "car",
+        0.3161,
+        38.288,
+        -21.929,
+        1.282,
+        1.851,
+        1.993,
+        4.719,
+        0.9089
+      ],
+      [
+        "car",
+        0.327,
+        -27.775,
+        -26.091,
+        -1.213,
+        1.683,
+        1.938,
+        4.544,
+        1.9677
+      ],
+      [
+        "car",
+        0.3594,
+        24.272,
+        -19.614,
+        0.174,
+        1.738,
+        1.981,
+        4.498,
+        -0.4304
+      ],
+      [
+        "car",
+        0.3864,
+        30.153,
+        -8.426,
+        0.289,
+        1.748,
+        1.95,
+        4.526,
+        -0.3394
+      ],
+      [
+        "car",
+        0.3886,
+        -31.801,
+        -27.962,
+        -1.512,
+        1.643,
+        1.897,
+        4.396,
+        -1.1144
+      ],
+      [
+        "car",
+        0.3968,
+        -25.408,
+        -25.183,
+        -1.096,
+        1.717,
+        1.897,
+        4.466,
+        1.9447
+      ],
+      [
+        "car",
+        0.4181,
+        21.481,
+        -23.678,
+        0.512,
+        1.684,
+        1.962,
+        4.579,
+        2.496
+      ],
+      [
+        "car",
+        0.4239,
+        -20.6,
+        -30.939,
+        -0.303,
+        1.703,
+        1.936,
+        4.569,
+        -1.1659
+      ],
+      [
+        "car",
+        0.4245,
+        15.911,
+        -11.014,
+        0.151,
+        1.788,
+        1.945,
+        4.51,
+        -0.6167
+      ],
+      [
+        "car",
+        0.4452,
+        28.978,
+        -10.725,
+        0.234,
+        1.645,
+        1.955,
+        4.577,
+        2.8523
+      ],
+      [
+        "car",
+        0.4771,
+        9.762,
+        13.522,
+        -0.198,
+        1.642,
+        1.923,
+        4.482,
+        0.6965
+      ],
+      [
+        "car",
+        0.4999,
+        8.772,
+        -6.318,
+        -0.801,
+        1.738,
+        1.918,
+        4.637,
+        2.574
+      ],
+      [
+        "car",
+        0.5277,
+        -0.353,
+        13.363,
+        -0.732,
+        1.659,
+        1.836,
+        4.377,
+        1.4912
+      ],
+      [
+        "car",
+        0.5783,
+        -18.723,
+        -22.405,
+        -1.009,
+        1.731,
+        1.956,
+        4.523,
+        1.9789
+      ],
+      [
+        "car",
+        0.5895,
+        -4.565,
+        -25.08,
+        -0.331,
+        1.744,
+        1.892,
+        4.532,
+        1.9973
+      ],
+      [
+        "car",
+        0.6601,
+        4.411,
+        -20.492,
+        -0.229,
+        1.621,
+        1.885,
+        4.559,
+        -1.101
+      ],
+      [
+        "car",
+        0.6909,
+        -23.047,
+        -24.678,
+        -1.061,
+        1.619,
+        1.882,
+        4.358,
+        1.9191
+      ],
+      [
+        "car",
+        0.7684,
+        -5.537,
+        -16.581,
+        -0.938,
+        1.629,
+        1.885,
+        4.585,
+        1.9674
+      ],
+      [
+        "car",
+        0.7909,
+        -12.459,
+        -19.464,
+        -1.116,
+        1.757,
+        1.926,
+        4.573,
+        1.9755
+      ],
+      [
+        "car",
+        0.8114,
+        6.973,
+        3.704,
+        -1.018,
+        1.6,
+        1.854,
+        4.436,
+        -2.6751
+      ],
+      [
+        "car",
+        0.9026,
+        -1.324,
+        -14.244,
+        -0.903,
+        1.469,
+        1.764,
+        4.276,
+        1.9963
+      ],
+      [
+        "trailer",
+        0.3103,
+        -47.764,
+        -44.144,
+        -1.048,
+        3.804,
+        3.17,
+        11.786,
+        2.0084
+      ],
+      [
+        "truck",
+        0.4105,
+        -16.666,
+        -7.649,
+        -1.496,
+        2.007,
+        2.12,
+        5.575,
+        -1.1304
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 96
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812.5m, y\u22480.5m)",
+          "isometric": "Cluster at x\u224812.5m, y\u22480.5m"
+        },
+        "evidence": [
+          "A car bounding box exists at (x\u224812.5m, y\u22480.5m) in the BEV view, but there is no corresponding dense point cluster with typical car-like geometry inside the box.",
+          "The isometric view confirms the region inside the box is essentially empty or contains only noise/sparse points, lacking the expected vertical structure and surface profile of a vehicle.",
+          "The system has been flagged as [ATTACKED] in the provided context, suggesting intentional manipulation of perception outputs.",
+          "Lack of a clear 3D shadow behind the detected object, which is physically required for a genuine opaque object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely to produce a localized, high-confidence 'car' detection without underlying point data.",
+          "Occlusion does not explain the absence of point data for a 'car' that the system claims is currently detected."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:40:32.207064"
+}

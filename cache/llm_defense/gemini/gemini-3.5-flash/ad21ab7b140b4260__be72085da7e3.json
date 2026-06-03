@@ -1,0 +1,330 @@
+{
+  "key": {
+    "frame_id": "ad21ab7b140b4260",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "bus",
+        0.358,
+        7.901,
+        51.417,
+        1.775,
+        3.261,
+        2.793,
+        9.531,
+        1.49
+      ],
+      [
+        "car",
+        0.4479,
+        -3.272,
+        8.49,
+        -0.488,
+        1.965,
+        2.005,
+        5.105,
+        2.4251
+      ],
+      [
+        "car",
+        0.4813,
+        15.708,
+        -23.846,
+        -1.737,
+        1.634,
+        1.931,
+        4.603,
+        -1.5571
+      ],
+      [
+        "car",
+        0.6983,
+        12.528,
+        -15.63,
+        -1.65,
+        1.591,
+        1.947,
+        4.71,
+        -1.5767
+      ],
+      [
+        "construction_vehicle",
+        0.3704,
+        24.414,
+        -31.021,
+        -0.396,
+        3.285,
+        3.284,
+        7.902,
+        -1.0062
+      ],
+      [
+        "construction_vehicle",
+        0.5048,
+        2.959,
+        -19.858,
+        -0.995,
+        2.829,
+        3.25,
+        4.355,
+        -1.6222
+      ],
+      [
+        "pedestrian",
+        0.3129,
+        -6.776,
+        -25.978,
+        -1.545,
+        1.714,
+        0.622,
+        0.651,
+        -0.6573
+      ],
+      [
+        "pedestrian",
+        0.3167,
+        -6.326,
+        -29.261,
+        -1.635,
+        1.754,
+        0.66,
+        0.685,
+        1.482
+      ],
+      [
+        "pedestrian",
+        0.362,
+        -5.223,
+        -26.728,
+        -1.666,
+        1.782,
+        0.618,
+        0.565,
+        0.3086
+      ],
+      [
+        "traffic_cone",
+        0.3062,
+        9.467,
+        22.752,
+        -0.755,
+        0.79,
+        0.402,
+        0.41,
+        -1.4632
+      ],
+      [
+        "traffic_cone",
+        0.3862,
+        1.831,
+        7.327,
+        -1.319,
+        0.712,
+        0.381,
+        0.381,
+        2.3589
+      ],
+      [
+        "traffic_cone",
+        0.3931,
+        9.473,
+        21.437,
+        -0.827,
+        0.787,
+        0.403,
+        0.416,
+        -1.4171
+      ],
+      [
+        "traffic_cone",
+        0.4035,
+        9.438,
+        -8.344,
+        -1.712,
+        0.731,
+        0.382,
+        0.379,
+        -1.5049
+      ],
+      [
+        "traffic_cone",
+        0.4079,
+        1.857,
+        -2.025,
+        -1.507,
+        0.718,
+        0.369,
+        0.364,
+        1.7281
+      ],
+      [
+        "traffic_cone",
+        0.4314,
+        9.49,
+        15.508,
+        -1.046,
+        0.731,
+        0.412,
+        0.426,
+        -1.6261
+      ],
+      [
+        "traffic_cone",
+        0.4339,
+        9.583,
+        8.361,
+        -1.228,
+        0.738,
+        0.395,
+        0.39,
+        -2.0077
+      ],
+      [
+        "traffic_cone",
+        0.4624,
+        9.579,
+        12.591,
+        -1.033,
+        0.739,
+        0.405,
+        0.402,
+        1.8484
+      ],
+      [
+        "traffic_cone",
+        0.4764,
+        1.79,
+        -6.981,
+        -1.666,
+        0.739,
+        0.384,
+        0.37,
+        2.3385
+      ],
+      [
+        "traffic_cone",
+        0.5895,
+        9.433,
+        -3.437,
+        -1.547,
+        0.713,
+        0.39,
+        0.392,
+        -1.5961
+      ],
+      [
+        "traffic_cone",
+        0.5912,
+        9.499,
+        1.121,
+        -1.454,
+        0.712,
+        0.383,
+        0.389,
+        -2.2646
+      ],
+      [
+        "trailer",
+        0.3527,
+        15.082,
+        -15.513,
+        -0.252,
+        4.116,
+        2.922,
+        16.001,
+        -1.5028
+      ],
+      [
+        "truck",
+        0.3398,
+        14.817,
+        -13.772,
+        -0.439,
+        4.15,
+        3.095,
+        12.795,
+        -1.4801
+      ],
+      [
+        "truck",
+        0.4964,
+        10.913,
+        -23.912,
+        -1.758,
+        1.975,
+        2.097,
+        5.457,
+        -1.6207
+      ],
+      [
+        "truck",
+        0.6752,
+        14.768,
+        -0.717,
+        -0.206,
+        3.368,
+        2.732,
+        7.284,
+        -1.5909
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 97,
+          "reinjected_centroid": [
+            12.116073608398438,
+            -14.700333595275879,
+            -2.065037250518799
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 27,
+          "reinjected_centroid": [
+            15.093755722045898,
+            -23.127222061157227,
+            -1.7784430980682373
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u22489m, y\u22484m",
+          "isometric": "Car bounding box (car 0.45) is shifted from the actual physical point cluster located at x\u22487.5m, y\u22482.5m"
+        },
+        "evidence": [
+          "The 3D bounding box labeled 'car 0.45' is significantly offset from the actual point cluster (centroid at x\u22487.5m, y\u22482.5m).",
+          "The physical point cluster is left outside the rear-left corner of the predicted 3D bounding box.",
+          "The interior of the predicted bounding box contains almost no points, demonstrating a clear mismatch between the detected box and the physical point returns."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground truth misalignment due to ego-motion",
+          "Occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:02:08.737831"
+}

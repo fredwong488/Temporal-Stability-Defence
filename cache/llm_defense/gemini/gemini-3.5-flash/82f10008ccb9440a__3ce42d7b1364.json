@@ -1,0 +1,186 @@
+{
+  "key": {
+    "frame_id": "82f10008ccb9440a",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3061,
+        12.495,
+        -12.463,
+        -1.771,
+        0.885,
+        3.102,
+        0.509,
+        2.9262
+      ],
+      [
+        "bus",
+        0.4767,
+        -4.967,
+        41.941,
+        1.783,
+        3.54,
+        3.05,
+        11.859,
+        1.3465
+      ],
+      [
+        "car",
+        0.4446,
+        3.334,
+        22.629,
+        0.465,
+        1.764,
+        2.025,
+        4.83,
+        -0.0222
+      ],
+      [
+        "car",
+        0.8612,
+        -3.333,
+        0.46,
+        -1.17,
+        1.503,
+        1.878,
+        4.629,
+        1.6082
+      ],
+      [
+        "pedestrian",
+        0.3121,
+        -6.884,
+        7.318,
+        -0.589,
+        1.807,
+        0.66,
+        0.676,
+        0.6919
+      ],
+      [
+        "pedestrian",
+        0.3226,
+        -7.429,
+        8.944,
+        -0.581,
+        1.836,
+        0.683,
+        0.702,
+        1.3841
+      ],
+      [
+        "pedestrian",
+        0.4433,
+        -10.132,
+        8.466,
+        -0.75,
+        1.777,
+        0.639,
+        0.734,
+        -1.7462
+      ],
+      [
+        "trailer",
+        0.9332,
+        -3.162,
+        -16.05,
+        -0.371,
+        4.272,
+        2.778,
+        15.169,
+        1.6247
+      ],
+      [
+        "truck",
+        0.325,
+        -40.902,
+        -13.528,
+        -0.924,
+        2.044,
+        2.3,
+        5.592,
+        1.6159
+      ],
+      [
+        "truck",
+        0.55,
+        -0.154,
+        -7.996,
+        -1.0,
+        2.488,
+        2.148,
+        4.782,
+        1.5563
+      ],
+      [
+        "truck",
+        0.8935,
+        -3.408,
+        -7.788,
+        -0.348,
+        4.036,
+        2.663,
+        6.059,
+        1.6406
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.11702299118042,
+            0.6623799800872803,
+            -1.8561593294143677
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 47,
+          "reinjected_centroid": [
+            3.036029577255249,
+            21.993423461914062,
+            -0.3405899703502655
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image (camera feed unavailable/disabled)",
+          "bev": "x \u2248 21m to 24m, y \u2248 -5m to -1m",
+          "isometric": "Floating bounding box (car 0.44) at x \u2248 22m, y \u2248 -3m, z \u2248 2m with almost no points and completely detached from the ground plane"
+        },
+        "evidence": [
+          "A 3D bounding box labeled 'car 0.44' is predicted in a region with extremely sparse LiDAR points and no physical vehicle geometry.",
+          "In the isometric view, this predicted bounding box is suspended high in the air (z \u2248 2m to 3m), well above the ground plane and road surface.",
+          "The camera feed is completely unavailable and explicitly marked as [ATTACKED], preventing any cross-modal visual validation."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (cannot explain a highly structured high-confidence 3D bounding box floating in mid-air)",
+          "Distant real obstacle (the predicted box is in an empty region and lacks vertical profile and L-shape characteristics of a real car)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:16.524386"
+}

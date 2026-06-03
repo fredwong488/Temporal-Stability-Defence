@@ -1,0 +1,268 @@
+{
+  "key": {
+    "frame_id": "62b740c7690340c3",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "barrier",
+        0.3439,
+        -8.348,
+        -20.478,
+        -1.564,
+        0.992,
+        1.99,
+        0.401,
+        -3.0547
+      ],
+      [
+        "car",
+        0.3001,
+        -2.93,
+        44.711,
+        0.586,
+        1.654,
+        1.936,
+        4.596,
+        -1.8721
+      ],
+      [
+        "car",
+        0.4691,
+        0.891,
+        -25.649,
+        -1.013,
+        1.756,
+        1.956,
+        4.706,
+        1.6934
+      ],
+      [
+        "car",
+        0.4937,
+        1.496,
+        40.999,
+        0.758,
+        1.63,
+        1.891,
+        4.458,
+        -1.5118
+      ],
+      [
+        "car",
+        0.5805,
+        -2.648,
+        -25.442,
+        -0.932,
+        1.762,
+        1.981,
+        4.743,
+        1.783
+      ],
+      [
+        "car",
+        0.6185,
+        4.448,
+        30.6,
+        0.367,
+        1.721,
+        1.928,
+        4.642,
+        1.694
+      ],
+      [
+        "car",
+        0.7923,
+        -3.901,
+        0.419,
+        -1.066,
+        1.584,
+        1.927,
+        4.844,
+        -1.5853
+      ],
+      [
+        "car",
+        0.7928,
+        -7.465,
+        15.273,
+        -0.505,
+        1.639,
+        1.959,
+        4.892,
+        -1.6194
+      ],
+      [
+        "motorcycle",
+        0.3598,
+        23.753,
+        -7.594,
+        0.036,
+        1.709,
+        0.941,
+        2.67,
+        -1.3501
+      ],
+      [
+        "pedestrian",
+        0.3085,
+        -20.502,
+        -12.55,
+        -1.313,
+        1.738,
+        0.593,
+        0.589,
+        -1.7158
+      ],
+      [
+        "pedestrian",
+        0.3477,
+        6.642,
+        -22.852,
+        -0.741,
+        1.859,
+        0.703,
+        0.77,
+        1.8135
+      ],
+      [
+        "pedestrian",
+        0.3527,
+        -10.01,
+        -23.748,
+        -0.954,
+        1.852,
+        0.683,
+        0.76,
+        -2.0749
+      ],
+      [
+        "pedestrian",
+        0.3616,
+        9.137,
+        25.442,
+        0.307,
+        1.8,
+        0.661,
+        0.65,
+        -1.2527
+      ],
+      [
+        "pedestrian",
+        0.3638,
+        6.708,
+        1.72,
+        -0.844,
+        1.725,
+        0.665,
+        0.689,
+        1.407
+      ],
+      [
+        "pedestrian",
+        0.3693,
+        6.707,
+        -0.759,
+        -0.972,
+        1.768,
+        0.639,
+        0.642,
+        0.9962
+      ],
+      [
+        "pedestrian",
+        0.4573,
+        6.928,
+        -3.803,
+        -0.928,
+        1.717,
+        0.644,
+        0.732,
+        1.2377
+      ],
+      [
+        "pedestrian",
+        0.4653,
+        6.84,
+        -11.168,
+        -0.944,
+        1.758,
+        0.64,
+        0.728,
+        -1.1168
+      ],
+      [
+        "pedestrian",
+        0.4685,
+        7.651,
+        -0.224,
+        -0.869,
+        1.806,
+        0.638,
+        0.651,
+        2.0939
+      ],
+      [
+        "pedestrian",
+        0.4887,
+        7.586,
+        1.08,
+        -0.842,
+        1.818,
+        0.643,
+        0.649,
+        1.7294
+      ],
+      [
+        "pedestrian",
+        0.5024,
+        8.495,
+        0.99,
+        -0.84,
+        1.775,
+        0.682,
+        0.678,
+        2.5326
+      ],
+      [
+        "trailer",
+        0.4028,
+        -45.641,
+        -10.75,
+        -0.249,
+        4.099,
+        3.095,
+        14.925,
+        -1.3421
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480m, y\u22480m)",
+          "isometric": "Cluster of points appears directly under the ego vehicle at ground level with no height"
+        },
+        "evidence": [
+          "A highly anomalous, dense cluster of points is localized at the origin (x\u22480, y\u22480), which corresponds to the ego vehicle's own position.",
+          "This dense cluster is enclosed by a bounding box labeled 'car 0.79', which is physically impossible as the ego vehicle is not a separate detected car object.",
+          "The cluster lacks the 3D structure of a real vehicle, appearing as a compact, potentially spoofed injection rather than a reflective surface."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (too structured and specific to be random noise).",
+          "Reflection from road surface (the detector has misclassified a point artifact as a car)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:38.884957"
+}

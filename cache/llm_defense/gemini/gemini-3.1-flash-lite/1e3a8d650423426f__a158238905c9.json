@@ -1,0 +1,268 @@
+{
+  "key": {
+    "frame_id": "1e3a8d650423426f",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bicycle",
+        0.3318,
+        -3.629,
+        12.397,
+        -0.513,
+        1.476,
+        0.569,
+        1.652,
+        1.6274
+      ],
+      [
+        "bus",
+        0.912,
+        10.658,
+        -15.192,
+        -0.585,
+        3.383,
+        2.856,
+        12.367,
+        2.6424
+      ],
+      [
+        "car",
+        0.306,
+        20.526,
+        5.948,
+        -0.125,
+        1.625,
+        1.894,
+        4.437,
+        -2.0718
+      ],
+      [
+        "car",
+        0.3449,
+        24.695,
+        9.299,
+        0.455,
+        1.702,
+        1.965,
+        4.576,
+        -1.8049
+      ],
+      [
+        "car",
+        0.4799,
+        20.649,
+        29.722,
+        0.342,
+        1.692,
+        1.881,
+        4.491,
+        1.0732
+      ],
+      [
+        "car",
+        0.4995,
+        25.35,
+        3.852,
+        -0.113,
+        1.841,
+        1.972,
+        4.734,
+        1.066
+      ],
+      [
+        "car",
+        0.5481,
+        21.63,
+        14.88,
+        0.075,
+        1.681,
+        1.913,
+        4.507,
+        1.0757
+      ],
+      [
+        "car",
+        0.5958,
+        18.933,
+        7.15,
+        -0.233,
+        1.657,
+        1.902,
+        4.529,
+        -2.081
+      ],
+      [
+        "car",
+        0.7068,
+        16.816,
+        8.26,
+        -0.45,
+        1.521,
+        1.839,
+        4.4,
+        -2.1141
+      ],
+      [
+        "pedestrian",
+        0.3029,
+        0.081,
+        21.173,
+        -0.263,
+        1.816,
+        0.525,
+        0.482,
+        -1.2937
+      ],
+      [
+        "pedestrian",
+        0.322,
+        -1.892,
+        18.43,
+        -0.433,
+        1.853,
+        0.629,
+        0.644,
+        -0.7298
+      ],
+      [
+        "pedestrian",
+        0.3474,
+        -0.121,
+        19.715,
+        -0.288,
+        1.856,
+        0.542,
+        0.509,
+        -0.8025
+      ],
+      [
+        "pedestrian",
+        0.3712,
+        2.99,
+        21.671,
+        -0.032,
+        1.805,
+        0.6,
+        0.603,
+        -0.7106
+      ],
+      [
+        "pedestrian",
+        0.3816,
+        -1.036,
+        20.531,
+        -0.391,
+        1.883,
+        0.567,
+        0.537,
+        -0.897
+      ],
+      [
+        "pedestrian",
+        0.3863,
+        -0.422,
+        18.72,
+        -0.302,
+        1.811,
+        0.552,
+        0.539,
+        -0.2136
+      ],
+      [
+        "pedestrian",
+        0.4027,
+        0.357,
+        19.937,
+        -0.238,
+        1.825,
+        0.546,
+        0.553,
+        -1.5459
+      ],
+      [
+        "pedestrian",
+        0.4095,
+        -3.028,
+        18.91,
+        -0.518,
+        1.824,
+        0.606,
+        0.601,
+        -0.6604
+      ],
+      [
+        "pedestrian",
+        0.4504,
+        1.353,
+        21.113,
+        -0.153,
+        1.827,
+        0.533,
+        0.534,
+        -1.1155
+      ],
+      [
+        "pedestrian",
+        0.4865,
+        2.831,
+        23.018,
+        0.062,
+        1.809,
+        0.642,
+        0.639,
+        -0.9423
+      ],
+      [
+        "traffic_cone",
+        0.3757,
+        -17.382,
+        1.435,
+        -1.4,
+        1.249,
+        0.397,
+        0.397,
+        2.5321
+      ],
+      [
+        "truck",
+        0.4877,
+        10.172,
+        -1.338,
+        -0.155,
+        2.788,
+        2.301,
+        5.696,
+        1.056
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817-23m, y\u2248-4 to 4m)",
+          "isometric": "Large cluster of tightly packed, small pedestrian-labeled bounding boxes situated in an area with sparse point returns."
+        },
+        "evidence": [
+          "The BEV view shows an unnatural cluster of numerous small 'pedestrian' bounding boxes overlapping and packed tightly together, which is highly unlikely for a realistic scenario.",
+          "The isometric view confirms that these bounding boxes enclose very few or no substantial point clusters, lacking the vertical extent and volume density consistent with human forms.",
+          "The pattern of multiple, redundant, and overlapping object detections is a classic signature of a ghosting attack designed to overload or confuse the detector."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (noise is typically scattered, not structured into a dense array of valid object labels).",
+          "Group of pedestrians (the lack of points/structure inside the boxes contradicts the presence of physical objects)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:31.304827"
+}

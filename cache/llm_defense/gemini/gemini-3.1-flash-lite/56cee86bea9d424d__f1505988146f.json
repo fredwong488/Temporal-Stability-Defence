@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "56cee86bea9d424d",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.4401,
+        -19.841,
+        -6.956,
+        -1.133,
+        1.949,
+        0.662,
+        1.703,
+        -1.6359
+      ],
+      [
+        "car",
+        0.3172,
+        22.64,
+        -6.846,
+        -1.014,
+        1.666,
+        1.932,
+        4.479,
+        -0.0426
+      ],
+      [
+        "car",
+        0.393,
+        -7.935,
+        27.658,
+        0.254,
+        1.678,
+        1.977,
+        4.453,
+        -2.8928
+      ],
+      [
+        "car",
+        0.3964,
+        1.196,
+        42.208,
+        0.957,
+        1.715,
+        1.95,
+        4.474,
+        1.6546
+      ],
+      [
+        "car",
+        0.4179,
+        -3.877,
+        39.058,
+        0.798,
+        1.652,
+        1.9,
+        4.554,
+        1.531
+      ],
+      [
+        "car",
+        0.4714,
+        0.583,
+        -27.425,
+        -1.614,
+        1.683,
+        1.948,
+        4.614,
+        1.5965
+      ],
+      [
+        "car",
+        0.7892,
+        -3.93,
+        -8.156,
+        -1.372,
+        1.646,
+        1.857,
+        4.542,
+        -1.5401
+      ],
+      [
+        "car",
+        0.8534,
+        4.594,
+        26.404,
+        -0.022,
+        1.556,
+        1.836,
+        4.472,
+        1.5359
+      ],
+      [
+        "car",
+        0.9252,
+        -7.497,
+        11.139,
+        -0.733,
+        1.511,
+        1.879,
+        4.68,
+        -1.6061
+      ],
+      [
+        "motorcycle",
+        0.3118,
+        -10.718,
+        2.987,
+        -0.827,
+        1.227,
+        0.726,
+        1.843,
+        -0.2284
+      ],
+      [
+        "pedestrian",
+        0.3133,
+        8.454,
+        -2.379,
+        -0.992,
+        1.742,
+        0.655,
+        0.668,
+        -2.9634
+      ],
+      [
+        "pedestrian",
+        0.3247,
+        -8.192,
+        -10.078,
+        -1.098,
+        1.875,
+        0.689,
+        0.723,
+        1.1593
+      ],
+      [
+        "pedestrian",
+        0.348,
+        6.505,
+        -2.697,
+        -1.083,
+        1.763,
+        0.635,
+        0.706,
+        0.069
+      ],
+      [
+        "pedestrian",
+        0.3746,
+        7.54,
+        -3.262,
+        -1.05,
+        1.775,
+        0.642,
+        0.654,
+        -2.7162
+      ],
+      [
+        "pedestrian",
+        0.3755,
+        6.723,
+        -8.267,
+        -1.158,
+        1.786,
+        0.689,
+        0.778,
+        -1.7039
+      ],
+      [
+        "pedestrian",
+        0.3758,
+        6.504,
+        -5.143,
+        -1.17,
+        1.729,
+        0.643,
+        0.674,
+        -2.2975
+      ],
+      [
+        "pedestrian",
+        0.4118,
+        6.753,
+        -15.997,
+        -1.259,
+        1.79,
+        0.662,
+        0.694,
+        1.8079
+      ],
+      [
+        "pedestrian",
+        0.4751,
+        7.47,
+        -4.384,
+        -1.125,
+        1.72,
+        0.631,
+        0.676,
+        -2.8273
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480-2m, y\u22480m)",
+          "isometric": "Cluster located at origin (x=0, y=0) with z\u22480"
+        },
+        "evidence": [
+          "A dense, isolated cluster of points appears directly at the ego vehicle origin (x=0, y=0).",
+          "This cluster has no corresponding physical structure in the surrounding environment or logical basis (the ego vehicle's own noise should be filtered).",
+          "The cluster is highly suspicious as a ghost object injection centered on the sensor's own location, which is a common signature for near-field LiDAR spoofing."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise (the cluster is distinct and static relative to the vehicle).",
+          "Self-reflection (the cluster is too dense and structured for standard internal noise)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:18.684114"
+}

@@ -1,0 +1,209 @@
+{
+  "key": {
+    "frame_id": "ee4a9595d311412d",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3554,
+        -8.457,
+        38.529,
+        1.402,
+        1.743,
+        1.878,
+        4.614,
+        -1.5443
+      ],
+      [
+        "car",
+        0.4632,
+        -4.215,
+        28.818,
+        0.645,
+        1.626,
+        1.9,
+        4.598,
+        -1.3924
+      ],
+      [
+        "car",
+        0.5329,
+        0.104,
+        -31.709,
+        -2.3,
+        1.659,
+        1.906,
+        4.46,
+        1.6945
+      ],
+      [
+        "car",
+        0.7082,
+        -6.817,
+        18.947,
+        0.007,
+        1.701,
+        1.971,
+        4.638,
+        0.2428
+      ],
+      [
+        "car",
+        0.717,
+        -14.39,
+        17.009,
+        -0.432,
+        1.608,
+        1.929,
+        4.481,
+        0.1586
+      ],
+      [
+        "car",
+        0.7716,
+        4.51,
+        17.685,
+        -0.103,
+        1.576,
+        1.849,
+        4.696,
+        1.6097
+      ],
+      [
+        "car",
+        0.8634,
+        -3.709,
+        -27.852,
+        -2.318,
+        1.687,
+        1.877,
+        4.427,
+        -1.5305
+      ],
+      [
+        "car",
+        0.9273,
+        -7.516,
+        2.274,
+        -1.199,
+        1.513,
+        1.896,
+        4.775,
+        -1.6094
+      ],
+      [
+        "pedestrian",
+        0.3346,
+        7.823,
+        -11.242,
+        -1.377,
+        1.766,
+        0.647,
+        0.709,
+        -1.8011
+      ],
+      [
+        "pedestrian",
+        0.3563,
+        -8.307,
+        -18.985,
+        -1.938,
+        1.788,
+        0.648,
+        0.652,
+        -0.5477
+      ],
+      [
+        "pedestrian",
+        0.3674,
+        7.359,
+        -13.217,
+        -1.374,
+        1.829,
+        0.652,
+        0.613,
+        -2.8968
+      ],
+      [
+        "pedestrian",
+        0.3692,
+        7.502,
+        -14.408,
+        -1.519,
+        1.851,
+        0.632,
+        0.591,
+        2.9692
+      ],
+      [
+        "pedestrian",
+        0.3779,
+        6.354,
+        -15.092,
+        -1.67,
+        1.783,
+        0.636,
+        0.705,
+        1.2347
+      ],
+      [
+        "pedestrian",
+        0.4259,
+        6.206,
+        -12.663,
+        -1.503,
+        1.731,
+        0.631,
+        0.659,
+        -1.8911
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818, y\u22486)",
+          "isometric": "Box aligns with a planar surface (likely a wall/barrier) rather than a distinct 3D vehicle structure."
+        },
+        "evidence": [
+          "The bounding box 'car 0.71' in the BEV does not surround a distinct, isolated point cluster characteristic of a vehicle.",
+          "In the isometric view, the points aligned with this box appear to be part of a larger, continuous linear structure consistent with a wall or barrier, not an independent vehicle.",
+          "There is no clear occlusion or shadow behind this specific cluster relative to the ego vehicle, which would be expected for a solid vehicle object."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion (the points align with wall-like geometry).",
+          "Sensor noise (the points show consistent surface-like alignment)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224828, y\u22484)",
+          "isometric": "Box aligned with points that lack vertical thickness and appear to be part of an extended background structure."
+        },
+        "evidence": [
+          "The bounding box 'car 0.46' is placed over a sparse set of points.",
+          "In the isometric view, these points lack the vertical extent and 3D volume characteristic of a vehicle.",
+          "The points appear to be part of the same linear background structure as other nearby points, making a car classification highly unlikely."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (the points are too structured, likely background infrastructure).",
+          "Distant vehicle (the lack of vertical structure and clustering is inconsistent with a vehicle)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:34.373966"
+}

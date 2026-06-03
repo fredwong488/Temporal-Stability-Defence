@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "0386184f890846df",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4951,
+        1.78,
+        22.937,
+        0.136,
+        1.663,
+        1.91,
+        4.529,
+        1.4622
+      ],
+      [
+        "car",
+        0.5089,
+        6.24,
+        34.242,
+        0.67,
+        1.74,
+        1.926,
+        4.632,
+        1.3949
+      ],
+      [
+        "car",
+        0.5561,
+        -0.473,
+        13.985,
+        -0.579,
+        1.665,
+        1.887,
+        4.556,
+        1.5297
+      ],
+      [
+        "car",
+        0.6458,
+        -14.376,
+        1.562,
+        -1.585,
+        1.547,
+        1.842,
+        4.448,
+        0.1909
+      ],
+      [
+        "car",
+        0.6603,
+        -28.274,
+        -0.454,
+        -2.056,
+        1.71,
+        1.954,
+        4.588,
+        0.0483
+      ],
+      [
+        "car",
+        0.7046,
+        -5.703,
+        10.288,
+        -0.832,
+        1.563,
+        1.851,
+        4.407,
+        -2.0994
+      ],
+      [
+        "car",
+        0.7106,
+        -21.592,
+        6.942,
+        -1.652,
+        1.631,
+        1.872,
+        4.32,
+        -3.026
+      ],
+      [
+        "car",
+        0.7989,
+        -27.041,
+        5.947,
+        -1.779,
+        1.591,
+        1.885,
+        4.39,
+        -2.9732
+      ],
+      [
+        "car",
+        0.8686,
+        -7.683,
+        -12.891,
+        -1.838,
+        1.583,
+        1.892,
+        4.67,
+        -1.5915
+      ],
+      [
+        "car",
+        0.9698,
+        4.278,
+        2.176,
+        -1.03,
+        1.556,
+        1.891,
+        4.717,
+        1.5604
+      ],
+      [
+        "pedestrian",
+        0.3014,
+        2.088,
+        -34.582,
+        -1.717,
+        1.779,
+        0.64,
+        0.652,
+        0.9907
+      ],
+      [
+        "pedestrian",
+        0.3327,
+        8.294,
+        -17.879,
+        -1.232,
+        1.767,
+        0.605,
+        0.581,
+        -2.8411
+      ],
+      [
+        "pedestrian",
+        0.3394,
+        -11.646,
+        4.884,
+        -1.332,
+        1.751,
+        0.628,
+        0.666,
+        1.2926
+      ],
+      [
+        "pedestrian",
+        0.3505,
+        7.289,
+        -18.226,
+        -1.288,
+        1.737,
+        0.589,
+        0.63,
+        -0.9086
+      ],
+      [
+        "pedestrian",
+        0.3719,
+        -11.487,
+        6.356,
+        -1.218,
+        1.757,
+        0.639,
+        0.655,
+        1.822
+      ],
+      [
+        "pedestrian",
+        0.3797,
+        7.945,
+        0.458,
+        -0.741,
+        1.735,
+        0.618,
+        0.707,
+        -1.6321
+      ],
+      [
+        "pedestrian",
+        0.4073,
+        8.526,
+        6.555,
+        -0.267,
+        1.798,
+        0.673,
+        0.738,
+        2.1029
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 121
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812, y\u22480.5)",
+          "isometric": "Cluster appears isolated with no coherent structural connection to ground plane."
+        },
+        "evidence": [
+          "The bounding box 'car 0.56' contains very sparse points that do not form a physically plausible vehicle shape (e.g., lack of clear surfaces/dimensions).",
+          "The isometric view shows this cluster is disconnected from surrounding structural points and lacks vertical extent consistent with a vehicle.",
+          "There is no clear LiDAR shadow behind this cluster, which would be expected if it were a solid opaque object."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise (noise is typically more diffuse and less structured as a standalone detection).",
+          "Distant small object (the points are too sparse to represent a car at this range)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:46.300111"
+}

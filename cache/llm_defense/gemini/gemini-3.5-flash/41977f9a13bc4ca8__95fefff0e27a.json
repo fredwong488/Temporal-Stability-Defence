@@ -1,0 +1,331 @@
+{
+  "key": {
+    "frame_id": "41977f9a13bc4ca8",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3101,
+        9.172,
+        -19.938,
+        -1.913,
+        1.041,
+        2.075,
+        0.541,
+        0.3435
+      ],
+      [
+        "barrier",
+        0.3341,
+        1.736,
+        -16.251,
+        -1.776,
+        1.036,
+        2.178,
+        0.562,
+        3.1232
+      ],
+      [
+        "bicycle",
+        0.3434,
+        -3.886,
+        -10.781,
+        -1.178,
+        1.082,
+        0.556,
+        1.666,
+        1.2167
+      ],
+      [
+        "bus",
+        0.5612,
+        7.653,
+        51.405,
+        1.58,
+        3.218,
+        2.815,
+        10.316,
+        1.4404
+      ],
+      [
+        "car",
+        0.3604,
+        14.312,
+        -20.96,
+        -1.851,
+        1.656,
+        1.89,
+        4.535,
+        -1.5932
+      ],
+      [
+        "car",
+        0.4151,
+        -2.932,
+        8.65,
+        -0.361,
+        1.851,
+        1.946,
+        4.779,
+        2.2772
+      ],
+      [
+        "car",
+        0.5899,
+        12.25,
+        -14.393,
+        -1.542,
+        1.817,
+        2.081,
+        4.99,
+        -1.5905
+      ],
+      [
+        "construction_vehicle",
+        0.3304,
+        21.754,
+        -27.217,
+        -0.41,
+        3.641,
+        2.543,
+        6.193,
+        2.4254
+      ],
+      [
+        "construction_vehicle",
+        0.5552,
+        3.396,
+        -19.64,
+        -0.668,
+        2.904,
+        3.167,
+        4.22,
+        -1.5484
+      ],
+      [
+        "pedestrian",
+        0.3112,
+        7.475,
+        -18.159,
+        -1.457,
+        1.783,
+        0.675,
+        0.696,
+        -1.6457
+      ],
+      [
+        "traffic_cone",
+        0.3084,
+        1.911,
+        -1.719,
+        -1.485,
+        0.741,
+        0.378,
+        0.356,
+        1.9643
+      ],
+      [
+        "traffic_cone",
+        0.3467,
+        9.463,
+        1.682,
+        -1.409,
+        0.718,
+        0.394,
+        0.402,
+        -1.8205
+      ],
+      [
+        "traffic_cone",
+        0.3493,
+        9.371,
+        21.958,
+        -0.629,
+        0.958,
+        0.422,
+        0.438,
+        -1.5844
+      ],
+      [
+        "traffic_cone",
+        0.3851,
+        9.355,
+        15.88,
+        -1.064,
+        0.723,
+        0.405,
+        0.39,
+        -2.0121
+      ],
+      [
+        "traffic_cone",
+        0.3955,
+        9.271,
+        20.552,
+        -0.782,
+        0.754,
+        0.424,
+        0.439,
+        -1.5787
+      ],
+      [
+        "traffic_cone",
+        0.4211,
+        1.849,
+        2.838,
+        -1.306,
+        0.73,
+        0.388,
+        0.378,
+        2.5511
+      ],
+      [
+        "traffic_cone",
+        0.4211,
+        9.336,
+        23.166,
+        -0.671,
+        0.948,
+        0.436,
+        0.448,
+        -1.6305
+      ],
+      [
+        "traffic_cone",
+        0.4219,
+        9.488,
+        -7.898,
+        -1.705,
+        0.739,
+        0.4,
+        0.401,
+        -2.3914
+      ],
+      [
+        "traffic_cone",
+        0.4614,
+        1.777,
+        -6.628,
+        -1.702,
+        0.746,
+        0.376,
+        0.36,
+        1.8644
+      ],
+      [
+        "traffic_cone",
+        0.4737,
+        1.813,
+        7.726,
+        -1.093,
+        0.74,
+        0.39,
+        0.383,
+        2.4126
+      ],
+      [
+        "traffic_cone",
+        0.5637,
+        9.474,
+        -2.924,
+        -1.618,
+        0.708,
+        0.395,
+        0.397,
+        -2.4279
+      ],
+      [
+        "trailer",
+        0.3647,
+        14.975,
+        -15.424,
+        -0.759,
+        4.407,
+        3.0,
+        16.372,
+        -1.5885
+      ],
+      [
+        "truck",
+        0.4126,
+        11.025,
+        -23.747,
+        -1.752,
+        2.003,
+        2.176,
+        5.63,
+        -1.6126
+      ],
+      [
+        "truck",
+        0.4283,
+        14.882,
+        -13.126,
+        -0.644,
+        3.997,
+        2.897,
+        11.272,
+        -1.5409
+      ],
+      [
+        "truck",
+        0.7669,
+        14.78,
+        -0.315,
+        -0.03,
+        3.434,
+        2.716,
+        7.468,
+        -1.5639
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 109,
+          "reinjected_centroid": [
+            11.691752433776855,
+            -13.511988639831543,
+            -1.9722042083740234
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22489m, y\u22483.5m)",
+          "isometric": "The 3D bounding box labeled 'car 0.42' is significantly shifted along the x-axis (range) compared to the actual dense L-shaped point cluster located at x\u22486m, y\u22483m."
+        },
+        "evidence": [
+          "The bounding box 'car 0.42' is mostly empty and does not contain the actual vehicle point cluster.",
+          "A clear, dense L-shaped Lidar point cluster is visible at (x\u22486m, y\u22483m) but has no enclosing bounding box, while the predicted bounding box is placed further away at x\u22489m along the same general azimuth.",
+          "This displacement pattern is highly characteristic of a range-shifting translation attack."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor calibration error (other objects/cones are correctly detected and aligned with their point clusters)",
+          "Sensor noise (the cluster at x\u22486m is dense and highly structured, characteristic of a real vehicle, not noise)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:02:07.171860"
+}

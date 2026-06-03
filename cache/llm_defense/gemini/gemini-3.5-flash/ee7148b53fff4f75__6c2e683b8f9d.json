@@ -1,0 +1,330 @@
+{
+  "key": {
+    "frame_id": "ee7148b53fff4f75",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3267,
+        -2.652,
+        26.065,
+        0.028,
+        1.064,
+        2.239,
+        0.471,
+        1.4241
+      ],
+      [
+        "bicycle",
+        0.3519,
+        15.889,
+        -32.479,
+        -2.01,
+        1.767,
+        0.651,
+        1.695,
+        1.6551
+      ],
+      [
+        "car",
+        0.414,
+        -3.742,
+        8.164,
+        -0.394,
+        2.082,
+        2.089,
+        5.325,
+        -0.6276
+      ],
+      [
+        "car",
+        0.4599,
+        14.634,
+        -25.343,
+        -1.817,
+        1.709,
+        1.946,
+        4.518,
+        -1.6183
+      ],
+      [
+        "car",
+        0.6613,
+        11.666,
+        -17.058,
+        -1.53,
+        1.725,
+        1.975,
+        4.747,
+        -1.5768
+      ],
+      [
+        "construction_vehicle",
+        0.3023,
+        25.565,
+        -49.303,
+        -3.678,
+        2.773,
+        2.367,
+        4.257,
+        -1.7166
+      ],
+      [
+        "construction_vehicle",
+        0.3181,
+        20.274,
+        -29.569,
+        -0.379,
+        3.073,
+        2.612,
+        5.945,
+        2.5119
+      ],
+      [
+        "construction_vehicle",
+        0.3497,
+        8.846,
+        9.264,
+        -0.87,
+        1.854,
+        1.485,
+        2.981,
+        -0.1117
+      ],
+      [
+        "construction_vehicle",
+        0.5897,
+        2.14,
+        -21.14,
+        -0.741,
+        2.745,
+        3.612,
+        3.952,
+        -1.6018
+      ],
+      [
+        "pedestrian",
+        0.3475,
+        -12.567,
+        9.014,
+        0.431,
+        1.757,
+        0.616,
+        0.624,
+        1.5855
+      ],
+      [
+        "traffic_cone",
+        0.312,
+        1.8,
+        -2.991,
+        -1.552,
+        0.723,
+        0.374,
+        0.371,
+        1.4662
+      ],
+      [
+        "traffic_cone",
+        0.3461,
+        1.485,
+        -7.963,
+        -1.715,
+        0.717,
+        0.389,
+        0.373,
+        1.5107
+      ],
+      [
+        "traffic_cone",
+        0.3598,
+        10.203,
+        15.831,
+        -1.104,
+        0.733,
+        0.403,
+        0.418,
+        -1.619
+      ],
+      [
+        "traffic_cone",
+        0.3659,
+        10.286,
+        21.315,
+        -0.838,
+        0.751,
+        0.417,
+        0.445,
+        -1.4785
+      ],
+      [
+        "traffic_cone",
+        0.3839,
+        2.179,
+        6.317,
+        -1.212,
+        0.749,
+        0.37,
+        0.368,
+        1.6085
+      ],
+      [
+        "traffic_cone",
+        0.3921,
+        10.354,
+        18.91,
+        -0.889,
+        0.771,
+        0.436,
+        0.457,
+        -1.5449
+      ],
+      [
+        "traffic_cone",
+        0.3934,
+        9.32,
+        -4.678,
+        -1.709,
+        0.69,
+        0.398,
+        0.397,
+        -2.5994
+      ],
+      [
+        "traffic_cone",
+        0.4524,
+        1.962,
+        1.432,
+        -1.359,
+        0.738,
+        0.357,
+        0.355,
+        1.5731
+      ],
+      [
+        "traffic_cone",
+        0.4681,
+        10.315,
+        17.339,
+        -0.961,
+        0.807,
+        0.423,
+        0.434,
+        -1.6192
+      ],
+      [
+        "traffic_cone",
+        0.5353,
+        9.559,
+        -0.211,
+        -1.609,
+        0.729,
+        0.383,
+        0.394,
+        -2.4763
+      ],
+      [
+        "truck",
+        0.3329,
+        10.012,
+        48.054,
+        0.964,
+        1.912,
+        2.049,
+        5.166,
+        1.4365
+      ],
+      [
+        "truck",
+        0.598,
+        14.858,
+        -2.228,
+        -0.314,
+        3.198,
+        2.689,
+        7.315,
+        -1.5738
+      ],
+      [
+        "truck",
+        0.6108,
+        14.091,
+        -14.393,
+        -0.71,
+        4.058,
+        3.01,
+        11.074,
+        -1.6104
+      ],
+      [
+        "truck",
+        0.6164,
+        9.897,
+        -25.471,
+        -1.727,
+        2.21,
+        2.18,
+        5.628,
+        -1.6271
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 84,
+          "reinjected_centroid": [
+            11.311254501342773,
+            -16.03419303894043,
+            -1.9642161130905151
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 15,
+          "reinjected_centroid": [
+            13.870769500732422,
+            -24.83209800720215,
+            -1.8139208555221558
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image is not available / indicated as attacked",
+          "bev": "x \u2248 5m to 8m, y \u2248 2m to 6m",
+          "isometric": "Box 'car 0.41' at x \u2248 7m, y \u2248 4m envelopes ground-level concentric LiDAR ring points and entirely lacks 3D vertical structure or vertical extent"
+        },
+        "evidence": [
+          "The bounding box 'car 0.41' is placed over sparse, flat points that perfectly match the concentric pattern of ground-plane LiDAR sweeps.",
+          "There is no physical object profile, vertical height, or structural surface shape (such as an L-shape) inside the 'car 0.41' bounding box in both BEV and Isometric views.",
+          "The camera image is disabled or marked as attacked, preventing cross-modal validation, but the LiDAR signatures clearly indicate a false/ghost positive detection on empty ground."
+        ],
+        "alternatives_ruled_out": [
+          "Natural ground reflection classification error",
+          "Sensor noise",
+          "Low reflectivity real vehicle"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:02:15.346855"
+}

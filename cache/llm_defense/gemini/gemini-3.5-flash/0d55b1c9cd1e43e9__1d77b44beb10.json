@@ -1,0 +1,196 @@
+{
+  "key": {
+    "frame_id": "0d55b1c9cd1e43e9",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3157,
+        -2.696,
+        -0.477,
+        -1.294,
+        0.925,
+        1.875,
+        0.544,
+        0.031
+      ],
+      [
+        "bicycle",
+        0.3479,
+        2.083,
+        8.414,
+        -0.679,
+        1.662,
+        0.708,
+        1.692,
+        0.3947
+      ],
+      [
+        "car",
+        0.3492,
+        -3.599,
+        21.021,
+        0.149,
+        1.649,
+        1.975,
+        4.605,
+        -0.0391
+      ],
+      [
+        "car",
+        0.4094,
+        18.44,
+        20.726,
+        1.011,
+        1.684,
+        1.96,
+        4.66,
+        -2.9446
+      ],
+      [
+        "car",
+        0.7419,
+        -3.4,
+        0.443,
+        -1.126,
+        1.487,
+        1.893,
+        4.661,
+        1.6293
+      ],
+      [
+        "pedestrian",
+        0.3385,
+        -0.436,
+        8.78,
+        -0.582,
+        1.804,
+        0.705,
+        0.76,
+        2.5407
+      ],
+      [
+        "pedestrian",
+        0.3454,
+        -3.79,
+        8.225,
+        -0.649,
+        1.776,
+        0.715,
+        0.77,
+        0.6695
+      ],
+      [
+        "pedestrian",
+        0.3925,
+        -1.912,
+        7.933,
+        -0.714,
+        1.789,
+        0.684,
+        0.723,
+        3.069
+      ],
+      [
+        "trailer",
+        0.9429,
+        -3.119,
+        -15.916,
+        -0.381,
+        4.209,
+        2.777,
+        14.988,
+        1.6266
+      ],
+      [
+        "truck",
+        0.6244,
+        -0.176,
+        -7.985,
+        -0.984,
+        2.592,
+        2.218,
+        4.874,
+        1.5551
+      ],
+      [
+        "truck",
+        0.8595,
+        -3.416,
+        -7.724,
+        -0.379,
+        4.01,
+        2.632,
+        6.084,
+        1.638
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.512596130371094,
+            0.6210033893585205,
+            -1.5896081924438477
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 40,
+          "reinjected_centroid": [
+            -2.886953592300415,
+            20.380023956298828,
+            -0.2253437489271164
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 74,
+          "reinjected_centroid": [
+            -2.478459119796753,
+            8.753240585327148,
+            -1.1776633262634277
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "unknown (camera image unavailable)",
+          "bev": "x \u2248 8m to 9m, y \u2248 -3m to 4m",
+          "isometric": "Four bounding boxes ('pedestrian 0.35', 'pedestrian 0.39', 'pedestrian 0.34', 'bicycle 0.35') are placed in a column with absolutely no supporting 3D point clusters or vertical structure."
+        },
+        "evidence": [
+          "The bounding boxes for three pedestrians and one bicycle at x \u2248 8m have no corresponding LiDAR point clusters in either BEV or Isometric views.",
+          "LiDAR scan rings pass cleanly through the bounding box volumes without any vertical returns or occlusion shadows.",
+          "The camera image is completely unavailable/blocked, indicating a system-level denial or obfuscation coinciding with these fake detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Low-reflectivity targets (which would still show some occlusion or sparse ground-level disruption rather than perfectly aligned ghost boxes)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:29.940966"
+}

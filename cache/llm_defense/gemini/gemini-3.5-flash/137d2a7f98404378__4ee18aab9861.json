@@ -1,0 +1,231 @@
+{
+  "key": {
+    "frame_id": "137d2a7f98404378",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3089,
+        14.794,
+        -5.96,
+        -1.325,
+        0.988,
+        3.238,
+        0.575,
+        2.8606
+      ],
+      [
+        "barrier",
+        0.3118,
+        12.678,
+        -11.785,
+        -1.647,
+        0.899,
+        3.219,
+        0.546,
+        2.9814
+      ],
+      [
+        "car",
+        0.4827,
+        3.4,
+        20.219,
+        0.351,
+        1.806,
+        2.072,
+        4.824,
+        -0.0758
+      ],
+      [
+        "car",
+        0.873,
+        -3.323,
+        0.519,
+        -1.208,
+        1.519,
+        1.866,
+        4.615,
+        1.6006
+      ],
+      [
+        "construction_vehicle",
+        0.3393,
+        -10.025,
+        48.776,
+        1.28,
+        2.434,
+        2.443,
+        6.505,
+        1.7397
+      ],
+      [
+        "pedestrian",
+        0.3255,
+        -0.168,
+        8.491,
+        -0.637,
+        1.738,
+        0.716,
+        0.85,
+        -1.6347
+      ],
+      [
+        "pedestrian",
+        0.3486,
+        -2.801,
+        8.931,
+        -0.516,
+        1.787,
+        0.688,
+        0.806,
+        -1.3438
+      ],
+      [
+        "pedestrian",
+        0.3537,
+        -5.776,
+        10.824,
+        -0.559,
+        1.784,
+        0.718,
+        0.798,
+        -1.9588
+      ],
+      [
+        "pedestrian",
+        0.3653,
+        -6.652,
+        8.123,
+        -0.649,
+        1.772,
+        0.698,
+        0.773,
+        1.503
+      ],
+      [
+        "pedestrian",
+        0.4123,
+        -4.277,
+        7.141,
+        -0.74,
+        1.74,
+        0.649,
+        0.699,
+        0.2865
+      ],
+      [
+        "pedestrian",
+        0.471,
+        1.403,
+        6.894,
+        -0.63,
+        1.74,
+        0.657,
+        0.726,
+        -2.945
+      ],
+      [
+        "trailer",
+        0.9532,
+        -3.152,
+        -15.858,
+        -0.394,
+        4.213,
+        2.795,
+        14.656,
+        1.6278
+      ],
+      [
+        "truck",
+        0.3486,
+        -10.07,
+        48.971,
+        1.423,
+        2.202,
+        2.255,
+        5.98,
+        1.7435
+      ],
+      [
+        "truck",
+        0.6378,
+        -0.148,
+        -7.971,
+        -1.018,
+        2.54,
+        2.202,
+        4.827,
+        1.5663
+      ],
+      [
+        "truck",
+        0.8928,
+        -3.426,
+        -7.865,
+        -0.342,
+        4.012,
+        2.709,
+        6.075,
+        1.6075
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.362605094909668,
+            0.6933778524398804,
+            -1.8524835109710693
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 28,
+          "reinjected_centroid": [
+            -5.7160186767578125,
+            10.857770919799805,
+            -0.7452837824821472
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image not available (indicated as ATTACKED)",
+          "bev": "Arc of pedestrian detections at x\u22487m to 11m, y\u2248-2m to 7m",
+          "isometric": "A series of vertical pedestrian boxes in a semi-circular arc containing no matching physical structures, and a car bounding box floating extremely high in the air (z \u2248 3m to 4m) at x \u2248 20m, y \u2248 -3m with zero supporting points"
+        },
+        "evidence": [
+          "Multiple pedestrian bounding boxes (pedestrian 0.33, 0.35, 0.37, 0.41, 0.47) form a perfect semi-circular array in front of the ego vehicle but contain minimal to no point cloud returns.",
+          "A highly elevated bounding box is located at x\u224820m, y\u2248-3m, floating completely in mid-air above the ground plane with no point returns inside or beneath it.",
+          "The camera image is completely unavailable/blacked out and labeled as ATTACKED."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant real pedestrians"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:54.529472"
+}

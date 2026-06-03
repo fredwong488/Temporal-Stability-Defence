@@ -1,0 +1,93 @@
+{
+  "key": {
+    "frame_id": "6d0c438ad93846dc",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.456,
+        -2.968,
+        -29.92,
+        -2.114,
+        1.784,
+        1.974,
+        4.663,
+        1.5604
+      ],
+      [
+        "car",
+        0.7114,
+        0.284,
+        -19.812,
+        -1.773,
+        1.68,
+        1.904,
+        4.503,
+        1.6494
+      ],
+      [
+        "pedestrian",
+        0.3306,
+        7.18,
+        13.987,
+        -0.414,
+        1.76,
+        0.66,
+        0.684,
+        3.103
+      ],
+      [
+        "pedestrian",
+        0.3757,
+        6.209,
+        -2.58,
+        -0.898,
+        1.804,
+        0.71,
+        0.754,
+        -1.3439
+      ],
+      [
+        "trailer",
+        0.3584,
+        -9.058,
+        33.759,
+        0.688,
+        2.554,
+        1.338,
+        1.72,
+        -2.0465
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u2248-7m)",
+          "isometric": "Small isolated point cluster with no clear structural definition"
+        },
+        "evidence": [
+          "The detection at x\u224814m, y\u2248-7m is extremely sparse and lacks the dense point structure typically associated with a pedestrian.",
+          "The confidence score is very low (0.33), suggesting the detector is struggling to identify this feature as a valid object.",
+          "The lack of camera data prevents verification of whether this corresponds to an actual pedestrian or just sparse environmental noise/reflections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or spurious returns from vegetation or infrastructure",
+          "Low-reflectivity objects at distance",
+          "Typical transient artifacts in LiDAR point clouds"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:54.005666"
+}

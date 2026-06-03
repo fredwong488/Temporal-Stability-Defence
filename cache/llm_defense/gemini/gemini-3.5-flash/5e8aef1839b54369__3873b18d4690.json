@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "5e8aef1839b54369",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3163,
+        12.633,
+        -11.868,
+        -1.704,
+        0.907,
+        3.216,
+        0.491,
+        2.8896
+      ],
+      [
+        "barrier",
+        0.3639,
+        14.808,
+        -6.084,
+        -1.236,
+        0.979,
+        3.247,
+        0.58,
+        2.8002
+      ],
+      [
+        "car",
+        0.3189,
+        10.8,
+        42.728,
+        2.006,
+        1.816,
+        1.935,
+        4.459,
+        1.4365
+      ],
+      [
+        "car",
+        0.8552,
+        -7.207,
+        17.27,
+        -0.254,
+        1.588,
+        1.955,
+        4.66,
+        -0.0446
+      ],
+      [
+        "car",
+        0.8776,
+        -3.327,
+        0.438,
+        -1.079,
+        1.486,
+        1.898,
+        4.708,
+        1.608
+      ],
+      [
+        "construction_vehicle",
+        0.8057,
+        -10.145,
+        49.555,
+        1.306,
+        2.528,
+        2.742,
+        7.489,
+        -1.4482
+      ],
+      [
+        "pedestrian",
+        0.3353,
+        -11.168,
+        8.966,
+        -0.752,
+        1.84,
+        0.708,
+        0.75,
+        1.3582
+      ],
+      [
+        "pedestrian",
+        0.3492,
+        -14.11,
+        9.846,
+        -0.865,
+        1.869,
+        0.665,
+        0.744,
+        1.1229
+      ],
+      [
+        "pedestrian",
+        0.3785,
+        -12.794,
+        11.062,
+        -0.703,
+        1.851,
+        0.678,
+        0.727,
+        1.3676
+      ],
+      [
+        "pedestrian",
+        0.3826,
+        -14.989,
+        11.178,
+        -0.779,
+        1.876,
+        0.725,
+        0.785,
+        -0.2483
+      ],
+      [
+        "pedestrian",
+        0.3835,
+        -9.119,
+        9.62,
+        -0.734,
+        1.82,
+        0.686,
+        0.67,
+        1.4048
+      ],
+      [
+        "pedestrian",
+        0.5091,
+        -10.06,
+        8.375,
+        -0.693,
+        1.849,
+        0.739,
+        0.827,
+        1.3074
+      ],
+      [
+        "trailer",
+        0.9336,
+        -3.103,
+        -15.979,
+        -0.27,
+        4.251,
+        2.774,
+        14.592,
+        1.623
+      ],
+      [
+        "truck",
+        0.3207,
+        -40.905,
+        -13.52,
+        -0.93,
+        2.049,
+        2.297,
+        5.594,
+        1.6193
+      ],
+      [
+        "truck",
+        0.6406,
+        -0.087,
+        -7.982,
+        -1.037,
+        2.455,
+        2.138,
+        4.708,
+        1.5799
+      ],
+      [
+        "truck",
+        0.6606,
+        -15.93,
+        21.142,
+        0.207,
+        2.198,
+        2.371,
+        5.912,
+        -0.0595
+      ],
+      [
+        "truck",
+        0.9194,
+        -3.419,
+        -7.787,
+        -0.386,
+        3.94,
+        2.644,
+        6.113,
+        1.6371
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224821m, y\u22486m)",
+          "isometric": "A large bounding box (labeled truck) floats high in mid-air at z\u22483m with absolutely no supporting point cloud cluster inside or beneath it."
+        },
+        "evidence": [
+          "A 3D bounding box is predicted at x\u224821m, y\u22486m, z\u22483m completely detached from the ground plane with zero points inside or nearby.",
+          "Multiple other box predictions (e.g. at the bottom of the isometric view, z < -2m) are located below the ground plane, representing physically impossible object locations."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant vehicles (no points are present at all to justify the floating truck detection)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:04:37.198934"
+}

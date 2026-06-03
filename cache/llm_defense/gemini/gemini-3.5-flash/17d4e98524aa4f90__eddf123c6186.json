@@ -1,0 +1,207 @@
+{
+  "key": {
+    "frame_id": "17d4e98524aa4f90",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3515,
+        14.779,
+        -6.041,
+        -1.236,
+        1.006,
+        3.223,
+        0.561,
+        2.7347
+      ],
+      [
+        "bus",
+        0.4033,
+        -5.045,
+        45.506,
+        2.541,
+        3.263,
+        2.95,
+        11.647,
+        1.5522
+      ],
+      [
+        "car",
+        0.3918,
+        -15.843,
+        23.602,
+        -0.145,
+        1.652,
+        1.992,
+        4.604,
+        0.0276
+      ],
+      [
+        "car",
+        0.4452,
+        7.619,
+        19.994,
+        0.519,
+        1.708,
+        1.96,
+        4.695,
+        3.1151
+      ],
+      [
+        "car",
+        0.8844,
+        -3.349,
+        0.448,
+        -1.221,
+        1.493,
+        1.884,
+        4.685,
+        1.6355
+      ],
+      [
+        "motorcycle",
+        0.3625,
+        -1.194,
+        7.875,
+        -0.762,
+        1.624,
+        0.793,
+        2.089,
+        1.9345
+      ],
+      [
+        "pedestrian",
+        0.323,
+        -6.214,
+        7.368,
+        -0.612,
+        1.785,
+        0.658,
+        0.682,
+        0.6367
+      ],
+      [
+        "pedestrian",
+        0.338,
+        -4.952,
+        9.092,
+        -0.677,
+        1.714,
+        0.68,
+        0.733,
+        1.69
+      ],
+      [
+        "pedestrian",
+        0.3598,
+        -6.671,
+        8.765,
+        -0.581,
+        1.786,
+        0.646,
+        0.609,
+        0.9077
+      ],
+      [
+        "trailer",
+        0.9518,
+        -3.141,
+        -15.889,
+        -0.352,
+        4.214,
+        2.795,
+        14.795,
+        1.6271
+      ],
+      [
+        "truck",
+        0.3239,
+        -5.069,
+        44.737,
+        2.29,
+        3.828,
+        2.905,
+        9.455,
+        1.5342
+      ],
+      [
+        "truck",
+        0.6942,
+        -0.145,
+        -7.995,
+        -0.982,
+        2.6,
+        2.235,
+        4.859,
+        1.5702
+      ],
+      [
+        "truck",
+        0.9062,
+        -3.408,
+        -7.894,
+        -0.339,
+        4.005,
+        2.722,
+        6.121,
+        1.6076
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.330890655517578,
+            0.6341161131858826,
+            -1.8482800722122192
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 20,
+          "reinjected_centroid": [
+            -15.074803352355957,
+            23.097429275512695,
+            -0.6068254113197327
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 23m to 28m, y \u2248 6m to 8m",
+          "isometric": "floating high in the air at z \u2248 2m to 4m"
+        },
+        "evidence": [
+          "A 3D bounding box for 'car 0.39' is predicted at the far right/top-right of the LiDAR views, but it is floating extremely high in the air (z > 2m) with no vertical connection to the ground plane.",
+          "The bounding box contains no coherent point cluster, showing only sparse noise points, and lacks any 3D shadow or L-shape structure typical of a real vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Foliage or tree canopy (which can sometimes trigger false positives, but this box is shaped as a car and predicted with a car label high in mid-air where no dense supporting structure exists)",
+          "Sensor noise"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:26.354782"
+}

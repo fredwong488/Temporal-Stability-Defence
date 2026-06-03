@@ -1,0 +1,339 @@
+{
+  "key": {
+    "frame_id": "7e2149ca19eb48ff",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3183,
+        7.657,
+        28.71,
+        -0.562,
+        1.042,
+        2.036,
+        0.556,
+        3.123
+      ],
+      [
+        "barrier",
+        0.3278,
+        2.62,
+        -9.958,
+        -1.444,
+        1.047,
+        2.089,
+        0.565,
+        -3.139
+      ],
+      [
+        "barrier",
+        0.3549,
+        10.606,
+        -13.219,
+        -1.537,
+        1.069,
+        2.084,
+        0.465,
+        0.0908
+      ],
+      [
+        "barrier",
+        0.3603,
+        2.532,
+        -7.738,
+        -1.499,
+        0.919,
+        2.988,
+        0.555,
+        3.1393
+      ],
+      [
+        "barrier",
+        0.3719,
+        3.002,
+        -15.781,
+        -1.641,
+        1.039,
+        2.013,
+        0.555,
+        -3.0275
+      ],
+      [
+        "barrier",
+        0.4147,
+        2.667,
+        -11.805,
+        -1.526,
+        1.069,
+        1.921,
+        0.556,
+        -3.1302
+      ],
+      [
+        "barrier",
+        0.4238,
+        2.879,
+        -14.063,
+        -1.612,
+        1.003,
+        2.013,
+        0.55,
+        -3.0587
+      ],
+      [
+        "car",
+        0.3103,
+        12.396,
+        -14.111,
+        -1.37,
+        2.19,
+        2.156,
+        5.359,
+        -1.4586
+      ],
+      [
+        "car",
+        0.336,
+        -0.984,
+        11.645,
+        -0.558,
+        1.925,
+        2.037,
+        4.921,
+        1.5794
+      ],
+      [
+        "car",
+        0.4572,
+        36.559,
+        -35.895,
+        -2.919,
+        1.772,
+        2.005,
+        4.606,
+        -1.4028
+      ],
+      [
+        "car",
+        0.5465,
+        17.822,
+        -13.009,
+        -1.786,
+        1.687,
+        2.034,
+        4.85,
+        -1.5784
+      ],
+      [
+        "construction_vehicle",
+        0.8699,
+        4.526,
+        -10.694,
+        -0.628,
+        2.965,
+        3.174,
+        4.188,
+        -1.5364
+      ],
+      [
+        "motorcycle",
+        0.3086,
+        14.975,
+        -22.189,
+        -1.562,
+        1.597,
+        0.686,
+        1.921,
+        -1.2836
+      ],
+      [
+        "motorcycle",
+        0.5271,
+        -6.702,
+        -4.358,
+        -0.823,
+        1.36,
+        0.718,
+        2.173,
+        0.2893
+      ],
+      [
+        "pedestrian",
+        0.3898,
+        -7.077,
+        -17.18,
+        -1.085,
+        1.777,
+        0.653,
+        0.707,
+        -2.4272
+      ],
+      [
+        "traffic_cone",
+        0.3089,
+        1.963,
+        1.856,
+        -1.383,
+        0.723,
+        0.354,
+        0.354,
+        1.7565
+      ],
+      [
+        "traffic_cone",
+        0.3706,
+        1.388,
+        11.348,
+        -1.174,
+        0.738,
+        0.385,
+        0.387,
+        1.5
+      ],
+      [
+        "traffic_cone",
+        0.3879,
+        10.278,
+        -8.147,
+        -1.749,
+        0.709,
+        0.39,
+        0.352,
+        -3.1009
+      ],
+      [
+        "traffic_cone",
+        0.4178,
+        2.308,
+        -3.741,
+        -1.514,
+        0.715,
+        0.368,
+        0.355,
+        1.9963
+      ],
+      [
+        "traffic_cone",
+        0.4466,
+        1.763,
+        6.799,
+        -1.288,
+        0.716,
+        0.389,
+        0.408,
+        1.7746
+      ],
+      [
+        "traffic_cone",
+        0.4571,
+        10.116,
+        -3.354,
+        -1.652,
+        0.726,
+        0.376,
+        0.37,
+        3.1153
+      ],
+      [
+        "traffic_cone",
+        0.5387,
+        9.773,
+        1.07,
+        -1.502,
+        0.737,
+        0.376,
+        0.393,
+        -1.5307
+      ],
+      [
+        "trailer",
+        0.3492,
+        14.962,
+        -3.842,
+        -0.12,
+        4.218,
+        3.047,
+        15.699,
+        -1.5728
+      ],
+      [
+        "truck",
+        0.8355,
+        14.369,
+        9.044,
+        -0.172,
+        3.068,
+        2.516,
+        6.496,
+        -1.5427
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 185,
+          "reinjected_centroid": [
+            13.466373443603516,
+            -4.4004950523376465,
+            -1.6659770011901855
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 68,
+          "reinjected_centroid": [
+            17.208227157592773,
+            -12.214300155639648,
+            -2.0212955474853516
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -0.8503055572509766,
+            9.743473052978516,
+            -0.8449859023094177
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not available",
+          "bev": "region around x \u2208 [5, 20]m, y \u2208 [-8, -4]m",
+          "isometric": "multiple large cuboids at y < -4m (labeled as truck 0.84 and trailer 0.35) enclosing empty space with only sparse ground returns"
+        },
+        "evidence": [
+          "In the isometric view, there are multiple very large bounding boxes at y < -4m (corresponding to truck and trailer detections) that contain absolutely no 3D point clusters representing physical objects.",
+          "There are no physical 3D shadows (occlusion zones) behind these large boxes, which would be expected if real large vehicles were present.",
+          "The camera image is completely unavailable/blacked out, indicating potential sensor/data tampering alongside these false detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Low reflectivity surfaces"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:19.302475"
+}

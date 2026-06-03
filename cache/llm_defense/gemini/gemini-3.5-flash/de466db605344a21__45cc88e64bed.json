@@ -1,0 +1,209 @@
+{
+  "key": {
+    "frame_id": "de466db605344a21",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3803,
+        14.784,
+        -6.034,
+        -1.341,
+        1.004,
+        3.246,
+        0.562,
+        2.7753
+      ],
+      [
+        "car",
+        0.3168,
+        -14.671,
+        20.028,
+        -0.22,
+        1.627,
+        1.913,
+        4.543,
+        -0.1314
+      ],
+      [
+        "car",
+        0.3186,
+        -5.884,
+        0.282,
+        -1.496,
+        1.51,
+        1.823,
+        4.316,
+        1.6563
+      ],
+      [
+        "car",
+        0.3249,
+        9.956,
+        23.7,
+        0.8,
+        1.703,
+        1.957,
+        4.64,
+        -1.7022
+      ],
+      [
+        "car",
+        0.8768,
+        -3.31,
+        0.443,
+        -1.21,
+        1.528,
+        1.864,
+        4.58,
+        1.6283
+      ],
+      [
+        "pedestrian",
+        0.3258,
+        2.298,
+        6.667,
+        -0.581,
+        1.745,
+        0.712,
+        0.82,
+        2.7022
+      ],
+      [
+        "pedestrian",
+        0.3409,
+        0.516,
+        8.33,
+        -0.677,
+        1.725,
+        0.719,
+        0.877,
+        2.6311
+      ],
+      [
+        "pedestrian",
+        0.4084,
+        -3.469,
+        7.101,
+        -0.765,
+        1.755,
+        0.681,
+        0.765,
+        2.9466
+      ],
+      [
+        "pedestrian",
+        0.4173,
+        -3.562,
+        8.203,
+        -0.585,
+        1.786,
+        0.7,
+        0.74,
+        1.7098
+      ],
+      [
+        "pedestrian",
+        0.4195,
+        -1.877,
+        8.799,
+        -0.615,
+        1.826,
+        0.695,
+        0.736,
+        -2.3225
+      ],
+      [
+        "trailer",
+        0.9256,
+        -3.167,
+        -15.771,
+        -0.394,
+        4.195,
+        2.78,
+        14.471,
+        1.6297
+      ],
+      [
+        "truck",
+        0.572,
+        -0.082,
+        -8.09,
+        -1.057,
+        2.474,
+        2.201,
+        4.895,
+        1.6179
+      ],
+      [
+        "truck",
+        0.8662,
+        -3.402,
+        -7.767,
+        -0.309,
+        4.026,
+        2.63,
+        6.238,
+        1.6321
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.3331618309021,
+            0.6834776997566223,
+            -1.8204864263534546
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 30,
+          "reinjected_centroid": [
+            10.940824508666992,
+            21.64354705810547,
+            0.09460832178592682
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image not available",
+          "bev": "Multiple locations including (x\u224820m, y\u22488m) and (x\u22480m, y\u22486m)",
+          "isometric": "Multiple bounding boxes floating in mid-air (z > 2m) or below ground plane (z < -2m) with no corresponding point clusters inside them"
+        },
+        "evidence": [
+          "Several predicted 3D bounding boxes (e.g., 'car 0.32' at high x/y coordinates) are located in empty regions of the point cloud.",
+          "Isometric view clearly shows bounding boxes floating high above the ground plane (z \u2248 3m) or below the ground surface with no physical LiDAR points inside or near them.",
+          "The camera image is completely unavailable/blacked out, marked as '[ATTACKED]', indicating a hardware or sensor-level denial-of-service/tampering."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant vehicles (objects lack any structural L-shape or vertical distribution of points)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:10.765667"
+}

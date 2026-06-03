@@ -1,0 +1,230 @@
+{
+  "key": {
+    "frame_id": "afc7ec68094c4370",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3175,
+        14.817,
+        -6.031,
+        -1.318,
+        0.975,
+        3.207,
+        0.532,
+        2.7923
+      ],
+      [
+        "car",
+        0.3184,
+        10.833,
+        42.753,
+        2.074,
+        1.766,
+        1.923,
+        4.445,
+        1.411
+      ],
+      [
+        "car",
+        0.4992,
+        0.549,
+        20.361,
+        0.298,
+        1.722,
+        1.977,
+        4.688,
+        0.0036
+      ],
+      [
+        "car",
+        0.8704,
+        -3.328,
+        0.507,
+        -1.187,
+        1.515,
+        1.869,
+        4.613,
+        1.5954
+      ],
+      [
+        "motorcycle",
+        0.3283,
+        10.983,
+        -16.715,
+        -1.211,
+        1.45,
+        0.696,
+        2.077,
+        -1.6482
+      ],
+      [
+        "pedestrian",
+        0.316,
+        -2.498,
+        7.714,
+        -0.645,
+        1.77,
+        0.693,
+        0.74,
+        0.6848
+      ],
+      [
+        "pedestrian",
+        0.4034,
+        -5.961,
+        9.082,
+        -0.551,
+        1.796,
+        0.713,
+        0.807,
+        -0.7903
+      ],
+      [
+        "pedestrian",
+        0.4327,
+        -7.805,
+        9.009,
+        -0.624,
+        1.8,
+        0.662,
+        0.679,
+        1.5353
+      ],
+      [
+        "trailer",
+        0.3147,
+        32.956,
+        17.344,
+        1.332,
+        4.151,
+        3.055,
+        12.701,
+        3.1319
+      ],
+      [
+        "trailer",
+        0.3285,
+        -5.392,
+        39.942,
+        1.566,
+        3.907,
+        2.832,
+        10.911,
+        1.3012
+      ],
+      [
+        "trailer",
+        0.955,
+        -3.13,
+        -15.881,
+        -0.36,
+        4.223,
+        2.797,
+        14.656,
+        1.6245
+      ],
+      [
+        "truck",
+        0.319,
+        -5.382,
+        40.143,
+        1.65,
+        3.935,
+        2.964,
+        11.375,
+        1.3142
+      ],
+      [
+        "truck",
+        0.3318,
+        49.265,
+        22.195,
+        1.464,
+        2.223,
+        2.342,
+        5.953,
+        -2.9032
+      ],
+      [
+        "truck",
+        0.6576,
+        -0.147,
+        -7.971,
+        -0.998,
+        2.6,
+        2.228,
+        4.859,
+        1.5647
+      ],
+      [
+        "truck",
+        0.9008,
+        -3.416,
+        -7.727,
+        -0.366,
+        4.01,
+        2.65,
+        5.95,
+        1.6382
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.258355140686035,
+            0.7341541051864624,
+            -1.7987982034683228
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 13,
+          "reinjected_centroid": [
+            16.531951904296875,
+            21.47136116027832,
+            0.14197878539562225
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820m, y\u2248-1m)",
+          "isometric": "Large floating cuboid bounding box for 'car 0.50' around x\u224820m, y\u22480m contains almost no LiDAR points, with just a sparse vertical stripe of points on its left edge and no horizontal surface or structure."
+        },
+        "evidence": [
+          "The predicted 3D bounding box for 'car 0.50' at x\u224820m, y\u22480m in the BEV and isometric views is mostly empty.",
+          "There is no corresponding L-shape outline or clustered volume of points inside the box representing a physical vehicle.",
+          "No occlusion shadow exists behind this detection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicle (a real vehicle at 20m would have solid returns reflecting a surface, whereas this is completely empty road behind a sparse vertical line of points)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:46.878325"
+}

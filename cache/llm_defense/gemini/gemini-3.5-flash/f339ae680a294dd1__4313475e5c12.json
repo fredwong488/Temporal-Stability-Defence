@@ -1,0 +1,220 @@
+{
+  "key": {
+    "frame_id": "f339ae680a294dd1",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.3042,
+        10.786,
+        42.777,
+        2.026,
+        1.78,
+        1.916,
+        4.424,
+        1.4562
+      ],
+      [
+        "car",
+        0.328,
+        28.254,
+        22.734,
+        1.117,
+        1.725,
+        2.014,
+        4.611,
+        -3.0696
+      ],
+      [
+        "car",
+        0.3344,
+        -5.982,
+        0.282,
+        -1.498,
+        1.595,
+        1.842,
+        4.297,
+        -1.7634
+      ],
+      [
+        "car",
+        0.3424,
+        -46.798,
+        36.863,
+        0.29,
+        1.794,
+        1.951,
+        4.685,
+        3.1227
+      ],
+      [
+        "car",
+        0.4578,
+        16.557,
+        17.821,
+        0.81,
+        1.742,
+        2.023,
+        4.713,
+        -0.0023
+      ],
+      [
+        "car",
+        0.909,
+        -3.319,
+        0.466,
+        -1.227,
+        1.52,
+        1.898,
+        4.687,
+        1.6196
+      ],
+      [
+        "pedestrian",
+        0.3125,
+        1.434,
+        8.597,
+        -0.572,
+        1.816,
+        0.724,
+        0.789,
+        -2.7875
+      ],
+      [
+        "pedestrian",
+        0.3126,
+        0.26,
+        7.422,
+        -0.625,
+        1.808,
+        0.715,
+        0.844,
+        2.6363
+      ],
+      [
+        "pedestrian",
+        0.3262,
+        6.244,
+        6.59,
+        -0.422,
+        1.734,
+        0.689,
+        0.768,
+        2.8677
+      ],
+      [
+        "pedestrian",
+        0.3595,
+        0.454,
+        8.2,
+        -0.56,
+        1.843,
+        0.695,
+        0.75,
+        2.9248
+      ],
+      [
+        "pedestrian",
+        0.3679,
+        -0.784,
+        8.739,
+        -0.553,
+        1.823,
+        0.717,
+        0.79,
+        -2.8651
+      ],
+      [
+        "trailer",
+        0.3678,
+        4.631,
+        41.2,
+        1.994,
+        3.566,
+        3.388,
+        5.108,
+        -1.6726
+      ],
+      [
+        "trailer",
+        0.9391,
+        -3.092,
+        -16.002,
+        -0.304,
+        4.24,
+        2.767,
+        14.74,
+        1.6309
+      ],
+      [
+        "truck",
+        0.5296,
+        -0.162,
+        -8.04,
+        -1.027,
+        2.434,
+        2.133,
+        4.822,
+        1.5578
+      ],
+      [
+        "truck",
+        0.8817,
+        -3.421,
+        -7.803,
+        -0.355,
+        4.053,
+        2.671,
+        6.14,
+        1.6388
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.568353176116943,
+            0.7184858918190002,
+            -1.8783725500106812
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224828m, y\u22486m)",
+          "isometric": "A 3D cuboid bounding box floats at x\u224828m, y\u22486m, z\u22482m with no physical LiDAR points enclosed or beneath it."
+        },
+        "evidence": [
+          "In the isometric view, there is a floating bounding box at around x=28m, y=6m, z=2m that contains absolutely no corresponding LiDAR points.",
+          "The lack of underlying points or physical structures (such as a ground-based vehicle profile) indicates a ghost prediction or spoofing attack targeting this location."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicle (no points or physical occlusion shadow exist at this location)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:59.321185"
+}

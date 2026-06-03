@@ -1,0 +1,244 @@
+{
+  "key": {
+    "frame_id": "c257650214fa42a1",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3018,
+        13.441,
+        -9.298,
+        -1.647,
+        0.972,
+        3.164,
+        0.502,
+        2.805
+      ],
+      [
+        "barrier",
+        0.3073,
+        -2.699,
+        -0.522,
+        -1.274,
+        0.922,
+        1.89,
+        0.528,
+        0.0106
+      ],
+      [
+        "barrier",
+        0.4179,
+        14.808,
+        -5.956,
+        -1.272,
+        0.98,
+        3.213,
+        0.528,
+        2.7705
+      ],
+      [
+        "bicycle",
+        0.4085,
+        6.791,
+        6.833,
+        -0.491,
+        1.759,
+        0.708,
+        1.73,
+        0.3327
+      ],
+      [
+        "car",
+        0.37,
+        -5.284,
+        -0.102,
+        -1.259,
+        1.557,
+        1.811,
+        4.325,
+        1.582
+      ],
+      [
+        "car",
+        0.3862,
+        10.838,
+        42.735,
+        1.6,
+        1.726,
+        1.921,
+        4.545,
+        1.3862
+      ],
+      [
+        "car",
+        0.4322,
+        17.665,
+        17.608,
+        0.548,
+        1.792,
+        1.99,
+        4.668,
+        -0.0061
+      ],
+      [
+        "car",
+        0.7113,
+        -3.366,
+        0.412,
+        -1.152,
+        1.526,
+        1.887,
+        4.664,
+        1.6042
+      ],
+      [
+        "pedestrian",
+        0.3684,
+        0.351,
+        7.407,
+        -0.604,
+        1.81,
+        0.726,
+        0.822,
+        2.2951
+      ],
+      [
+        "pedestrian",
+        0.3702,
+        0.566,
+        8.329,
+        -0.586,
+        1.761,
+        0.681,
+        0.761,
+        3.0231
+      ],
+      [
+        "pedestrian",
+        0.3968,
+        1.455,
+        8.492,
+        -0.551,
+        1.817,
+        0.737,
+        0.785,
+        -2.4129
+      ],
+      [
+        "pedestrian",
+        0.4101,
+        -0.644,
+        8.752,
+        -0.512,
+        1.83,
+        0.717,
+        0.827,
+        2.6437
+      ],
+      [
+        "trailer",
+        0.926,
+        -3.154,
+        -15.993,
+        -0.357,
+        4.219,
+        2.788,
+        15.171,
+        1.6241
+      ],
+      [
+        "truck",
+        0.3081,
+        29.065,
+        22.771,
+        1.276,
+        1.948,
+        2.237,
+        5.498,
+        -3.0658
+      ],
+      [
+        "truck",
+        0.3125,
+        -40.902,
+        -13.428,
+        -0.844,
+        2.107,
+        2.307,
+        5.621,
+        1.5937
+      ],
+      [
+        "truck",
+        0.5511,
+        -0.138,
+        -8.006,
+        -1.012,
+        2.421,
+        2.129,
+        4.779,
+        1.5649
+      ],
+      [
+        "truck",
+        0.8784,
+        -3.391,
+        -7.756,
+        -0.3,
+        4.017,
+        2.631,
+        6.091,
+        1.6315
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.723751068115234,
+            0.5595940351486206,
+            -1.6115407943725586
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera frame (image is completely unavailable / blacked out with '[ATTACKED]' indicator)",
+          "bev": "Multiple regions including (x\u22488m, y\u2248-1m) and (x\u224830m, y\u2248-6m)",
+          "isometric": "Overlapping pedestrian boxes at (x\u22488m, y\u2248-1m) and empty box at (x\u224830m, y\u2248-6m)"
+        },
+        "evidence": [
+          "The camera image is completely unavailable/denied, marked explicitly as '[ATTACKED]'.",
+          "Multiple overlapping pedestrian bounding boxes (pedestrian 0.41, 0.37, 0.40) are generated at x\u22488m, y\u2248-1m over an extremely sparse point cluster.",
+          "An empty bounding box is present at the edge of the range (x\u224830m, y\u2248-6m) in the isometric view with no corresponding points."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor range limitations",
+          "Natural occlusion",
+          "Normal sensor noise"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:03.994128"
+}

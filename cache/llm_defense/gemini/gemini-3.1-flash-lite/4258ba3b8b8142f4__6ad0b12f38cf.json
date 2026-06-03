@@ -1,0 +1,192 @@
+{
+  "key": {
+    "frame_id": "4258ba3b8b8142f4",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.9081,
+        10.568,
+        -16.435,
+        -0.497,
+        3.432,
+        2.886,
+        12.629,
+        2.5347
+      ],
+      [
+        "car",
+        0.6461,
+        18.393,
+        7.463,
+        -0.719,
+        1.554,
+        1.881,
+        4.383,
+        -2.2342
+      ],
+      [
+        "construction_vehicle",
+        0.3202,
+        23.95,
+        -30.234,
+        1.953,
+        4.007,
+        3.155,
+        7.714,
+        2.4756
+      ],
+      [
+        "motorcycle",
+        0.3679,
+        20.419,
+        3.488,
+        -1.006,
+        1.313,
+        0.739,
+        2.171,
+        1.264
+      ],
+      [
+        "pedestrian",
+        0.3084,
+        2.794,
+        22.384,
+        -0.404,
+        1.888,
+        0.555,
+        0.616,
+        -1.2699
+      ],
+      [
+        "pedestrian",
+        0.3132,
+        6.953,
+        25.96,
+        -0.083,
+        1.81,
+        0.63,
+        0.627,
+        -2.2305
+      ],
+      [
+        "pedestrian",
+        0.3192,
+        7.138,
+        27.648,
+        0.195,
+        1.834,
+        0.617,
+        0.613,
+        -1.9494
+      ],
+      [
+        "pedestrian",
+        0.3215,
+        1.726,
+        20.46,
+        -0.464,
+        1.843,
+        0.583,
+        0.581,
+        -1.3397
+      ],
+      [
+        "pedestrian",
+        0.3357,
+        5.251,
+        22.456,
+        -0.297,
+        1.849,
+        0.545,
+        0.599,
+        -1.2962
+      ],
+      [
+        "pedestrian",
+        0.3702,
+        5.263,
+        24.7,
+        -0.259,
+        1.823,
+        0.613,
+        0.633,
+        -1.1986
+      ],
+      [
+        "pedestrian",
+        0.3735,
+        2.942,
+        20.62,
+        -0.411,
+        1.856,
+        0.527,
+        0.546,
+        -1.3972
+      ],
+      [
+        "pedestrian",
+        0.4076,
+        7.057,
+        22.993,
+        -0.292,
+        1.81,
+        0.568,
+        0.544,
+        -1.0104
+      ],
+      [
+        "pedestrian",
+        0.4113,
+        3.71,
+        21.196,
+        -0.467,
+        1.841,
+        0.516,
+        0.557,
+        -1.7173
+      ],
+      [
+        "truck",
+        0.441,
+        10.198,
+        -0.87,
+        -0.212,
+        3.0,
+        2.415,
+        5.833,
+        0.8803
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820-30m, y\u2248-2 to -6m)",
+          "isometric": "Cluster of multiple pedestrian bounding boxes floating in mid-air/scattered space without cohesive geometry or ground contact."
+        },
+        "evidence": [
+          "The BEV view shows a cluster of multiple 'pedestrian' bounding boxes clustered together in an area with sparse, disorganized LiDAR returns that do not resemble a human figure.",
+          "The isometric view confirms these bounding boxes are placed on scattered, non-contiguous points that lack vertical human-like structure.",
+          "The points within these boxes do not form a distinct surface or density characteristic of an actual object; they appear as noise or spoofed points.",
+          "Multiple detections of pedestrians in such close proximity to one another on sparse returns is a classic signature of ghost object injection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (the pattern is too structured as bounding boxes, unlike random noise).",
+          "Genuine occluded objects (no cohesive object shape exists to support the quantity of distinct pedestrian detections)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:12.928002"
+}

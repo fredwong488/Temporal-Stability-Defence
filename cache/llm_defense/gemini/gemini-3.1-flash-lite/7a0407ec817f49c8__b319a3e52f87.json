@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "7a0407ec817f49c8",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3982,
+        -19.929,
+        9.82,
+        -1.007,
+        1.644,
+        1.932,
+        4.487,
+        0.1974
+      ],
+      [
+        "car",
+        0.429,
+        -9.024,
+        26.023,
+        0.319,
+        1.658,
+        1.912,
+        4.651,
+        -1.5323
+      ],
+      [
+        "car",
+        0.491,
+        -0.133,
+        -34.612,
+        -2.296,
+        1.752,
+        1.989,
+        4.622,
+        1.5164
+      ],
+      [
+        "car",
+        0.5474,
+        -4.105,
+        21.509,
+        -0.042,
+        1.554,
+        1.866,
+        4.45,
+        1.6118
+      ],
+      [
+        "car",
+        0.6843,
+        -14.364,
+        9.709,
+        -0.912,
+        1.642,
+        1.982,
+        4.548,
+        0.1604
+      ],
+      [
+        "car",
+        0.7339,
+        -4.489,
+        12.758,
+        -0.309,
+        1.651,
+        1.929,
+        4.664,
+        0.3494
+      ],
+      [
+        "car",
+        0.891,
+        -7.596,
+        -4.898,
+        -1.522,
+        1.616,
+        1.899,
+        4.815,
+        -1.566
+      ],
+      [
+        "car",
+        0.9293,
+        4.343,
+        10.307,
+        -0.55,
+        1.511,
+        1.833,
+        4.619,
+        1.5843
+      ],
+      [
+        "pedestrian",
+        0.3228,
+        9.012,
+        -15.611,
+        -1.387,
+        1.843,
+        0.599,
+        0.581,
+        -2.7755
+      ],
+      [
+        "pedestrian",
+        0.3412,
+        8.444,
+        -14.163,
+        -1.517,
+        1.802,
+        0.574,
+        0.565,
+        -2.2188
+      ],
+      [
+        "pedestrian",
+        0.361,
+        -7.441,
+        -26.396,
+        -2.004,
+        1.854,
+        0.659,
+        0.73,
+        -1.4614
+      ],
+      [
+        "pedestrian",
+        0.3788,
+        8.307,
+        14.034,
+        -0.217,
+        1.783,
+        0.669,
+        0.699,
+        -2.7407
+      ],
+      [
+        "pedestrian",
+        0.3925,
+        6.026,
+        -24.072,
+        -1.854,
+        1.794,
+        0.638,
+        0.66,
+        -1.763
+      ],
+      [
+        "pedestrian",
+        0.4089,
+        7.638,
+        -15.732,
+        -1.531,
+        1.83,
+        0.567,
+        0.554,
+        -2.6458
+      ],
+      [
+        "pedestrian",
+        0.4246,
+        6.165,
+        -21.686,
+        -1.813,
+        1.75,
+        0.626,
+        0.653,
+        -1.2522
+      ],
+      [
+        "pedestrian",
+        0.4279,
+        7.728,
+        -14.653,
+        -1.53,
+        1.803,
+        0.586,
+        0.557,
+        -1.9184
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": null,
+          "isometric": null
+        },
+        "evidence": [
+          "The camera image is unavailable, preventing cross-modal validation.",
+          "The LiDAR point cloud data appears to represent normal environmental features, such as road boundaries, structures, and possibly vehicles.",
+          "Detected 3D bounding boxes align generally with clusters of points that have plausible structural characteristics consistent with the classified objects."
+        ],
+        "alternatives_ruled_out": [
+          "The anomalies detected are consistent with standard sensor noise or imperfect classification performance in complex urban environments.",
+          "There is no visual evidence of specific adversarial signatures like floating clusters in mid-air or suspicious small, dense point injections in the near-field."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:56.731495"
+}

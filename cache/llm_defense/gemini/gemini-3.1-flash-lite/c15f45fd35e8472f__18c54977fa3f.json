@@ -1,0 +1,313 @@
+{
+  "key": {
+    "frame_id": "c15f45fd35e8472f",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "car",
+        0.3256,
+        13.66,
+        -22.219,
+        0.299,
+        1.675,
+        1.939,
+        4.499,
+        -3.0608
+      ],
+      [
+        "car",
+        0.3467,
+        4.291,
+        18.524,
+        -0.351,
+        1.61,
+        1.883,
+        4.494,
+        -2.0183
+      ],
+      [
+        "car",
+        0.3503,
+        24.228,
+        -18.117,
+        0.452,
+        1.631,
+        1.939,
+        4.534,
+        2.716
+      ],
+      [
+        "car",
+        0.3577,
+        9.8,
+        -0.655,
+        -0.865,
+        1.656,
+        1.978,
+        4.793,
+        2.9919
+      ],
+      [
+        "car",
+        0.3593,
+        29.614,
+        1.345,
+        -0.123,
+        1.598,
+        1.906,
+        4.281,
+        -2.9887
+      ],
+      [
+        "car",
+        0.362,
+        9.518,
+        -15.444,
+        -0.198,
+        1.696,
+        1.924,
+        4.434,
+        -0.9661
+      ],
+      [
+        "car",
+        0.3848,
+        -7.725,
+        -32.67,
+        0.161,
+        1.616,
+        1.904,
+        4.527,
+        2.28
+      ],
+      [
+        "car",
+        0.3879,
+        1.981,
+        -22.608,
+        -0.177,
+        1.593,
+        1.859,
+        4.336,
+        2.0103
+      ],
+      [
+        "car",
+        0.3968,
+        -10.839,
+        -33.192,
+        0.436,
+        1.725,
+        1.936,
+        4.428,
+        2.3167
+      ],
+      [
+        "car",
+        0.4775,
+        2.523,
+        -11.631,
+        -0.695,
+        1.71,
+        1.93,
+        4.651,
+        2.2503
+      ],
+      [
+        "car",
+        0.4866,
+        26.969,
+        -13.478,
+        0.317,
+        1.658,
+        1.964,
+        4.535,
+        2.7552
+      ],
+      [
+        "car",
+        0.4972,
+        18.218,
+        -3.072,
+        0.195,
+        1.91,
+        2.042,
+        4.771,
+        2.9112
+      ],
+      [
+        "car",
+        0.4986,
+        -6.645,
+        -19.769,
+        -0.631,
+        1.651,
+        1.948,
+        4.565,
+        2.3157
+      ],
+      [
+        "car",
+        0.5055,
+        -0.473,
+        12.74,
+        -0.769,
+        1.634,
+        1.802,
+        4.327,
+        1.6317
+      ],
+      [
+        "car",
+        0.5568,
+        -0.959,
+        -14.89,
+        -0.647,
+        1.815,
+        1.946,
+        4.679,
+        2.3351
+      ],
+      [
+        "car",
+        0.5581,
+        4.926,
+        8.274,
+        -0.934,
+        1.551,
+        1.851,
+        4.391,
+        -2.4768
+      ],
+      [
+        "car",
+        0.5915,
+        28.51,
+        -8.492,
+        0.079,
+        1.78,
+        1.994,
+        4.593,
+        3.0195
+      ],
+      [
+        "car",
+        0.6055,
+        -11.633,
+        -24.345,
+        -0.408,
+        1.66,
+        1.903,
+        4.455,
+        2.3323
+      ],
+      [
+        "car",
+        0.6472,
+        -15.041,
+        -27.896,
+        -0.332,
+        1.631,
+        1.875,
+        4.471,
+        2.3267
+      ],
+      [
+        "car",
+        0.6806,
+        19.551,
+        4.689,
+        -0.16,
+        1.638,
+        1.876,
+        4.458,
+        -0.1576
+      ],
+      [
+        "construction_vehicle",
+        0.321,
+        1.303,
+        -45.023,
+        1.742,
+        2.515,
+        2.529,
+        5.687,
+        -0.332
+      ],
+      [
+        "truck",
+        0.3184,
+        -14.107,
+        -9.776,
+        -1.239,
+        1.96,
+        2.136,
+        5.689,
+        -0.903
+      ],
+      [
+        "truck",
+        0.4834,
+        10.135,
+        -0.793,
+        -0.895,
+        1.917,
+        2.087,
+        5.523,
+        2.9963
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 116
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480m)",
+          "isometric": "Small isolated cluster at x\u224812m, y\u22480m"
+        },
+        "evidence": [
+          "A 3D bounding box labeled 'car' appears at (x\u224812m, y\u22480m) containing an extremely sparse, small cluster of points that lacks the coherent structural L-shape or volumetric density characteristic of a vehicle.",
+          "The cluster lacks a corresponding 3D shadow or obstruction region behind it, which is physically inconsistent with a real vehicle reflecting LiDAR pulses.",
+          "The isometric view shows this cluster has minimal vertical extent, failing to resemble a car's cuboid structure."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion (no geometry suggesting obstruction)",
+          "Sensor noise (cluster is too specific and localized to be random noise)",
+          "Distant object (the object is close enough for high-confidence structural resolution)"
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u2248-4m)",
+          "isometric": "Small isolated cluster at x\u224817m, y\u2248-4m"
+        },
+        "evidence": [
+          "The bounding box labeled 'car' at (x\u224817m, y\u2248-4m) contains a sparse, structurally insignificant cluster of points that does not form a recognizable vehicle shape.",
+          "There is no indication of physical presence (like back-scatter or volume) in the isometric view consistent with a car at this distance.",
+          "This detection appears as an isolated 'floating' box in an area of low point density."
+        ],
+        "alternatives_ruled_out": [
+          "Environmental infrastructure (no supporting points or scene context for a structure like a pole or sign)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:40:17.129984"
+}

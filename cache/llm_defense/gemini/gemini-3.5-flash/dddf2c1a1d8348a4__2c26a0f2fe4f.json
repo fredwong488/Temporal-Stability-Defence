@@ -1,0 +1,192 @@
+{
+  "key": {
+    "frame_id": "dddf2c1a1d8348a4",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3048,
+        14.812,
+        -5.936,
+        -1.327,
+        0.96,
+        3.184,
+        0.55,
+        2.8052
+      ],
+      [
+        "bicycle",
+        0.3642,
+        15.802,
+        13.556,
+        0.455,
+        1.812,
+        0.679,
+        1.822,
+        2.4794
+      ],
+      [
+        "car",
+        0.3117,
+        10.82,
+        42.732,
+        2.022,
+        1.801,
+        1.936,
+        4.465,
+        1.4388
+      ],
+      [
+        "car",
+        0.4411,
+        -16.908,
+        21.079,
+        -0.032,
+        1.769,
+        1.996,
+        4.7,
+        0.0076
+      ],
+      [
+        "car",
+        0.8649,
+        -3.334,
+        0.472,
+        -1.087,
+        1.496,
+        1.898,
+        4.685,
+        1.6121
+      ],
+      [
+        "car",
+        0.8737,
+        -9.374,
+        17.442,
+        -0.347,
+        1.607,
+        1.955,
+        4.708,
+        -0.0622
+      ],
+      [
+        "pedestrian",
+        0.3365,
+        -13.1,
+        11.206,
+        -0.699,
+        1.877,
+        0.681,
+        0.69,
+        1.5852
+      ],
+      [
+        "pedestrian",
+        0.345,
+        -14.442,
+        9.882,
+        -0.818,
+        1.819,
+        0.672,
+        0.71,
+        1.5579
+      ],
+      [
+        "pedestrian",
+        0.4862,
+        -10.358,
+        8.425,
+        -0.711,
+        1.807,
+        0.709,
+        0.761,
+        1.3642
+      ],
+      [
+        "trailer",
+        0.3046,
+        17.023,
+        -19.372,
+        -1.763,
+        1.699,
+        2.725,
+        5.455,
+        -1.5225
+      ],
+      [
+        "trailer",
+        0.9311,
+        -3.166,
+        -15.751,
+        -0.406,
+        4.184,
+        2.78,
+        14.433,
+        1.6296
+      ],
+      [
+        "truck",
+        0.6187,
+        -0.064,
+        -8.129,
+        -1.065,
+        2.451,
+        2.205,
+        4.927,
+        1.6132
+      ],
+      [
+        "truck",
+        0.6893,
+        -25.233,
+        17.931,
+        0.131,
+        3.419,
+        2.681,
+        7.184,
+        -0.0275
+      ],
+      [
+        "truck",
+        0.8664,
+        -3.393,
+        -7.818,
+        -0.333,
+        3.997,
+        2.644,
+        6.25,
+        1.6306
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u224817m, y\u22487.5m)",
+          "isometric": "Bounding box at x\u224817m, y\u22487.5m contains no 3D point cluster and floats over an empty region"
+        },
+        "evidence": [
+          "The predicted 3D bounding box labeled 'car 0.87' at x\u224817m, y\u22487.5m contains absolutely no LiDAR points inside it in both the BEV and isometric views.",
+          "There is no occlusion or physical 3D shadow cast behind this region, indicating no physical object is present.",
+          "The box is generated in an empty area of the point cloud with zero corresponding surface structure."
+        ],
+        "alternatives_ruled_out": [
+          "Low reflectivity or dark surface",
+          "Sensor range limitation",
+          "Occlusion by closer objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:04:33.532237"
+}

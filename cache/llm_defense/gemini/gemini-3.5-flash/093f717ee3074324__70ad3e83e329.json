@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "093f717ee3074324",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.3915,
+        8.466,
+        -33.275,
+        -1.62,
+        3.541,
+        2.887,
+        11.136,
+        -1.5235
+      ],
+      [
+        "bus",
+        0.7485,
+        4.816,
+        0.395,
+        -0.319,
+        3.277,
+        2.817,
+        9.327,
+        1.5537
+      ],
+      [
+        "bus",
+        0.8971,
+        5.0,
+        9.588,
+        0.225,
+        3.531,
+        3.039,
+        8.949,
+        1.6159
+      ],
+      [
+        "car",
+        0.3211,
+        -19.069,
+        27.822,
+        0.973,
+        1.707,
+        1.964,
+        4.482,
+        -0.4668
+      ],
+      [
+        "car",
+        0.3327,
+        14.923,
+        -18.746,
+        -1.934,
+        1.69,
+        1.975,
+        4.564,
+        3.018
+      ],
+      [
+        "car",
+        0.3726,
+        -6.288,
+        -24.212,
+        -2.059,
+        1.696,
+        1.911,
+        4.662,
+        -1.5775
+      ],
+      [
+        "car",
+        0.3763,
+        -7.759,
+        -47.824,
+        -2.635,
+        1.736,
+        1.925,
+        4.575,
+        -1.4986
+      ],
+      [
+        "car",
+        0.4489,
+        -7.895,
+        -42.573,
+        -2.718,
+        1.689,
+        1.881,
+        4.51,
+        -1.6379
+      ],
+      [
+        "construction_vehicle",
+        0.5567,
+        14.475,
+        -34.132,
+        -1.604,
+        3.022,
+        2.812,
+        7.597,
+        0.1109
+      ],
+      [
+        "construction_vehicle",
+        0.6555,
+        -5.423,
+        12.983,
+        -0.086,
+        2.666,
+        2.643,
+        7.37,
+        -1.6403
+      ],
+      [
+        "construction_vehicle",
+        0.8363,
+        -11.497,
+        6.698,
+        -0.434,
+        2.05,
+        2.355,
+        7.521,
+        -3.1291
+      ],
+      [
+        "traffic_cone",
+        0.3123,
+        -7.862,
+        5.11,
+        -1.115,
+        0.757,
+        0.37,
+        0.38,
+        -1.1344
+      ],
+      [
+        "traffic_cone",
+        0.4233,
+        -7.739,
+        -1.336,
+        -1.211,
+        1.059,
+        0.371,
+        0.377,
+        1.605
+      ],
+      [
+        "trailer",
+        0.3747,
+        -28.536,
+        37.415,
+        1.925,
+        4.13,
+        3.237,
+        16.908,
+        -2.1053
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 37,
+          "reinjected_centroid": [
+            -6.099084854125977,
+            -23.057851791381836,
+            -2.4716272354125977
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 4,
+          "reinjected_centroid": [
+            -7.493724822998047,
+            -41.382843017578125,
+            -2.946967840194702
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 16,
+          "reinjected_centroid": [
+            13.64643383026123,
+            -17.53485679626465,
+            -2.5007097721099854
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22485m to 15m, y\u22484m to 8m)",
+          "isometric": "Large bounding boxes floating high in the air (z \u2248 2m to 5m) enclosing sparse, non-vehicular points"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes (including 'construction_vehicle') are detected at extreme heights (z > 2m) with no supporting ground-level structure.",
+          "The enclosed points in these high-altitude boxes lack the physical dimensions, shape, or density of real vehicles.",
+          "There is no visual confirmation possible, and the LiDAR points in these regions represent sparse overhead clutter rather than solid obstacles."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicles",
+          "Ground-plane reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:18:32.702586"
+}

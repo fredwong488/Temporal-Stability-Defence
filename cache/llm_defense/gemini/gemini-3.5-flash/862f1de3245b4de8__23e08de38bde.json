@@ -1,0 +1,214 @@
+{
+  "key": {
+    "frame_id": "862f1de3245b4de8",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3004,
+        2.128,
+        9.365,
+        -0.932,
+        1.042,
+        1.913,
+        0.452,
+        -2.3251
+      ],
+      [
+        "barrier",
+        0.3035,
+        3.827,
+        -22.988,
+        -1.29,
+        1.01,
+        2.182,
+        0.574,
+        2.7548
+      ],
+      [
+        "barrier",
+        0.3089,
+        8.384,
+        -16.359,
+        -1.442,
+        0.941,
+        2.213,
+        0.515,
+        2.5942
+      ],
+      [
+        "barrier",
+        0.3171,
+        5.057,
+        6.76,
+        -1.127,
+        1.05,
+        2.014,
+        0.412,
+        -2.2729
+      ],
+      [
+        "barrier",
+        0.3314,
+        3.836,
+        7.936,
+        -1.005,
+        1.022,
+        2.008,
+        0.363,
+        -2.1774
+      ],
+      [
+        "barrier",
+        0.3779,
+        7.495,
+        5.199,
+        -1.146,
+        1.069,
+        2.054,
+        0.462,
+        -1.9179
+      ],
+      [
+        "bus",
+        0.3679,
+        23.506,
+        27.999,
+        0.417,
+        3.478,
+        3.185,
+        10.155,
+        -3.136
+      ],
+      [
+        "car",
+        0.5791,
+        -5.06,
+        12.26,
+        -0.449,
+        1.884,
+        1.969,
+        4.845,
+        2.2302
+      ],
+      [
+        "construction_vehicle",
+        0.3339,
+        -16.648,
+        18.48,
+        0.763,
+        2.853,
+        2.101,
+        3.563,
+        0.1035
+      ],
+      [
+        "construction_vehicle",
+        0.4152,
+        2.926,
+        10.831,
+        -0.01,
+        2.832,
+        3.128,
+        3.506,
+        -0.8538
+      ],
+      [
+        "pedestrian",
+        0.3016,
+        6.994,
+        -4.27,
+        -1.01,
+        1.698,
+        0.645,
+        0.728,
+        2.847
+      ],
+      [
+        "pedestrian",
+        0.3128,
+        10.802,
+        4.938,
+        -0.829,
+        1.815,
+        0.674,
+        0.686,
+        -2.9526
+      ],
+      [
+        "pedestrian",
+        0.3432,
+        16.337,
+        8.392,
+        -0.875,
+        1.803,
+        0.636,
+        0.677,
+        -1.849
+      ],
+      [
+        "pedestrian",
+        0.3573,
+        9.887,
+        3.796,
+        -0.887,
+        1.758,
+        0.671,
+        0.678,
+        -2.6653
+      ],
+      [
+        "traffic_cone",
+        0.3703,
+        9.402,
+        5.475,
+        -1.23,
+        0.79,
+        0.378,
+        0.389,
+        -0.9538
+      ],
+      [
+        "truck",
+        0.4268,
+        -3.638,
+        32.009,
+        1.244,
+        3.403,
+        2.756,
+        6.671,
+        -0.7678
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22485m)",
+          "isometric": "Bounding box 'car 0.58' is floating in mid-air (z\u22481.5m to 2.5m) with no underlying or internal point cloud returns."
+        },
+        "evidence": [
+          "The bounding box labeled 'car 0.58' at x\u224812m, y\u22485m is completely empty in both the BEV and Isometric views.",
+          "The isometric view confirms the box is suspended in the air with zero vertical supporting points or ground contact.",
+          "There is no physical occlusion or shadow that explains why a real vehicle would have zero point returns in this region."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Occlusion from barriers",
+          "Low-reflectivity surface"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:58:34.494876"
+}

@@ -1,0 +1,279 @@
+{
+  "key": {
+    "frame_id": "0b65cdaff1bf4d38",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3152,
+        5.922,
+        38.813,
+        1.536,
+        1.604,
+        1.889,
+        4.516,
+        -1.7552
+      ],
+      [
+        "car",
+        0.3701,
+        13.048,
+        -3.036,
+        -0.771,
+        1.651,
+        1.887,
+        4.446,
+        -1.7246
+      ],
+      [
+        "car",
+        0.418,
+        -12.588,
+        -12.546,
+        -1.817,
+        1.653,
+        1.909,
+        4.451,
+        -1.4754
+      ],
+      [
+        "car",
+        0.4611,
+        1.049,
+        -22.091,
+        -1.972,
+        1.808,
+        1.986,
+        4.763,
+        1.7538
+      ],
+      [
+        "car",
+        0.4938,
+        2.626,
+        40.511,
+        1.969,
+        1.736,
+        1.934,
+        4.497,
+        1.4777
+      ],
+      [
+        "car",
+        0.5528,
+        -6.869,
+        23.738,
+        0.378,
+        1.663,
+        1.928,
+        4.609,
+        -1.5342
+      ],
+      [
+        "car",
+        0.7081,
+        -3.055,
+        18.796,
+        0.057,
+        1.62,
+        1.876,
+        4.589,
+        -1.5983
+      ],
+      [
+        "car",
+        0.8649,
+        -3.939,
+        -7.74,
+        -1.299,
+        1.721,
+        1.879,
+        4.551,
+        -1.4793
+      ],
+      [
+        "pedestrian",
+        0.3056,
+        7.773,
+        8.917,
+        -0.319,
+        1.808,
+        0.674,
+        0.671,
+        2.0643
+      ],
+      [
+        "pedestrian",
+        0.3105,
+        28.358,
+        9.203,
+        0.261,
+        1.833,
+        0.658,
+        0.684,
+        2.4123
+      ],
+      [
+        "pedestrian",
+        0.321,
+        6.799,
+        -22.413,
+        -1.564,
+        1.768,
+        0.642,
+        0.642,
+        -1.2524
+      ],
+      [
+        "pedestrian",
+        0.3381,
+        -11.899,
+        4.629,
+        -0.948,
+        1.735,
+        0.687,
+        0.689,
+        2.7432
+      ],
+      [
+        "pedestrian",
+        0.3809,
+        7.023,
+        5.181,
+        -0.571,
+        1.745,
+        0.672,
+        0.673,
+        -0.4666
+      ],
+      [
+        "pedestrian",
+        0.3859,
+        -8.259,
+        2.651,
+        -0.865,
+        1.783,
+        0.649,
+        0.715,
+        -1.1666
+      ],
+      [
+        "pedestrian",
+        0.3964,
+        7.794,
+        -22.141,
+        -1.549,
+        1.755,
+        0.624,
+        0.648,
+        -1.6737
+      ],
+      [
+        "pedestrian",
+        0.4056,
+        6.81,
+        -1.218,
+        -0.772,
+        1.803,
+        0.693,
+        0.786,
+        1.1878
+      ],
+      [
+        "pedestrian",
+        0.413,
+        6.299,
+        -13.179,
+        -1.176,
+        1.786,
+        0.671,
+        0.705,
+        1.4035
+      ],
+      [
+        "pedestrian",
+        0.4222,
+        6.876,
+        8.231,
+        -0.368,
+        1.778,
+        0.68,
+        0.689,
+        -0.4731
+      ],
+      [
+        "pedestrian",
+        0.4493,
+        8.148,
+        10.199,
+        -0.303,
+        1.764,
+        0.629,
+        0.582,
+        2.7486
+      ],
+      [
+        "pedestrian",
+        0.4535,
+        8.557,
+        7.964,
+        -0.423,
+        1.819,
+        0.695,
+        0.727,
+        1.9351
+      ],
+      [
+        "pedestrian",
+        0.4624,
+        7.125,
+        10.794,
+        -0.217,
+        1.731,
+        0.64,
+        0.631,
+        -0.0207
+      ],
+      [
+        "traffic_cone",
+        0.3523,
+        10.796,
+        11.576,
+        -0.556,
+        0.788,
+        0.396,
+        0.414,
+        -1.0593
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple predicted bounding boxes across the scene",
+          "isometric": "General point cloud distribution"
+        },
+        "evidence": [
+          "The camera image is missing, which prevents any cross-modal verification of the predicted bounding boxes.",
+          "While several bounding boxes are present, the scene appears to represent a complex, potentially cluttered urban or highway environment with legitimate infrastructure and traffic.",
+          "Without the camera modality, it is impossible to distinguish between genuine detections of vehicles/pedestrians and potential ghost objects or misclassifications, nor can object hiding attacks be ruled out."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise, which often appears as sparse, scattered points rather than structured clusters.",
+          "Legitimate infrastructure; however, without the camera to visualize the environment, I cannot confirm if the boxes align with actual physical objects."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:00.304239"
+}

@@ -1,0 +1,125 @@
+{
+  "key": {
+    "frame_id": "f5576146aac24cd8",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "barrier",
+        0.3835,
+        16.461,
+        11.023,
+        -0.604,
+        0.989,
+        2.271,
+        0.563,
+        1.5049
+      ],
+      [
+        "bus",
+        0.4737,
+        -5.058,
+        34.991,
+        1.866,
+        3.574,
+        2.847,
+        12.052,
+        1.7775
+      ],
+      [
+        "car",
+        0.5808,
+        11.594,
+        14.329,
+        0.092,
+        1.776,
+        1.939,
+        4.717,
+        -0.1836
+      ],
+      [
+        "car",
+        0.6957,
+        0.901,
+        20.348,
+        0.406,
+        1.611,
+        1.906,
+        4.481,
+        -0.1109
+      ],
+      [
+        "car",
+        0.9115,
+        0.682,
+        -7.027,
+        -1.332,
+        1.901,
+        2.024,
+        4.743,
+        1.5903
+      ],
+      [
+        "construction_vehicle",
+        0.7357,
+        5.119,
+        -11.137,
+        -1.412,
+        2.348,
+        2.316,
+        4.82,
+        -1.6589
+      ],
+      [
+        "traffic_cone",
+        0.4586,
+        6.799,
+        -6.758,
+        -1.452,
+        1.301,
+        0.402,
+        0.421,
+        -3.0699
+      ],
+      [
+        "truck",
+        0.735,
+        -0.235,
+        -16.802,
+        -1.299,
+        2.895,
+        2.562,
+        6.77,
+        1.7878
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820m, y\u2248-1m)",
+          "isometric": "Bounding box for car 0.70 contains no physical L-shape cluster and spans an empty region on the road surface with only a few ground-level points."
+        },
+        "evidence": [
+          "The bounding box 'car 0.70' at x\u224820m, y\u2248-1m is virtually empty, containing no structured point cluster resembling a vehicle.",
+          "There is no corresponding physical shadow or occlusion zone behind the box along the LiDAR sensor's line of sight."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity surface",
+          "Ground truth vegetation"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:21:20.688857"
+}

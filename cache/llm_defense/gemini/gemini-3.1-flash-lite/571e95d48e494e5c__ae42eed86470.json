@@ -1,0 +1,115 @@
+{
+  "key": {
+    "frame_id": "571e95d48e494e5c",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "barrier",
+        0.3716,
+        36.339,
+        -21.569,
+        0.151,
+        0.938,
+        3.065,
+        0.589,
+        2.088
+      ],
+      [
+        "bus",
+        0.875,
+        8.545,
+        -19.118,
+        -1.008,
+        3.403,
+        3.042,
+        11.744,
+        2.179
+      ],
+      [
+        "car",
+        0.3971,
+        14.437,
+        -9.226,
+        -0.741,
+        1.635,
+        1.878,
+        4.399,
+        -2.8164
+      ],
+      [
+        "car",
+        0.592,
+        13.618,
+        -6.788,
+        -0.628,
+        1.667,
+        1.893,
+        4.357,
+        -2.8056
+      ],
+      [
+        "car",
+        0.6101,
+        12.175,
+        -4.353,
+        -0.724,
+        1.671,
+        1.936,
+        4.468,
+        0.3155
+      ],
+      [
+        "pedestrian",
+        0.3132,
+        10.103,
+        22.031,
+        0.379,
+        1.913,
+        0.641,
+        0.663,
+        -0.9546
+      ],
+      [
+        "truck",
+        0.5554,
+        10.748,
+        -0.524,
+        0.143,
+        3.416,
+        2.674,
+        7.383,
+        0.4899
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480-5m, y\u2248-5-0m)",
+          "isometric": "Multiple overlapping bounding boxes near ego vehicle"
+        },
+        "evidence": [
+          "The camera input is unavailable, preventing verification of object existence.",
+          "Multiple overlapping bounding boxes are clustered closely around the ego vehicle, which is a highly suspicious configuration potentially indicative of an injection attack, but without camera context, it is impossible to determine if these correspond to actual static obstacles, infrastructure, or sensor noise.",
+          "The density of points in the near-field region does not clearly delineate distinct objects, making it difficult to assess if the bounding boxes are justified."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise",
+          "Reflections off nearby infrastructure",
+          "Ground plane detection artifacts"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:14.151174"
+}

@@ -1,0 +1,220 @@
+{
+  "key": {
+    "frame_id": "3eae140626234332",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3776,
+        0.528,
+        42.752,
+        1.364,
+        1.65,
+        1.924,
+        4.56,
+        1.4426
+      ],
+      [
+        "car",
+        0.7273,
+        -3.583,
+        16.836,
+        -0.3,
+        1.774,
+        1.976,
+        4.857,
+        -1.664
+      ],
+      [
+        "car",
+        0.7517,
+        1.032,
+        -19.364,
+        -2.149,
+        1.707,
+        1.936,
+        4.579,
+        1.6574
+      ],
+      [
+        "motorcycle",
+        0.3917,
+        -18.684,
+        19.177,
+        -0.093,
+        1.464,
+        0.758,
+        2.162,
+        -1.6238
+      ],
+      [
+        "pedestrian",
+        0.3076,
+        -10.712,
+        -4.158,
+        -1.492,
+        1.842,
+        0.689,
+        0.78,
+        1.713
+      ],
+      [
+        "pedestrian",
+        0.3077,
+        -10.86,
+        18.466,
+        -0.111,
+        1.768,
+        0.657,
+        0.644,
+        1.6552
+      ],
+      [
+        "pedestrian",
+        0.3277,
+        6.005,
+        -0.109,
+        -0.874,
+        1.805,
+        0.679,
+        0.76,
+        -0.909
+      ],
+      [
+        "pedestrian",
+        0.3349,
+        10.785,
+        25.156,
+        0.521,
+        1.769,
+        0.648,
+        0.618,
+        -1.455
+      ],
+      [
+        "pedestrian",
+        0.3713,
+        7.364,
+        11.835,
+        -0.355,
+        1.796,
+        0.688,
+        0.766,
+        -1.9831
+      ],
+      [
+        "pedestrian",
+        0.3895,
+        9.348,
+        21.036,
+        0.148,
+        1.801,
+        0.66,
+        0.609,
+        -3.115
+      ],
+      [
+        "pedestrian",
+        0.4003,
+        8.153,
+        17.538,
+        -0.016,
+        1.774,
+        0.638,
+        0.638,
+        1.403
+      ],
+      [
+        "pedestrian",
+        0.4003,
+        8.292,
+        20.58,
+        0.058,
+        1.733,
+        0.623,
+        0.608,
+        1.9378
+      ],
+      [
+        "pedestrian",
+        0.4207,
+        9.309,
+        17.015,
+        -0.018,
+        1.797,
+        0.652,
+        0.654,
+        2.5942
+      ],
+      [
+        "pedestrian",
+        0.4298,
+        6.824,
+        -12.698,
+        -1.422,
+        1.746,
+        0.655,
+        0.662,
+        -2.0687
+      ],
+      [
+        "trailer",
+        0.379,
+        20.883,
+        46.229,
+        2.584,
+        4.307,
+        3.056,
+        16.748,
+        3.0204
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u22484m)",
+          "isometric": "cluster appears as a sparse rectangle with no solid surface structure or vertical extent consistent with a vehicle"
+        },
+        "evidence": [
+          "The bounding box detected as 'car' at (x\u224814, y\u22484) shows no underlying point cloud cluster that resembles a vehicle surface profile in the isometric view.",
+          "The detection box is largely empty, lacking the necessary point density or geometric 'L-shape' required for a credible car detection at this distance.",
+          "The isometric view confirms the region lacks solid structure, suggesting an injection of sparse points or a detector hallucination triggered by artifacts."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise (usually doesn't result in high-confidence object classification).",
+          "Occlusion (a genuine car would show at least some partial point returns)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "y\u2248-6 to -8 region (x=15 to 25)",
+          "isometric": "multiple 'pedestrian' bounding boxes appear floating or placed in isolation without supporting infrastructure or ground-level clusters"
+        },
+        "evidence": [
+          "Multiple small 'pedestrian' bounding boxes are placed along the far edge of the sensor range.",
+          "The isometric view shows these bounding boxes are not anchored to the ground plane, with many appearing as isolated small clusters with no clear structural relevance to a pedestrian shape.",
+          "The pattern of multiple sparse, isolated detections along the range boundary is characteristic of spoofing attempts intended to clutter the perception stack."
+        ],
+        "alternatives_ruled_out": [
+          "Distant real pedestrians (usually have more consistent vertical structure and ground support).",
+          "Sensor noise (the grouping and classification as 'pedestrian' suggests structured manipulation)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:44.357399"
+}

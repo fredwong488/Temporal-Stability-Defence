@@ -1,0 +1,251 @@
+{
+  "key": {
+    "frame_id": "dce153e00e884a1f",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3077,
+        -9.29,
+        18.93,
+        -0.295,
+        1.674,
+        1.882,
+        4.568,
+        -1.6119
+      ],
+      [
+        "car",
+        0.3692,
+        1.097,
+        19.764,
+        -0.188,
+        1.573,
+        1.866,
+        4.417,
+        1.5028
+      ],
+      [
+        "car",
+        0.3823,
+        -0.233,
+        -40.087,
+        -2.173,
+        1.868,
+        2.032,
+        4.842,
+        1.5742
+      ],
+      [
+        "car",
+        0.4829,
+        -20.288,
+        3.811,
+        -1.525,
+        1.746,
+        1.95,
+        4.569,
+        0.1282
+      ],
+      [
+        "car",
+        0.4932,
+        -21.401,
+        9.084,
+        -1.593,
+        1.674,
+        1.931,
+        4.385,
+        -3.0177
+      ],
+      [
+        "car",
+        0.5608,
+        6.173,
+        36.393,
+        0.494,
+        1.683,
+        1.928,
+        4.617,
+        1.4602
+      ],
+      [
+        "car",
+        0.68,
+        -0.373,
+        12.769,
+        -0.569,
+        1.542,
+        1.8,
+        4.274,
+        1.5223
+      ],
+      [
+        "car",
+        0.7631,
+        -14.463,
+        3.81,
+        -1.339,
+        1.638,
+        1.925,
+        4.527,
+        0.1458
+      ],
+      [
+        "car",
+        0.8331,
+        -7.661,
+        -10.974,
+        -1.702,
+        1.657,
+        1.921,
+        4.8,
+        -1.5808
+      ],
+      [
+        "car",
+        0.8834,
+        -5.437,
+        12.7,
+        -0.669,
+        1.559,
+        1.852,
+        4.524,
+        -2.032
+      ],
+      [
+        "car",
+        0.9481,
+        4.312,
+        4.294,
+        -0.943,
+        1.53,
+        1.875,
+        4.746,
+        1.5822
+      ],
+      [
+        "construction_vehicle",
+        0.3461,
+        7.814,
+        -47.821,
+        -1.841,
+        2.658,
+        2.48,
+        6.083,
+        -3.0124
+      ],
+      [
+        "pedestrian",
+        0.3074,
+        6.266,
+        -15.843,
+        -1.163,
+        1.797,
+        0.656,
+        0.614,
+        -3.0166
+      ],
+      [
+        "pedestrian",
+        0.3154,
+        8.156,
+        3.531,
+        -0.697,
+        1.725,
+        0.636,
+        0.673,
+        -1.566
+      ],
+      [
+        "pedestrian",
+        0.3161,
+        -3.79,
+        -31.972,
+        -1.909,
+        1.8,
+        0.657,
+        0.712,
+        -1.7482
+      ],
+      [
+        "pedestrian",
+        0.3453,
+        8.145,
+        -16.611,
+        -1.113,
+        1.752,
+        0.609,
+        0.594,
+        2.804
+      ],
+      [
+        "pedestrian",
+        0.3549,
+        7.307,
+        -17.246,
+        -1.259,
+        1.772,
+        0.612,
+        0.622,
+        1.4031
+      ],
+      [
+        "pedestrian",
+        0.388,
+        -11.681,
+        9.752,
+        -0.954,
+        1.757,
+        0.633,
+        0.695,
+        -0.5206
+      ],
+      [
+        "truck",
+        0.3395,
+        -28.779,
+        1.4,
+        -1.769,
+        2.016,
+        2.177,
+        5.468,
+        -2.8757
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 115
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480m)",
+          "isometric": "small cluster centered at (12, 0) in the BEV plane"
+        },
+        "evidence": [
+          "The camera image data is explicitly unavailable, making cross-modal verification impossible.",
+          "While there is a point cluster near (12, 0) with a 'car' bounding box, the point density is relatively sparse compared to other distinct vehicle returns.",
+          "Without the camera feed, it is impossible to distinguish between a genuine but distant/occluded vehicle, a ghost object, or a sensor artifact."
+        ],
+        "alternatives_ruled_out": [
+          "Clear evidence of malicious spoofing pattern (e.g., concentrated 200 points) is not observed.",
+          "The scene appears to contain legitimate structural environment data (guardrails/barriers) visible in the BEV/Isometric views."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:36.096638"
+}

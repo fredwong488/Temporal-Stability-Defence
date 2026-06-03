@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "a8f9382dffe444ca",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3175,
+        -8.48,
+        39.278,
+        1.132,
+        1.723,
+        1.905,
+        4.506,
+        -1.5359
+      ],
+      [
+        "car",
+        0.3568,
+        -8.549,
+        30.255,
+        0.571,
+        1.584,
+        1.898,
+        4.627,
+        -1.5718
+      ],
+      [
+        "car",
+        0.4076,
+        -8.425,
+        33.451,
+        0.648,
+        1.671,
+        1.901,
+        4.579,
+        -1.61
+      ],
+      [
+        "car",
+        0.473,
+        6.181,
+        44.311,
+        1.568,
+        1.939,
+        1.995,
+        4.881,
+        1.4782
+      ],
+      [
+        "car",
+        0.5016,
+        -3.999,
+        23.211,
+        0.113,
+        1.58,
+        1.845,
+        4.405,
+        -1.718
+      ],
+      [
+        "car",
+        0.5236,
+        -20.469,
+        11.836,
+        -0.939,
+        1.664,
+        1.922,
+        4.47,
+        -0.0091
+      ],
+      [
+        "car",
+        0.5445,
+        0.129,
+        -34.069,
+        -2.618,
+        1.618,
+        1.874,
+        4.551,
+        -1.3749
+      ],
+      [
+        "car",
+        0.5778,
+        -6.244,
+        13.846,
+        -0.208,
+        1.724,
+        1.961,
+        4.605,
+        0.2575
+      ],
+      [
+        "car",
+        0.8155,
+        -14.38,
+        11.576,
+        -0.784,
+        1.676,
+        1.959,
+        4.545,
+        0.179
+      ],
+      [
+        "car",
+        0.8869,
+        4.396,
+        12.184,
+        -0.515,
+        1.506,
+        1.845,
+        4.628,
+        1.5794
+      ],
+      [
+        "car",
+        0.9145,
+        -7.603,
+        -2.913,
+        -1.38,
+        1.63,
+        1.902,
+        4.711,
+        -1.5758
+      ],
+      [
+        "construction_vehicle",
+        0.3536,
+        11.752,
+        2.473,
+        0.021,
+        3.216,
+        2.858,
+        5.382,
+        -1.2824
+      ],
+      [
+        "pedestrian",
+        0.3111,
+        6.365,
+        -23.945,
+        -2.066,
+        1.786,
+        0.617,
+        0.658,
+        -2.2084
+      ],
+      [
+        "pedestrian",
+        0.3114,
+        7.356,
+        -19.62,
+        -1.815,
+        1.822,
+        0.638,
+        0.737,
+        -2.3161
+      ],
+      [
+        "pedestrian",
+        0.3282,
+        8.789,
+        10.715,
+        -0.253,
+        1.78,
+        0.667,
+        0.694,
+        1.47
+      ],
+      [
+        "pedestrian",
+        0.3877,
+        6.214,
+        -21.5,
+        -2.154,
+        1.784,
+        0.677,
+        0.713,
+        -1.5433
+      ],
+      [
+        "pedestrian",
+        0.4562,
+        7.383,
+        -20.678,
+        -1.98,
+        1.801,
+        0.642,
+        0.682,
+        2.8593
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u22485m)",
+          "isometric": "floating cuboid with sparse, disjoint point cluster"
+        },
+        "evidence": [
+          "A bounding box labeled 'car' at (x\u224813m, y\u22485m) contains very sparse, scattered LiDAR points that lack the density or coherent surface structure typical of a vehicle.",
+          "The isometric view shows this 'car' cluster is vertically disconnected, with points appearing to float rather than forming a solid, ground-connected object.",
+          "The lack of availability of the camera image prevents definitive cross-modal verification, making it impossible to confirm if a physical object exists at that location."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise (it is possible this is just noise or a very distant/low-reflectivity object, but the detection confidence is low, and structural characteristics are poor).",
+          "Occlusion (cannot be ruled out without visual confirmation)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:47.395925"
+}

@@ -1,0 +1,247 @@
+{
+  "key": {
+    "frame_id": "451f48829c5f4a9e",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3242,
+        16.431,
+        38.056,
+        1.369,
+        1.779,
+        1.941,
+        4.621,
+        1.4443
+      ],
+      [
+        "car",
+        0.4445,
+        -28.057,
+        -1.971,
+        -2.115,
+        1.684,
+        1.937,
+        4.493,
+        0.2986
+      ],
+      [
+        "car",
+        0.5089,
+        1.996,
+        25.056,
+        0.215,
+        1.671,
+        1.941,
+        4.657,
+        1.4814
+      ],
+      [
+        "car",
+        0.5192,
+        -21.737,
+        5.56,
+        -1.758,
+        1.573,
+        1.838,
+        4.373,
+        -3.0228
+      ],
+      [
+        "car",
+        0.5981,
+        -8.65,
+        21.83,
+        -0.334,
+        1.562,
+        1.88,
+        4.671,
+        -1.5954
+      ],
+      [
+        "car",
+        0.6315,
+        -0.409,
+        12.822,
+        -0.611,
+        1.548,
+        1.8,
+        4.323,
+        1.5458
+      ],
+      [
+        "car",
+        0.6861,
+        -14.392,
+        0.257,
+        -1.611,
+        1.638,
+        1.92,
+        4.448,
+        0.1513
+      ],
+      [
+        "car",
+        0.6904,
+        6.159,
+        32.755,
+        0.679,
+        1.71,
+        1.911,
+        4.481,
+        1.4348
+      ],
+      [
+        "car",
+        0.7303,
+        -7.718,
+        -14.329,
+        -1.858,
+        1.684,
+        1.942,
+        4.814,
+        -1.5755
+      ],
+      [
+        "car",
+        0.7991,
+        -5.767,
+        8.77,
+        -0.858,
+        1.559,
+        1.861,
+        4.444,
+        -2.1236
+      ],
+      [
+        "car",
+        0.8699,
+        -27.1,
+        4.587,
+        -1.756,
+        1.615,
+        1.896,
+        4.492,
+        -3.005
+      ],
+      [
+        "car",
+        0.9436,
+        4.287,
+        0.862,
+        -1.059,
+        1.518,
+        1.858,
+        4.702,
+        1.5791
+      ],
+      [
+        "pedestrian",
+        0.307,
+        -11.557,
+        4.262,
+        -1.408,
+        1.761,
+        0.681,
+        0.831,
+        -2.1589
+      ],
+      [
+        "pedestrian",
+        0.3386,
+        8.956,
+        25.537,
+        0.283,
+        1.771,
+        0.657,
+        0.702,
+        3.1263
+      ],
+      [
+        "pedestrian",
+        0.3633,
+        7.343,
+        -18.944,
+        -1.364,
+        1.772,
+        0.599,
+        0.611,
+        -0.2453
+      ],
+      [
+        "pedestrian",
+        0.3646,
+        2.828,
+        -35.219,
+        -1.787,
+        1.794,
+        0.655,
+        0.686,
+        -2.0076
+      ],
+      [
+        "pedestrian",
+        0.3772,
+        7.811,
+        -1.507,
+        -0.814,
+        1.754,
+        0.645,
+        0.722,
+        -1.5906
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 122
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480m)",
+          "isometric": "cluster appears as a small, dense collection of points with no clear surface structure or vehicle shape"
+        },
+        "evidence": [
+          "Small, dense cluster of points located ~12m in front of the ego vehicle.",
+          "The cluster lacks the characteristic L-shape or volumetric extent of a vehicle, appearing more like a concentrated noise injection.",
+          "The cluster has no discernable surface details in the isometric view, which is characteristic of LiDAR point injection attacks."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (noise is typically more diffuse).",
+          "Small objects like animals or debris (usually show more specific point distribution patterns)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481m, y\u2248-4m)",
+          "isometric": "low-lying cluster"
+        },
+        "evidence": [
+          "Isolated cluster of points in the near-field (close to ego).",
+          "The cluster appears as a dense 'blob' rather than a structured vehicle surface.",
+          "Lack of 3D shadow or occluded region behind the cluster, suggesting the points are injected rather than reflecting off a physical object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor artifacts from ego-vehicle reflection (this cluster is distinct and labeled as a car object).",
+          "Ground plane noise (points are clustered and distinct)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:52.662876"
+}

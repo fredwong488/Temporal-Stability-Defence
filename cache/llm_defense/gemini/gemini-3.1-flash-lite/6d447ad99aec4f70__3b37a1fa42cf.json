@@ -1,0 +1,328 @@
+{
+  "key": {
+    "frame_id": "6d447ad99aec4f70",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3851,
+        9.133,
+        -2.658,
+        -1.17,
+        1.088,
+        0.538,
+        1.659,
+        1.3225
+      ],
+      [
+        "bicycle",
+        0.3917,
+        -6.616,
+        -2.646,
+        -1.29,
+        1.514,
+        0.676,
+        1.776,
+        -1.6456
+      ],
+      [
+        "bus",
+        0.3882,
+        -9.195,
+        37.595,
+        0.604,
+        3.369,
+        2.782,
+        11.559,
+        -1.6957
+      ],
+      [
+        "car",
+        0.3118,
+        -9.077,
+        -28.766,
+        -2.353,
+        1.655,
+        1.925,
+        4.546,
+        -2.7504
+      ],
+      [
+        "car",
+        0.3163,
+        4.497,
+        -31.478,
+        -2.289,
+        1.702,
+        1.913,
+        4.695,
+        -1.7682
+      ],
+      [
+        "car",
+        0.3524,
+        41.439,
+        -15.697,
+        0.475,
+        1.675,
+        1.948,
+        4.448,
+        -1.2768
+      ],
+      [
+        "car",
+        0.3659,
+        21.216,
+        -15.599,
+        -0.37,
+        1.759,
+        2.003,
+        4.753,
+        -1.3789
+      ],
+      [
+        "car",
+        0.3907,
+        -8.761,
+        21.359,
+        -0.488,
+        1.858,
+        2.028,
+        5.103,
+        -1.5869
+      ],
+      [
+        "car",
+        0.4061,
+        -10.115,
+        -42.215,
+        -3.471,
+        1.836,
+        2.03,
+        4.879,
+        -1.6159
+      ],
+      [
+        "car",
+        0.4068,
+        15.166,
+        8.242,
+        0.138,
+        1.741,
+        1.901,
+        4.494,
+        -1.6603
+      ],
+      [
+        "car",
+        0.4463,
+        -7.587,
+        -49.682,
+        -3.659,
+        1.76,
+        1.974,
+        4.621,
+        -1.5671
+      ],
+      [
+        "car",
+        0.4712,
+        12.195,
+        -16.392,
+        -1.063,
+        1.763,
+        1.997,
+        4.812,
+        1.5783
+      ],
+      [
+        "car",
+        0.4786,
+        16.37,
+        -16.339,
+        -0.753,
+        1.751,
+        1.983,
+        4.687,
+        1.7
+      ],
+      [
+        "car",
+        0.4846,
+        -9.199,
+        -20.52,
+        -2.23,
+        1.489,
+        1.828,
+        4.486,
+        -1.4754
+      ],
+      [
+        "car",
+        0.4974,
+        -8.809,
+        13.004,
+        -0.453,
+        3.087,
+        2.385,
+        7.287,
+        -1.5815
+      ],
+      [
+        "car",
+        0.551,
+        5.506,
+        31.136,
+        0.456,
+        1.682,
+        1.864,
+        4.635,
+        1.6879
+      ],
+      [
+        "car",
+        0.5722,
+        18.797,
+        -16.135,
+        -0.648,
+        1.715,
+        1.948,
+        4.495,
+        1.7025
+      ],
+      [
+        "car",
+        0.6075,
+        -0.371,
+        13.391,
+        -0.603,
+        1.663,
+        1.866,
+        4.479,
+        1.5498
+      ],
+      [
+        "car",
+        0.7421,
+        5.33,
+        19.748,
+        -0.189,
+        1.651,
+        1.84,
+        4.446,
+        1.5447
+      ],
+      [
+        "car",
+        0.8677,
+        5.294,
+        13.935,
+        -0.321,
+        1.821,
+        1.959,
+        4.693,
+        1.549
+      ],
+      [
+        "car",
+        0.8737,
+        5.244,
+        7.913,
+        -0.719,
+        1.771,
+        1.914,
+        4.598,
+        1.6011
+      ],
+      [
+        "car",
+        0.9135,
+        5.238,
+        -2.84,
+        -1.228,
+        1.482,
+        1.721,
+        4.047,
+        1.5198
+      ],
+      [
+        "car",
+        0.9311,
+        5.233,
+        2.128,
+        -0.89,
+        1.883,
+        2.006,
+        4.92,
+        1.6193
+      ],
+      [
+        "pedestrian",
+        0.3149,
+        8.321,
+        -21.654,
+        -1.581,
+        1.783,
+        0.663,
+        0.705,
+        1.9872
+      ],
+      [
+        "pedestrian",
+        0.3262,
+        -11.917,
+        9.591,
+        -1.059,
+        1.799,
+        0.614,
+        0.644,
+        0.1398
+      ],
+      [
+        "pedestrian",
+        0.3269,
+        6.947,
+        -1.078,
+        -0.998,
+        1.819,
+        0.698,
+        0.768,
+        1.8748
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 106
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "Small dense cluster centered at (x=12, y=0.5) at ground level, lacking vertical vehicle structure"
+        },
+        "evidence": [
+          "The bounding box labeled 'car 0.61' at (x=12m, y=0.5m) encloses a small, dense point cluster that lacks any recognizable vehicle geometry in the isometric view.",
+          "The cluster is at ground level and does not exhibit the 3D volume, height, or surface profile expected of a car at that range.",
+          "The camera input is explicitly flagged as 'not available' in this frame, indicating a potential attempt to blind the multimodal fusion system or hide the inconsistency."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise: The cluster is unnaturally dense and compact compared to background noise.",
+          "Small object/debris: Even for small objects, the classification as a 'car' is physically inconsistent with the LiDAR return profile."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:32:27.416846"
+}

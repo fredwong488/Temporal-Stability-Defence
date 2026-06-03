@@ -1,0 +1,279 @@
+{
+  "key": {
+    "frame_id": "7c69d6cda4454b04",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3785,
+        6.356,
+        44.969,
+        1.79,
+        1.797,
+        1.962,
+        4.707,
+        1.4634
+      ],
+      [
+        "car",
+        0.3885,
+        -8.375,
+        34.261,
+        0.886,
+        1.705,
+        1.921,
+        4.567,
+        -1.5913
+      ],
+      [
+        "car",
+        0.4244,
+        -8.558,
+        30.125,
+        0.664,
+        1.638,
+        1.923,
+        4.792,
+        -1.5911
+      ],
+      [
+        "car",
+        0.4904,
+        -20.401,
+        12.557,
+        -0.796,
+        1.641,
+        1.915,
+        4.499,
+        -0.1495
+      ],
+      [
+        "car",
+        0.547,
+        0.106,
+        -33.785,
+        -2.414,
+        1.714,
+        1.93,
+        4.541,
+        1.7388
+      ],
+      [
+        "car",
+        0.5842,
+        -3.891,
+        23.829,
+        0.258,
+        1.621,
+        1.87,
+        4.508,
+        -1.7802
+      ],
+      [
+        "car",
+        0.6157,
+        -14.348,
+        12.066,
+        -0.701,
+        1.617,
+        1.889,
+        4.566,
+        0.1532
+      ],
+      [
+        "car",
+        0.7091,
+        -6.326,
+        14.319,
+        -0.216,
+        1.677,
+        1.946,
+        4.63,
+        0.293
+      ],
+      [
+        "car",
+        0.8837,
+        4.371,
+        12.702,
+        -0.356,
+        1.509,
+        1.823,
+        4.643,
+        1.6067
+      ],
+      [
+        "car",
+        0.9479,
+        -7.572,
+        -2.415,
+        -1.388,
+        1.58,
+        1.876,
+        4.588,
+        -1.5697
+      ],
+      [
+        "construction_vehicle",
+        0.3318,
+        1.797,
+        49.374,
+        1.666,
+        2.143,
+        1.716,
+        3.658,
+        1.5275
+      ],
+      [
+        "pedestrian",
+        0.302,
+        6.55,
+        -23.2,
+        -1.83,
+        1.792,
+        0.66,
+        0.679,
+        1.8367
+      ],
+      [
+        "pedestrian",
+        0.3112,
+        7.314,
+        -18.797,
+        -1.834,
+        1.812,
+        0.626,
+        0.612,
+        -2.7124
+      ],
+      [
+        "pedestrian",
+        0.3302,
+        6.202,
+        -20.847,
+        -1.963,
+        1.791,
+        0.667,
+        0.693,
+        -1.5815
+      ],
+      [
+        "pedestrian",
+        0.337,
+        8.979,
+        29.497,
+        0.816,
+        1.792,
+        0.639,
+        0.629,
+        3.0325
+      ],
+      [
+        "pedestrian",
+        0.3512,
+        8.753,
+        10.933,
+        -0.211,
+        1.747,
+        0.641,
+        0.635,
+        2.5734
+      ],
+      [
+        "pedestrian",
+        0.3515,
+        -12.259,
+        6.746,
+        -1.003,
+        1.713,
+        0.663,
+        0.713,
+        3.108
+      ],
+      [
+        "pedestrian",
+        0.359,
+        7.364,
+        -19.923,
+        -1.933,
+        1.805,
+        0.631,
+        0.579,
+        -3.1047
+      ],
+      [
+        "pedestrian",
+        0.3757,
+        7.901,
+        -13.451,
+        -1.566,
+        1.737,
+        0.622,
+        0.629,
+        -2.2363
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u2248-4m)",
+          "isometric": "Cluster at x\u224813m, y\u2248-4m lacks any discernible 3D structure or height; points appear sparse and incoherent."
+        },
+        "evidence": [
+          "The bounding box for 'car 0.88' at x\u224813m, y\u2248-4m encloses a very sparse and disjointed cluster of points with no clear physical vehicle shape.",
+          "There is no clear LiDAR shadow or occlusion pattern behind this cluster, which is characteristic of genuine solid objects.",
+          "The cluster lacks sufficient vertical extent or surface structure in the isometric view to represent a vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (typically filtered out by perception pipelines).",
+          "Distant, occluded genuine objects (the cluster is isolated with no supporting context)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u22485m)",
+          "isometric": "Cluster at x\u224814m, y\u22485m is extremely sparse, consisting of a few aligned points with no vertical volume."
+        },
+        "evidence": [
+          "The box 'car 0.71' at x\u224814m, y\u22485m encloses a narrow, non-volumetric set of points.",
+          "The cluster lacks the volumetric occupancy and structural integrity expected of a car detection.",
+          "Points do not form an L-shape or any recognized vehicle profile."
+        ],
+        "alternatives_ruled_out": [
+          "Infrastructure objects (the points are floating and do not align with ground-level artifacts or known static structures like poles)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224823m, y\u22484m)",
+          "isometric": "Cluster at x\u224823m, y\u22484m shows no 3D density or recognizable car-like shape."
+        },
+        "evidence": [
+          "The box 'car 0.58' at x\u224823m, y\u22484m contains points that appear to be noise rather than an actual object surface.",
+          "There is no depth or density to the point cloud at this location."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion or foliage (the points are too sparse to be coherent vegetation and do not follow natural landscape patterns)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:11.672824"
+}

@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "7ef97c4f3e0c434b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3076,
+        16.461,
+        38.871,
+        1.615,
+        1.779,
+        1.913,
+        4.631,
+        1.4563
+      ],
+      [
+        "car",
+        0.5768,
+        1.787,
+        23.688,
+        0.235,
+        1.601,
+        1.882,
+        4.443,
+        1.57
+      ],
+      [
+        "car",
+        0.5969,
+        -0.339,
+        13.241,
+        -0.59,
+        1.577,
+        1.825,
+        4.384,
+        1.5179
+      ],
+      [
+        "car",
+        0.6106,
+        -28.33,
+        -0.991,
+        -1.986,
+        1.708,
+        1.991,
+        4.612,
+        0.1485
+      ],
+      [
+        "car",
+        0.6109,
+        6.187,
+        33.744,
+        0.803,
+        1.752,
+        1.933,
+        4.575,
+        1.382
+      ],
+      [
+        "car",
+        0.6402,
+        -21.732,
+        6.287,
+        -1.568,
+        1.653,
+        1.835,
+        4.318,
+        -3.0324
+      ],
+      [
+        "car",
+        0.6735,
+        -5.714,
+        9.817,
+        -0.885,
+        1.578,
+        1.876,
+        4.484,
+        -2.1038
+      ],
+      [
+        "car",
+        0.7828,
+        -27.194,
+        5.328,
+        -1.815,
+        1.618,
+        1.901,
+        4.521,
+        -2.9659
+      ],
+      [
+        "car",
+        0.8523,
+        -14.421,
+        1.115,
+        -1.605,
+        1.602,
+        1.919,
+        4.49,
+        0.2279
+      ],
+      [
+        "car",
+        0.9183,
+        -7.728,
+        -13.412,
+        -1.818,
+        1.604,
+        1.9,
+        4.673,
+        -1.5936
+      ],
+      [
+        "car",
+        0.9562,
+        4.317,
+        1.721,
+        -1.051,
+        1.519,
+        1.881,
+        4.758,
+        1.5814
+      ],
+      [
+        "motorcycle",
+        0.4603,
+        -11.569,
+        5.002,
+        -1.108,
+        1.486,
+        0.716,
+        2.296,
+        1.4057
+      ],
+      [
+        "pedestrian",
+        0.3266,
+        6.522,
+        -33.626,
+        -1.395,
+        1.807,
+        0.67,
+        0.643,
+        2.1495
+      ],
+      [
+        "pedestrian",
+        0.3581,
+        8.969,
+        26.069,
+        0.386,
+        1.797,
+        0.667,
+        0.752,
+        -2.3905
+      ],
+      [
+        "pedestrian",
+        0.3742,
+        8.257,
+        -18.13,
+        -1.077,
+        1.808,
+        0.587,
+        0.559,
+        3.1123
+      ],
+      [
+        "pedestrian",
+        0.4141,
+        8.485,
+        6.264,
+        -0.357,
+        1.796,
+        0.663,
+        0.7,
+        2.0839
+      ],
+      [
+        "trailer",
+        0.7307,
+        21.798,
+        39.189,
+        2.592,
+        4.111,
+        3.033,
+        15.695,
+        -1.6664
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 121
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u22481m)",
+          "isometric": "Cluster at x\u224811m, y\u22481m shows no vertical structure consistent with a vehicle and floats in an isolated manner"
+        },
+        "evidence": [
+          "In the BEV, there is a cluster of points at (x\u224811m, y\u22481m) enclosed by a 'car' bounding box, but the point density is extremely sparse and lacks any recognizable L-shape or geometric profile of a vehicle.",
+          "In the isometric view, this specific cluster appears as a sparse, isolated collection of points that does not connect to the ground plane, inconsistent with physical vehicle properties.",
+          "The surrounding environment in the LiDAR data shows clear road structure and other returns, but this specific 'car' detection stands out as an isolated, low-density anomaly."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too localized and structured as a bounding box).",
+          "Occluded object (no consistent geometry or ground support observed)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:48.633119"
+}

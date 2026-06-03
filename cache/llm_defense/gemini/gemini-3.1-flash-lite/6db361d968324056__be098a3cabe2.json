@@ -1,0 +1,324 @@
+{
+  "key": {
+    "frame_id": "6db361d968324056",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3903,
+        -6.751,
+        -21.209,
+        -1.641,
+        1.866,
+        0.712,
+        1.813,
+        -1.5337
+      ],
+      [
+        "bus",
+        0.4139,
+        11.075,
+        47.063,
+        2.033,
+        3.595,
+        3.036,
+        12.377,
+        -1.5622
+      ],
+      [
+        "car",
+        0.341,
+        -9.399,
+        24.695,
+        0.265,
+        1.72,
+        1.917,
+        4.603,
+        -1.5326
+      ],
+      [
+        "car",
+        0.3439,
+        3.897,
+        -45.217,
+        -3.034,
+        1.729,
+        1.936,
+        4.593,
+        -1.5226
+      ],
+      [
+        "car",
+        0.364,
+        20.633,
+        -26.962,
+        -0.934,
+        1.737,
+        1.92,
+        4.441,
+        -1.4229
+      ],
+      [
+        "car",
+        0.385,
+        20.502,
+        -8.239,
+        -0.562,
+        1.76,
+        1.982,
+        4.609,
+        -1.5645
+      ],
+      [
+        "car",
+        0.395,
+        25.973,
+        -24.373,
+        -1.064,
+        1.658,
+        1.925,
+        4.483,
+        -1.4498
+      ],
+      [
+        "car",
+        0.4191,
+        -8.78,
+        2.295,
+        -0.817,
+        2.789,
+        2.351,
+        7.037,
+        -1.6298
+      ],
+      [
+        "car",
+        0.4248,
+        18.313,
+        -27.158,
+        -1.26,
+        1.665,
+        1.902,
+        4.358,
+        -1.5665
+      ],
+      [
+        "car",
+        0.4815,
+        -8.752,
+        10.385,
+        -0.894,
+        1.871,
+        2.027,
+        5.055,
+        -1.6068
+      ],
+      [
+        "car",
+        0.5353,
+        23.718,
+        -26.118,
+        -0.953,
+        1.661,
+        1.931,
+        4.452,
+        -1.2609
+      ],
+      [
+        "car",
+        0.5659,
+        -9.388,
+        -31.268,
+        -2.759,
+        1.515,
+        1.839,
+        4.463,
+        -1.5288
+      ],
+      [
+        "car",
+        0.5727,
+        15.154,
+        -8.448,
+        -0.783,
+        1.627,
+        1.873,
+        4.523,
+        -1.6484
+      ],
+      [
+        "car",
+        0.5938,
+        -0.439,
+        12.931,
+        -0.559,
+        1.571,
+        1.794,
+        4.272,
+        1.3514
+      ],
+      [
+        "car",
+        0.6348,
+        5.32,
+        26.279,
+        0.194,
+        1.573,
+        1.85,
+        4.486,
+        1.5889
+      ],
+      [
+        "car",
+        0.64,
+        12.246,
+        -2.433,
+        -0.59,
+        1.815,
+        1.975,
+        4.772,
+        -1.5496
+      ],
+      [
+        "car",
+        0.7538,
+        5.595,
+        20.073,
+        -0.122,
+        1.527,
+        1.858,
+        4.638,
+        1.5557
+      ],
+      [
+        "car",
+        0.808,
+        5.106,
+        -13.943,
+        -1.606,
+        1.602,
+        1.843,
+        4.293,
+        1.4946
+      ],
+      [
+        "car",
+        0.8583,
+        5.201,
+        -8.66,
+        -1.268,
+        1.837,
+        2.013,
+        4.839,
+        1.607
+      ],
+      [
+        "car",
+        0.9035,
+        5.303,
+        8.754,
+        -0.685,
+        1.664,
+        1.843,
+        4.41,
+        1.5687
+      ],
+      [
+        "car",
+        0.922,
+        5.203,
+        3.029,
+        -0.885,
+        1.871,
+        1.947,
+        4.83,
+        1.5172
+      ],
+      [
+        "car",
+        0.9328,
+        -3.355,
+        7.94,
+        -0.78,
+        1.526,
+        1.775,
+        4.174,
+        -1.6293
+      ],
+      [
+        "car",
+        0.9628,
+        5.161,
+        -3.028,
+        -1.101,
+        1.714,
+        1.916,
+        4.663,
+        1.5744
+      ],
+      [
+        "trailer",
+        0.3184,
+        -18.548,
+        17.428,
+        0.684,
+        3.845,
+        2.826,
+        10.131,
+        -3.1203
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 99
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486.5m, y\u22483.5m)",
+          "isometric": "Cluster is isolated with no support or dense structure."
+        },
+        "evidence": [
+          "The bounding box at (x\u22486.5m, y\u22483.5m) encloses an extremely sparse set of points that lack a clear physical surface or vehicle structure.",
+          "The isometric view shows the points within this box are scattered and lack the vertical extent or solid profile expected of a vehicle.",
+          "The surrounding area lacks a corresponding dense point cloud cluster that would normally define a real vehicle at this range."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (noise is usually more diffuse and not localized into box-shaped regions).",
+          "Distant real object (the cluster is too close and sparse to represent a valid vehicle detection)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u22480.5m)",
+          "isometric": "Box surrounds a very small, sparse cluster appearing to float in space."
+        },
+        "evidence": [
+          "The bounding box at (x\u224813m, y\u22480.5m) contains very few points.",
+          "Isometric visualization reveals these points have no physical connection to the ground plane or adjacent structures.",
+          "The lack of a coherent L-shape or point density suggests this is a spoofed injection of a small number of points."
+        ],
+        "alternatives_ruled_out": [
+          "Low reflectivity object (a real car would still reflect enough LiDAR pulses to show a clearer structural shape).",
+          "Sensor occlusion (occlusions produce voids, not isolated sparse point injections)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:32:49.833387"
+}

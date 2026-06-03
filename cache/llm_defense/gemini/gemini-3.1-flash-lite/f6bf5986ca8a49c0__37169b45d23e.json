@@ -1,0 +1,310 @@
+{
+  "key": {
+    "frame_id": "f6bf5986ca8a49c0",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3441,
+        -28.358,
+        1.997,
+        -1.771,
+        1.83,
+        2.002,
+        4.572,
+        0.1233
+      ],
+      [
+        "car",
+        0.3953,
+        6.256,
+        36.586,
+        0.672,
+        1.724,
+        1.938,
+        4.581,
+        1.4019
+      ],
+      [
+        "car",
+        0.4254,
+        -0.171,
+        -39.899,
+        -2.278,
+        2.157,
+        2.155,
+        5.288,
+        1.615
+      ],
+      [
+        "car",
+        0.4797,
+        -17.112,
+        4.592,
+        -1.471,
+        1.879,
+        2.099,
+        5.148,
+        0.2236
+      ],
+      [
+        "car",
+        0.5019,
+        1.297,
+        21.726,
+        -0.025,
+        1.629,
+        1.912,
+        4.437,
+        -1.7024
+      ],
+      [
+        "car",
+        0.5373,
+        6.029,
+        6.539,
+        -1.015,
+        1.682,
+        1.906,
+        4.622,
+        1.7244
+      ],
+      [
+        "car",
+        0.7379,
+        -9.112,
+        -12.638,
+        -1.919,
+        1.729,
+        2.042,
+        5.003,
+        -1.5175
+      ],
+      [
+        "car",
+        0.8031,
+        -6.288,
+        15.444,
+        -0.638,
+        1.611,
+        1.911,
+        4.734,
+        -2.1399
+      ],
+      [
+        "car",
+        0.8574,
+        4.29,
+        4.443,
+        -1.067,
+        1.582,
+        1.883,
+        4.687,
+        1.6555
+      ],
+      [
+        "construction_vehicle",
+        0.3388,
+        5.617,
+        34.973,
+        0.537,
+        1.904,
+        1.398,
+        2.61,
+        3.0284
+      ],
+      [
+        "pedestrian",
+        0.3316,
+        5.798,
+        -19.064,
+        -1.335,
+        1.779,
+        0.633,
+        0.632,
+        -2.7446
+      ],
+      [
+        "pedestrian",
+        0.3601,
+        -11.804,
+        8.472,
+        -1.047,
+        1.77,
+        0.645,
+        0.664,
+        0.3373
+      ],
+      [
+        "pedestrian",
+        0.3671,
+        7.4,
+        -17.234,
+        -1.182,
+        1.76,
+        0.642,
+        0.656,
+        -0.5577
+      ],
+      [
+        "pedestrian",
+        0.3696,
+        8.188,
+        -16.451,
+        -1.074,
+        1.779,
+        0.62,
+        0.596,
+        -3.0041
+      ],
+      [
+        "pedestrian",
+        0.3744,
+        8.645,
+        7.779,
+        -0.517,
+        1.772,
+        0.64,
+        0.619,
+        -2.2754
+      ],
+      [
+        "pedestrian",
+        0.3873,
+        6.342,
+        -31.001,
+        -1.41,
+        1.815,
+        0.645,
+        0.6,
+        1.6029
+      ],
+      [
+        "pedestrian",
+        0.441,
+        -11.658,
+        10.23,
+        -0.855,
+        1.799,
+        0.677,
+        0.757,
+        1.73
+      ],
+      [
+        "trailer",
+        0.315,
+        28.753,
+        -10.347,
+        -0.021,
+        4.247,
+        3.011,
+        14.75,
+        -1.628
+      ],
+      [
+        "truck",
+        0.3038,
+        -28.85,
+        1.915,
+        -1.783,
+        1.997,
+        2.181,
+        5.312,
+        0.1723
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            5.347994327545166,
+            5.57253885269165,
+            -1.5214005708694458
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 157,
+          "reinjected_centroid": [
+            -5.827474117279053,
+            15.023757934570312,
+            -0.9558178186416626
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 177,
+          "reinjected_centroid": [
+            -8.593618392944336,
+            -11.603163719177246,
+            -2.205601215362549
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 98,
+          "reinjected_centroid": [
+            -15.899765014648438,
+            4.658718585968018,
+            -1.631697654724121
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 40,
+          "reinjected_centroid": [
+            -22.919261932373047,
+            10.459277153015137,
+            -1.994100570678711
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            1.2070387601852417,
+            20.207538604736328,
+            -0.611495316028595
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22485m, y\u2248-4m)",
+          "isometric": "cluster appears as a sparse group of points with no clear physical structure or ground support"
+        },
+        "evidence": [
+          "The camera input is explicitly flagged as unavailable and potentially compromised (marked [ATTACKED]), preventing cross-modal verification.",
+          "In the BEV and isometric views, there are multiple bounding boxes (e.g., at x\u22485m, y\u2248-4m) that correspond to very sparse or isolated point clusters.",
+          "There is no clear 3D structure or 'shadow' behind these clusters, which is inconsistent with genuine, opaque objects at those ranges."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is ruled out because the artifacts are interpreted as structured 'car' or 'pedestrian' detections by the perception system, rather than random scatter.",
+          "Occlusion is ruled out because the scene geometry does not support these objects existing without being visible or having associated occlusion shadows."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:57.204666"
+}

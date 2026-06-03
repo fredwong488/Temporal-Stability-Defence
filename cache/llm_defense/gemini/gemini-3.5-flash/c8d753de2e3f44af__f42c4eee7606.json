@@ -1,0 +1,240 @@
+{
+  "key": {
+    "frame_id": "c8d753de2e3f44af",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3233,
+        2.252,
+        -16.52,
+        -1.599,
+        1.038,
+        2.057,
+        0.554,
+        -3.0769
+      ],
+      [
+        "barrier",
+        0.412,
+        2.201,
+        -14.959,
+        -1.512,
+        1.057,
+        2.004,
+        0.518,
+        3.1189
+      ],
+      [
+        "barrier",
+        0.4861,
+        2.207,
+        -10.966,
+        -1.5,
+        0.927,
+        3.008,
+        0.567,
+        3.1219
+      ],
+      [
+        "car",
+        0.3767,
+        11.783,
+        -17.632,
+        -1.259,
+        2.146,
+        2.166,
+        5.627,
+        -1.5547
+      ],
+      [
+        "car",
+        0.8215,
+        16.689,
+        -16.52,
+        -1.494,
+        1.624,
+        1.936,
+        4.745,
+        -1.5672
+      ],
+      [
+        "construction_vehicle",
+        0.6469,
+        4.089,
+        -14.01,
+        -0.624,
+        2.921,
+        3.128,
+        4.106,
+        -1.4949
+      ],
+      [
+        "traffic_cone",
+        0.435,
+        2.009,
+        -1.214,
+        -1.449,
+        0.737,
+        0.361,
+        0.355,
+        1.6499
+      ],
+      [
+        "traffic_cone",
+        0.4415,
+        9.482,
+        7.371,
+        -1.305,
+        0.763,
+        0.39,
+        0.4,
+        -1.4967
+      ],
+      [
+        "traffic_cone",
+        0.4494,
+        9.743,
+        -2.285,
+        -1.582,
+        0.734,
+        0.391,
+        0.391,
+        -2.0614
+      ],
+      [
+        "traffic_cone",
+        0.4756,
+        1.728,
+        8.205,
+        -1.27,
+        0.72,
+        0.391,
+        0.407,
+        1.7453
+      ],
+      [
+        "traffic_cone",
+        0.5341,
+        9.51,
+        2.695,
+        -1.471,
+        0.75,
+        0.39,
+        0.404,
+        -1.797
+      ],
+      [
+        "traffic_cone",
+        0.6354,
+        9.932,
+        -6.732,
+        -1.618,
+        0.73,
+        0.374,
+        0.355,
+        3.1257
+      ],
+      [
+        "traffic_cone",
+        0.6392,
+        1.925,
+        3.701,
+        -1.453,
+        0.715,
+        0.4,
+        0.397,
+        -2.9024
+      ],
+      [
+        "truck",
+        0.5953,
+        15.172,
+        -6.203,
+        -0.399,
+        3.714,
+        2.928,
+        10.532,
+        -1.4903
+      ],
+      [
+        "truck",
+        0.7989,
+        14.726,
+        5.498,
+        -0.318,
+        3.015,
+        2.665,
+        6.847,
+        -1.5748
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 163,
+          "reinjected_centroid": [
+            12.683869361877441,
+            -8.078415870666504,
+            -1.6355161666870117
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 55,
+          "reinjected_centroid": [
+            16.054462432861328,
+            -15.914562225341797,
+            -1.794860601425171
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -0.6417839527130127,
+            9.545594215393066,
+            -0.9366967082023621
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u2248-5m to 15m, y\u2248-8m to -5m)",
+          "isometric": "Multiple large truck bounding boxes are predicted at the rear-right/right side of the ego vehicle containing no physical point clusters or structural features."
+        },
+        "evidence": [
+          "Several large cuboid predictions ('truck') are generated in the right/rear-right region (x < 15m, y < -4m) with no corresponding LiDAR point clusters inside the boxes.",
+          "The predicted truck boxes lack any 3D shadow/occlusion signatures behind them.",
+          "The camera image is completely unavailable/denied, indicating a potential sensor tampering or denial-of-service attack accompanying the spoofed detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant vehicles",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:34.468749"
+}

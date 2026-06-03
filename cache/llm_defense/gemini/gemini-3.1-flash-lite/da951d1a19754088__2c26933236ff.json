@@ -1,0 +1,192 @@
+{
+  "key": {
+    "frame_id": "da951d1a19754088",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.443,
+        -8.576,
+        37.4,
+        1.405,
+        1.797,
+        1.913,
+        4.621,
+        1.4605
+      ],
+      [
+        "car",
+        0.4667,
+        -3.837,
+        27.363,
+        0.527,
+        1.637,
+        1.891,
+        4.47,
+        -1.6674
+      ],
+      [
+        "car",
+        0.5202,
+        0.18,
+        -32.468,
+        -2.147,
+        1.729,
+        1.937,
+        4.524,
+        1.6677
+      ],
+      [
+        "car",
+        0.5605,
+        4.468,
+        16.47,
+        -0.169,
+        1.653,
+        1.928,
+        4.988,
+        1.5932
+      ],
+      [
+        "car",
+        0.5629,
+        -3.683,
+        -31.161,
+        -2.261,
+        1.734,
+        1.958,
+        4.652,
+        -1.6632
+      ],
+      [
+        "car",
+        0.6307,
+        -14.36,
+        15.775,
+        -0.423,
+        1.596,
+        1.897,
+        4.65,
+        -2.9366
+      ],
+      [
+        "car",
+        0.6466,
+        -6.756,
+        17.82,
+        -0.01,
+        1.829,
+        1.992,
+        4.569,
+        0.204
+      ],
+      [
+        "car",
+        0.9283,
+        -7.556,
+        1.052,
+        -1.225,
+        1.547,
+        1.892,
+        4.727,
+        -1.5685
+      ],
+      [
+        "pedestrian",
+        0.3031,
+        5.181,
+        -22.001,
+        -2.091,
+        1.845,
+        0.644,
+        0.679,
+        2.8625
+      ],
+      [
+        "pedestrian",
+        0.3477,
+        6.252,
+        -14.166,
+        -1.483,
+        1.723,
+        0.646,
+        0.655,
+        -1.502
+      ],
+      [
+        "pedestrian",
+        0.3619,
+        7.78,
+        -12.201,
+        -1.557,
+        1.751,
+        0.621,
+        0.611,
+        2.9241
+      ],
+      [
+        "pedestrian",
+        0.3872,
+        -8.413,
+        -20.266,
+        -1.808,
+        1.831,
+        0.625,
+        0.626,
+        -0.5305
+      ],
+      [
+        "pedestrian",
+        0.4238,
+        6.323,
+        -16.527,
+        -1.804,
+        1.771,
+        0.669,
+        0.691,
+        -1.462
+      ],
+      [
+        "pedestrian",
+        0.4953,
+        7.415,
+        -15.779,
+        -1.612,
+        1.821,
+        0.664,
+        0.617,
+        -2.9742
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u22485m) and (x\u224827m, y\u22484m)",
+          "isometric": "Multiple detected cuboids show no corresponding cluster of points resembling a vehicle surface. They are floating or box-empty."
+        },
+        "evidence": [
+          "The BEV and isometric views show bounding boxes (e.g., at x\u224817m and x\u224827m) that do not encapsulate meaningful LiDAR point clusters that resemble the geometric profile of a vehicle.",
+          "In the isometric view, these bounding boxes appear to be empty or contain only sparse noise, lacking the structural support (a base on the road) of a real object.",
+          "There is no visual confirmation from a camera image (which is marked as unavailable/clean, but conceptually, if these objects existed, they would be visible)."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion: The boxes are placed in relatively open space without sufficient surrounding structure to explain a total lack of points.",
+          "Sensor noise: The consistency of the box predictions suggests a systematic misclassification rather than random noise.",
+          "Low-reflectivity object: Even low-reflectivity objects usually return some LiDAR points; these boxes appear to envelope empty space."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:00.951634"
+}

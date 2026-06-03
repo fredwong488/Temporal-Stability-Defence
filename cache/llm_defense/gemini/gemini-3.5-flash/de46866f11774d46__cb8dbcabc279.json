@@ -1,0 +1,167 @@
+{
+  "key": {
+    "frame_id": "de46866f11774d46",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.301,
+        -46.738,
+        36.847,
+        0.111,
+        1.824,
+        1.953,
+        4.619,
+        -3.1335
+      ],
+      [
+        "car",
+        0.3472,
+        -5.74,
+        0.154,
+        -1.325,
+        1.504,
+        1.876,
+        4.458,
+        1.736
+      ],
+      [
+        "car",
+        0.8878,
+        -3.32,
+        0.481,
+        -1.158,
+        1.515,
+        1.87,
+        4.57,
+        1.6343
+      ],
+      [
+        "pedestrian",
+        0.3015,
+        9.956,
+        4.311,
+        -0.339,
+        1.778,
+        0.682,
+        0.801,
+        0.886
+      ],
+      [
+        "pedestrian",
+        0.3267,
+        3.591,
+        7.023,
+        -0.501,
+        1.841,
+        0.753,
+        0.897,
+        -1.5836
+      ],
+      [
+        "pedestrian",
+        0.3488,
+        10.912,
+        5.118,
+        -0.404,
+        1.743,
+        0.662,
+        0.736,
+        -2.4247
+      ],
+      [
+        "pedestrian",
+        0.3782,
+        3.758,
+        9.441,
+        -0.352,
+        1.792,
+        0.714,
+        0.731,
+        -2.6582
+      ],
+      [
+        "trailer",
+        0.9438,
+        -3.073,
+        -15.911,
+        -0.339,
+        4.205,
+        2.772,
+        14.53,
+        1.6227
+      ],
+      [
+        "truck",
+        0.58,
+        -0.168,
+        -7.99,
+        -1.004,
+        2.57,
+        2.223,
+        4.904,
+        1.56
+      ],
+      [
+        "truck",
+        0.8574,
+        -3.394,
+        -7.732,
+        -0.372,
+        4.043,
+        2.622,
+        5.961,
+        1.6469
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.10497522354126,
+            0.6519979238510132,
+            -1.6884660720825195
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u22480m, y\u22483m to 6m)",
+          "isometric": "Multiple overlapping and vertically stacked bounding boxes (car 0.35, car 0.89, truck 0.86, truck 0.58) enclosing sparse point clusters near the ego vehicle"
+        },
+        "evidence": [
+          "The camera image is completely unavailable and explicitly labeled as [ATTACKED].",
+          "Multiple high-confidence vehicle detections (car and truck) are stacked overlappingly on the left side of the ego-vehicle where no structured physical object exists.",
+          "The point density within the detected boxes is extremely low and lacks any geometric L-shape or vertical structure typical of real vehicles."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant real vehicles"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:52.498974"
+}

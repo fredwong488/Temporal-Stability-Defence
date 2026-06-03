@@ -1,0 +1,275 @@
+{
+  "key": {
+    "frame_id": "ed22286a20684d25",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3083,
+        14.822,
+        -5.97,
+        -1.277,
+        0.96,
+        3.222,
+        0.521,
+        2.808
+      ],
+      [
+        "barrier",
+        0.3084,
+        -2.69,
+        -0.472,
+        -1.296,
+        0.925,
+        1.975,
+        0.56,
+        0.0239
+      ],
+      [
+        "bicycle",
+        0.3063,
+        0.232,
+        7.549,
+        -0.73,
+        1.87,
+        0.661,
+        1.768,
+        1.6424
+      ],
+      [
+        "bicycle",
+        0.3243,
+        -1.167,
+        8.595,
+        -0.763,
+        1.649,
+        0.72,
+        1.677,
+        -2.9944
+      ],
+      [
+        "bus",
+        0.3028,
+        -5.258,
+        50.129,
+        1.956,
+        3.013,
+        2.774,
+        8.663,
+        1.6822
+      ],
+      [
+        "car",
+        0.3013,
+        -5.436,
+        -0.128,
+        -1.311,
+        1.587,
+        1.814,
+        4.319,
+        1.6421
+      ],
+      [
+        "car",
+        0.4968,
+        14.118,
+        20.057,
+        0.821,
+        1.699,
+        1.986,
+        4.71,
+        -3.1012
+      ],
+      [
+        "car",
+        0.5867,
+        -6.793,
+        23.061,
+        0.265,
+        1.687,
+        1.99,
+        4.84,
+        -0.035
+      ],
+      [
+        "car",
+        0.7796,
+        -3.32,
+        0.469,
+        -1.147,
+        1.532,
+        1.904,
+        4.687,
+        1.6248
+      ],
+      [
+        "motorcycle",
+        0.3064,
+        10.986,
+        -16.709,
+        -1.167,
+        1.514,
+        0.726,
+        2.135,
+        -1.6267
+      ],
+      [
+        "motorcycle",
+        0.3442,
+        0.214,
+        7.603,
+        -0.825,
+        1.682,
+        0.752,
+        1.833,
+        1.7154
+      ],
+      [
+        "pedestrian",
+        0.3139,
+        -1.19,
+        8.701,
+        -0.756,
+        1.764,
+        0.709,
+        0.808,
+        -3.0775
+      ],
+      [
+        "pedestrian",
+        0.3149,
+        -8.123,
+        8.249,
+        -0.619,
+        1.796,
+        0.667,
+        0.703,
+        1.239
+      ],
+      [
+        "pedestrian",
+        0.3342,
+        -5.301,
+        7.151,
+        -0.636,
+        1.848,
+        0.734,
+        0.752,
+        1.472
+      ],
+      [
+        "pedestrian",
+        0.3554,
+        -3.889,
+        9.156,
+        -0.609,
+        1.784,
+        0.684,
+        0.714,
+        1.9951
+      ],
+      [
+        "trailer",
+        0.9405,
+        -3.125,
+        -15.875,
+        -0.371,
+        4.204,
+        2.785,
+        14.83,
+        1.621
+      ],
+      [
+        "truck",
+        0.3102,
+        46.689,
+        17.527,
+        1.878,
+        3.37,
+        2.737,
+        7.179,
+        -0.0391
+      ],
+      [
+        "truck",
+        0.5934,
+        -0.167,
+        -7.987,
+        -1.01,
+        2.544,
+        2.197,
+        4.829,
+        1.5623
+      ],
+      [
+        "truck",
+        0.8586,
+        -3.412,
+        -7.712,
+        -0.367,
+        4.036,
+        2.629,
+        6.059,
+        1.6405
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.897425651550293,
+            0.6660759449005127,
+            -1.6695538759231567
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 44,
+          "reinjected_centroid": [
+            -6.858361721038818,
+            22.34150505065918,
+            -0.36962395906448364
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image unavailable / attacked",
+          "bev": "x\u224823m, y\u22487m and x\u22487-10m, y\u22481-7m",
+          "isometric": "Multiple bounding boxes (e.g., car at x\u224823m, y\u22487m and several pedestrian detections) are floating high above the ground plane (z > 2m) with no physically plausible point support."
+        },
+        "evidence": [
+          "A 3D bounding box for 'car 0.59' is detected at x\u224823m, y\u22487m, z\u22483m, floating in mid-air on empty or extremely sparse noise points.",
+          "A series of pedestrian detections (such as pedestrian 0.31, 0.33, 0.36) are floating above the ground plane with no substantial vertically oriented pedestrian-like clusters.",
+          "The camera image is completely unavailable/suppressed with an explicit '[ATTACKED]' warning, preventing cross-modal validation."
+        ],
+        "alternatives_ruled_out": [
+          "Ground reflections",
+          "Sensor noise",
+          "Distant real vehicles (since the heights and shapes in the isometric view completely violate physical constraints)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:40.243451"
+}

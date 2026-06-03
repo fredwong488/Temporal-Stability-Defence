@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "674d0b98c4c44798",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.308,
+        1.172,
+        44.334,
+        1.62,
+        1.731,
+        1.925,
+        4.534,
+        1.7757
+      ],
+      [
+        "car",
+        0.3368,
+        -8.546,
+        38.622,
+        1.218,
+        1.728,
+        1.884,
+        4.565,
+        2.4621
+      ],
+      [
+        "car",
+        0.5239,
+        0.152,
+        -31.462,
+        -2.269,
+        1.687,
+        1.933,
+        4.499,
+        1.665
+      ],
+      [
+        "car",
+        0.5568,
+        -6.813,
+        19.281,
+        0.074,
+        1.741,
+        1.982,
+        4.683,
+        0.2042
+      ],
+      [
+        "car",
+        0.705,
+        -3.692,
+        -27.158,
+        -2.318,
+        1.718,
+        1.935,
+        4.55,
+        -1.5377
+      ],
+      [
+        "car",
+        0.8247,
+        -14.454,
+        17.341,
+        -0.42,
+        1.61,
+        1.921,
+        4.578,
+        0.1651
+      ],
+      [
+        "car",
+        0.8337,
+        4.515,
+        17.896,
+        -0.081,
+        1.571,
+        1.854,
+        4.65,
+        1.6271
+      ],
+      [
+        "car",
+        0.9246,
+        -7.556,
+        2.589,
+        -1.156,
+        1.552,
+        1.914,
+        4.862,
+        -1.632
+      ],
+      [
+        "construction_vehicle",
+        0.3129,
+        8.216,
+        -40.166,
+        -2.195,
+        3.051,
+        2.597,
+        7.327,
+        -1.2514
+      ],
+      [
+        "construction_vehicle",
+        0.3137,
+        11.788,
+        8.928,
+        0.243,
+        3.476,
+        2.708,
+        6.534,
+        -1.6161
+      ],
+      [
+        "pedestrian",
+        0.3107,
+        7.327,
+        -12.79,
+        -1.373,
+        1.777,
+        0.636,
+        0.605,
+        -3.0425
+      ],
+      [
+        "pedestrian",
+        0.3122,
+        6.326,
+        -12.314,
+        -1.519,
+        1.689,
+        0.624,
+        0.63,
+        -2.0947
+      ],
+      [
+        "pedestrian",
+        0.319,
+        -12.214,
+        10.771,
+        -0.703,
+        1.742,
+        0.649,
+        0.675,
+        1.9961
+      ],
+      [
+        "pedestrian",
+        0.3291,
+        6.532,
+        -17.492,
+        -1.808,
+        1.779,
+        0.628,
+        0.699,
+        2.5205
+      ],
+      [
+        "pedestrian",
+        0.3613,
+        6.338,
+        -14.84,
+        -1.694,
+        1.747,
+        0.662,
+        0.679,
+        -1.9676
+      ],
+      [
+        "pedestrian",
+        0.4157,
+        7.91,
+        -11.069,
+        -1.295,
+        1.774,
+        0.668,
+        0.659,
+        -2.4764
+      ],
+      [
+        "pedestrian",
+        0.4858,
+        7.417,
+        -14.028,
+        -1.535,
+        1.833,
+        0.682,
+        0.647,
+        3.0609
+      ],
+      [
+        "trailer",
+        0.3104,
+        14.937,
+        35.136,
+        2.215,
+        4.15,
+        2.79,
+        16.351,
+        0.1031
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818m, y\u22485m)",
+          "isometric": "Low-density point cluster"
+        },
+        "evidence": [
+          "The detection labeled 'car 0.56' at (x\u224818m, y\u22485m) in the BEV view is based on a very sparse set of LiDAR points.",
+          "The isometric view confirms the lack of structural integrity or vertical extent typical of a vehicle, appearing as a few disconnected points floating or on the ground plane.",
+          "The confidence score (0.56) is significantly lower than other detections in the scene, suggesting the detector is struggling with the ambiguous, sparse input."
+        ],
+        "alternatives_ruled_out": [
+          "This is likely not an attack but rather a false positive detection caused by sparse point cloud noise or atmospheric interference (dust/rain) rather than intentional malicious injection.",
+          "The lack of a specific 'ghost' pattern (small, dense cluster 5-8m away) makes an adversarial spoofing attack less probable."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:57.894976"
+}

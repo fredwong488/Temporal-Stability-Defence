@@ -1,0 +1,252 @@
+{
+  "key": {
+    "frame_id": "901e114a78f54de9",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3122,
+        18.877,
+        12.77,
+        0.496,
+        1.686,
+        1.919,
+        4.478,
+        1.6789
+      ],
+      [
+        "car",
+        0.3377,
+        23.742,
+        12.995,
+        0.902,
+        1.725,
+        1.959,
+        4.498,
+        1.6912
+      ],
+      [
+        "car",
+        0.4512,
+        21.277,
+        13.105,
+        0.984,
+        1.835,
+        1.975,
+        4.442,
+        -1.515
+      ],
+      [
+        "car",
+        0.5061,
+        -20.415,
+        -5.34,
+        -2.12,
+        1.649,
+        1.883,
+        4.429,
+        0.0464
+      ],
+      [
+        "car",
+        0.5137,
+        16.558,
+        12.671,
+        0.391,
+        1.72,
+        1.946,
+        4.521,
+        1.6359
+      ],
+      [
+        "car",
+        0.6637,
+        -0.372,
+        13.474,
+        -0.638,
+        1.581,
+        1.823,
+        4.361,
+        1.54
+      ],
+      [
+        "car",
+        0.6658,
+        -8.773,
+        15.722,
+        -0.79,
+        1.608,
+        1.922,
+        4.897,
+        -1.6496
+      ],
+      [
+        "car",
+        0.7056,
+        6.012,
+        27.2,
+        0.414,
+        1.711,
+        1.923,
+        4.764,
+        1.452
+      ],
+      [
+        "car",
+        0.7199,
+        -14.624,
+        -5.963,
+        -1.674,
+        1.722,
+        1.971,
+        4.608,
+        0.1991
+      ],
+      [
+        "car",
+        0.7496,
+        -21.79,
+        -0.366,
+        -2.095,
+        1.552,
+        1.889,
+        4.431,
+        -3.0438
+      ],
+      [
+        "car",
+        0.7952,
+        12.501,
+        12.983,
+        -0.017,
+        1.587,
+        1.81,
+        4.299,
+        1.609
+      ],
+      [
+        "car",
+        0.82,
+        -7.762,
+        -20.405,
+        -1.977,
+        1.768,
+        1.937,
+        4.663,
+        -1.5639
+      ],
+      [
+        "car",
+        0.8316,
+        -9.178,
+        9.583,
+        -1.03,
+        1.497,
+        1.805,
+        4.385,
+        1.5463
+      ],
+      [
+        "car",
+        0.921,
+        -6.137,
+        2.592,
+        -1.183,
+        1.513,
+        1.852,
+        4.489,
+        -2.1306
+      ],
+      [
+        "car",
+        0.9334,
+        4.26,
+        -4.825,
+        -1.289,
+        1.493,
+        1.88,
+        4.796,
+        1.6089
+      ],
+      [
+        "construction_vehicle",
+        0.3409,
+        31.472,
+        -7.042,
+        0.998,
+        3.12,
+        2.926,
+        5.92,
+        3.1116
+      ],
+      [
+        "construction_vehicle",
+        0.5921,
+        -8.086,
+        43.145,
+        0.624,
+        2.651,
+        2.731,
+        7.163,
+        -1.6491
+      ],
+      [
+        "pedestrian",
+        0.3029,
+        7.501,
+        -9.294,
+        -1.179,
+        1.746,
+        0.621,
+        0.655,
+        -2.0513
+      ],
+      [
+        "trailer",
+        0.3933,
+        10.004,
+        -51.21,
+        -0.398,
+        4.251,
+        2.924,
+        18.039,
+        1.6618
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 110
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Unavailable",
+          "bev": "Multiple detections, notably around (x\u224817m, y\u22486m) and (x\u224827m, y\u2248-6m)",
+          "isometric": "Multiple bounding boxes floating in empty space at z\u22482m with no supporting point clusters"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes in the isometric view appear in empty space without any corresponding LiDAR point clusters",
+          "The bounding boxes lack physical structure and vertical support, indicating hallucinations rather than sensor noise",
+          "The absence of the camera image prevents cross-modal validation, which is consistent with active sensor suppression or perception system compromise"
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (noise is typically sparse and does not form structured, high-confidence bounding boxes)",
+          "Atmospheric conditions (fog or rain would cause scattered noise, not discrete, floating box detections)",
+          "Standard object detector error (the systemic failure to ground detections in physical points is too consistent to be a random error)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:23.321916"
+}

@@ -1,0 +1,245 @@
+{
+  "key": {
+    "frame_id": "a1eefb276cf3440f",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3021,
+        8.422,
+        0.369,
+        -1.383,
+        1.156,
+        2.025,
+        0.662,
+        3.0689
+      ],
+      [
+        "barrier",
+        0.3065,
+        9.438,
+        0.368,
+        -1.429,
+        1.137,
+        1.953,
+        0.683,
+        3.0642
+      ],
+      [
+        "barrier",
+        0.3097,
+        7.485,
+        -6.88,
+        -1.576,
+        0.957,
+        2.977,
+        0.65,
+        3.0068
+      ],
+      [
+        "barrier",
+        0.3099,
+        10.031,
+        8.62,
+        -1.204,
+        1.028,
+        1.975,
+        0.6,
+        3.112
+      ],
+      [
+        "barrier",
+        0.3159,
+        10.832,
+        16.636,
+        -0.751,
+        1.043,
+        2.024,
+        0.507,
+        3.0661
+      ],
+      [
+        "barrier",
+        0.326,
+        6.964,
+        -11.791,
+        -1.644,
+        1.019,
+        2.531,
+        0.593,
+        3.0641
+      ],
+      [
+        "barrier",
+        0.3275,
+        10.718,
+        14.786,
+        -0.884,
+        1.055,
+        2.075,
+        0.589,
+        3.0982
+      ],
+      [
+        "barrier",
+        0.3401,
+        8.722,
+        4.403,
+        -1.222,
+        1.132,
+        1.857,
+        0.553,
+        3.1043
+      ],
+      [
+        "barrier",
+        0.3912,
+        8.548,
+        2.1,
+        -1.339,
+        1.128,
+        1.908,
+        0.633,
+        3.1156
+      ],
+      [
+        "car",
+        0.3894,
+        -7.007,
+        48.473,
+        1.675,
+        1.715,
+        1.926,
+        4.469,
+        1.6917
+      ],
+      [
+        "car",
+        0.4898,
+        -2.537,
+        26.08,
+        -0.103,
+        1.77,
+        1.914,
+        4.705,
+        1.7484
+      ],
+      [
+        "car",
+        0.76,
+        7.538,
+        16.928,
+        -0.384,
+        1.578,
+        1.851,
+        4.49,
+        1.5304
+      ],
+      [
+        "construction_vehicle",
+        0.3273,
+        30.927,
+        -18.835,
+        0.28,
+        2.873,
+        2.913,
+        3.478,
+        -2.3064
+      ],
+      [
+        "construction_vehicle",
+        0.3718,
+        43.168,
+        10.525,
+        0.426,
+        3.417,
+        2.799,
+        6.271,
+        1.4942
+      ],
+      [
+        "pedestrian",
+        0.3118,
+        1.152,
+        40.125,
+        1.009,
+        1.78,
+        0.651,
+        0.657,
+        2.8364
+      ],
+      [
+        "pedestrian",
+        0.3598,
+        1.829,
+        39.006,
+        0.948,
+        1.83,
+        0.665,
+        0.719,
+        1.815
+      ],
+      [
+        "pedestrian",
+        0.4319,
+        -10.231,
+        31.825,
+        0.693,
+        1.795,
+        0.662,
+        0.677,
+        -1.4714
+      ],
+      [
+        "truck",
+        0.4376,
+        10.986,
+        33.158,
+        0.686,
+        1.883,
+        2.08,
+        5.603,
+        1.2376
+      ],
+      [
+        "truck",
+        0.4521,
+        -4.673,
+        -11.19,
+        -0.516,
+        3.467,
+        2.971,
+        9.667,
+        1.5319
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not applicable (camera image not available)",
+          "bev": "x \u2248 24m to 28m, y \u2248 1m to 3m",
+          "isometric": "Box predicted at x \u2248 26m, y \u2248 2.5m, floating in space with no corresponding LiDAR point cluster inside or underneath it."
+        },
+        "evidence": [
+          "The predicted bounding box 'car 0.49' at x \u2248 26m, y \u2248 2.5m contains absolutely zero LiDAR points inside its volume in both the BEV and Isometric views.",
+          "There is no physical occlusion or shadow pattern behind this area that would suggest an object is blocking the sensor's line of sight."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (no points are present at all to cause a false detection)",
+          "Highly reflective or dark surfaces (even low reflectivity objects usually show some sparse returns or leave an occlusion shadow on the ground behind them)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:18.672017"
+}

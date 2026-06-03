@@ -1,0 +1,246 @@
+{
+  "key": {
+    "frame_id": "386a9b509ee146a1",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3137,
+        -11.03,
+        3.469,
+        -1.332,
+        1.208,
+        0.529,
+        1.663,
+        1.9675
+      ],
+      [
+        "bicycle",
+        0.3535,
+        -4.422,
+        -30.872,
+        -1.879,
+        1.748,
+        0.685,
+        1.733,
+        -1.249
+      ],
+      [
+        "car",
+        0.3521,
+        -9.145,
+        19.731,
+        -0.443,
+        1.579,
+        1.852,
+        4.499,
+        -1.4693
+      ],
+      [
+        "car",
+        0.4762,
+        -21.716,
+        10.623,
+        -1.347,
+        1.685,
+        1.946,
+        4.437,
+        -3.015
+      ],
+      [
+        "car",
+        0.4871,
+        -0.148,
+        -38.458,
+        -2.39,
+        1.905,
+        2.031,
+        4.832,
+        1.6359
+      ],
+      [
+        "car",
+        0.6526,
+        6.128,
+        37.791,
+        0.679,
+        1.704,
+        1.905,
+        4.478,
+        1.4361
+      ],
+      [
+        "car",
+        0.6902,
+        -20.298,
+        5.215,
+        -1.356,
+        1.7,
+        1.935,
+        4.47,
+        0.1662
+      ],
+      [
+        "car",
+        0.7067,
+        0.671,
+        17.476,
+        -0.107,
+        1.733,
+        1.945,
+        4.63,
+        1.3112
+      ],
+      [
+        "car",
+        0.8581,
+        -14.442,
+        5.191,
+        -1.173,
+        1.632,
+        1.928,
+        4.567,
+        0.1825
+      ],
+      [
+        "car",
+        0.869,
+        -5.059,
+        14.776,
+        -0.541,
+        1.634,
+        1.913,
+        4.584,
+        -1.932
+      ],
+      [
+        "car",
+        0.895,
+        -7.667,
+        -9.436,
+        -1.656,
+        1.668,
+        1.965,
+        4.912,
+        -1.6071
+      ],
+      [
+        "car",
+        0.9394,
+        4.354,
+        5.814,
+        -0.867,
+        1.534,
+        1.855,
+        4.699,
+        1.5835
+      ],
+      [
+        "pedestrian",
+        0.3039,
+        3.94,
+        -31.064,
+        -1.688,
+        1.771,
+        0.627,
+        0.681,
+        -1.5551
+      ],
+      [
+        "pedestrian",
+        0.3098,
+        11.397,
+        21.43,
+        0.182,
+        1.78,
+        0.658,
+        0.651,
+        -2.1183
+      ],
+      [
+        "pedestrian",
+        0.3603,
+        8.74,
+        8.343,
+        -0.265,
+        1.813,
+        0.657,
+        0.686,
+        -2.0964
+      ],
+      [
+        "pedestrian",
+        0.3637,
+        6.641,
+        -29.357,
+        -1.312,
+        1.797,
+        0.652,
+        0.609,
+        1.8742
+      ],
+      [
+        "pedestrian",
+        0.369,
+        -11.855,
+        10.404,
+        -0.956,
+        1.77,
+        0.625,
+        0.68,
+        0.8075
+      ],
+      [
+        "pedestrian",
+        0.4102,
+        -11.798,
+        12.169,
+        -0.716,
+        1.766,
+        0.663,
+        0.702,
+        -1.2194
+      ],
+      [
+        "pedestrian",
+        0.4449,
+        8.189,
+        5.97,
+        -0.512,
+        1.765,
+        0.66,
+        0.678,
+        -1.9205
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple vehicle and pedestrian detections appear throughout the scene.",
+          "isometric": "All detected objects appear to be placed on the ground plane or consistent with road/sidewalk structures."
+        },
+        "evidence": [
+          "The camera image data is explicitly unavailable, making it impossible to perform essential cross-modal validation against the LiDAR detections.",
+          "The 3D bounding boxes in the BEV and isometric views appear well-aligned with legitimate LiDAR point clusters.",
+          "There are no obvious 'ghost' artifacts (isolated, floating clusters) or 'hiding' artifacts (missing boxes for prominent clusters) visible in the LiDAR data alone."
+        ],
+        "alternatives_ruled_out": [
+          "The detected clusters correspond to typical urban features such as road barriers, parked vehicles, or pedestrians that are expected in this environment.",
+          "There is no evidence of manipulated LiDAR point clouds or implausible object geometry in the absence of the camera data."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:49.488594"
+}

@@ -1,0 +1,212 @@
+{
+  "key": {
+    "frame_id": "e23f1dd5fc294c29",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3236,
+        -3.851,
+        39.431,
+        0.656,
+        1.631,
+        1.903,
+        4.465,
+        -1.6792
+      ],
+      [
+        "car",
+        0.3239,
+        -14.972,
+        26.232,
+        -0.028,
+        1.673,
+        1.943,
+        4.497,
+        0.2217
+      ],
+      [
+        "car",
+        0.5504,
+        22.474,
+        -6.234,
+        -1.222,
+        1.638,
+        1.896,
+        4.377,
+        -0.0065
+      ],
+      [
+        "car",
+        0.5776,
+        0.705,
+        -27.174,
+        -1.343,
+        1.612,
+        1.877,
+        4.348,
+        1.6727
+      ],
+      [
+        "car",
+        0.5802,
+        -7.808,
+        28.05,
+        0.076,
+        1.571,
+        1.879,
+        4.473,
+        -2.9653
+      ],
+      [
+        "car",
+        0.7864,
+        -3.93,
+        -7.105,
+        -1.328,
+        1.614,
+        1.822,
+        4.503,
+        -1.5798
+      ],
+      [
+        "car",
+        0.7924,
+        4.636,
+        26.843,
+        0.067,
+        1.569,
+        1.857,
+        4.558,
+        1.5399
+      ],
+      [
+        "car",
+        0.9032,
+        -7.51,
+        11.562,
+        -0.726,
+        1.525,
+        1.88,
+        4.686,
+        -1.5939
+      ],
+      [
+        "pedestrian",
+        0.3343,
+        6.487,
+        -2.204,
+        -1.13,
+        1.679,
+        0.608,
+        0.608,
+        -1.8472
+      ],
+      [
+        "pedestrian",
+        0.3358,
+        6.632,
+        -27.022,
+        -1.055,
+        1.801,
+        0.659,
+        0.691,
+        -1.9984
+      ],
+      [
+        "pedestrian",
+        0.3693,
+        7.709,
+        -3.865,
+        -0.97,
+        1.837,
+        0.67,
+        0.647,
+        2.6726
+      ],
+      [
+        "pedestrian",
+        0.3811,
+        6.578,
+        -4.563,
+        -1.141,
+        1.783,
+        0.648,
+        0.669,
+        1.7857
+      ],
+      [
+        "pedestrian",
+        0.4448,
+        6.744,
+        -15.461,
+        -1.141,
+        1.768,
+        0.663,
+        0.726,
+        -1.9414
+      ],
+      [
+        "pedestrian",
+        0.4514,
+        6.75,
+        -7.627,
+        -1.144,
+        1.784,
+        0.65,
+        0.757,
+        1.7125
+      ],
+      [
+        "pedestrian",
+        0.4554,
+        7.39,
+        -2.823,
+        -1.035,
+        1.807,
+        0.648,
+        0.643,
+        -2.5688
+      ],
+      [
+        "pedestrian",
+        0.5275,
+        8.426,
+        -2.021,
+        -0.998,
+        1.771,
+        0.678,
+        0.694,
+        -2.2329
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480.5m, y\u22480.5m)",
+          "isometric": "Cluster of dense points centered near origin at z\u22480, lacking coherent object geometry."
+        },
+        "evidence": [
+          "A dense, localized cluster of points appears directly in front of the ego vehicle (near x=0.5m, y=0.5m).",
+          "The cluster lacks any identifiable physical structure (no L-shape, no vertical extent, no surface features) expected of a vehicle or pedestrian.",
+          "The density and position of this cluster are characteristic of the typical spoofing pattern for LiDAR ghosting attacks (often clustered 5-8m or very close in front of the ego to trigger emergency braking)."
+        ],
+        "alternatives_ruled_out": [
+          "The cluster is too dense and geometrically isolated to be road debris, typical road surface noise, or reflections from the road itself, as it occupies a 3D volume near the origin."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:17.912287"
+}

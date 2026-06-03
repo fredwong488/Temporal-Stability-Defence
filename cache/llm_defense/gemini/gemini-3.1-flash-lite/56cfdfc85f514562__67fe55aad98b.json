@@ -1,0 +1,137 @@
+{
+  "key": {
+    "frame_id": "56cfdfc85f514562",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.5715,
+        5.872,
+        40.586,
+        0.678,
+        1.664,
+        1.906,
+        4.588,
+        1.3757
+      ],
+      [
+        "car",
+        0.6265,
+        0.691,
+        -19.238,
+        -1.872,
+        1.649,
+        1.873,
+        4.377,
+        1.5686
+      ],
+      [
+        "construction_vehicle",
+        0.4063,
+        -24.606,
+        10.803,
+        -1.105,
+        2.171,
+        1.982,
+        4.795,
+        1.6662
+      ],
+      [
+        "pedestrian",
+        0.3023,
+        -9.977,
+        25.588,
+        -0.244,
+        1.748,
+        0.635,
+        0.644,
+        1.8437
+      ],
+      [
+        "pedestrian",
+        0.3448,
+        6.831,
+        20.23,
+        -0.228,
+        1.785,
+        0.66,
+        0.677,
+        1.9129
+      ],
+      [
+        "pedestrian",
+        0.3553,
+        9.531,
+        19.62,
+        -0.097,
+        1.8,
+        0.688,
+        0.674,
+        2.3143
+      ],
+      [
+        "pedestrian",
+        0.3611,
+        8.273,
+        18.669,
+        -0.233,
+        1.763,
+        0.674,
+        0.705,
+        1.5674
+      ],
+      [
+        "pedestrian",
+        0.3845,
+        9.314,
+        23.884,
+        -0.064,
+        1.802,
+        0.644,
+        0.682,
+        2.6678
+      ],
+      [
+        "pedestrian",
+        0.3872,
+        -10.18,
+        7.35,
+        -0.826,
+        1.784,
+        0.662,
+        0.735,
+        1.2893
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "scattered throughout the scene, primarily in the x=15m to x=30m range",
+          "isometric": "multiple small boxes distributed in space with no underlying point cluster structure"
+        },
+        "evidence": [
+          "The isometric view reveals multiple 'pedestrian' bounding boxes that are completely empty; there are no point clusters within or near these boxes.",
+          "The boxes appear suspended in mid-air at various heights and locations without any correlation to actual physical objects like vehicles or pedestrians.",
+          "The bounding boxes are spatially inconsistent and lack the point cloud density required for valid object detection, suggesting a deliberate spoofing or injection of detector outputs."
+        ],
+        "alternatives_ruled_out": [
+          "These are not distant objects because valid, dense point clusters elsewhere in the scene are visible and correctly rendered.",
+          "This is not sensor noise, as the shapes are structured as 'pedestrian' bounding boxes rather than random scatter points.",
+          "The lack of visual confirmation (camera) and the total absence of LiDAR points within the bounding volumes rules out genuine detection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:02.968071"
+}

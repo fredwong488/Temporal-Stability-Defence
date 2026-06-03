@@ -1,0 +1,236 @@
+{
+  "key": {
+    "frame_id": "3349664b5bed4846",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3,
+        6.256,
+        45.32,
+        1.564,
+        1.76,
+        1.942,
+        4.59,
+        1.5198
+      ],
+      [
+        "car",
+        0.3118,
+        -20.397,
+        13.282,
+        -0.853,
+        1.663,
+        1.899,
+        4.572,
+        -0.4144
+      ],
+      [
+        "car",
+        0.3333,
+        -8.501,
+        34.411,
+        0.808,
+        1.686,
+        1.886,
+        4.52,
+        -1.6061
+      ],
+      [
+        "car",
+        0.3552,
+        -8.566,
+        30.271,
+        0.711,
+        1.686,
+        1.886,
+        4.624,
+        -1.5947
+      ],
+      [
+        "car",
+        0.3616,
+        -8.601,
+        39.7,
+        0.927,
+        1.741,
+        1.926,
+        4.591,
+        -1.6283
+      ],
+      [
+        "car",
+        0.5887,
+        0.163,
+        -33.683,
+        -2.392,
+        1.659,
+        1.906,
+        4.503,
+        1.8315
+      ],
+      [
+        "car",
+        0.6219,
+        -3.915,
+        24.269,
+        0.248,
+        1.586,
+        1.872,
+        4.447,
+        -1.7083
+      ],
+      [
+        "car",
+        0.7297,
+        -6.462,
+        14.666,
+        -0.241,
+        1.648,
+        1.904,
+        4.473,
+        0.3003
+      ],
+      [
+        "car",
+        0.8918,
+        -14.393,
+        12.498,
+        -0.765,
+        1.604,
+        1.914,
+        4.555,
+        0.1732
+      ],
+      [
+        "car",
+        0.8946,
+        4.405,
+        13.058,
+        -0.391,
+        1.564,
+        1.835,
+        4.589,
+        1.602
+      ],
+      [
+        "car",
+        0.9401,
+        -7.584,
+        -2.098,
+        -1.341,
+        1.586,
+        1.894,
+        4.696,
+        -1.5863
+      ],
+      [
+        "pedestrian",
+        0.3037,
+        8.588,
+        -11.036,
+        -1.378,
+        1.798,
+        0.652,
+        0.642,
+        -2.4747
+      ],
+      [
+        "pedestrian",
+        0.3083,
+        -8.326,
+        -23.521,
+        -2.223,
+        1.813,
+        0.678,
+        0.706,
+        -0.6551
+      ],
+      [
+        "pedestrian",
+        0.3155,
+        6.396,
+        -22.937,
+        -1.705,
+        1.814,
+        0.637,
+        0.678,
+        2.5056
+      ],
+      [
+        "pedestrian",
+        0.346,
+        7.295,
+        -18.3,
+        -1.691,
+        1.809,
+        0.641,
+        0.625,
+        -2.4773
+      ],
+      [
+        "pedestrian",
+        0.349,
+        6.202,
+        -20.331,
+        -1.922,
+        1.782,
+        0.659,
+        0.693,
+        -1.6959
+      ],
+      [
+        "pedestrian",
+        0.3718,
+        8.022,
+        -13.193,
+        -1.421,
+        1.796,
+        0.631,
+        0.625,
+        -1.7963
+      ],
+      [
+        "pedestrian",
+        0.4436,
+        8.457,
+        18.385,
+        0.141,
+        1.776,
+        0.655,
+        0.69,
+        1.5131
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u2248-4.5m)",
+          "isometric": "Cluster appears to be an isolated box in the isometric view without a corresponding dense physical structure that matches the dimensions of a vehicle."
+        },
+        "evidence": [
+          "Multiple bounding boxes in the LiDAR views (BEV and isometric) do not align with any clear, dense, geometrically structured point clusters indicative of physical objects like vehicles or pedestrians.",
+          "The isometric view reveals many 'floating' bounding boxes or boxes enclosing very sparse, scattered point returns that lack the vertical extent or L-shape profile characteristic of genuine vehicles.",
+          "The proximity of these detections suggests an injection of fake LiDAR returns intended to trigger ghost object alarms in the perception stack."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (the density and clustering of these detections are too specific and spatially correlated to be random noise).",
+          "Occlusion (there is no geometric evidence of occluded surfaces or shadows supporting the presence of objects in these locations).",
+          "Infrastructure (these detections are floating mid-air or in empty road space, not associated with roadside barriers or infrastructure)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:09.228940"
+}

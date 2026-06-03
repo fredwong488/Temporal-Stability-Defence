@@ -1,0 +1,302 @@
+{
+  "key": {
+    "frame_id": "fa8abe51b4104eb6",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "car",
+        0.3009,
+        27.827,
+        -10.685,
+        0.12,
+        1.724,
+        1.943,
+        4.557,
+        -0.2353
+      ],
+      [
+        "car",
+        0.3317,
+        3.615,
+        -21.564,
+        -0.361,
+        1.575,
+        1.828,
+        4.304,
+        2.0845
+      ],
+      [
+        "car",
+        0.3413,
+        15.802,
+        13.43,
+        0.098,
+        1.654,
+        1.899,
+        4.466,
+        0.9985
+      ],
+      [
+        "car",
+        0.3445,
+        -9.739,
+        -24.586,
+        -0.452,
+        1.583,
+        1.892,
+        4.516,
+        2.351
+      ],
+      [
+        "car",
+        0.351,
+        -5.069,
+        -19.522,
+        -0.661,
+        1.636,
+        1.914,
+        4.588,
+        2.3999
+      ],
+      [
+        "car",
+        0.3845,
+        4.122,
+        9.359,
+        -0.956,
+        1.651,
+        1.843,
+        4.356,
+        -2.4063
+      ],
+      [
+        "car",
+        0.4141,
+        0.277,
+        -14.152,
+        -0.626,
+        1.78,
+        1.937,
+        4.653,
+        2.4363
+      ],
+      [
+        "car",
+        0.4228,
+        30.069,
+        4.282,
+        -0.32,
+        1.645,
+        1.988,
+        4.49,
+        -3.1002
+      ],
+      [
+        "car",
+        0.4373,
+        -12.703,
+        -28.561,
+        -0.107,
+        1.785,
+        1.957,
+        4.629,
+        2.2859
+      ],
+      [
+        "car",
+        0.438,
+        5.304,
+        -19.557,
+        -0.162,
+        1.706,
+        1.921,
+        4.606,
+        2.2391
+      ],
+      [
+        "car",
+        0.45,
+        -8.294,
+        -33.141,
+        0.508,
+        1.675,
+        1.906,
+        4.383,
+        -1.3004
+      ],
+      [
+        "car",
+        0.4642,
+        10.791,
+        -13.834,
+        -0.163,
+        1.714,
+        1.933,
+        4.694,
+        -0.7822
+      ],
+      [
+        "car",
+        0.4646,
+        28.891,
+        -5.386,
+        0.093,
+        1.681,
+        1.871,
+        4.186,
+        -0.0798
+      ],
+      [
+        "car",
+        0.4781,
+        -15.074,
+        -29.753,
+        -0.306,
+        1.717,
+        1.909,
+        4.593,
+        2.1645
+      ],
+      [
+        "car",
+        0.5357,
+        2.793,
+        19.573,
+        -0.39,
+        1.606,
+        1.891,
+        4.549,
+        -2.0659
+      ],
+      [
+        "car",
+        0.5376,
+        3.198,
+        -10.28,
+        -0.655,
+        1.699,
+        1.872,
+        4.511,
+        2.4032
+      ],
+      [
+        "car",
+        0.5782,
+        18.306,
+        -1.063,
+        0.14,
+        1.869,
+        2.076,
+        4.846,
+        2.9299
+      ],
+      [
+        "car",
+        0.5955,
+        -0.322,
+        13.028,
+        -0.875,
+        1.584,
+        1.844,
+        4.492,
+        1.5016
+      ],
+      [
+        "car",
+        0.6381,
+        30.084,
+        6.851,
+        -0.475,
+        1.612,
+        1.961,
+        4.474,
+        3.1303
+      ],
+      [
+        "car",
+        0.8068,
+        19.072,
+        6.99,
+        -0.094,
+        1.721,
+        1.93,
+        4.574,
+        -0.0733
+      ],
+      [
+        "truck",
+        0.3576,
+        10.129,
+        0.79,
+        -0.888,
+        1.909,
+        2.054,
+        5.522,
+        3.083
+      ],
+      [
+        "truck",
+        0.4289,
+        -13.29,
+        -10.139,
+        -1.115,
+        2.139,
+        2.203,
+        5.709,
+        -0.7112
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 123
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224819m, y\u2248-3m)",
+          "isometric": "cluster is sparse and lacks clear geometric structure"
+        },
+        "evidence": [
+          "The bounding box at x\u224819m is placed over extremely sparse points with no discernible object geometry (e.g., L-shape or volumetric cluster indicative of a vehicle).",
+          "The isometric view shows this box floating and encompassing only a few disjointed points, inconsistent with a solid vehicle structure.",
+          "There is no clear LiDAR shadow behind this cluster, which is a physical requirement for an opaque object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The detection confidence is relatively high (0.54) despite the lack of underlying structure.",
+          "Distant object: The object is well within range, and closer objects have much denser point returns."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "box contains minimal, scattered points without a vehicle-like profile"
+        },
+        "evidence": [
+          "The bounding box is centered over a very low density of points.",
+          "In the isometric view, the cluster within the box lacks the vertical extent and solid surface structure expected of a 'car' detection.",
+          "Absence of occlusion/shadowing downstream of this cluster in the BEV."
+        ],
+        "alternatives_ruled_out": [
+          "Infrastructure: No road features or signs are present that would explain this isolated cluster.",
+          "Sensor occlusion: The area is clear of obstructions."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:40:12.539214"
+}

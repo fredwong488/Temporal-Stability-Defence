@@ -1,0 +1,174 @@
+{
+  "key": {
+    "frame_id": "cdf652356eda4a70",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.3443,
+        -5.747,
+        0.24,
+        -1.351,
+        1.52,
+        1.863,
+        4.392,
+        1.5379
+      ],
+      [
+        "car",
+        0.4584,
+        0.92,
+        18.904,
+        0.229,
+        1.761,
+        2.05,
+        4.921,
+        -0.0571
+      ],
+      [
+        "car",
+        0.6707,
+        22.661,
+        22.915,
+        1.237,
+        1.657,
+        1.946,
+        4.646,
+        -2.8921
+      ],
+      [
+        "car",
+        0.8644,
+        -3.341,
+        0.509,
+        -1.189,
+        1.532,
+        1.889,
+        4.636,
+        1.6097
+      ],
+      [
+        "pedestrian",
+        0.3501,
+        -1.321,
+        7.976,
+        -0.65,
+        1.797,
+        0.688,
+        0.721,
+        -2.2009
+      ],
+      [
+        "pedestrian",
+        0.432,
+        -3.129,
+        8.323,
+        -0.594,
+        1.793,
+        0.672,
+        0.745,
+        2.3026
+      ],
+      [
+        "pedestrian",
+        0.4683,
+        -1.478,
+        6.953,
+        -0.719,
+        1.742,
+        0.675,
+        0.733,
+        2.5516
+      ],
+      [
+        "trailer",
+        0.9459,
+        -3.132,
+        -15.863,
+        -0.407,
+        4.2,
+        2.782,
+        14.847,
+        1.6261
+      ],
+      [
+        "truck",
+        0.4863,
+        -0.158,
+        -7.977,
+        -1.007,
+        2.463,
+        2.147,
+        4.856,
+        1.5596
+      ],
+      [
+        "truck",
+        0.8836,
+        -3.413,
+        -7.73,
+        -0.365,
+        3.987,
+        2.633,
+        6.1,
+        1.6318
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.15382194519043,
+            0.6808196902275085,
+            -1.7771090269088745
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 16,
+          "reinjected_centroid": [
+            22.351791381835938,
+            22.260801315307617,
+            0.7787597179412842
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224819m, y\u2248-2m)",
+          "isometric": "Bounding box 'car 0.46' encloses a flat, single-layer vertical strip of points with no 3D volume, L-shape, or depth typical of a vehicle."
+        },
+        "evidence": [
+          "The bounding box 'car 0.46' at x\u224819m, y\u2248-2m outlines a flat, linear arrangement of points (likely a fence or barrier) rather than a solid 3D vehicle geometry.",
+          "There is no occlusion shadow typical of a physical vehicle at this position; the laser pulses pass directly through or reflect off a single thin plane."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicle (the structure is physically flat and matches a wall or fence element rather than a vehicle surface)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:37.837280"
+}

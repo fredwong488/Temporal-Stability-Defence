@@ -1,0 +1,103 @@
+{
+  "key": {
+    "frame_id": "e0c01c67fc1342d8",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.5256,
+        6.767,
+        42.428,
+        0.533,
+        1.683,
+        1.948,
+        4.563,
+        1.2854
+      ],
+      [
+        "car",
+        0.5645,
+        0.202,
+        -19.834,
+        -1.718,
+        1.752,
+        1.945,
+        4.588,
+        1.6649
+      ],
+      [
+        "car",
+        0.5753,
+        -3.064,
+        -25.765,
+        -2.122,
+        1.716,
+        1.877,
+        4.371,
+        -1.4843
+      ],
+      [
+        "pedestrian",
+        0.3152,
+        -10.341,
+        13.36,
+        -0.775,
+        1.742,
+        0.633,
+        0.667,
+        -1.2432
+      ],
+      [
+        "pedestrian",
+        0.3408,
+        5.785,
+        -1.188,
+        -0.896,
+        1.78,
+        0.686,
+        0.732,
+        -1.2763
+      ],
+      [
+        "truck",
+        0.3136,
+        28.289,
+        11.454,
+        -0.867,
+        2.405,
+        2.375,
+        6.037,
+        -3.14
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u2248-1m, y\u2248-5m)",
+          "isometric": "Cluster appears at z\u22480m with minimal vertical structure"
+        },
+        "evidence": [
+          "Camera image is unavailable, preventing cross-modal verification of the pedestrian detection.",
+          "The detected object at (x\u2248-1m, y\u2248-5m) lacks significant vertical extent in the isometric view, which is atypical for a pedestrian.",
+          "The detection consists of very few points, which could be noise or a sparse ghost object, but without visual confirmation, it is impossible to distinguish from a genuine but sparsely detected pedestrian."
+        ],
+        "alternatives_ruled_out": [
+          "Genuine pedestrian detection (cannot be ruled out without image)",
+          "Sensor noise (cannot be ruled out)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:24.721415"
+}

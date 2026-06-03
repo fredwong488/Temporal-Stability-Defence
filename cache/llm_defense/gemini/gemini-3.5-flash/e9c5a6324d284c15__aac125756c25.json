@@ -1,0 +1,145 @@
+{
+  "key": {
+    "frame_id": "e9c5a6324d284c15",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.7765,
+        -3.343,
+        0.464,
+        -1.125,
+        1.526,
+        1.887,
+        4.58,
+        1.6011
+      ],
+      [
+        "construction_vehicle",
+        0.6117,
+        -10.173,
+        49.107,
+        1.286,
+        2.476,
+        2.594,
+        6.873,
+        -1.4175
+      ],
+      [
+        "pedestrian",
+        0.3506,
+        5.957,
+        7.37,
+        -0.444,
+        1.702,
+        0.659,
+        0.745,
+        2.1647
+      ],
+      [
+        "pedestrian",
+        0.3638,
+        2.089,
+        7.131,
+        -0.615,
+        1.762,
+        0.704,
+        0.83,
+        3.0279
+      ],
+      [
+        "pedestrian",
+        0.4215,
+        2.192,
+        9.336,
+        -0.38,
+        1.803,
+        0.7,
+        0.817,
+        2.2842
+      ],
+      [
+        "trailer",
+        0.9357,
+        -3.154,
+        -16.017,
+        -0.369,
+        4.266,
+        2.775,
+        15.065,
+        1.6278
+      ],
+      [
+        "truck",
+        0.5183,
+        -0.148,
+        -8.015,
+        -1.003,
+        2.449,
+        2.146,
+        4.85,
+        1.5595
+      ],
+      [
+        "truck",
+        0.8798,
+        -3.418,
+        -7.8,
+        -0.339,
+        4.069,
+        2.672,
+        6.119,
+        1.6319
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.009344100952148,
+            0.6708250641822815,
+            -1.7347328662872314
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "x \u2248 23m to 26m, y \u2248 4m to 6m",
+          "isometric": "An empty 3D bounding box is floating in mid-air at x \u2248 25m, y \u2248 5m, z \u2248 3m with no underlying point cloud cluster."
+        },
+        "evidence": [
+          "A 3D bounding box is predicted at high elevation (z \u2248 3m) in the isometric view without any supporting LiDAR point cloud returns inside or near it.",
+          "The box is completely empty, violating the physical invariant that a detected object must have reflective surfaces yielding LiDAR points.",
+          "There is no physical structure or occlusion shadow associated with this bounding box location."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object",
+          "Elevated infrastructure such as road signs or trees (which would still show physical point reflections)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:28.388478"
+}

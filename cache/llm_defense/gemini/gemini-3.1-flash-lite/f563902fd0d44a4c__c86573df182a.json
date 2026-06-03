@@ -1,0 +1,225 @@
+{
+  "key": {
+    "frame_id": "f563902fd0d44a4c",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3394,
+        6.811,
+        1.976,
+        -0.911,
+        1.818,
+        0.635,
+        1.697,
+        1.5455
+      ],
+      [
+        "bus",
+        0.3368,
+        9.899,
+        -19.45,
+        -0.702,
+        3.582,
+        2.944,
+        12.54,
+        -1.4927
+      ],
+      [
+        "car",
+        0.3338,
+        6.216,
+        41.281,
+        1.565,
+        1.702,
+        1.897,
+        4.472,
+        1.5437
+      ],
+      [
+        "car",
+        0.4145,
+        2.95,
+        40.197,
+        1.419,
+        1.662,
+        1.902,
+        4.488,
+        1.5908
+      ],
+      [
+        "car",
+        0.5164,
+        -2.352,
+        24.397,
+        0.343,
+        1.645,
+        1.902,
+        4.547,
+        1.4858
+      ],
+      [
+        "car",
+        0.5936,
+        1.082,
+        -21.294,
+        -1.897,
+        1.782,
+        1.984,
+        4.753,
+        1.6944
+      ],
+      [
+        "car",
+        0.6587,
+        -6.27,
+        26.434,
+        0.267,
+        1.613,
+        1.874,
+        4.454,
+        -1.6631
+      ],
+      [
+        "car",
+        0.8402,
+        -4.139,
+        -1.95,
+        -1.123,
+        1.609,
+        1.928,
+        4.785,
+        -1.5631
+      ],
+      [
+        "pedestrian",
+        0.314,
+        7.585,
+        -19.954,
+        -1.297,
+        1.826,
+        0.672,
+        0.661,
+        -1.79
+      ],
+      [
+        "pedestrian",
+        0.3149,
+        8.126,
+        8.19,
+        -0.448,
+        1.751,
+        0.687,
+        0.75,
+        -2.111
+      ],
+      [
+        "pedestrian",
+        0.3289,
+        9.822,
+        16.546,
+        0.169,
+        1.723,
+        0.661,
+        0.67,
+        -0.9987
+      ],
+      [
+        "pedestrian",
+        0.3308,
+        -12.737,
+        7.732,
+        -0.628,
+        1.777,
+        0.654,
+        0.664,
+        1.2934
+      ],
+      [
+        "pedestrian",
+        0.3408,
+        6.242,
+        -10.197,
+        -0.974,
+        1.834,
+        0.698,
+        0.774,
+        -0.4827
+      ],
+      [
+        "pedestrian",
+        0.3431,
+        7.49,
+        13.627,
+        -0.238,
+        1.759,
+        0.661,
+        0.671,
+        0.3141
+      ],
+      [
+        "pedestrian",
+        0.3519,
+        7.141,
+        11.029,
+        -0.306,
+        1.816,
+        0.664,
+        0.633,
+        0.2861
+      ],
+      [
+        "pedestrian",
+        0.4043,
+        8.122,
+        11.678,
+        -0.358,
+        1.771,
+        0.642,
+        0.604,
+        2.73
+      ],
+      [
+        "pedestrian",
+        0.4497,
+        8.62,
+        9.976,
+        -0.414,
+        1.81,
+        0.71,
+        0.741,
+        2.604
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u2248-1m, y\u22480m)",
+          "isometric": "Cluster at the origin (x\u2248-1, y\u22480) appearing as a dense, anomalous point concentration inconsistent with the ego vehicle's own structure."
+        },
+        "evidence": [
+          "A highly anomalous, dense cluster of points is located directly at the ego vehicle's origin (x\u2248-1, y\u22480), which should contain no LiDAR returns from external objects.",
+          "The cluster lacks any physical context or surface structure consistent with real-world objects; it appears as a localized injection.",
+          "The point density and positioning relative to the ego-vehicle suggest an artificial injection, characteristic of a ghost object attack localized to the sensor's near-field."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor self-reflection (the structure is too coherent/dense and distinct from standard noise patterns).",
+          "Natural occlusion (no occluded void exists behind this 'object').",
+          "Genuine nearby object (objects do not occupy the same space as the ego vehicle platform)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:56.671861"
+}

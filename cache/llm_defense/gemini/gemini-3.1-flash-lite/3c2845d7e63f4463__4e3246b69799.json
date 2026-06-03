@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "3c2845d7e63f4463",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3268,
+        -12.376,
+        21.175,
+        0.213,
+        1.137,
+        0.559,
+        1.642,
+        1.919
+      ],
+      [
+        "car",
+        0.3804,
+        -8.169,
+        31.049,
+        0.25,
+        1.602,
+        1.909,
+        4.479,
+        0.2519
+      ],
+      [
+        "car",
+        0.3937,
+        -2.284,
+        -26.426,
+        -1.143,
+        1.672,
+        1.897,
+        4.595,
+        1.8294
+      ],
+      [
+        "car",
+        0.411,
+        -3.795,
+        43.956,
+        0.583,
+        1.628,
+        1.892,
+        4.517,
+        -1.5614
+      ],
+      [
+        "car",
+        0.4515,
+        1.366,
+        41.072,
+        0.787,
+        1.698,
+        1.906,
+        4.6,
+        -1.4751
+      ],
+      [
+        "car",
+        0.5571,
+        0.899,
+        -25.618,
+        -1.116,
+        1.737,
+        1.959,
+        4.66,
+        1.7245
+      ],
+      [
+        "car",
+        0.7208,
+        4.523,
+        30.086,
+        0.192,
+        1.605,
+        1.867,
+        4.495,
+        1.6201
+      ],
+      [
+        "car",
+        0.8128,
+        -7.503,
+        14.784,
+        -0.576,
+        1.593,
+        1.944,
+        4.91,
+        -1.6065
+      ],
+      [
+        "car",
+        0.8833,
+        -3.895,
+        -0.465,
+        -1.116,
+        1.544,
+        1.869,
+        4.698,
+        -1.62
+      ],
+      [
+        "pedestrian",
+        0.3369,
+        7.842,
+        -0.938,
+        -0.883,
+        1.767,
+        0.673,
+        0.708,
+        2.1431
+      ],
+      [
+        "pedestrian",
+        0.3512,
+        8.39,
+        0.473,
+        -0.899,
+        1.758,
+        0.629,
+        0.615,
+        2.6605
+      ],
+      [
+        "pedestrian",
+        0.3675,
+        7.518,
+        0.454,
+        -0.817,
+        1.765,
+        0.656,
+        0.69,
+        1.8782
+      ],
+      [
+        "pedestrian",
+        0.3806,
+        6.723,
+        -23.236,
+        -0.893,
+        1.8,
+        0.653,
+        0.66,
+        1.5877
+      ],
+      [
+        "pedestrian",
+        0.4491,
+        6.875,
+        -4.338,
+        -1.067,
+        1.716,
+        0.644,
+        0.723,
+        1.6478
+      ],
+      [
+        "pedestrian",
+        0.4608,
+        6.631,
+        1.232,
+        -0.922,
+        1.71,
+        0.624,
+        0.601,
+        0.9326
+      ],
+      [
+        "pedestrian",
+        0.4707,
+        6.84,
+        -11.646,
+        -0.838,
+        1.828,
+        0.689,
+        0.786,
+        2.7688
+      ],
+      [
+        "pedestrian",
+        0.5024,
+        6.58,
+        -1.233,
+        -0.97,
+        1.728,
+        0.649,
+        0.711,
+        1.4366
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481m, y\u22480m)",
+          "isometric": "Cluster near ego origin"
+        },
+        "evidence": [
+          "A highly dense, localized cluster of points exists very close to the ego-vehicle (near origin), with multiple small 'pedestrian' bounding boxes clustered around it.",
+          "The density and pattern of this cluster in the isometric view appear uncharacteristic of standard road or vehicle reflections, potentially resembling localized noise or spoofed injection.",
+          "The lack of camera data makes it impossible to verify if these detections correspond to real objects (e.g., sensor calibration targets, nearby static objects) or are ghost objects."
+        ],
+        "alternatives_ruled_out": [
+          "These could represent calibration patterns or legitimate close-proximity road infrastructure, though they appear unusual.",
+          "The high density could be sensor-specific artifacts or reflections from the ego-vehicle's own chassis."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:39.634834"
+}

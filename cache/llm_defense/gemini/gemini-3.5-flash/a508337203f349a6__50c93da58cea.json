@@ -1,0 +1,318 @@
+{
+  "key": {
+    "frame_id": "a508337203f349a6",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "barrier",
+        0.3758,
+        27.779,
+        -15.934,
+        -2.129,
+        0.874,
+        3.296,
+        0.636,
+        -1.663
+      ],
+      [
+        "bus",
+        0.9442,
+        4.707,
+        -10.278,
+        -0.672,
+        3.44,
+        2.996,
+        11.289,
+        1.5472
+      ],
+      [
+        "car",
+        0.3679,
+        28.101,
+        -14.123,
+        -1.638,
+        1.693,
+        1.936,
+        4.444,
+        3.0947
+      ],
+      [
+        "car",
+        0.3758,
+        -26.847,
+        -4.219,
+        -0.625,
+        1.725,
+        1.926,
+        4.385,
+        2.5779
+      ],
+      [
+        "car",
+        0.4014,
+        -6.215,
+        -40.785,
+        -2.837,
+        1.716,
+        1.977,
+        4.669,
+        -1.529
+      ],
+      [
+        "car",
+        0.4049,
+        27.475,
+        -11.016,
+        -1.962,
+        1.796,
+        2.066,
+        4.633,
+        -2.9938
+      ],
+      [
+        "car",
+        0.4322,
+        15.788,
+        -8.651,
+        -1.607,
+        1.598,
+        1.914,
+        4.371,
+        3.0604
+      ],
+      [
+        "car",
+        0.645,
+        -26.235,
+        1.022,
+        -0.565,
+        1.665,
+        1.949,
+        4.518,
+        -0.5474
+      ],
+      [
+        "car",
+        0.7007,
+        16.377,
+        0.213,
+        -1.345,
+        1.854,
+        2.07,
+        4.757,
+        3.0835
+      ],
+      [
+        "car",
+        0.7572,
+        15.753,
+        -5.899,
+        -1.634,
+        1.71,
+        1.979,
+        4.653,
+        3.0072
+      ],
+      [
+        "car",
+        0.7606,
+        15.938,
+        -2.836,
+        -1.589,
+        1.706,
+        1.971,
+        4.537,
+        3.1075
+      ],
+      [
+        "car",
+        0.8026,
+        16.768,
+        3.785,
+        -1.372,
+        1.666,
+        1.945,
+        4.598,
+        -0.1188
+      ],
+      [
+        "construction_vehicle",
+        0.9132,
+        -5.521,
+        -5.974,
+        -0.823,
+        2.353,
+        2.571,
+        7.304,
+        -1.5799
+      ],
+      [
+        "motorcycle",
+        0.3209,
+        -17.483,
+        7.7,
+        -0.118,
+        1.356,
+        0.673,
+        2.088,
+        1.1209
+      ],
+      [
+        "traffic_cone",
+        0.452,
+        -3.407,
+        -4.734,
+        -1.584,
+        0.751,
+        0.376,
+        0.353,
+        -1.3395
+      ],
+      [
+        "traffic_cone",
+        0.4863,
+        -3.657,
+        3.782,
+        -1.253,
+        0.716,
+        0.374,
+        0.382,
+        1.3171
+      ],
+      [
+        "traffic_cone",
+        0.5587,
+        -3.359,
+        -1.388,
+        -1.472,
+        0.742,
+        0.38,
+        0.388,
+        1.5981
+      ],
+      [
+        "truck",
+        0.3553,
+        -24.8,
+        3.745,
+        -0.362,
+        2.111,
+        2.339,
+        5.885,
+        -0.6236
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 102,
+          "reinjected_centroid": [
+            15.512558937072754,
+            3.568033456802368,
+            -1.6224610805511475
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 87,
+          "reinjected_centroid": [
+            14.898157119750977,
+            0.32053038477897644,
+            -1.546244502067566
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 48,
+          "reinjected_centroid": [
+            14.446857452392578,
+            -5.59544038772583,
+            -1.867284893989563
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 38,
+          "reinjected_centroid": [
+            14.180593490600586,
+            -8.160528182983398,
+            -2.076606035232544
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 54,
+          "reinjected_centroid": [
+            14.463501930236816,
+            -2.8177125453948975,
+            -2.0251498222351074
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 28,
+          "reinjected_centroid": [
+            -24.731842041015625,
+            0.4618249237537384,
+            -0.8722905516624451
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 12,
+          "reinjected_centroid": [
+            -21.8902587890625,
+            6.812864780426025,
+            -0.5083339810371399
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 58,
+          "reinjected_centroid": [
+            -23.727781295776367,
+            3.8423545360565186,
+            -0.6724309325218201
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Region x \u2208 [0m, 10m], y \u2208 [-8m, -4m]",
+          "isometric": "Five predicted car bounding boxes aligned on the right side of the ego vehicle"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes predicting 'car' (confidence scores 0.43 to 0.80) are generated in a neat row on the right side of the vehicle.",
+          "Isometric view shows these bounding boxes are completely empty, containing no supporting LiDAR point clusters.",
+          "The lack of physical LiDAR returns (or any corresponding 3D shadows) inside these boxes indicates they are completely fabricated detections (ghost objects)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Occlusion",
+          "Low-reflectivity objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:06.379034"
+}

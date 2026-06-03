@@ -1,0 +1,132 @@
+{
+  "key": {
+    "frame_id": "fdb652a12360415c",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.8391,
+        -3.325,
+        0.463,
+        -1.191,
+        1.506,
+        1.89,
+        4.668,
+        1.6184
+      ],
+      [
+        "pedestrian",
+        0.3474,
+        4.521,
+        9.567,
+        -0.304,
+        1.758,
+        0.662,
+        0.66,
+        -2.7935
+      ],
+      [
+        "pedestrian",
+        0.3926,
+        6.074,
+        7.886,
+        -0.342,
+        1.835,
+        0.723,
+        0.773,
+        2.2955
+      ],
+      [
+        "trailer",
+        0.9254,
+        -3.189,
+        -15.705,
+        -0.42,
+        4.167,
+        2.763,
+        14.362,
+        1.6177
+      ],
+      [
+        "truck",
+        0.3188,
+        -40.951,
+        -13.524,
+        -0.812,
+        2.047,
+        2.278,
+        5.692,
+        1.5766
+      ],
+      [
+        "truck",
+        0.6371,
+        -0.148,
+        -8.01,
+        -1.056,
+        2.457,
+        2.166,
+        4.791,
+        1.556
+      ],
+      [
+        "truck",
+        0.8546,
+        -3.394,
+        -7.758,
+        -0.321,
+        4.026,
+        2.656,
+        6.271,
+        1.627
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.278927803039551,
+            0.6596316695213318,
+            -1.8025665283203125
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera image frame",
+          "bev": null,
+          "isometric": null
+        },
+        "evidence": [
+          "The camera image is completely unavailable and explicitly marked as [ATTACKED] in the header, indicating a complete sensor denial or suppression attack.",
+          "There are multiple overlapping bounding boxes in the isometric view (at negative x range) which cannot be cross-referenced or verified due to the missing camera stream."
+        ],
+        "alternatives_ruled_out": [
+          "Temporary sensor blockage",
+          "Lens flare or lighting issues"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:59.388332"
+}

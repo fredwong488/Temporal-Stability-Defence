@@ -1,0 +1,239 @@
+{
+  "key": {
+    "frame_id": "baca0366c7114d12",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3365,
+        14.845,
+        -5.999,
+        -1.252,
+        0.98,
+        3.255,
+        0.539,
+        2.8181
+      ],
+      [
+        "barrier",
+        0.3373,
+        -2.72,
+        -0.48,
+        -1.313,
+        0.94,
+        1.949,
+        0.57,
+        0.0121
+      ],
+      [
+        "car",
+        0.3125,
+        14.295,
+        24.619,
+        0.499,
+        1.64,
+        1.952,
+        4.508,
+        -3.0381
+      ],
+      [
+        "car",
+        0.4578,
+        14.325,
+        21.898,
+        0.603,
+        1.678,
+        2.016,
+        4.699,
+        -3.1034
+      ],
+      [
+        "car",
+        0.5554,
+        -3.354,
+        0.461,
+        -1.167,
+        1.538,
+        1.91,
+        4.652,
+        1.6081
+      ],
+      [
+        "car",
+        0.6066,
+        -7.372,
+        22.685,
+        0.096,
+        1.613,
+        1.979,
+        4.541,
+        0.0818
+      ],
+      [
+        "pedestrian",
+        0.3022,
+        -5.487,
+        7.153,
+        -0.675,
+        1.807,
+        0.73,
+        0.755,
+        1.2587
+      ],
+      [
+        "pedestrian",
+        0.3039,
+        -4.107,
+        9.107,
+        -0.593,
+        1.805,
+        0.712,
+        0.789,
+        1.9352
+      ],
+      [
+        "pedestrian",
+        0.3334,
+        -5.827,
+        8.728,
+        -0.621,
+        1.805,
+        0.695,
+        0.71,
+        1.2916
+      ],
+      [
+        "pedestrian",
+        0.3801,
+        -8.206,
+        8.301,
+        -0.556,
+        1.826,
+        0.709,
+        0.801,
+        0.9601
+      ],
+      [
+        "trailer",
+        0.5935,
+        46.822,
+        17.63,
+        2.284,
+        4.091,
+        2.893,
+        9.97,
+        -0.0369
+      ],
+      [
+        "trailer",
+        0.9401,
+        -3.123,
+        -15.881,
+        -0.397,
+        4.2,
+        2.778,
+        14.886,
+        1.6199
+      ],
+      [
+        "truck",
+        0.3209,
+        -40.937,
+        -13.556,
+        -0.78,
+        2.106,
+        2.318,
+        5.866,
+        1.6033
+      ],
+      [
+        "truck",
+        0.6106,
+        -0.183,
+        -7.975,
+        -0.995,
+        2.606,
+        2.221,
+        4.884,
+        1.5542
+      ],
+      [
+        "truck",
+        0.8729,
+        -3.421,
+        -7.689,
+        -0.378,
+        4.018,
+        2.631,
+        5.989,
+        1.6395
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.791199207305908,
+            0.6524860262870789,
+            -1.6314338445663452
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 15,
+          "reinjected_centroid": [
+            13.761962890625,
+            21.179777145385742,
+            0.08076796680688858
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 36,
+          "reinjected_centroid": [
+            -7.302572250366211,
+            22.20213508605957,
+            -0.37458503246307373
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not available",
+          "bev": "x \u2248 7m to 10m, y \u2248 3m to 7m",
+          "isometric": "Four tall vertical cuboids predicting pedestrians with no underlying or extremely sparse point clusters"
+        },
+        "evidence": [
+          "Four pedestrian detections (confidence scores 0.30 to 0.38) are generated in close proximity in an area with virtually no supporting LiDAR point clusters.",
+          "The isometric view confirms these bounding boxes are completely empty, lacking any physical 3D vertical structure or points characteristic of pedestrians."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant low-reflectivity objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:39.937293"
+}

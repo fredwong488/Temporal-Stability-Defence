@@ -1,0 +1,328 @@
+{
+  "key": {
+    "frame_id": "1e7b74a113e440c6",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3053,
+        6.792,
+        32.608,
+        0.774,
+        1.846,
+        2.04,
+        4.968,
+        1.4329
+      ],
+      [
+        "car",
+        0.3189,
+        6.121,
+        36.883,
+        0.768,
+        1.633,
+        1.884,
+        4.617,
+        -1.6017
+      ],
+      [
+        "car",
+        0.3781,
+        21.406,
+        15.333,
+        1.268,
+        1.782,
+        1.94,
+        4.434,
+        1.5088
+      ],
+      [
+        "car",
+        0.3962,
+        -9.018,
+        17.952,
+        -0.509,
+        1.667,
+        1.971,
+        4.841,
+        -1.6646
+      ],
+      [
+        "car",
+        0.5725,
+        -9.079,
+        -21.08,
+        -2.276,
+        1.69,
+        1.934,
+        4.707,
+        -1.5629
+      ],
+      [
+        "car",
+        0.6317,
+        -9.112,
+        11.829,
+        -0.827,
+        1.595,
+        1.857,
+        4.365,
+        -1.6036
+      ],
+      [
+        "car",
+        0.6763,
+        -30.4,
+        0.696,
+        -2.129,
+        1.571,
+        1.887,
+        4.438,
+        -2.9142
+      ],
+      [
+        "car",
+        0.7312,
+        -25.1,
+        1.992,
+        -2.198,
+        1.525,
+        1.86,
+        4.331,
+        -2.9691
+      ],
+      [
+        "car",
+        0.7402,
+        -17.793,
+        -4.278,
+        -1.859,
+        1.764,
+        2.016,
+        4.669,
+        -0.1072
+      ],
+      [
+        "car",
+        0.7991,
+        -8.582,
+        6.739,
+        -1.31,
+        1.652,
+        1.872,
+        4.36,
+        -2.1733
+      ],
+      [
+        "car",
+        0.8453,
+        -5.974,
+        4.775,
+        -1.179,
+        1.537,
+        1.832,
+        4.589,
+        -2.1575
+      ],
+      [
+        "car",
+        0.95,
+        4.252,
+        -2.794,
+        -1.249,
+        1.562,
+        1.912,
+        4.838,
+        1.5829
+      ],
+      [
+        "construction_vehicle",
+        0.397,
+        6.921,
+        -4.748,
+        -1.127,
+        2.52,
+        2.263,
+        4.251,
+        1.4432
+      ],
+      [
+        "pedestrian",
+        0.302,
+        -1.164,
+        -38.474,
+        -2.114,
+        1.742,
+        0.644,
+        0.698,
+        -1.5866
+      ],
+      [
+        "pedestrian",
+        0.3421,
+        -11.492,
+        -0.924,
+        -1.35,
+        1.767,
+        0.651,
+        0.716,
+        -1.2392
+      ],
+      [
+        "pedestrian",
+        0.3493,
+        8.225,
+        -21.308,
+        -1.289,
+        1.782,
+        0.605,
+        0.601,
+        2.5829
+      ],
+      [
+        "pedestrian",
+        0.3714,
+        -11.586,
+        13.127,
+        -0.446,
+        1.744,
+        0.62,
+        0.661,
+        1.4321
+      ],
+      [
+        "pedestrian",
+        0.4116,
+        7.366,
+        -21.349,
+        -1.3,
+        1.805,
+        0.614,
+        0.65,
+        -1.328
+      ],
+      [
+        "truck",
+        0.3867,
+        -7.672,
+        46.682,
+        1.515,
+        2.274,
+        2.146,
+        5.854,
+        1.6455
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.277091026306152,
+            -4.296997547149658,
+            -2.215036153793335
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 52,
+          "reinjected_centroid": [
+            -8.859590530395508,
+            -19.692333221435547,
+            -2.436138391494751
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -7.746554374694824,
+            6.578229904174805,
+            -1.9096935987472534
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 33,
+          "reinjected_centroid": [
+            -23.335302352905273,
+            2.0772879123687744,
+            -2.382627010345459
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 27,
+          "reinjected_centroid": [
+            14.303064346313477,
+            16.81250762939453,
+            -0.4175056517124176
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 40,
+          "reinjected_centroid": [
+            -16.637802124023438,
+            -4.455270290374756,
+            -1.92146897315979
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 12,
+          "reinjected_centroid": [
+            -29.36710548400879,
+            0.35116779804229736,
+            -2.678621530532837
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 17,
+          "reinjected_centroid": [
+            6.464625835418701,
+            30.88728904724121,
+            0.24218536913394928
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m, y\u22486m)",
+          "isometric": "Cluster floats at z\u22482m without any supporting points on the ground plane."
+        },
+        "evidence": [
+          "A 3D bounding box is present in the BEV and isometric views at (x\u22486, y\u22486), but there is no corresponding dense point structure indicative of a solid object.",
+          "The cluster associated with this box appears in the isometric view as floating in mid-air at z\u22482m, lacking the vertical profile of a real vehicle or pedestrian.",
+          "The cluster lacks the physical consistency of an opaque object, as it does not cast a shadow or present a coherent surface."
+        ],
+        "alternatives_ruled_out": [
+          "The anomaly cannot be explained by sensor noise or natural occlusion due to the distinct, localized clustering in mid-air.",
+          "Not infrastructure, as there is no geometric support for a physical structure at that height/location."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:26.725433"
+}

@@ -1,0 +1,201 @@
+{
+  "key": {
+    "frame_id": "d1d9389aa04842ac",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3018,
+        6.898,
+        -23.54,
+        -1.422,
+        1.746,
+        0.73,
+        1.768,
+        3.0426
+      ],
+      [
+        "bicycle",
+        0.3233,
+        -19.856,
+        -23.944,
+        -2.152,
+        1.982,
+        0.674,
+        1.789,
+        1.5909
+      ],
+      [
+        "car",
+        0.3519,
+        -0.233,
+        -35.3,
+        -2.173,
+        1.653,
+        1.929,
+        4.495,
+        1.448
+      ],
+      [
+        "car",
+        0.4823,
+        -21.625,
+        13.961,
+        -1.108,
+        1.709,
+        1.916,
+        4.323,
+        -3.0128
+      ],
+      [
+        "car",
+        0.596,
+        -20.137,
+        8.321,
+        -1.289,
+        1.67,
+        1.906,
+        4.359,
+        0.1769
+      ],
+      [
+        "car",
+        0.612,
+        -2.882,
+        12.785,
+        -0.308,
+        1.658,
+        1.894,
+        4.503,
+        0.565
+      ],
+      [
+        "car",
+        0.8261,
+        -14.353,
+        8.513,
+        -1.05,
+        1.685,
+        1.937,
+        4.555,
+        0.2043
+      ],
+      [
+        "car",
+        0.9342,
+        -7.638,
+        -5.984,
+        -1.516,
+        1.619,
+        1.87,
+        4.586,
+        -1.5886
+      ],
+      [
+        "car",
+        0.9381,
+        4.373,
+        9.147,
+        -0.665,
+        1.548,
+        1.863,
+        4.711,
+        1.5917
+      ],
+      [
+        "construction_vehicle",
+        0.55,
+        6.113,
+        41.16,
+        1.342,
+        2.306,
+        1.79,
+        3.835,
+        1.4536
+      ],
+      [
+        "motorcycle",
+        0.3416,
+        -10.861,
+        -14.289,
+        -1.72,
+        1.349,
+        0.738,
+        2.074,
+        -0.3234
+      ],
+      [
+        "pedestrian",
+        0.3298,
+        -12.191,
+        16.359,
+        -0.474,
+        1.878,
+        0.665,
+        0.69,
+        -1.1037
+      ],
+      [
+        "pedestrian",
+        0.3802,
+        7.41,
+        -16.084,
+        -1.491,
+        1.864,
+        0.61,
+        0.601,
+        2.8607
+      ],
+      [
+        "pedestrian",
+        0.4032,
+        8.282,
+        11.831,
+        -0.283,
+        1.81,
+        0.67,
+        0.68,
+        -1.0666
+      ],
+      [
+        "pedestrian",
+        0.4911,
+        7.757,
+        -14.868,
+        -1.378,
+        1.82,
+        0.617,
+        0.655,
+        -1.9291
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22487m, y\u2248-4m)",
+          "isometric": "Cluster at x\u22487m, y\u2248-4m appears as a sparse, low-reflectivity patch without distinct 3D structure."
+        },
+        "evidence": [
+          "The bounding box at (x\u22487m, y\u2248-4m) contains very sparse point returns.",
+          "The isometric view shows no clear vertical profile or surface geometry corresponding to a vehicle or typical object.",
+          "Cross-modal verification is impossible due to missing camera data."
+        ],
+        "alternatives_ruled_out": [
+          "This could be legitimate sensor noise or a low-reflectivity object, but lack of camera context prevents verification."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:05.112528"
+}

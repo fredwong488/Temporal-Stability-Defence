@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "9e10d5419ffa43ce",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3839,
+        -19.896,
+        -25.296,
+        -1.875,
+        1.795,
+        0.594,
+        1.667,
+        1.5586
+      ],
+      [
+        "car",
+        0.3087,
+        -21.718,
+        12.605,
+        -0.925,
+        1.655,
+        1.983,
+        4.437,
+        -3.0265
+      ],
+      [
+        "car",
+        0.3686,
+        -8.535,
+        28.918,
+        0.243,
+        1.716,
+        1.899,
+        4.675,
+        -1.6128
+      ],
+      [
+        "car",
+        0.3809,
+        -21.826,
+        7.5,
+        -0.912,
+        1.745,
+        1.985,
+        4.567,
+        0.1716
+      ],
+      [
+        "car",
+        0.5905,
+        -4.554,
+        17.934,
+        -0.348,
+        1.611,
+        1.869,
+        4.513,
+        -1.74
+      ],
+      [
+        "car",
+        0.6642,
+        -14.296,
+        7.177,
+        -1.118,
+        1.683,
+        1.902,
+        4.476,
+        0.225
+      ],
+      [
+        "car",
+        0.7499,
+        -1.19,
+        14.076,
+        -0.364,
+        1.655,
+        1.903,
+        4.642,
+        0.9235
+      ],
+      [
+        "car",
+        0.7752,
+        -8.974,
+        22.027,
+        -0.278,
+        1.613,
+        1.901,
+        4.555,
+        -1.6095
+      ],
+      [
+        "car",
+        0.9161,
+        -7.601,
+        -7.303,
+        -1.558,
+        1.614,
+        1.888,
+        4.703,
+        -1.5763
+      ],
+      [
+        "car",
+        0.9226,
+        4.331,
+        7.896,
+        -0.757,
+        1.569,
+        1.859,
+        4.692,
+        1.6316
+      ],
+      [
+        "pedestrian",
+        0.3065,
+        7.325,
+        -26.207,
+        -1.675,
+        1.779,
+        0.628,
+        0.636,
+        3.0391
+      ],
+      [
+        "pedestrian",
+        0.3072,
+        -11.914,
+        15.569,
+        -0.547,
+        1.796,
+        0.656,
+        0.662,
+        -2.1536
+      ],
+      [
+        "pedestrian",
+        0.3118,
+        7.255,
+        -25.262,
+        -1.625,
+        1.777,
+        0.628,
+        0.667,
+        -2.3181
+      ],
+      [
+        "pedestrian",
+        0.3342,
+        7.541,
+        -16.047,
+        -1.302,
+        1.859,
+        0.617,
+        0.615,
+        -2.3278
+      ],
+      [
+        "pedestrian",
+        0.3397,
+        -11.161,
+        24.503,
+        0.032,
+        1.776,
+        0.611,
+        0.583,
+        0.0943
+      ],
+      [
+        "pedestrian",
+        0.3863,
+        5.979,
+        -15.699,
+        -1.337,
+        1.88,
+        0.638,
+        0.662,
+        -2.7961
+      ],
+      [
+        "pedestrian",
+        0.4238,
+        -12.008,
+        14.24,
+        -0.768,
+        1.756,
+        0.639,
+        0.632,
+        -0.756
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple detected boxes (e.g., x\u22487, y\u2248-4; x\u224813, y\u22481; x\u224817, y\u22484)",
+          "isometric": "Detected objects are sparse and lack dense point clusters typical of solid vehicles"
+        },
+        "evidence": [
+          "The camera image is unavailable, making it impossible to perform cross-modal verification.",
+          "Several LiDAR detections in the BEV (e.g., the car at x\u224813, y\u22481 and x\u224817, y\u22484) appear to contain very few points, which often correlates with sparse noise or spoofing rather than solid objects.",
+          "The isometric view confirms a lack of coherent vertical structure or surface density for several bounding boxes, which is suspicious but could also stem from range-dependent LiDAR sparsity."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or poor reflectivity at longer ranges.",
+          "Ground reflections or foliage often produce sparse/hollow clusters in LiDAR data."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:13.623814"
+}

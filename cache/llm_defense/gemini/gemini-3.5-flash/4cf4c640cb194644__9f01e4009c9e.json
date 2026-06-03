@@ -1,0 +1,324 @@
+{
+  "key": {
+    "frame_id": "4cf4c640cb194644",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.9416,
+        4.282,
+        -22.688,
+        -1.185,
+        3.552,
+        2.996,
+        12.119,
+        1.5571
+      ],
+      [
+        "car",
+        0.3108,
+        34.265,
+        -17.982,
+        -1.774,
+        1.726,
+        1.982,
+        4.49,
+        0.0551
+      ],
+      [
+        "car",
+        0.3824,
+        -19.406,
+        -2.35,
+        -0.426,
+        2.167,
+        2.17,
+        5.701,
+        -0.6425
+      ],
+      [
+        "car",
+        0.3868,
+        -21.212,
+        -5.308,
+        -0.721,
+        1.62,
+        1.92,
+        4.633,
+        -0.5307
+      ],
+      [
+        "car",
+        0.3957,
+        -3.035,
+        24.719,
+        0.333,
+        1.702,
+        1.874,
+        4.421,
+        -1.6034
+      ],
+      [
+        "car",
+        0.401,
+        24.672,
+        -4.097,
+        -1.612,
+        1.887,
+        2.022,
+        4.795,
+        1.6382
+      ],
+      [
+        "car",
+        0.4357,
+        16.989,
+        -9.866,
+        -1.906,
+        1.845,
+        2.051,
+        4.883,
+        -3.1384
+      ],
+      [
+        "car",
+        0.4721,
+        -22.834,
+        -7.667,
+        -0.77,
+        1.681,
+        1.895,
+        4.445,
+        -0.5008
+      ],
+      [
+        "car",
+        0.5578,
+        14.908,
+        -19.255,
+        -2.016,
+        1.637,
+        1.939,
+        4.384,
+        3.0365
+      ],
+      [
+        "car",
+        0.5895,
+        16.34,
+        -13.333,
+        -2.114,
+        1.662,
+        1.949,
+        4.525,
+        -3.1336
+      ],
+      [
+        "car",
+        0.6302,
+        15.264,
+        -16.626,
+        -1.993,
+        1.689,
+        1.937,
+        4.465,
+        2.9788
+      ],
+      [
+        "construction_vehicle",
+        0.7271,
+        -11.718,
+        -23.854,
+        -1.518,
+        2.058,
+        2.489,
+        7.117,
+        3.0348
+      ],
+      [
+        "construction_vehicle",
+        0.8876,
+        -5.795,
+        -17.55,
+        -1.328,
+        2.311,
+        2.463,
+        6.912,
+        -1.6271
+      ],
+      [
+        "pedestrian",
+        0.3056,
+        -9.863,
+        -21.274,
+        -1.236,
+        1.764,
+        0.638,
+        0.639,
+        -1.7712
+      ],
+      [
+        "traffic_cone",
+        0.3473,
+        -7.603,
+        -1.227,
+        -1.3,
+        0.724,
+        0.362,
+        0.364,
+        1.7107
+      ],
+      [
+        "traffic_cone",
+        0.4446,
+        -3.74,
+        -7.851,
+        -1.71,
+        0.724,
+        0.381,
+        0.384,
+        1.5242
+      ],
+      [
+        "traffic_cone",
+        0.5341,
+        -5.912,
+        -1.359,
+        -1.396,
+        0.724,
+        0.373,
+        0.375,
+        1.9248
+      ],
+      [
+        "traffic_cone",
+        0.6082,
+        -4.209,
+        -3.774,
+        -1.591,
+        0.734,
+        0.388,
+        0.386,
+        1.2773
+      ],
+      [
+        "trailer",
+        0.3012,
+        -11.691,
+        15.539,
+        0.889,
+        3.227,
+        2.055,
+        2.898,
+        -0.7718
+      ],
+      [
+        "truck",
+        0.3104,
+        -19.597,
+        -2.261,
+        -0.504,
+        2.174,
+        2.297,
+        5.92,
+        -0.5902
+      ],
+      [
+        "truck",
+        0.4095,
+        24.746,
+        -4.485,
+        -1.475,
+        1.921,
+        2.127,
+        5.766,
+        -2.0508
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 86,
+          "reinjected_centroid": [
+            16.22838592529297,
+            -9.464215278625488,
+            -2.1663904190063477
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 58,
+          "reinjected_centroid": [
+            15.708250045776367,
+            -12.705263137817383,
+            -2.3324356079101562
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 22,
+          "reinjected_centroid": [
+            13.774163246154785,
+            -18.736434936523438,
+            -2.2944512367248535
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 16,
+          "reinjected_centroid": [
+            -3.17606258392334,
+            23.373811721801758,
+            0.09544073790311813
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 15,
+          "reinjected_centroid": [
+            13.682856559753418,
+            -15.960330963134766,
+            -2.23564076423645
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224825m, y\u22483m)",
+          "isometric": "Bounding box for 'car 0.40' envelopes a very sparse, nearly non-existent cluster of points with no clear 3D vehicle structure or L-shape"
+        },
+        "evidence": [
+          "The bounding box 'car 0.40' at x\u224825m, y\u22483m is placed around an extremely sparse group of points that lacks the physical layout, size, and vertical profile of a real vehicle.",
+          "There is no corresponding physical occlusion shadow behind this alleged vehicle cluster.",
+          "The camera image is completely unavailable/blacked out, preventing cross-modal validation, which is highly indicative of a sensor/system disruption."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object below detection threshold",
+          "Ground clutter"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:24.492537"
+}

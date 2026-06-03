@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "19717679dd60469f",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.328,
+        -9.087,
+        27.115,
+        0.522,
+        1.716,
+        1.933,
+        4.618,
+        -1.5978
+      ],
+      [
+        "car",
+        0.3543,
+        -21.796,
+        16.51,
+        -0.312,
+        1.708,
+        1.98,
+        4.494,
+        -3.0104
+      ],
+      [
+        "car",
+        0.3942,
+        0.12,
+        -34.334,
+        -2.509,
+        1.763,
+        1.946,
+        4.621,
+        1.6968
+      ],
+      [
+        "car",
+        0.421,
+        -8.457,
+        32.666,
+        0.708,
+        1.68,
+        1.918,
+        4.623,
+        -1.6783
+      ],
+      [
+        "car",
+        0.4449,
+        -20.471,
+        11.038,
+        -0.792,
+        1.597,
+        1.936,
+        4.492,
+        0.1989
+      ],
+      [
+        "car",
+        0.4816,
+        -4.115,
+        22.842,
+        0.18,
+        1.635,
+        1.945,
+        4.69,
+        -1.6247
+      ],
+      [
+        "car",
+        0.5558,
+        6.137,
+        43.723,
+        1.629,
+        1.831,
+        1.972,
+        4.701,
+        1.4824
+      ],
+      [
+        "car",
+        0.7911,
+        -6.033,
+        13.435,
+        -0.285,
+        1.715,
+        1.935,
+        4.629,
+        -2.8212
+      ],
+      [
+        "car",
+        0.8052,
+        -14.483,
+        11.001,
+        -0.76,
+        1.572,
+        1.879,
+        4.601,
+        0.17
+      ],
+      [
+        "car",
+        0.8693,
+        4.369,
+        11.739,
+        -0.503,
+        1.548,
+        1.883,
+        4.775,
+        1.6077
+      ],
+      [
+        "car",
+        0.9258,
+        -7.618,
+        -3.466,
+        -1.442,
+        1.619,
+        1.922,
+        4.751,
+        -1.5552
+      ],
+      [
+        "pedestrian",
+        0.3118,
+        7.384,
+        -21.294,
+        -2.043,
+        1.79,
+        0.642,
+        0.615,
+        -3.0511
+      ],
+      [
+        "pedestrian",
+        0.3299,
+        6.34,
+        -24.505,
+        -1.948,
+        1.834,
+        0.636,
+        0.66,
+        3.0567
+      ],
+      [
+        "pedestrian",
+        0.3545,
+        4.934,
+        -23.908,
+        -1.932,
+        1.877,
+        0.681,
+        0.651,
+        2.2968
+      ],
+      [
+        "pedestrian",
+        0.3743,
+        7.95,
+        -14.028,
+        -1.468,
+        1.781,
+        0.657,
+        0.681,
+        -1.4526
+      ],
+      [
+        "pedestrian",
+        0.4353,
+        6.145,
+        -22.136,
+        -2.033,
+        1.812,
+        0.695,
+        0.688,
+        -2.8872
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u224823m, y\u22484m",
+          "isometric": "x\u224823m, y\u22484m"
+        },
+        "evidence": [
+          "The bounding box located at (x\u224823m, y\u22484m) appears to encompass a sparse, thin linear segment of points rather than the characteristic cluster density or shape expected for a vehicle.",
+          "The isometric view shows this box floating at a height not clearly connected to the ground plane, lacking the standard vertical profile of a car.",
+          "The confidence score for this detection is notably low (0.48), suggesting the perception system is struggling to classify the underlying point structure."
+        ],
+        "alternatives_ruled_out": [
+          "This could be a distant vehicle partially obscured or exhibiting low reflectivity, leading to sparse points and low confidence.",
+          "The unavailability of the camera feed prevents verification of whether this is a ghost object or a genuine, albeit distant and sparse, object."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:49.518891"
+}

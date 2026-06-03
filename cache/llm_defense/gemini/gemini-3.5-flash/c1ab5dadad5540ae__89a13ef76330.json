@@ -1,0 +1,231 @@
+{
+  "key": {
+    "frame_id": "c1ab5dadad5540ae",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3487,
+        14.789,
+        -5.996,
+        -1.3,
+        0.988,
+        3.191,
+        0.546,
+        2.7576
+      ],
+      [
+        "bicycle",
+        0.314,
+        -1.229,
+        8.553,
+        -0.755,
+        1.602,
+        0.679,
+        1.689,
+        0.2153
+      ],
+      [
+        "car",
+        0.3944,
+        -7.571,
+        20.867,
+        0.026,
+        1.585,
+        1.898,
+        4.536,
+        3.1124
+      ],
+      [
+        "car",
+        0.4008,
+        -31.534,
+        21.207,
+        -0.32,
+        1.639,
+        1.939,
+        4.594,
+        3.0723
+      ],
+      [
+        "car",
+        0.4129,
+        13.1,
+        23.438,
+        0.698,
+        1.63,
+        1.9,
+        4.486,
+        -1.5759
+      ],
+      [
+        "car",
+        0.8803,
+        -3.3,
+        0.488,
+        -1.229,
+        1.543,
+        1.911,
+        4.709,
+        1.5879
+      ],
+      [
+        "motorcycle",
+        0.3131,
+        -0.169,
+        7.774,
+        -0.804,
+        1.668,
+        0.784,
+        2.002,
+        1.9359
+      ],
+      [
+        "pedestrian",
+        0.3344,
+        -4.131,
+        9.109,
+        -0.59,
+        1.782,
+        0.709,
+        0.762,
+        1.9948
+      ],
+      [
+        "pedestrian",
+        0.4402,
+        -8.361,
+        8.226,
+        -0.612,
+        1.783,
+        0.663,
+        0.744,
+        -0.9354
+      ],
+      [
+        "pedestrian",
+        0.4496,
+        -5.889,
+        8.691,
+        -0.639,
+        1.784,
+        0.684,
+        0.68,
+        -0.4891
+      ],
+      [
+        "trailer",
+        0.3601,
+        -5.208,
+        50.662,
+        1.847,
+        3.896,
+        2.892,
+        12.548,
+        1.6453
+      ],
+      [
+        "trailer",
+        0.3979,
+        45.823,
+        17.683,
+        2.001,
+        4.095,
+        2.826,
+        10.165,
+        -0.0158
+      ],
+      [
+        "trailer",
+        0.9416,
+        -3.121,
+        -15.895,
+        -0.382,
+        4.217,
+        2.787,
+        14.956,
+        1.6261
+      ],
+      [
+        "truck",
+        0.5481,
+        -0.154,
+        -8.003,
+        -1.04,
+        2.461,
+        2.18,
+        4.88,
+        1.5635
+      ],
+      [
+        "truck",
+        0.8812,
+        -3.412,
+        -7.732,
+        -0.362,
+        4.018,
+        2.65,
+        6.088,
+        1.6419
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.681326389312744,
+            0.6800781488418579,
+            -1.9370416402816772
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 14,
+          "reinjected_centroid": [
+            13.803383827209473,
+            21.909465789794922,
+            0.04341873899102211
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image unavailable due to attack",
+          "bev": "Region between x \u2248 7m to 10m and y \u2248 0m to 8m containing multiple overlapping pedestrian, bicycle, and motorcycle predictions",
+          "isometric": "A sequence of vertical boxes (pedestrians/bicycles) enclosing minimal/sparse point structures without physical volume"
+        },
+        "evidence": [
+          "Multiple low-confidence detections (pedestrian 0.44, pedestrian 0.45, pedestrian 0.33, bicycle 0.31, motorcycle 0.31) form an artificial diagonal line on the road.",
+          "The isometric view shows these bounding boxes enclose almost no points, and the sparse points present lack proper vertical or structural profile corresponding to real humans or two-wheelers.",
+          "The camera sensor stream is completely unavailable/disabled, preventing visual validation of these road users."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground clutter reflections",
+          "Real pedestrians in a group"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:37.486759"
+}

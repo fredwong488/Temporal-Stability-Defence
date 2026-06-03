@@ -1,0 +1,198 @@
+{
+  "key": {
+    "frame_id": "8c9469c1e9d14b9a",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3732,
+        -1.255,
+        -44.883,
+        -3.238,
+        1.846,
+        2.029,
+        4.839,
+        -1.5641
+      ],
+      [
+        "car",
+        0.5894,
+        0.903,
+        -19.272,
+        -1.913,
+        1.705,
+        1.966,
+        4.558,
+        1.6306
+      ],
+      [
+        "construction_vehicle",
+        0.3494,
+        -8.502,
+        20.538,
+        0.821,
+        3.614,
+        2.688,
+        7.096,
+        -1.6016
+      ],
+      [
+        "construction_vehicle",
+        0.428,
+        -24.492,
+        11.502,
+        -0.981,
+        2.491,
+        2.291,
+        5.564,
+        1.5564
+      ],
+      [
+        "pedestrian",
+        0.3014,
+        6.349,
+        6.955,
+        -0.661,
+        1.735,
+        0.671,
+        0.691,
+        -1.7087
+      ],
+      [
+        "pedestrian",
+        0.3251,
+        9.608,
+        27.046,
+        0.029,
+        1.786,
+        0.623,
+        0.66,
+        1.7955
+      ],
+      [
+        "pedestrian",
+        0.3637,
+        9.449,
+        19.998,
+        -0.273,
+        1.776,
+        0.653,
+        0.673,
+        1.8802
+      ],
+      [
+        "pedestrian",
+        0.3646,
+        10.905,
+        27.281,
+        -0.052,
+        1.798,
+        0.621,
+        0.612,
+        2.6398
+      ],
+      [
+        "pedestrian",
+        0.3808,
+        9.89,
+        21.888,
+        -0.227,
+        1.833,
+        0.696,
+        0.734,
+        1.7468
+      ],
+      [
+        "pedestrian",
+        0.3882,
+        8.354,
+        19.13,
+        -0.32,
+        1.797,
+        0.676,
+        0.7,
+        1.5947
+      ],
+      [
+        "pedestrian",
+        0.3916,
+        -10.099,
+        7.907,
+        -0.909,
+        1.815,
+        0.649,
+        0.699,
+        0.8853
+      ],
+      [
+        "pedestrian",
+        0.4242,
+        6.871,
+        20.625,
+        -0.223,
+        1.843,
+        0.675,
+        0.69,
+        1.7521
+      ],
+      [
+        "pedestrian",
+        0.4276,
+        6.624,
+        -7.709,
+        -1.027,
+        1.751,
+        0.654,
+        0.677,
+        -1.8578
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22487m, y\u2248-6m)",
+          "isometric": "Small isolated box floating with no ground-plane support."
+        },
+        "evidence": [
+          "A single, isolated 'pedestrian' bounding box appears in the BEV near (x=7m, y=-6m) with no underlying cluster of points visible in the isometric view.",
+          "The box corresponds to empty space in the LiDAR point cloud, lacking the structural density of a physical pedestrian.",
+          "The small cluster size and isolated nature are characteristic of ghost spoofing attacks intended to trigger false positives."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The object is detected as a high-confidence bounding box rather than transient, unlabelled noise.",
+          "Occlusion: The location is in clear view with no surrounding structures to explain a missing point cloud."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818m to 30m, y\u2248-5m to -8m)",
+          "isometric": "Multiple small boxes detected in a sparse, empty region."
+        },
+        "evidence": [
+          "A series of multiple 'pedestrian' bounding boxes are predicted in a region (x=18-30m) that contains almost no LiDAR points.",
+          "The isometric view confirms the absence of 3D structure or physical objects at these coordinates.",
+          "The distribution of these boxes suggests an attempt to overload the perception system with phantom obstacles."
+        ],
+        "alternatives_ruled_out": [
+          "Natural vegetation/clutter: The points are too sparse to represent physical entities, and standard objects like pedestrians would produce distinct, non-empty clusters.",
+          "Calibration error: The boxes are concentrated in a specific region of the field of view rather than being globally offset."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:35.704225"
+}

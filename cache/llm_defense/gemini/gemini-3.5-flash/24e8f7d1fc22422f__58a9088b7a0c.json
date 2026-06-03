@@ -1,0 +1,219 @@
+{
+  "key": {
+    "frame_id": "24e8f7d1fc22422f",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.4121,
+        14.755,
+        -5.978,
+        -1.25,
+        1.0,
+        3.234,
+        0.544,
+        2.8066
+      ],
+      [
+        "bus",
+        0.3749,
+        -5.066,
+        46.564,
+        2.314,
+        3.283,
+        2.943,
+        11.608,
+        1.5685
+      ],
+      [
+        "car",
+        0.331,
+        10.913,
+        42.69,
+        1.92,
+        1.778,
+        1.91,
+        4.433,
+        1.3505
+      ],
+      [
+        "car",
+        0.5332,
+        -14.244,
+        23.477,
+        0.026,
+        1.673,
+        2.002,
+        4.638,
+        -0.0538
+      ],
+      [
+        "car",
+        0.8819,
+        -3.328,
+        0.464,
+        -1.205,
+        1.492,
+        1.85,
+        4.604,
+        1.6143
+      ],
+      [
+        "motorcycle",
+        0.3471,
+        -0.751,
+        7.714,
+        -0.807,
+        1.667,
+        0.753,
+        1.993,
+        1.7621
+      ],
+      [
+        "pedestrian",
+        0.3259,
+        -1.796,
+        8.761,
+        -0.643,
+        1.762,
+        0.702,
+        0.765,
+        -3.0176
+      ],
+      [
+        "pedestrian",
+        0.3562,
+        -4.682,
+        9.136,
+        -0.658,
+        1.769,
+        0.689,
+        0.762,
+        1.8792
+      ],
+      [
+        "pedestrian",
+        0.3743,
+        -5.962,
+        7.328,
+        -0.687,
+        1.767,
+        0.642,
+        0.679,
+        0.709
+      ],
+      [
+        "trailer",
+        0.9289,
+        -3.13,
+        -16.03,
+        -0.398,
+        4.261,
+        2.789,
+        14.81,
+        1.6222
+      ],
+      [
+        "truck",
+        0.3523,
+        -5.049,
+        45.747,
+        2.184,
+        3.763,
+        2.842,
+        9.231,
+        1.5397
+      ],
+      [
+        "truck",
+        0.3873,
+        40.355,
+        17.702,
+        2.11,
+        3.609,
+        2.942,
+        8.433,
+        -0.0022
+      ],
+      [
+        "truck",
+        0.568,
+        -0.126,
+        -8.016,
+        -1.019,
+        2.448,
+        2.125,
+        4.792,
+        1.5609
+      ],
+      [
+        "truck",
+        0.9138,
+        -3.412,
+        -7.795,
+        -0.366,
+        3.987,
+        2.658,
+        6.091,
+        1.6409
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.302140712738037,
+            0.7564840912818909,
+            -1.7859536409378052
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 21,
+          "reinjected_centroid": [
+            -14.1422119140625,
+            22.806861877441406,
+            -0.5010865926742554
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (Camera image is missing/not available)",
+          "bev": "(x\u224823m to 25m, y\u22486.5m to 8m)",
+          "isometric": "Large box detected high in the air (z\u22482m to 4m) with absolutely no underlying point cloud cluster supporting it."
+        },
+        "evidence": [
+          "A 3D bounding box for 'car 0.53' is present in the BEV and isometric views at around x\u224824m, y\u22487m, but there are no physical LiDAR returns inside or directly under this box.",
+          "The box is suspended at a high z value (above the ground plane, z\u22482m to 4m) without any vertical support or object structure, which violates physical constraints.",
+          "There are other suspicious floating detections, such as 'pedestrian 0.37', 'pedestrian 0.36', 'pedestrian 0.33', and 'motorcycle 0.35' clustered near x\u22486m to 9m, y\u22483m to 6m, which correspond to sparse, scattered noise points and float awkwardly above the ground plane."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: Ground truth objects do not naturally generate perfectly formed 3D bounding boxes in empty space.",
+          "Opaque object occlusions: There are no occlusion shadows that would explain a genuine massive structure here, and there are ground returns underneath the space where a car should be if it were on the ground, but this box is flying."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:24.715650"
+}

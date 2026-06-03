@@ -1,0 +1,291 @@
+{
+  "key": {
+    "frame_id": "e7c10d68e7c14f9f",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3002,
+        11.544,
+        11.542,
+        -0.852,
+        1.061,
+        2.087,
+        0.628,
+        2.9906
+      ],
+      [
+        "barrier",
+        0.3009,
+        6.083,
+        -26.214,
+        -2.027,
+        1.032,
+        2.157,
+        0.549,
+        3.0417
+      ],
+      [
+        "barrier",
+        0.3197,
+        7.009,
+        -18.238,
+        -1.75,
+        0.936,
+        3.05,
+        0.555,
+        3.0275
+      ],
+      [
+        "barrier",
+        0.3253,
+        11.141,
+        14.743,
+        -0.667,
+        1.064,
+        1.942,
+        0.492,
+        3.0818
+      ],
+      [
+        "barrier",
+        0.3369,
+        7.886,
+        -11.725,
+        -1.637,
+        0.956,
+        2.977,
+        0.596,
+        3.0403
+      ],
+      [
+        "barrier",
+        0.3402,
+        11.112,
+        7.643,
+        -1.014,
+        1.069,
+        2.39,
+        0.584,
+        3.0661
+      ],
+      [
+        "barrier",
+        0.3496,
+        8.532,
+        -6.848,
+        -1.421,
+        1.101,
+        1.977,
+        0.596,
+        3.0075
+      ],
+      [
+        "barrier",
+        0.356,
+        8.324,
+        -8.556,
+        -1.519,
+        1.114,
+        2.081,
+        0.618,
+        3.0084
+      ],
+      [
+        "barrier",
+        0.3625,
+        7.476,
+        -14.914,
+        -1.641,
+        1.01,
+        2.751,
+        0.629,
+        2.9479
+      ],
+      [
+        "barrier",
+        0.4054,
+        10.781,
+        12.503,
+        -0.814,
+        1.053,
+        2.128,
+        0.556,
+        3.1031
+      ],
+      [
+        "barrier",
+        0.431,
+        10.037,
+        -2.755,
+        -1.401,
+        1.047,
+        2.168,
+        0.592,
+        3.0812
+      ],
+      [
+        "barrier",
+        0.4427,
+        10.892,
+        4.458,
+        -1.178,
+        0.943,
+        3.11,
+        0.585,
+        3.1071
+      ],
+      [
+        "car",
+        0.4175,
+        -4.197,
+        21.07,
+        0.018,
+        2.085,
+        2.012,
+        5.224,
+        2.0178
+      ],
+      [
+        "car",
+        0.6386,
+        39.977,
+        23.893,
+        -0.952,
+        1.639,
+        1.938,
+        4.415,
+        3.0007
+      ],
+      [
+        "car",
+        0.7616,
+        9.064,
+        15.63,
+        -0.345,
+        1.706,
+        1.9,
+        4.481,
+        1.4655
+      ],
+      [
+        "pedestrian",
+        0.3089,
+        1.145,
+        36.81,
+        0.742,
+        1.765,
+        0.673,
+        0.692,
+        0.1839
+      ],
+      [
+        "pedestrian",
+        0.3168,
+        2.22,
+        31.208,
+        0.366,
+        1.795,
+        0.675,
+        0.696,
+        2.6871
+      ],
+      [
+        "pedestrian",
+        0.3688,
+        25.442,
+        13.908,
+        -0.763,
+        1.777,
+        0.619,
+        0.633,
+        1.1174
+      ],
+      [
+        "pedestrian",
+        0.3817,
+        -11.436,
+        22.979,
+        0.203,
+        1.824,
+        0.662,
+        0.705,
+        1.4033
+      ],
+      [
+        "pedestrian",
+        0.3828,
+        22.343,
+        2.811,
+        -1.089,
+        1.779,
+        0.592,
+        0.611,
+        2.2926
+      ],
+      [
+        "truck",
+        0.3968,
+        16.711,
+        30.405,
+        0.656,
+        2.282,
+        2.33,
+        6.261,
+        0.9362
+      ],
+      [
+        "truck",
+        0.4595,
+        -9.253,
+        35.292,
+        1.547,
+        3.378,
+        2.789,
+        7.463,
+        -1.4818
+      ],
+      [
+        "truck",
+        0.7084,
+        -5.203,
+        -21.783,
+        -0.787,
+        3.561,
+        3.057,
+        10.828,
+        1.5521
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not available",
+          "bev": "x\u224821m, y\u22484.5m",
+          "isometric": "The box labeled car 0.42 is floating in mid-air (z > 1m) with no underlying physical 3D point cluster representing a vehicle."
+        },
+        "evidence": [
+          "The box 'car 0.42' is located at x\u224821m, y\u22484.5m on top of a sparse linear sequence of points that represents a wall or fence, with no actual vehicle point cluster present.",
+          "In the isometric view, this box is clearly suspended in mid-air above the ground plane with no supporting structure or point density.",
+          "There is no occlusion or 3D shadow behind this box that would indicate the presence of an opaque physical vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:40.297800"
+}

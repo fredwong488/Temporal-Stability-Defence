@@ -1,0 +1,258 @@
+{
+  "key": {
+    "frame_id": "bfbb3ba599ea4501",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.323,
+        -1.889,
+        -51.894,
+        -2.413,
+        1.764,
+        1.971,
+        4.756,
+        -1.7501
+      ],
+      [
+        "car",
+        0.3814,
+        -8.608,
+        25.35,
+        0.125,
+        1.584,
+        1.866,
+        4.582,
+        -1.6439
+      ],
+      [
+        "car",
+        0.3869,
+        -20.091,
+        10.126,
+        -0.994,
+        1.696,
+        1.945,
+        4.524,
+        0.2223
+      ],
+      [
+        "car",
+        0.4065,
+        -8.423,
+        31.675,
+        0.579,
+        1.676,
+        1.89,
+        4.57,
+        -1.5989
+      ],
+      [
+        "car",
+        0.448,
+        6.267,
+        42.618,
+        1.365,
+        1.764,
+        1.949,
+        4.587,
+        1.415
+      ],
+      [
+        "car",
+        0.4962,
+        -3.975,
+        21.553,
+        0.079,
+        1.545,
+        1.775,
+        4.295,
+        1.4801
+      ],
+      [
+        "car",
+        0.6445,
+        -4.871,
+        12.852,
+        -0.275,
+        1.619,
+        1.915,
+        4.596,
+        0.3266
+      ],
+      [
+        "car",
+        0.8449,
+        -7.608,
+        -4.471,
+        -1.489,
+        1.731,
+        1.951,
+        4.772,
+        -1.5749
+      ],
+      [
+        "car",
+        0.8786,
+        -14.427,
+        10.013,
+        -0.93,
+        1.61,
+        1.941,
+        4.506,
+        0.1297
+      ],
+      [
+        "car",
+        0.9244,
+        4.378,
+        10.657,
+        -0.558,
+        1.508,
+        1.801,
+        4.456,
+        1.5933
+      ],
+      [
+        "construction_vehicle",
+        0.4044,
+        11.576,
+        1.024,
+        -0.134,
+        3.173,
+        2.709,
+        4.853,
+        -1.5308
+      ],
+      [
+        "pedestrian",
+        0.3105,
+        6.217,
+        -25.68,
+        -1.759,
+        1.793,
+        0.656,
+        0.714,
+        1.8749
+      ],
+      [
+        "pedestrian",
+        0.3174,
+        -12.22,
+        18.9,
+        -0.186,
+        1.763,
+        0.59,
+        0.607,
+        -1.3583
+      ],
+      [
+        "pedestrian",
+        0.3285,
+        7.287,
+        -21.459,
+        -1.873,
+        1.735,
+        0.614,
+        0.678,
+        -1.7786
+      ],
+      [
+        "pedestrian",
+        0.3394,
+        8.325,
+        14.599,
+        -0.094,
+        1.848,
+        0.679,
+        0.669,
+        2.3309
+      ],
+      [
+        "pedestrian",
+        0.3546,
+        -7.62,
+        -26.035,
+        -2.081,
+        1.79,
+        0.63,
+        0.672,
+        2.9555
+      ],
+      [
+        "pedestrian",
+        0.3693,
+        8.46,
+        -13.625,
+        -1.382,
+        1.74,
+        0.621,
+        0.599,
+        3.0983
+      ],
+      [
+        "pedestrian",
+        0.37,
+        7.77,
+        -14.562,
+        -1.552,
+        1.753,
+        0.614,
+        0.618,
+        -1.4845
+      ],
+      [
+        "pedestrian",
+        0.3781,
+        6.243,
+        -21.255,
+        -1.869,
+        1.746,
+        0.65,
+        0.701,
+        -1.2499
+      ],
+      [
+        "pedestrian",
+        0.4309,
+        -11.664,
+        19.736,
+        -0.137,
+        1.754,
+        0.625,
+        0.676,
+        1.8764
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Global scene",
+          "isometric": "Global scene"
+        },
+        "evidence": [
+          "The camera image is unavailable, preventing cross-modal verification.",
+          "The LiDAR point cloud exhibits typical distribution for a complex urban environment, including road infrastructure, ground points, and various objects.",
+          "Detected objects align reasonably well with identifiable point clusters in the isometric view."
+        ],
+        "alternatives_ruled_out": [
+          "The detected objects (e.g., at x=13m and x=20m) demonstrate plausible point density and structural characteristics consistent with vehicle detections.",
+          "Detected objects correspond to legitimate physical geometry observed in the LiDAR cloud.",
+          "Absence of concentrated, small, isolated spoofing clusters near the ego-vehicle."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:18.697130"
+}

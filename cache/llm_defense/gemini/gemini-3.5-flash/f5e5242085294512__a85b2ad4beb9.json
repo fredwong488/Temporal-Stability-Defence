@@ -1,0 +1,218 @@
+{
+  "key": {
+    "frame_id": "f5e5242085294512",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bus",
+        0.4158,
+        -8.395,
+        33.309,
+        1.414,
+        3.581,
+        2.85,
+        10.988,
+        0.9613
+      ],
+      [
+        "car",
+        0.3232,
+        -46.732,
+        36.872,
+        0.094,
+        1.785,
+        1.933,
+        4.605,
+        3.1235
+      ],
+      [
+        "car",
+        0.419,
+        6.821,
+        23.077,
+        0.467,
+        1.808,
+        1.99,
+        4.916,
+        -0.114
+      ],
+      [
+        "car",
+        0.8997,
+        -3.337,
+        0.479,
+        -1.213,
+        1.543,
+        1.916,
+        4.717,
+        1.5822
+      ],
+      [
+        "pedestrian",
+        0.3113,
+        -12.236,
+        8.814,
+        -0.689,
+        1.801,
+        0.655,
+        0.684,
+        -1.3866
+      ],
+      [
+        "pedestrian",
+        0.3202,
+        -7.355,
+        9.235,
+        -0.52,
+        1.801,
+        0.69,
+        0.693,
+        0.3196
+      ],
+      [
+        "pedestrian",
+        0.3523,
+        -3.427,
+        7.318,
+        -0.674,
+        1.719,
+        0.655,
+        0.698,
+        1.5145
+      ],
+      [
+        "pedestrian",
+        0.4323,
+        -4.423,
+        7.97,
+        -0.734,
+        1.729,
+        0.637,
+        0.657,
+        0.4211
+      ],
+      [
+        "trailer",
+        0.9581,
+        -3.145,
+        -15.87,
+        -0.399,
+        4.22,
+        2.796,
+        14.599,
+        1.6288
+      ],
+      [
+        "truck",
+        0.3006,
+        -8.256,
+        33.469,
+        1.502,
+        3.862,
+        3.078,
+        11.048,
+        0.912
+      ],
+      [
+        "truck",
+        0.6101,
+        19.605,
+        16.59,
+        1.091,
+        3.396,
+        2.857,
+        8.134,
+        0.0716
+      ],
+      [
+        "truck",
+        0.6563,
+        -0.146,
+        -7.985,
+        -1.005,
+        2.554,
+        2.19,
+        4.804,
+        1.558
+      ],
+      [
+        "truck",
+        0.9097,
+        -3.418,
+        -7.861,
+        -0.38,
+        3.939,
+        2.716,
+        6.113,
+        1.6034
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.7913970947265625,
+            0.7890915870666504,
+            -1.9989010095596313
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 57,
+          "reinjected_centroid": [
+            6.394052505493164,
+            22.336585998535156,
+            -0.07508335262537003
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 24,
+          "reinjected_centroid": [
+            -11.422309875488281,
+            11.657681465148926,
+            -1.2383997440338135
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image unavailable (marked as attacked)",
+          "bev": "x \u2248 7m to 10m, y \u2248 3m to 8m",
+          "isometric": "Multiple pedestrian boxes floating in areas with little to no point cloud density, and a large box floating high above the ground plane (z \u2248 1.5m to 3.5m) at x \u2248 23m"
+        },
+        "evidence": [
+          "The camera image is completely missing/suppressed with an explicit '[ATTACKED]' warning label in the title bar.",
+          "Multiple pedestrian detections ('pedestrian 0.32', 'pedestrian 0.43', 'pedestrian 0.35') are generated in the BEV and isometric views over empty space or single sparse noise points, completely offset from any real physical cluster.",
+          "A large ghost bounding box (bus/car) is detected floating in mid-air in the isometric view without any plausible physical support or matching dense cluster."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant real pedestrians (completely lack structural patterns in both BEV and isometric views)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:35.560010"
+}

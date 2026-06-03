@@ -1,0 +1,110 @@
+{
+  "key": {
+    "frame_id": "6d0c438ad93846dc",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.456,
+        -2.968,
+        -29.92,
+        -2.114,
+        1.784,
+        1.975,
+        4.663,
+        1.5604
+      ],
+      [
+        "car",
+        0.7114,
+        0.284,
+        -19.812,
+        -1.773,
+        1.681,
+        1.904,
+        4.503,
+        1.6494
+      ],
+      [
+        "pedestrian",
+        0.3305,
+        7.18,
+        13.987,
+        -0.414,
+        1.76,
+        0.66,
+        0.684,
+        3.1023
+      ],
+      [
+        "pedestrian",
+        0.3771,
+        6.206,
+        -2.58,
+        -0.896,
+        1.804,
+        0.709,
+        0.752,
+        -1.3325
+      ],
+      [
+        "trailer",
+        0.3585,
+        -9.058,
+        33.759,
+        0.688,
+        2.554,
+        1.338,
+        1.721,
+        -2.0466
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u2248-7.5m)",
+          "isometric": "Small cuboid at x\u224814m, y\u2248-7.5m, z\u2248-1m, floating/positioned below or at ground level with no discernible cluster density"
+        },
+        "evidence": [
+          "The bounding box at x\u224814m, y\u2248-7.5m in the BEV view contains no significant or distinct point cluster that resembles a physical object.",
+          "In the isometric view, the cuboid appears to be empty space or ground noise, lacking the vertical structure (height) required for a pedestrian or vehicle.",
+          "The lack of an occluded 'shadow' behind this detection suggests it does not correspond to a physical, opaque object."
+        ],
+        "alternatives_ruled_out": [
+          "Low-reflectivity ground clutter (typically doesn't produce specific pedestrian-class object detections)",
+          "Sensor noise (usually doesn't manifest as a well-formed 3D bounding box)"
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224828m, y\u22487m)",
+          "isometric": "Cuboid at x\u224828m, y\u22487m, floating high (z\u22482-3m) with no supporting structure below"
+        },
+        "evidence": [
+          "The 'trailer' bounding box at x\u224828m, y\u22487m is placed in a region where points are sparse or non-existent in the isometric view.",
+          "The detection exists at a height that suggests 'floating' behavior (z\u22482-3m) with no physical connection to the ground plane, which is physically implausible for a trailer.",
+          "The region is effectively empty space; there is no cluster of points that would indicate the presence of a large object like a trailer."
+        ],
+        "alternatives_ruled_out": [
+          "Infrastructure (e.g., overhead sign or bridge) (the box is positioned and sized as a trailer, not infrastructure, and lacks the consistent surface structure of a solid object)",
+          "Calibration error (does not explain the specific 3D box placement in empty air)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:27.962374"
+}

@@ -1,0 +1,247 @@
+{
+  "key": {
+    "frame_id": "cb2bf59067614d9f",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3258,
+        -11.002,
+        3.002,
+        -1.44,
+        1.194,
+        0.585,
+        1.622,
+        2.2129
+      ],
+      [
+        "car",
+        0.3469,
+        -0.173,
+        -39.346,
+        -2.361,
+        2.131,
+        2.182,
+        5.347,
+        1.6216
+      ],
+      [
+        "car",
+        0.4714,
+        0.9,
+        18.086,
+        -0.087,
+        1.776,
+        1.861,
+        4.439,
+        1.2947
+      ],
+      [
+        "car",
+        0.5303,
+        -20.456,
+        4.689,
+        -1.412,
+        1.696,
+        1.911,
+        4.45,
+        0.0895
+      ],
+      [
+        "car",
+        0.5521,
+        -21.672,
+        9.994,
+        -1.406,
+        1.666,
+        1.886,
+        4.381,
+        -3.0282
+      ],
+      [
+        "car",
+        0.6284,
+        6.126,
+        37.34,
+        0.712,
+        1.73,
+        1.893,
+        4.424,
+        1.5029
+      ],
+      [
+        "car",
+        0.6959,
+        -0.432,
+        12.586,
+        -0.596,
+        1.534,
+        1.788,
+        4.359,
+        1.5432
+      ],
+      [
+        "car",
+        0.7253,
+        -14.346,
+        4.738,
+        -1.22,
+        1.628,
+        1.907,
+        4.448,
+        0.1717
+      ],
+      [
+        "car",
+        0.9172,
+        -5.221,
+        14.091,
+        -0.644,
+        1.541,
+        1.837,
+        4.493,
+        -1.9657
+      ],
+      [
+        "car",
+        0.9238,
+        -7.666,
+        -9.988,
+        -1.678,
+        1.614,
+        1.915,
+        4.788,
+        -1.5886
+      ],
+      [
+        "car",
+        0.9311,
+        4.304,
+        5.371,
+        -0.877,
+        1.548,
+        1.88,
+        4.772,
+        1.5861
+      ],
+      [
+        "pedestrian",
+        0.3122,
+        -11.849,
+        9.582,
+        -0.973,
+        1.761,
+        0.64,
+        0.724,
+        -1.0224
+      ],
+      [
+        "pedestrian",
+        0.3228,
+        8.613,
+        8.193,
+        -0.26,
+        1.788,
+        0.654,
+        0.705,
+        2.4764
+      ],
+      [
+        "pedestrian",
+        0.3404,
+        -4.161,
+        -31.068,
+        -1.93,
+        1.802,
+        0.67,
+        0.686,
+        -1.4746
+      ],
+      [
+        "pedestrian",
+        0.3469,
+        8.156,
+        5.248,
+        -0.674,
+        1.71,
+        0.633,
+        0.643,
+        1.8734
+      ],
+      [
+        "pedestrian",
+        0.401,
+        -11.662,
+        11.432,
+        -0.862,
+        1.712,
+        0.607,
+        0.639,
+        -0.7175
+      ],
+      [
+        "truck",
+        0.3017,
+        -0.131,
+        -40.131,
+        -2.356,
+        2.653,
+        2.501,
+        6.726,
+        1.6622
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 115
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22481m)",
+          "isometric": "cluster appears as a small, isolated, high-density point patch lacking vehicle structural characteristics like vertical extent or defined surface planes"
+        },
+        "evidence": [
+          "The cluster is extremely small and lacks the spatial extent expected of a passenger vehicle at that range.",
+          "The isometric view shows no coherent 3D shape, appearing more like a point-injection artefact than a physical object.",
+          "The detection confidence (0.70) is lower than other validated objects, suggesting the detector is struggling with the non-canonical geometry."
+        ],
+        "alternatives_ruled_out": [
+          "Road debris (debris would typically be flat or irregular, not clustered in this specific dense manner at that height).",
+          "Sensor noise (the pattern is too spatially compact and distinct to be random background noise)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u2248-1m)",
+          "isometric": "very sparse point distribution with no volumetric support"
+        },
+        "evidence": [
+          "The bounding box encloses a set of points that are critically sparse and lack a defined surface profile.",
+          "Absence of vertical structure (height) in the isometric view, which is inconsistent with a vehicle object.",
+          "No clear shadow cast behind the object, which is physically required for a solid, opaque vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Low-reflectivity object (a low-reflectivity object would still occlude background points and create a shadow, which is absent here).",
+          "Distant object (the box position clearly indicates a foreground object where a car should be identifiable)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:33.376666"
+}

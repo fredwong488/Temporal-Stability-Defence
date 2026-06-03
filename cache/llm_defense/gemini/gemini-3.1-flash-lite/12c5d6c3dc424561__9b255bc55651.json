@@ -1,0 +1,234 @@
+{
+  "key": {
+    "frame_id": "12c5d6c3dc424561",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3481,
+        -0.238,
+        -37.412,
+        -2.201,
+        1.762,
+        1.993,
+        4.747,
+        1.4773
+      ],
+      [
+        "car",
+        0.4187,
+        -20.312,
+        6.322,
+        -1.361,
+        1.636,
+        1.883,
+        4.51,
+        0.1458
+      ],
+      [
+        "car",
+        0.5338,
+        -9.118,
+        21.29,
+        -0.067,
+        1.605,
+        1.882,
+        4.67,
+        -1.5612
+      ],
+      [
+        "car",
+        0.5897,
+        -14.294,
+        6.341,
+        -1.184,
+        1.574,
+        1.878,
+        4.367,
+        0.1491
+      ],
+      [
+        "car",
+        0.6189,
+        6.071,
+        39.002,
+        0.704,
+        1.662,
+        1.888,
+        4.513,
+        1.4516
+      ],
+      [
+        "car",
+        0.6726,
+        -0.149,
+        15.565,
+        -0.217,
+        1.659,
+        1.893,
+        4.62,
+        1.2063
+      ],
+      [
+        "car",
+        0.6972,
+        -21.841,
+        11.64,
+        -1.19,
+        1.605,
+        1.869,
+        4.308,
+        -3.0262
+      ],
+      [
+        "car",
+        0.782,
+        -4.767,
+        16.545,
+        -0.475,
+        1.552,
+        1.833,
+        4.542,
+        -1.8798
+      ],
+      [
+        "car",
+        0.8552,
+        -7.636,
+        -8.209,
+        -1.528,
+        1.691,
+        1.907,
+        4.694,
+        -1.5871
+      ],
+      [
+        "car",
+        0.9499,
+        4.293,
+        6.949,
+        -0.826,
+        1.46,
+        1.823,
+        4.609,
+        1.5969
+      ],
+      [
+        "pedestrian",
+        0.3063,
+        8.116,
+        -15.521,
+        -1.19,
+        1.791,
+        0.659,
+        0.652,
+        -1.9562
+      ],
+      [
+        "pedestrian",
+        0.3161,
+        8.304,
+        7.995,
+        -0.45,
+        1.762,
+        0.657,
+        0.629,
+        1.5864
+      ],
+      [
+        "pedestrian",
+        0.3273,
+        5.403,
+        -28.75,
+        -1.382,
+        1.846,
+        0.656,
+        0.662,
+        2.5069
+      ],
+      [
+        "pedestrian",
+        0.339,
+        8.5,
+        8.566,
+        -0.46,
+        1.711,
+        0.618,
+        0.612,
+        -0.8298
+      ],
+      [
+        "pedestrian",
+        0.3549,
+        7.132,
+        -27.679,
+        -1.526,
+        1.797,
+        0.653,
+        0.621,
+        2.2336
+      ],
+      [
+        "pedestrian",
+        0.3566,
+        7.419,
+        -16.468,
+        -1.289,
+        1.781,
+        0.633,
+        0.651,
+        -1.032
+      ],
+      [
+        "pedestrian",
+        0.373,
+        -12.01,
+        12.463,
+        -0.859,
+        1.759,
+        0.654,
+        0.698,
+        1.5542
+      ],
+      [
+        "pedestrian",
+        0.4137,
+        -11.935,
+        13.955,
+        -0.699,
+        1.762,
+        0.62,
+        0.677,
+        -2.0353
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22481m)",
+          "isometric": "Cluster appears fragmented and lacks cohesive 3D structure"
+        },
+        "evidence": [
+          "The camera input is missing, preventing cross-modal verification.",
+          "The point cluster within the bounding box at (x\u224815m, y\u22481m) is sparse and lacks the clear L-shape or volumetric structure expected of a vehicle.",
+          "The cluster appears to be composed of ground-plane noise or sparse returns that do not form a physically plausible object, which could indicate either ghost object injection or simply sensor noise in a low-density environment."
+        ],
+        "alternatives_ruled_out": [
+          "The missing camera feed makes it impossible to distinguish between genuine sparse point clusters from distant objects, sensor noise, and adversarial injections."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:19.869012"
+}

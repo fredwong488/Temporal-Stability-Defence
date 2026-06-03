@@ -1,0 +1,256 @@
+{
+  "key": {
+    "frame_id": "09683c23d47b419b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.369,
+        6.616,
+        42.395,
+        1.42,
+        1.883,
+        2.019,
+        4.848,
+        1.5766
+      ],
+      [
+        "car",
+        0.5263,
+        3.414,
+        40.402,
+        1.634,
+        1.898,
+        1.976,
+        4.747,
+        1.385
+      ],
+      [
+        "car",
+        0.5967,
+        1.056,
+        -21.048,
+        -1.891,
+        1.759,
+        1.959,
+        4.712,
+        1.68
+      ],
+      [
+        "car",
+        0.6963,
+        -2.258,
+        26.144,
+        0.315,
+        1.513,
+        1.843,
+        4.411,
+        1.4818
+      ],
+      [
+        "car",
+        0.756,
+        -6.268,
+        27.17,
+        0.281,
+        1.605,
+        1.867,
+        4.452,
+        -1.675
+      ],
+      [
+        "car",
+        0.7603,
+        -4.208,
+        -0.202,
+        -1.102,
+        1.746,
+        2.029,
+        5.07,
+        -1.5235
+      ],
+      [
+        "construction_vehicle",
+        0.3072,
+        10.271,
+        -31.263,
+        -1.855,
+        2.922,
+        2.573,
+        5.105,
+        1.7968
+      ],
+      [
+        "pedestrian",
+        0.3022,
+        9.553,
+        17.53,
+        0.11,
+        1.772,
+        0.668,
+        0.661,
+        -1.4971
+      ],
+      [
+        "pedestrian",
+        0.3209,
+        -8.275,
+        6.512,
+        -0.754,
+        1.776,
+        0.686,
+        0.784,
+        1.8649
+      ],
+      [
+        "pedestrian",
+        0.3364,
+        -12.709,
+        8.754,
+        -0.614,
+        1.864,
+        0.667,
+        0.702,
+        1.4606
+      ],
+      [
+        "pedestrian",
+        0.3548,
+        -10.567,
+        -9.454,
+        -1.429,
+        1.811,
+        0.646,
+        0.771,
+        0.5699
+      ],
+      [
+        "pedestrian",
+        0.3698,
+        10.909,
+        14.733,
+        -0.488,
+        1.712,
+        0.613,
+        0.605,
+        1.5402
+      ],
+      [
+        "pedestrian",
+        0.3741,
+        6.825,
+        2.672,
+        -0.76,
+        1.79,
+        0.698,
+        0.776,
+        1.1768
+      ],
+      [
+        "pedestrian",
+        0.379,
+        8.778,
+        13.995,
+        -0.197,
+        1.739,
+        0.626,
+        0.614,
+        -2.4175
+      ],
+      [
+        "pedestrian",
+        0.4101,
+        -11.683,
+        8.661,
+        -0.661,
+        1.791,
+        0.612,
+        0.611,
+        1.6943
+      ],
+      [
+        "pedestrian",
+        0.421,
+        7.557,
+        14.595,
+        -0.234,
+        1.715,
+        0.643,
+        0.623,
+        -1.0496
+      ],
+      [
+        "pedestrian",
+        0.4228,
+        7.527,
+        -19.253,
+        -1.443,
+        1.816,
+        0.669,
+        0.686,
+        1.047
+      ],
+      [
+        "pedestrian",
+        0.4425,
+        6.111,
+        -9.211,
+        -1.024,
+        1.821,
+        0.684,
+        0.771,
+        -1.5897
+      ],
+      [
+        "pedestrian",
+        0.482,
+        8.201,
+        12.523,
+        -0.222,
+        1.759,
+        0.646,
+        0.61,
+        2.7953
+      ],
+      [
+        "trailer",
+        0.5994,
+        -36.542,
+        5.774,
+        0.104,
+        3.808,
+        2.889,
+        10.637,
+        1.7493
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u2248-1m, y\u22480m)",
+          "isometric": "cluster appears as a dense, isolated set of points near ego-center without clear vehicle structure"
+        },
+        "evidence": [
+          "The camera input is unavailable, making it impossible to perform cross-modal verification (a key step in detecting spoofing or hiding).",
+          "There is a dense cluster of points near the ego-vehicle origin (x\u2248-1m, y\u22480m) that is being processed by the system but lacks the distinct geometric shape or surface profile typical of a vehicle or pedestrian.",
+          "Without the camera feed, we cannot definitively rule out that this cluster is sensor noise, a calibration artifact, or an actual nearby object."
+        ],
+        "alternatives_ruled_out": [
+          "We cannot rule out that this is genuine sensor noise or a nearby low-profile obstacle, as the lack of camera data prevents verification of the object's existence."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:55.041509"
+}

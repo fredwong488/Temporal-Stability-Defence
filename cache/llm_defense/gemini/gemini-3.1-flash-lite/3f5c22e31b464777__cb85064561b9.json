@@ -1,0 +1,225 @@
+{
+  "key": {
+    "frame_id": "3f5c22e31b464777",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3262,
+        -0.22,
+        -35.366,
+        -2.234,
+        1.654,
+        1.934,
+        4.506,
+        1.5262
+      ],
+      [
+        "car",
+        0.3357,
+        6.16,
+        41.148,
+        1.418,
+        1.727,
+        1.921,
+        4.753,
+        1.4754
+      ],
+      [
+        "car",
+        0.3564,
+        -21.688,
+        13.507,
+        -0.965,
+        1.664,
+        1.869,
+        4.38,
+        -2.8299
+      ],
+      [
+        "car",
+        0.4067,
+        -9.271,
+        22.978,
+        -0.289,
+        1.647,
+        1.832,
+        4.448,
+        1.7165
+      ],
+      [
+        "car",
+        0.5793,
+        -2.759,
+        12.954,
+        -0.315,
+        1.663,
+        1.945,
+        4.742,
+        0.3733
+      ],
+      [
+        "car",
+        0.6861,
+        -20.134,
+        8.335,
+        -1.268,
+        1.66,
+        1.926,
+        4.404,
+        0.137
+      ],
+      [
+        "car",
+        0.8185,
+        -14.426,
+        8.463,
+        -1.041,
+        1.722,
+        1.959,
+        4.6,
+        0.1848
+      ],
+      [
+        "car",
+        0.9142,
+        -7.624,
+        -6.131,
+        -1.547,
+        1.582,
+        1.859,
+        4.61,
+        -1.5608
+      ],
+      [
+        "car",
+        0.9381,
+        4.338,
+        9.046,
+        -0.685,
+        1.513,
+        1.826,
+        4.583,
+        1.5859
+      ],
+      [
+        "motorcycle",
+        0.3094,
+        -10.872,
+        -14.353,
+        -1.819,
+        1.38,
+        0.74,
+        2.023,
+        -0.3664
+      ],
+      [
+        "pedestrian",
+        0.3192,
+        6.205,
+        -23.556,
+        -1.727,
+        1.752,
+        0.604,
+        0.62,
+        -1.749
+      ],
+      [
+        "pedestrian",
+        0.3195,
+        -12.713,
+        -31.849,
+        -1.952,
+        1.783,
+        0.615,
+        0.652,
+        1.3536
+      ],
+      [
+        "pedestrian",
+        0.3482,
+        7.414,
+        -16.07,
+        -1.502,
+        1.837,
+        0.618,
+        0.624,
+        -2.3261
+      ],
+      [
+        "pedestrian",
+        0.3496,
+        5.945,
+        -14.794,
+        -1.363,
+        1.892,
+        0.666,
+        0.708,
+        -2.2476
+      ],
+      [
+        "pedestrian",
+        0.4181,
+        7.125,
+        -23.722,
+        -1.554,
+        1.801,
+        0.632,
+        0.67,
+        -1.8147
+      ],
+      [
+        "pedestrian",
+        0.4405,
+        8.294,
+        11.655,
+        -0.321,
+        1.766,
+        0.642,
+        0.64,
+        -1.3985
+      ],
+      [
+        "pedestrian",
+        0.4564,
+        7.767,
+        -14.889,
+        -1.341,
+        1.827,
+        0.628,
+        0.67,
+        -2.207
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "No specific region identified as malicious",
+          "isometric": "No specific region identified as malicious"
+        },
+        "evidence": [
+          "The camera image is unavailable, preventing cross-modal verification.",
+          "The LiDAR point cloud data appears consistent with a standard urban or structured environment (e.g., ground plane, vertical structures consistent with roadside features).",
+          "Bounding box predictions are localized on plausible physical returns."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion",
+          "Sensor noise",
+          "Infrastructure (poles, trees) correctly classified or ignored by the detector"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:28.699072"
+}

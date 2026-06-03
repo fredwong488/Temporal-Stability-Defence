@@ -1,0 +1,253 @@
+{
+  "key": {
+    "frame_id": "6d28ba42208b401b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3349,
+        -0.166,
+        -34.479,
+        -2.372,
+        1.782,
+        1.977,
+        4.659,
+        1.5465
+      ],
+      [
+        "car",
+        0.3637,
+        -8.421,
+        33.039,
+        0.859,
+        1.774,
+        1.934,
+        4.697,
+        -1.6511
+      ],
+      [
+        "car",
+        0.487,
+        -4.128,
+        22.814,
+        0.207,
+        1.646,
+        1.962,
+        4.751,
+        1.522
+      ],
+      [
+        "car",
+        0.4919,
+        -21.778,
+        16.475,
+        -0.393,
+        1.678,
+        1.932,
+        4.521,
+        -2.9728
+      ],
+      [
+        "car",
+        0.5301,
+        6.136,
+        43.632,
+        1.55,
+        1.799,
+        1.935,
+        4.521,
+        1.4742
+      ],
+      [
+        "car",
+        0.6602,
+        -5.795,
+        13.279,
+        -0.298,
+        1.743,
+        1.966,
+        4.711,
+        -2.8794
+      ],
+      [
+        "car",
+        0.6852,
+        -20.351,
+        11.033,
+        -0.86,
+        1.638,
+        1.937,
+        4.499,
+        0.1715
+      ],
+      [
+        "car",
+        0.8226,
+        4.432,
+        11.504,
+        -0.488,
+        1.571,
+        1.919,
+        4.767,
+        1.6684
+      ],
+      [
+        "car",
+        0.8278,
+        -14.348,
+        10.881,
+        -0.822,
+        1.597,
+        1.891,
+        4.559,
+        0.1994
+      ],
+      [
+        "car",
+        0.9008,
+        -7.622,
+        -3.618,
+        -1.422,
+        1.608,
+        1.95,
+        4.867,
+        -1.5775
+      ],
+      [
+        "pedestrian",
+        0.3078,
+        8.498,
+        -12.68,
+        -1.386,
+        1.747,
+        0.619,
+        0.613,
+        -2.2713
+      ],
+      [
+        "pedestrian",
+        0.3143,
+        8.42,
+        15.951,
+        -0.051,
+        1.801,
+        0.668,
+        0.686,
+        -0.883
+      ],
+      [
+        "pedestrian",
+        0.3283,
+        6.388,
+        -24.746,
+        -1.911,
+        1.791,
+        0.633,
+        0.735,
+        -1.6443
+      ],
+      [
+        "pedestrian",
+        0.3409,
+        6.119,
+        -19.984,
+        -1.936,
+        1.785,
+        0.633,
+        0.626,
+        -2.0143
+      ],
+      [
+        "pedestrian",
+        0.3521,
+        7.372,
+        -21.416,
+        -2.018,
+        1.806,
+        0.629,
+        0.591,
+        -3.1061
+      ],
+      [
+        "pedestrian",
+        0.4125,
+        7.913,
+        -14.153,
+        -1.509,
+        1.803,
+        0.649,
+        0.66,
+        -1.5529
+      ],
+      [
+        "pedestrian",
+        0.4249,
+        6.128,
+        -22.348,
+        -2.015,
+        1.81,
+        0.667,
+        0.687,
+        -2.5476
+      ],
+      [
+        "traffic_cone",
+        0.3075,
+        -9.509,
+        4.553,
+        -1.31,
+        0.941,
+        0.374,
+        0.384,
+        0.4381
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u22484m)",
+          "isometric": "Cluster is linear and sparse, lacking 3D car volume"
+        },
+        "evidence": [
+          "The bounding box 'car 0.66' in the BEV surrounds a sparse, linear arrangement of points rather than the characteristic dense L-shape or rectangular cross-section of a vehicle.",
+          "In the isometric view, the points associated with this box appear to be part of a roadside barrier or structure rather than a coherent 3D object with vehicle-like dimensions.",
+          "The detector labeled a structure that lacks the depth and vertical profile consistent with a car."
+        ],
+        "alternatives_ruled_out": [
+          "Genuine vehicle (ruled out by lack of 3D volume in isometric view)",
+          "Sensor noise (this appears to be a misclassification of infrastructure, but treated as a ghost object due to high-confidence label on non-object)"
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224823m, y\u22484m)",
+          "isometric": "Box surrounds empty space or negligible points"
+        },
+        "evidence": [
+          "The bounding box 'car 0.49' in the BEV surrounds an area with extremely sparse LiDAR returns, failing to provide enough point density for a valid object detection.",
+          "There is no discernible structural support or surface profile in the isometric view corresponding to this detection.",
+          "This indicates a potential false positive or ghost detection resulting from minimal sensor artifacts being misinterpreted as an object."
+        ],
+        "alternatives_ruled_out": [
+          "Occluded vehicle (insufficient point density to support a real object existence)",
+          "Sensor miscalibration (possible, but manifesting as ghost detection)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:50.682210"
+}

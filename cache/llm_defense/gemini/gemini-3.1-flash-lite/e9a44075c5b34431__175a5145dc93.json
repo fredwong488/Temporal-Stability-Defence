@@ -1,0 +1,225 @@
+{
+  "key": {
+    "frame_id": "e9a44075c5b34431",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3054,
+        -8.464,
+        32.002,
+        0.583,
+        1.668,
+        1.889,
+        4.553,
+        -1.5228
+      ],
+      [
+        "car",
+        0.3254,
+        1.818,
+        46.487,
+        1.732,
+        1.835,
+        1.959,
+        4.664,
+        1.473
+      ],
+      [
+        "car",
+        0.3793,
+        -7.701,
+        42.331,
+        1.375,
+        1.771,
+        1.91,
+        4.605,
+        1.5486
+      ],
+      [
+        "car",
+        0.3995,
+        -8.45,
+        36.121,
+        0.864,
+        1.729,
+        1.924,
+        4.68,
+        -1.558
+      ],
+      [
+        "car",
+        0.4591,
+        6.289,
+        46.983,
+        1.799,
+        1.875,
+        1.977,
+        4.68,
+        1.4907
+      ],
+      [
+        "car",
+        0.4759,
+        0.115,
+        -33.152,
+        -2.262,
+        1.723,
+        1.946,
+        4.618,
+        -1.3848
+      ],
+      [
+        "car",
+        0.5941,
+        -3.83,
+        25.963,
+        0.42,
+        1.6,
+        1.855,
+        4.492,
+        1.4004
+      ],
+      [
+        "car",
+        0.5981,
+        -3.095,
+        -35.843,
+        -2.419,
+        1.78,
+        1.988,
+        4.747,
+        -1.4313
+      ],
+      [
+        "car",
+        0.6049,
+        -6.725,
+        16.186,
+        -0.19,
+        1.649,
+        1.939,
+        4.468,
+        0.1398
+      ],
+      [
+        "car",
+        0.7552,
+        -14.37,
+        14.186,
+        -0.52,
+        1.613,
+        1.882,
+        4.585,
+        0.1496
+      ],
+      [
+        "car",
+        0.837,
+        4.441,
+        14.713,
+        -0.281,
+        1.59,
+        1.867,
+        4.704,
+        -1.568
+      ],
+      [
+        "car",
+        0.9395,
+        -7.548,
+        -0.556,
+        -1.284,
+        1.58,
+        1.886,
+        4.619,
+        -1.5832
+      ],
+      [
+        "pedestrian",
+        0.3032,
+        6.263,
+        -15.945,
+        -1.682,
+        1.727,
+        0.636,
+        0.652,
+        -1.4349
+      ],
+      [
+        "pedestrian",
+        0.3432,
+        6.204,
+        -18.438,
+        -1.832,
+        1.757,
+        0.631,
+        0.627,
+        2.939
+      ],
+      [
+        "pedestrian",
+        0.3743,
+        -8.383,
+        -21.914,
+        -2.156,
+        1.814,
+        0.648,
+        0.703,
+        -1.1055
+      ],
+      [
+        "pedestrian",
+        0.389,
+        7.35,
+        -16.401,
+        -1.659,
+        1.787,
+        0.628,
+        0.631,
+        -2.332
+      ],
+      [
+        "pedestrian",
+        0.4063,
+        7.784,
+        -13.38,
+        -1.443,
+        1.78,
+        0.667,
+        0.701,
+        -1.8014
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480-20m, y\u2248-8 to 8m)",
+          "isometric": "Multiple small, dense, isolated point clusters forming artificial-looking boxes"
+        },
+        "evidence": [
+          "The scene appears populated with numerous small, low-density 3D bounding boxes that lack the geometric complexity of real vehicles (e.g., L-shape, surface density).",
+          "Many detections are isolated clusters of very few points, which is atypical for legitimate car detections at these ranges.",
+          "The lack of availability of the camera image prevents confirmation of whether these detections correspond to real-world objects or are purely synthetic LiDAR spoofs.",
+          "The density of these boxes in the isometric view suggests a highly synthetic environment rather than a natural road scene."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too structured/clustered).",
+          "Sparse distant objects (multiple boxes are nearby where density should be high)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:04.609592"
+}

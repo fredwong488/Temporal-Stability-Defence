@@ -1,0 +1,197 @@
+{
+  "key": {
+    "frame_id": "56a650b4fe5e41a5",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bus",
+        0.3783,
+        -1.88,
+        24.344,
+        -0.019,
+        3.423,
+        2.756,
+        12.291,
+        1.4607
+      ],
+      [
+        "car",
+        0.4481,
+        20.884,
+        23.006,
+        1.336,
+        1.755,
+        1.979,
+        4.717,
+        -3.0398
+      ],
+      [
+        "car",
+        0.914,
+        -3.325,
+        0.527,
+        -1.202,
+        1.515,
+        1.877,
+        4.655,
+        1.6307
+      ],
+      [
+        "pedestrian",
+        0.3161,
+        1.961,
+        8.35,
+        -0.606,
+        1.707,
+        0.696,
+        0.88,
+        2.1382
+      ],
+      [
+        "pedestrian",
+        0.3163,
+        -0.398,
+        8.786,
+        -0.609,
+        1.76,
+        0.659,
+        0.714,
+        2.4805
+      ],
+      [
+        "pedestrian",
+        0.32,
+        -1.842,
+        7.921,
+        -0.644,
+        1.711,
+        0.658,
+        0.681,
+        -3.0023
+      ],
+      [
+        "pedestrian",
+        0.4339,
+        -3.694,
+        8.216,
+        -0.574,
+        1.777,
+        0.675,
+        0.726,
+        1.3118
+      ],
+      [
+        "pedestrian",
+        0.471,
+        -1.932,
+        7.015,
+        -0.705,
+        1.736,
+        0.667,
+        0.738,
+        2.8427
+      ],
+      [
+        "trailer",
+        0.3178,
+        -1.917,
+        24.714,
+        0.506,
+        3.827,
+        2.949,
+        14.114,
+        1.5016
+      ],
+      [
+        "trailer",
+        0.9522,
+        -3.144,
+        -15.884,
+        -0.38,
+        4.216,
+        2.796,
+        14.922,
+        1.6201
+      ],
+      [
+        "truck",
+        0.6215,
+        -0.153,
+        -7.974,
+        -1.014,
+        2.548,
+        2.205,
+        4.835,
+        1.5653
+      ],
+      [
+        "truck",
+        0.8694,
+        -3.427,
+        -7.732,
+        -0.372,
+        4.027,
+        2.621,
+        6.024,
+        1.6398
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.536258697509766,
+            0.7769691348075867,
+            -1.8764221668243408
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 21,
+          "reinjected_centroid": [
+            20.64493751525879,
+            22.32927703857422,
+            0.8418478965759277
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "unknown (camera feed unavailable/disabled)",
+          "bev": "x \u2248 8m, y \u2208 [-2m, 4m]",
+          "isometric": "Five tall, narrow vertical cuboids (pedestrian detections) containing absolutely no LiDAR points, with perfectly intact ground sweeps passing directly through them"
+        },
+        "evidence": [
+          "Five pedestrian bounding boxes are predicted at x \u2248 8m spaced along the y-axis, but they contain zero LiDAR returns in both BEV and Isometric views.",
+          "The ground rings from the LiDAR scanner pass continuously through the predicted locations without any physical occlusion or shadow, proving that no physical objects exist at these locations.",
+          "The camera image is completely unavailable/blacked out, which prevents cross-modal validation but does not hide the obvious LiDAR-side ghost detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (cannot explain five distinct, highly confident pedestrian detections in completely empty space)",
+          "Low reflectivity objects (such objects would still produce some occlusion of background points or ground rings, which is not observed here)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:30.340460"
+}

@@ -1,0 +1,221 @@
+{
+  "key": {
+    "frame_id": "d9266372d9ef4050",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3353,
+        14.807,
+        -5.948,
+        -1.232,
+        0.975,
+        3.215,
+        0.539,
+        2.7581
+      ],
+      [
+        "bus",
+        0.4034,
+        -5.207,
+        50.067,
+        2.107,
+        3.438,
+        2.875,
+        11.77,
+        1.5971
+      ],
+      [
+        "car",
+        0.303,
+        -31.839,
+        21.298,
+        -0.459,
+        1.612,
+        1.916,
+        4.55,
+        3.0114
+      ],
+      [
+        "car",
+        0.3043,
+        10.851,
+        42.819,
+        1.696,
+        1.751,
+        1.913,
+        4.513,
+        1.3317
+      ],
+      [
+        "car",
+        0.348,
+        -7.928,
+        20.867,
+        0.063,
+        1.6,
+        1.888,
+        4.473,
+        0.0017
+      ],
+      [
+        "car",
+        0.4687,
+        12.69,
+        19.912,
+        0.533,
+        1.666,
+        1.913,
+        4.558,
+        3.1231
+      ],
+      [
+        "car",
+        0.8872,
+        -3.336,
+        0.513,
+        -1.211,
+        1.511,
+        1.882,
+        4.678,
+        1.6318
+      ],
+      [
+        "motorcycle",
+        0.3442,
+        -0.206,
+        7.849,
+        -0.75,
+        1.694,
+        0.794,
+        2.051,
+        1.9221
+      ],
+      [
+        "pedestrian",
+        0.3538,
+        -4.193,
+        9.099,
+        -0.624,
+        1.815,
+        0.73,
+        0.786,
+        1.9263
+      ],
+      [
+        "pedestrian",
+        0.4394,
+        -5.956,
+        8.729,
+        -0.641,
+        1.808,
+        0.682,
+        0.671,
+        1.3905
+      ],
+      [
+        "pedestrian",
+        0.4589,
+        -8.36,
+        8.212,
+        -0.625,
+        1.747,
+        0.611,
+        0.641,
+        1.0982
+      ],
+      [
+        "trailer",
+        0.3648,
+        46.113,
+        17.615,
+        1.77,
+        3.526,
+        2.782,
+        9.12,
+        0.0107
+      ],
+      [
+        "trailer",
+        0.9456,
+        -3.162,
+        -15.862,
+        -0.325,
+        4.209,
+        2.789,
+        15.049,
+        1.6239
+      ],
+      [
+        "truck",
+        0.521,
+        -0.162,
+        -8.016,
+        -1.023,
+        2.405,
+        2.137,
+        4.844,
+        1.5576
+      ],
+      [
+        "truck",
+        0.8903,
+        -3.422,
+        -7.776,
+        -0.341,
+        4.023,
+        2.633,
+        6.045,
+        1.6361
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.508852958679199,
+            0.7532135844230652,
+            -1.8689411878585815
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera frame (feed is unavailable/denied)",
+          "bev": "x \u2248 20m to 22m, y \u2248 6m to 8m",
+          "isometric": "Bounding box 'car 0.35' floats in mid-air at z > 2m with no physical contact with the ground plane"
+        },
+        "evidence": [
+          "The bounding box classified as 'car 0.35' at x\u224821m, y\u22487m is entirely empty of LiDAR returns in the BEV plane.",
+          "In the isometric view, this bounding box is floating abnormally high in the air, disconnected from the ground and containing no structural point cluster.",
+          "The camera feed is completely unavailable and explicitly marked as [ATTACKED], preventing any cross-modal visual verification."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicle with low reflectivity"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:36.835828"
+}

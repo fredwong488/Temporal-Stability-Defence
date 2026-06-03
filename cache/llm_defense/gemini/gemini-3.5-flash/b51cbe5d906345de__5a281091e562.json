@@ -1,0 +1,317 @@
+{
+  "key": {
+    "frame_id": "b51cbe5d906345de",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3392,
+        1.992,
+        -19.031,
+        -1.798,
+        1.034,
+        2.076,
+        0.529,
+        3.1248
+      ],
+      [
+        "barrier",
+        0.4043,
+        2.136,
+        -14.864,
+        -1.69,
+        0.988,
+        2.377,
+        0.579,
+        3.1171
+      ],
+      [
+        "bicycle",
+        0.3027,
+        8.253,
+        27.154,
+        -0.289,
+        1.146,
+        0.586,
+        1.665,
+        -0.1922
+      ],
+      [
+        "bus",
+        0.3636,
+        5.994,
+        52.643,
+        1.446,
+        3.373,
+        2.798,
+        10.334,
+        1.5426
+      ],
+      [
+        "car",
+        0.3155,
+        1.972,
+        35.056,
+        0.082,
+        1.633,
+        1.87,
+        4.339,
+        -1.5459
+      ],
+      [
+        "car",
+        0.4163,
+        -2.759,
+        10.34,
+        -0.454,
+        2.158,
+        2.081,
+        5.486,
+        2.0559
+      ],
+      [
+        "car",
+        0.4603,
+        12.711,
+        -12.952,
+        -1.596,
+        1.6,
+        1.936,
+        4.792,
+        -1.5679
+      ],
+      [
+        "car",
+        0.543,
+        16.343,
+        -20.938,
+        -1.807,
+        1.638,
+        1.967,
+        4.679,
+        -1.5391
+      ],
+      [
+        "construction_vehicle",
+        0.3071,
+        41.997,
+        36.817,
+        0.005,
+        2.182,
+        1.992,
+        3.678,
+        -0.0932
+      ],
+      [
+        "construction_vehicle",
+        0.3535,
+        5.916,
+        49.161,
+        1.177,
+        1.435,
+        1.481,
+        2.44,
+        -3.034
+      ],
+      [
+        "construction_vehicle",
+        0.6763,
+        3.654,
+        -18.251,
+        -0.814,
+        2.93,
+        3.116,
+        3.979,
+        -1.5757
+      ],
+      [
+        "traffic_cone",
+        0.331,
+        1.919,
+        -5.291,
+        -1.651,
+        0.742,
+        0.379,
+        0.363,
+        1.5209
+      ],
+      [
+        "traffic_cone",
+        0.3941,
+        9.428,
+        7.012,
+        -1.261,
+        0.986,
+        0.397,
+        0.415,
+        -2.7103
+      ],
+      [
+        "traffic_cone",
+        0.4466,
+        9.399,
+        3.113,
+        -1.381,
+        0.759,
+        0.393,
+        0.399,
+        -1.8336
+      ],
+      [
+        "traffic_cone",
+        0.4483,
+        1.467,
+        15.115,
+        -1.041,
+        0.761,
+        0.373,
+        0.381,
+        2.3521
+      ],
+      [
+        "traffic_cone",
+        0.4591,
+        2.017,
+        -10.906,
+        -1.785,
+        0.715,
+        0.373,
+        0.357,
+        1.236
+      ],
+      [
+        "traffic_cone",
+        0.4835,
+        9.528,
+        -1.483,
+        -1.453,
+        0.775,
+        0.397,
+        0.4,
+        -2.18
+      ],
+      [
+        "traffic_cone",
+        0.5379,
+        9.315,
+        10.283,
+        -1.258,
+        0.768,
+        0.395,
+        0.394,
+        -2.9176
+      ],
+      [
+        "traffic_cone",
+        0.5559,
+        1.785,
+        4.112,
+        -1.38,
+        0.726,
+        0.393,
+        0.377,
+        2.6613
+      ],
+      [
+        "trailer",
+        0.4555,
+        15.097,
+        -13.085,
+        -0.339,
+        4.072,
+        3.009,
+        15.826,
+        -1.5439
+      ],
+      [
+        "truck",
+        0.3303,
+        31.576,
+        -43.86,
+        -3.09,
+        2.079,
+        2.262,
+        5.484,
+        3.1024
+      ],
+      [
+        "truck",
+        0.7218,
+        14.765,
+        1.361,
+        -0.17,
+        3.395,
+        2.732,
+        7.281,
+        -1.5389
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 91,
+          "reinjected_centroid": [
+            12.208786964416504,
+            -12.425883293151855,
+            -1.7681063413619995
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -2.650470018386841,
+            9.814719200134277,
+            -0.8679614067077637
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 24,
+          "reinjected_centroid": [
+            15.509907722473145,
+            -20.476476669311523,
+            -1.948105812072754
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not available",
+          "bev": "x \u2248 10m, y \u2248 3m",
+          "isometric": "Box centered around x \u2248 10m, y \u2248 3m, floating at elevated z-coordinates (z \u2248 1m to 3m) with no substantial or structurally plausible point cluster inside."
+        },
+        "evidence": [
+          "The bounding box 'car 0.42' at x \u2248 10m, y \u2248 3m contains no dense, structured LiDAR point cluster in either the BEV or Isometric view.",
+          "In the Isometric view, the box is floating significantly above the ground plane and contains almost no points, indicating a ghost/spoofed detection.",
+          "No corresponding physical object can be confirmed since the camera image is missing, but the LiDAR physical invariants (lack of points and absence of a 3D ground-level shadow) strongly point to a ghost object."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion",
+          "Sensor noise",
+          "Distant object beyond sensor range"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:02:01.048729"
+}

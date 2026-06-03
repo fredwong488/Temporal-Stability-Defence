@@ -1,0 +1,136 @@
+{
+  "key": {
+    "frame_id": "fdddd75ee1d94f14",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bus",
+        0.311,
+        -21.594,
+        44.664,
+        1.778,
+        3.476,
+        3.288,
+        11.845,
+        -0.0674
+      ],
+      [
+        "car",
+        0.3348,
+        -0.109,
+        -19.931,
+        -1.806,
+        1.82,
+        2.025,
+        4.779,
+        1.5397
+      ],
+      [
+        "car",
+        0.6373,
+        -3.373,
+        -23.01,
+        -1.873,
+        1.79,
+        1.96,
+        4.688,
+        -1.5434
+      ],
+      [
+        "construction_vehicle",
+        0.3842,
+        -23.269,
+        21.326,
+        -0.199,
+        3.636,
+        3.172,
+        8.062,
+        -1.6848
+      ],
+      [
+        "pedestrian",
+        0.3021,
+        5.784,
+        -0.058,
+        -0.761,
+        1.78,
+        0.697,
+        0.751,
+        -0.8293
+      ],
+      [
+        "pedestrian",
+        0.3156,
+        -6.087,
+        32.068,
+        0.266,
+        1.829,
+        0.672,
+        0.725,
+        1.6143
+      ],
+      [
+        "pedestrian",
+        0.3419,
+        -13.494,
+        31.149,
+        -0.144,
+        1.819,
+        0.656,
+        0.627,
+        -0.3646
+      ],
+      [
+        "pedestrian",
+        0.3878,
+        7.458,
+        17.465,
+        -0.184,
+        1.786,
+        0.672,
+        0.691,
+        1.6206
+      ],
+      [
+        "pedestrian",
+        0.436,
+        -9.327,
+        19.147,
+        -0.278,
+        1.824,
+        0.664,
+        0.693,
+        1.0369
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple predicted boxes at various ranges (x > 15m) with no corresponding dense point clusters.",
+          "isometric": "Detected boxes contain empty space or isolated noise points, lacking the vertical structure and density expected of a human/pedestrian."
+        },
+        "evidence": [
+          "The bounding boxes labeled 'pedestrian' in the BEV and isometric views appear in regions with extremely sparse LiDAR returns, lacking the distinct vertical shape (e.g., legs/torso) characteristic of a pedestrian.",
+          "The isometric view confirms that the 'pedestrian' boxes are floating or positioned around empty air, with no coherent surface geometry to support the detection.",
+          "The lack of ground support or typical point density suggests these detections are triggered by sparse noise/injected points rather than physical objects."
+        ],
+        "alternatives_ruled_out": [
+          "Occlusion: While pedestrians can be occluded, the complete absence of any coherent point cluster corresponding to the boxes makes this unlikely.",
+          "Sensor noise/calibration error: The high number of specific, localized detections ('pedestrian') in empty space is indicative of an injection attack rather than general systematic noise."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:24.045566"
+}

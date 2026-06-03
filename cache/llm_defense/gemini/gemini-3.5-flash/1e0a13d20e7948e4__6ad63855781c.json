@@ -1,0 +1,313 @@
+{
+  "key": {
+    "frame_id": "1e0a13d20e7948e4",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3005,
+        -2.702,
+        -0.5,
+        -1.274,
+        0.929,
+        1.934,
+        0.539,
+        0.0069
+      ],
+      [
+        "barrier",
+        0.3524,
+        14.79,
+        -6.03,
+        -1.24,
+        1.0,
+        3.169,
+        0.559,
+        2.7423
+      ],
+      [
+        "bus",
+        0.5352,
+        1.189,
+        16.597,
+        0.481,
+        2.855,
+        2.694,
+        7.796,
+        -0.0024
+      ],
+      [
+        "bus",
+        0.6193,
+        -16.715,
+        26.957,
+        0.749,
+        3.24,
+        2.893,
+        9.644,
+        0.2561
+      ],
+      [
+        "car",
+        0.3086,
+        -5.367,
+        0.271,
+        -1.309,
+        1.597,
+        1.838,
+        4.215,
+        1.6177
+      ],
+      [
+        "car",
+        0.4706,
+        -12.064,
+        22.937,
+        -0.204,
+        1.543,
+        1.883,
+        4.535,
+        -0.0033
+      ],
+      [
+        "car",
+        0.7915,
+        -3.333,
+        0.41,
+        -1.152,
+        1.541,
+        1.889,
+        4.66,
+        1.628
+      ],
+      [
+        "pedestrian",
+        0.3105,
+        -7.165,
+        8.291,
+        -0.751,
+        1.804,
+        0.71,
+        0.802,
+        1.4233
+      ],
+      [
+        "pedestrian",
+        0.3282,
+        -14.72,
+        9.748,
+        -0.823,
+        1.796,
+        0.68,
+        0.743,
+        1.2888
+      ],
+      [
+        "pedestrian",
+        0.3617,
+        -6.113,
+        9.092,
+        -0.626,
+        1.824,
+        0.694,
+        0.734,
+        1.5651
+      ],
+      [
+        "pedestrian",
+        0.394,
+        -9.539,
+        9.864,
+        -0.631,
+        1.825,
+        0.684,
+        0.704,
+        0.1806
+      ],
+      [
+        "pedestrian",
+        0.4067,
+        -13.368,
+        11.34,
+        -0.719,
+        1.831,
+        0.7,
+        0.734,
+        1.5562
+      ],
+      [
+        "pedestrian",
+        0.4314,
+        -6.127,
+        7.452,
+        -0.7,
+        1.818,
+        0.689,
+        0.72,
+        1.249
+      ],
+      [
+        "pedestrian",
+        0.4603,
+        -12.685,
+        9.963,
+        -0.866,
+        1.819,
+        0.708,
+        0.752,
+        1.6247
+      ],
+      [
+        "trailer",
+        0.9236,
+        -3.15,
+        -16.09,
+        -0.357,
+        4.273,
+        2.798,
+        15.175,
+        1.6267
+      ],
+      [
+        "truck",
+        0.3086,
+        1.908,
+        16.602,
+        0.542,
+        3.297,
+        2.413,
+        6.979,
+        -0.0331
+      ],
+      [
+        "truck",
+        0.333,
+        22.75,
+        18.791,
+        0.872,
+        2.097,
+        2.293,
+        5.977,
+        3.0558
+      ],
+      [
+        "truck",
+        0.3491,
+        49.108,
+        22.244,
+        1.217,
+        2.32,
+        2.409,
+        5.956,
+        -2.9322
+      ],
+      [
+        "truck",
+        0.5613,
+        -0.143,
+        -8.009,
+        -1.013,
+        2.462,
+        2.128,
+        4.799,
+        1.5586
+      ],
+      [
+        "truck",
+        0.9046,
+        -3.412,
+        -7.89,
+        -0.341,
+        4.031,
+        2.659,
+        6.102,
+        1.6369
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.88748836517334,
+            0.6093796491622925,
+            -1.7108116149902344
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 33,
+          "reinjected_centroid": [
+            20.764110565185547,
+            18.222564697265625,
+            0.32840496301651
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 26,
+          "reinjected_centroid": [
+            -11.83423900604248,
+            22.289466857910156,
+            -0.5638605356216431
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 24,
+          "reinjected_centroid": [
+            -12.634217262268066,
+            9.973020553588867,
+            -1.175195574760437
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 14,
+          "reinjected_centroid": [
+            -13.357659339904785,
+            11.265120506286621,
+            -0.7570306062698364
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera frame (denial of service / missing image)",
+          "bev": "Multiple regions including x\u224810m, y\u22485m and x\u224827m, y\u22488m",
+          "isometric": "Large bounding boxes floating in mid-air at high z-levels (z > 3m) containing sparse, isolated points with no ground support or physical structure"
+        },
+        "evidence": [
+          "The camera image is completely unavailable/suppressed, which is a major cross-modal failure.",
+          "In the isometric LiDAR view, multiple bounding boxes (such as the ones at high x range) are floating high above the ground plane (z \u2248 3m to 6m) enclosing extremely sparse, non-structural points.",
+          "Multiple overlapping, conflicting bounding boxes (e.g., car, barrier, and bus/truck duplicates) are predicted on single sparse clusters."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Normal coordinate misalignment"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:12.570983"
+}

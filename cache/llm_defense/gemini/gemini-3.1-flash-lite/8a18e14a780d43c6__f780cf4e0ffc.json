@@ -1,0 +1,265 @@
+{
+  "key": {
+    "frame_id": "8a18e14a780d43c6",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "car",
+        0.3338,
+        -21.583,
+        -19.041,
+        -1.238,
+        1.684,
+        1.93,
+        4.392,
+        0.1392
+      ],
+      [
+        "car",
+        0.3512,
+        28.897,
+        3.543,
+        -0.46,
+        1.598,
+        1.889,
+        4.29,
+        2.9608
+      ],
+      [
+        "car",
+        0.3561,
+        -5.238,
+        -19.604,
+        -0.796,
+        1.613,
+        1.922,
+        4.707,
+        2.3881
+      ],
+      [
+        "car",
+        0.4087,
+        -5.968,
+        -32.218,
+        0.454,
+        1.55,
+        1.879,
+        4.423,
+        2.3525
+      ],
+      [
+        "car",
+        0.4095,
+        3.312,
+        19.41,
+        -0.274,
+        1.666,
+        1.912,
+        4.641,
+        -2.2611
+      ],
+      [
+        "car",
+        0.4163,
+        -8.71,
+        -33.434,
+        0.636,
+        1.643,
+        1.943,
+        4.598,
+        2.328
+      ],
+      [
+        "car",
+        0.4415,
+        -10.162,
+        -24.511,
+        -0.379,
+        1.587,
+        1.872,
+        4.41,
+        2.3563
+      ],
+      [
+        "car",
+        0.4828,
+        -13.388,
+        -28.345,
+        -0.28,
+        1.738,
+        1.916,
+        4.537,
+        2.2921
+      ],
+      [
+        "car",
+        0.5039,
+        19.205,
+        6.565,
+        -0.054,
+        1.794,
+        2.041,
+        4.64,
+        -0.0921
+      ],
+      [
+        "car",
+        0.5105,
+        3.101,
+        -10.741,
+        -0.722,
+        1.577,
+        1.898,
+        4.517,
+        2.3871
+      ],
+      [
+        "car",
+        0.5171,
+        10.503,
+        -14.143,
+        -0.243,
+        1.679,
+        1.951,
+        4.562,
+        -0.7262
+      ],
+      [
+        "car",
+        0.5378,
+        18.23,
+        -1.435,
+        0.051,
+        1.85,
+        2.064,
+        4.743,
+        2.9486
+      ],
+      [
+        "car",
+        0.5572,
+        4.389,
+        9.035,
+        -0.946,
+        1.474,
+        1.791,
+        4.307,
+        -2.5007
+      ],
+      [
+        "car",
+        0.5585,
+        30.11,
+        6.054,
+        -0.323,
+        1.649,
+        1.972,
+        4.445,
+        3.0549
+      ],
+      [
+        "car",
+        0.6062,
+        -0.342,
+        13.068,
+        -0.832,
+        1.589,
+        1.84,
+        4.435,
+        1.4914
+      ],
+      [
+        "pedestrian",
+        0.3249,
+        -14.738,
+        -7.725,
+        -1.311,
+        1.794,
+        0.663,
+        0.719,
+        -2.1071
+      ],
+      [
+        "truck",
+        0.6353,
+        10.216,
+        0.364,
+        -0.851,
+        1.983,
+        2.147,
+        5.777,
+        3.0954
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 120
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "Cluster at x\u224812m shows minimal vertical structure and is sparsely populated with points inconsistent with a physical vehicle."
+        },
+        "evidence": [
+          "The bounding box at (12m, 0.5m) encloses a very sparse, point-cluster lacking the typical structural density or L-shape of a vehicle.",
+          "The isometric view confirms the lack of vertical surface extent consistent with a vehicle.",
+          "No corresponding physical surface or occlusion shadow is visible in the LiDAR point cloud, suggesting the box is a purely digital artifact."
+        ],
+        "alternatives_ruled_out": [
+          "Low-reflectivity surface (the lack of any point cluster or vertical depth rules this out).",
+          "Sensor noise (the presence of a deliberate, well-formed oriented bounding box where no physical object exists is inconsistent with random noise)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22489m, y\u2248-4m)",
+          "isometric": "Cluster appears isolated in space without a ground-connected base or coherent vehicle shape."
+        },
+        "evidence": [
+          "The bounding box at (9m, -4m) encloses a sparse set of returns that do not form a recognizable vehicle silhouette.",
+          "Isometric visualization shows floating points lacking the solid structural integrity of a physical car.",
+          "Absence of a 3D shadow behind the region implies the detection is not caused by an opaque object."
+        ],
+        "alternatives_ruled_out": [
+          "Distant object (range is close at 9m).",
+          "Natural occlusion (lack of points behind the box suggests no occlusion is taking place)."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224819m, y\u2248-3m)",
+          "isometric": "Box surrounds a region with very few LiDAR returns, creating a 'hollow' detection."
+        },
+        "evidence": [
+          "The box at (19m, -3m) is predominantly empty space with only scattered, low-density returns.",
+          "The isometric view reveals no clear vertical profile or planar surfaces that would justify a vehicle bounding box.",
+          "The detection lacks physical support on the ground plane."
+        ],
+        "alternatives_ruled_out": [
+          "Low reflectivity surface (an actual car would return significantly more points at this range).",
+          "Sensor noise (the bounding box is too well-defined compared to the background, suggesting specific spoofing)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:40:14.073799"
+}

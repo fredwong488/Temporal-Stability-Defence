@@ -1,0 +1,251 @@
+{
+  "key": {
+    "frame_id": "ec92417bf48c4497",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3265,
+        -6.855,
+        -18.188,
+        -1.587,
+        1.729,
+        0.682,
+        1.689,
+        -1.603
+      ],
+      [
+        "car",
+        0.3102,
+        18.1,
+        1.071,
+        -0.39,
+        1.736,
+        1.924,
+        4.461,
+        -1.3659
+      ],
+      [
+        "car",
+        0.33,
+        4.2,
+        -43.623,
+        -2.586,
+        1.713,
+        1.977,
+        4.714,
+        1.6289
+      ],
+      [
+        "car",
+        0.3572,
+        15.215,
+        -6.564,
+        -0.87,
+        1.833,
+        1.933,
+        4.488,
+        -1.4796
+      ],
+      [
+        "car",
+        0.3716,
+        14.885,
+        -0.719,
+        -0.572,
+        1.709,
+        1.94,
+        4.726,
+        -1.5423
+      ],
+      [
+        "car",
+        0.385,
+        -9.454,
+        25.473,
+        0.179,
+        1.895,
+        1.953,
+        4.763,
+        -1.5199
+      ],
+      [
+        "car",
+        0.39,
+        -9.344,
+        -29.628,
+        -2.367,
+        1.559,
+        1.825,
+        4.459,
+        1.6207
+      ],
+      [
+        "car",
+        0.4351,
+        -8.849,
+        3.748,
+        -0.744,
+        3.015,
+        2.465,
+        7.558,
+        -1.6107
+      ],
+      [
+        "car",
+        0.5907,
+        12.215,
+        -0.726,
+        -0.652,
+        1.7,
+        1.886,
+        4.513,
+        -1.6062
+      ],
+      [
+        "car",
+        0.6036,
+        5.392,
+        27.929,
+        0.449,
+        1.692,
+        1.848,
+        4.419,
+        1.6144
+      ],
+      [
+        "car",
+        0.6206,
+        -8.724,
+        11.99,
+        -0.826,
+        1.825,
+        1.958,
+        4.869,
+        -1.6558
+      ],
+      [
+        "car",
+        0.6457,
+        5.719,
+        21.66,
+        -0.186,
+        1.643,
+        1.947,
+        4.72,
+        1.5524
+      ],
+      [
+        "car",
+        0.6603,
+        -0.368,
+        13.284,
+        -0.596,
+        1.588,
+        1.84,
+        4.385,
+        1.5478
+      ],
+      [
+        "car",
+        0.8256,
+        -3.302,
+        10.914,
+        -0.742,
+        1.493,
+        1.814,
+        4.351,
+        -1.5439
+      ],
+      [
+        "car",
+        0.8329,
+        5.115,
+        -12.38,
+        -1.5,
+        1.586,
+        1.821,
+        4.265,
+        1.4497
+      ],
+      [
+        "car",
+        0.8833,
+        5.216,
+        -7.009,
+        -1.174,
+        1.91,
+        2.024,
+        4.899,
+        1.599
+      ],
+      [
+        "car",
+        0.8943,
+        5.325,
+        10.458,
+        -0.71,
+        1.671,
+        1.87,
+        4.541,
+        1.5638
+      ],
+      [
+        "car",
+        0.9051,
+        5.232,
+        4.616,
+        -0.798,
+        1.919,
+        1.968,
+        4.88,
+        1.5317
+      ],
+      [
+        "car",
+        0.9659,
+        5.136,
+        -1.472,
+        -1.087,
+        1.646,
+        1.879,
+        4.609,
+        1.5732
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 99
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480m)",
+          "isometric": "The cluster at x\u224812m, y\u22480m is small, sparse, and lacks the structural signature of a vehicle."
+        },
+        "evidence": [
+          "The bounding box at x\u224812m, y\u22480m contains a very sparse, non-volumetric set of points that does not resemble a vehicle's L-shape or geometric profile.",
+          "The cluster lacks sufficient 3D structure or vertical extent in the isometric view, appearing more like noise than a physical object.",
+          "The bounding box does not block or occlude any background points, violating the physical invariant that opaque objects must cast a 3D shadow or occlude returns."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion or sensor limitations, as the detection is an isolated, non-structural anomaly in otherwise clear LiDAR data.",
+          "Distant object, as the cluster is at a mid-range where detection should be reliable and structural."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:32:45.879818"
+}

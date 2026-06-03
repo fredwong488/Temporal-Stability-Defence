@@ -1,0 +1,225 @@
+{
+  "key": {
+    "frame_id": "edee92b1cd7a41e7",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3757,
+        0.284,
+        36.744,
+        1.338,
+        1.712,
+        1.914,
+        4.542,
+        1.562
+      ],
+      [
+        "car",
+        0.4788,
+        -1.731,
+        29.812,
+        1.205,
+        1.724,
+        1.936,
+        4.641,
+        1.5373
+      ],
+      [
+        "car",
+        0.4935,
+        -5.868,
+        29.231,
+        1.139,
+        1.685,
+        1.949,
+        4.644,
+        -1.6353
+      ],
+      [
+        "car",
+        0.6809,
+        1.042,
+        -20.556,
+        -2.146,
+        1.748,
+        1.984,
+        4.722,
+        1.7053
+      ],
+      [
+        "car",
+        0.8591,
+        -4.245,
+        3.608,
+        -0.86,
+        1.702,
+        1.946,
+        4.731,
+        -1.5815
+      ],
+      [
+        "construction_vehicle",
+        0.372,
+        10.274,
+        -30.233,
+        -1.948,
+        2.474,
+        1.82,
+        3.829,
+        1.7523
+      ],
+      [
+        "pedestrian",
+        0.305,
+        -19.702,
+        1.5,
+        -1.068,
+        1.865,
+        0.644,
+        0.65,
+        2.7921
+      ],
+      [
+        "pedestrian",
+        0.308,
+        8.731,
+        11.992,
+        -0.287,
+        1.819,
+        0.668,
+        0.673,
+        2.6874
+      ],
+      [
+        "pedestrian",
+        0.3257,
+        6.922,
+        4.654,
+        -0.768,
+        1.759,
+        0.678,
+        0.752,
+        1.9645
+      ],
+      [
+        "pedestrian",
+        0.3343,
+        6.102,
+        -7.168,
+        -1.109,
+        1.802,
+        0.687,
+        0.76,
+        -1.6188
+      ],
+      [
+        "pedestrian",
+        0.3435,
+        7.906,
+        16.392,
+        0.033,
+        1.713,
+        0.65,
+        0.655,
+        -1.1107
+      ],
+      [
+        "pedestrian",
+        0.3479,
+        7.52,
+        10.785,
+        -0.33,
+        1.762,
+        0.693,
+        0.731,
+        0.3082
+      ],
+      [
+        "pedestrian",
+        0.3838,
+        7.448,
+        13.811,
+        -0.082,
+        1.798,
+        0.686,
+        0.666,
+        0.9447
+      ],
+      [
+        "pedestrian",
+        0.3853,
+        8.921,
+        15.765,
+        0.09,
+        1.748,
+        0.639,
+        0.598,
+        -2.5149
+      ],
+      [
+        "pedestrian",
+        0.3879,
+        6.227,
+        -18.057,
+        -1.752,
+        1.771,
+        0.671,
+        0.652,
+        -1.4287
+      ],
+      [
+        "pedestrian",
+        0.4331,
+        8.431,
+        10.046,
+        -0.412,
+        1.739,
+        0.675,
+        0.713,
+        2.0115
+      ],
+      [
+        "pedestrian",
+        0.4745,
+        8.444,
+        14.345,
+        -0.111,
+        1.776,
+        0.658,
+        0.629,
+        2.9388
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple pedestrian boxes distributed along x=5 to x=15, y=-8 to -6",
+          "isometric": "Pedestrian boxes in the y\u2248-6 to -8 range correspond to ground-level point clusters"
+        },
+        "evidence": [
+          "The camera image data is explicitly unavailable, making it impossible to perform cross-modal verification or confirm if the detections correspond to actual objects in the scene.",
+          "The scene appears to contain many legitimate structures (road curbs, foliage) that may cause noise in detection, but without visual confirmation, the validity of these detections cannot be assessed.",
+          "There is no clear pattern of ghosting (e.g., floating points, lack of shadow, isolated small clusters in the ego-path) that is definitively malicious without the camera context."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise",
+          "Reflections from road infrastructure",
+          "Correct detection of distant objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:52.346336"
+}

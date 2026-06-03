@@ -1,0 +1,232 @@
+{
+  "key": {
+    "frame_id": "9a35d3c64d634598",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.501,
+        8.576,
+        -34.306,
+        -1.836,
+        3.423,
+        2.888,
+        11.945,
+        -1.5116
+      ],
+      [
+        "bus",
+        0.62,
+        4.788,
+        -0.124,
+        -0.309,
+        3.175,
+        2.791,
+        9.079,
+        1.5436
+      ],
+      [
+        "bus",
+        0.8914,
+        4.954,
+        9.018,
+        0.191,
+        3.426,
+        3.026,
+        8.45,
+        1.6323
+      ],
+      [
+        "car",
+        0.3032,
+        -4.578,
+        23.906,
+        -0.009,
+        1.597,
+        1.872,
+        4.714,
+        1.629
+      ],
+      [
+        "car",
+        0.3205,
+        -6.618,
+        -25.301,
+        -2.071,
+        1.651,
+        1.934,
+        4.577,
+        1.6421
+      ],
+      [
+        "car",
+        0.3221,
+        -21.952,
+        21.462,
+        0.408,
+        1.577,
+        1.875,
+        4.343,
+        -0.6709
+      ],
+      [
+        "car",
+        0.4123,
+        -19.089,
+        26.997,
+        0.9,
+        2.046,
+        2.116,
+        5.203,
+        -0.6092
+      ],
+      [
+        "car",
+        0.4161,
+        -7.731,
+        -41.008,
+        -2.637,
+        1.735,
+        1.947,
+        4.73,
+        -1.5449
+      ],
+      [
+        "construction_vehicle",
+        0.5639,
+        -5.367,
+        12.326,
+        -0.207,
+        2.573,
+        2.778,
+        7.366,
+        -1.632
+      ],
+      [
+        "construction_vehicle",
+        0.961,
+        -11.438,
+        5.874,
+        -0.347,
+        2.11,
+        2.467,
+        7.668,
+        -3.0862
+      ],
+      [
+        "motorcycle",
+        0.3248,
+        26.348,
+        2.786,
+        -1.76,
+        1.442,
+        0.822,
+        2.454,
+        0.0719
+      ],
+      [
+        "traffic_cone",
+        0.3189,
+        -9.37,
+        -2.107,
+        -1.158,
+        0.958,
+        0.357,
+        0.355,
+        0.6769
+      ],
+      [
+        "traffic_cone",
+        0.3459,
+        -9.852,
+        -2.126,
+        -1.099,
+        1.169,
+        0.383,
+        0.376,
+        -0.046
+      ],
+      [
+        "traffic_cone",
+        0.3818,
+        -8.443,
+        -2.114,
+        -1.257,
+        0.881,
+        0.348,
+        0.369,
+        2.2428
+      ],
+      [
+        "traffic_cone",
+        0.4131,
+        -7.971,
+        4.339,
+        -1.07,
+        0.798,
+        0.373,
+        0.391,
+        -1.6003
+      ],
+      [
+        "traffic_cone",
+        0.496,
+        -7.731,
+        -2.128,
+        -1.302,
+        0.875,
+        0.357,
+        0.364,
+        1.2957
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 32,
+          "reinjected_centroid": [
+            -6.444177150726318,
+            -23.717554092407227,
+            -2.540158271789551
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224824m, y\u22485m)",
+          "isometric": "Empty floating bounding box detected at x\u224824m, y\u22485m with no corresponding physical point cluster or support structure."
+        },
+        "evidence": [
+          "The bounding box predicted as 'car 0.30' at x\u224824m, y\u22485m contains no underlying LiDAR point cluster in either the BEV or Isometric view.",
+          "There is an additional empty bounding box floating in the far bottom-right of the isometric view (around x\u224830m, y\u2248-8m) with absolutely zero point returns inside or near it.",
+          "Lack of LiDAR physical shadow behind the predicted car box, confirming no physical obstacle is present."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (an object of this size would require a cluster of returns rather than a completely empty region)",
+          "Distant object out of range (other elements at 25-30m are clearly scanned, but this specific box is completely void of points)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:18:32.165065"
+}

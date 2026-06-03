@@ -1,0 +1,218 @@
+{
+  "key": {
+    "frame_id": "1ce296c5f6d44d3b",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bus",
+        0.6384,
+        -15.992,
+        27.187,
+        0.828,
+        3.362,
+        2.834,
+        10.8,
+        0.3193
+      ],
+      [
+        "car",
+        0.7251,
+        -10.372,
+        23.095,
+        -0.123,
+        1.601,
+        1.897,
+        4.597,
+        -0.07
+      ],
+      [
+        "car",
+        0.8638,
+        -3.341,
+        0.477,
+        -1.148,
+        1.523,
+        1.86,
+        4.556,
+        1.6204
+      ],
+      [
+        "construction_vehicle",
+        0.4032,
+        -10.127,
+        48.958,
+        1.513,
+        2.537,
+        2.536,
+        6.47,
+        -1.3953
+      ],
+      [
+        "pedestrian",
+        0.356,
+        -5.887,
+        7.424,
+        -0.681,
+        1.79,
+        0.67,
+        0.707,
+        1.2316
+      ],
+      [
+        "pedestrian",
+        0.397,
+        -6.023,
+        9.071,
+        -0.631,
+        1.784,
+        0.644,
+        0.682,
+        1.7348
+      ],
+      [
+        "pedestrian",
+        0.4143,
+        -6.855,
+        8.14,
+        -0.687,
+        1.808,
+        0.687,
+        0.712,
+        1.34
+      ],
+      [
+        "pedestrian",
+        0.4301,
+        -12.588,
+        9.909,
+        -0.882,
+        1.817,
+        0.68,
+        0.772,
+        1.8708
+      ],
+      [
+        "pedestrian",
+        0.4962,
+        -9.37,
+        9.796,
+        -0.58,
+        1.852,
+        0.69,
+        0.784,
+        1.5117
+      ],
+      [
+        "trailer",
+        0.929,
+        -3.146,
+        -15.778,
+        -0.397,
+        4.182,
+        2.775,
+        14.508,
+        1.6301
+      ],
+      [
+        "truck",
+        0.6691,
+        -0.104,
+        -8.154,
+        -1.079,
+        2.522,
+        2.252,
+        4.965,
+        1.6018
+      ],
+      [
+        "truck",
+        0.7616,
+        3.478,
+        16.641,
+        0.764,
+        3.406,
+        2.707,
+        8.031,
+        -0.0327
+      ],
+      [
+        "truck",
+        0.8775,
+        -3.401,
+        -7.757,
+        -0.33,
+        4.004,
+        2.648,
+        6.24,
+        1.6296
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.125387668609619,
+            0.7272548079490662,
+            -1.7339272499084473
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 30,
+          "reinjected_centroid": [
+            -10.461621284484863,
+            22.469768524169922,
+            -0.5178220272064209
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 23,
+          "reinjected_centroid": [
+            -12.559638023376465,
+            9.915809631347656,
+            -1.005525827407837
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224827m, y\u224810m)",
+          "isometric": "Bounding box for 'bus' (confidence 0.64) is floating high in the air at z \u2248 3m to 5m with absolutely no matching point cloud cluster inside or beneath it."
+        },
+        "evidence": [
+          "The predicted 3D bounding box for 'bus 0.64' is completely empty and floating in mid-air without any supporting points.",
+          "There is no physical object or LiDAR point cluster at the location of the detected bus.",
+          "The height (z-value) of the bounding box is physically impossible for a ground vehicle without any ground contact."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real object with sparse points",
+          "Ground reflection"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:10.588945"
+}

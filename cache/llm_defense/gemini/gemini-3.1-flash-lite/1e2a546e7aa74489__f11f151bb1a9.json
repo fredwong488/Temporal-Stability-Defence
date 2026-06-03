@@ -1,0 +1,246 @@
+{
+  "key": {
+    "frame_id": "1e2a546e7aa74489",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.351,
+        -6.006,
+        28.825,
+        0.914,
+        1.712,
+        1.94,
+        4.582,
+        -1.7581
+      ],
+      [
+        "car",
+        0.3829,
+        -1.855,
+        28.985,
+        0.859,
+        1.621,
+        1.886,
+        4.453,
+        1.541
+      ],
+      [
+        "car",
+        0.4745,
+        3.537,
+        40.144,
+        1.694,
+        1.818,
+        1.946,
+        4.583,
+        1.5526
+      ],
+      [
+        "car",
+        0.6442,
+        1.086,
+        -20.572,
+        -2.094,
+        1.683,
+        1.918,
+        4.558,
+        1.7743
+      ],
+      [
+        "car",
+        0.8923,
+        -4.235,
+        2.626,
+        -0.937,
+        1.66,
+        1.954,
+        4.815,
+        -1.6033
+      ],
+      [
+        "pedestrian",
+        0.3029,
+        -19.716,
+        1.015,
+        -1.138,
+        1.799,
+        0.61,
+        0.636,
+        1.8165
+      ],
+      [
+        "pedestrian",
+        0.3038,
+        -29.438,
+        14.679,
+        -0.087,
+        1.737,
+        0.642,
+        0.676,
+        -0.7882
+      ],
+      [
+        "pedestrian",
+        0.3085,
+        -10.297,
+        -12.599,
+        -1.679,
+        1.753,
+        0.611,
+        0.718,
+        -1.6513
+      ],
+      [
+        "pedestrian",
+        0.3141,
+        8.942,
+        11.687,
+        -0.37,
+        1.786,
+        0.691,
+        0.724,
+        1.5583
+      ],
+      [
+        "pedestrian",
+        0.3273,
+        7.356,
+        -18.215,
+        -1.79,
+        1.781,
+        0.646,
+        0.66,
+        -2.1452
+      ],
+      [
+        "pedestrian",
+        0.3508,
+        7.727,
+        23.133,
+        0.556,
+        1.774,
+        0.656,
+        0.647,
+        -2.997
+      ],
+      [
+        "pedestrian",
+        0.3575,
+        6.907,
+        4.141,
+        -0.841,
+        1.738,
+        0.654,
+        0.723,
+        1.3062
+      ],
+      [
+        "pedestrian",
+        0.3684,
+        -10.627,
+        -7.85,
+        -1.361,
+        1.801,
+        0.673,
+        0.775,
+        1.3508
+      ],
+      [
+        "pedestrian",
+        0.4133,
+        6.094,
+        -7.8,
+        -1.078,
+        1.823,
+        0.696,
+        0.799,
+        -1.6835
+      ],
+      [
+        "pedestrian",
+        0.4141,
+        7.801,
+        15.957,
+        -0.015,
+        1.808,
+        0.652,
+        0.625,
+        -1.9489
+      ],
+      [
+        "pedestrian",
+        0.4235,
+        7.51,
+        10.289,
+        -0.407,
+        1.758,
+        0.683,
+        0.7,
+        1.0571
+      ],
+      [
+        "pedestrian",
+        0.4544,
+        7.409,
+        13.378,
+        -0.24,
+        1.732,
+        0.632,
+        0.611,
+        1.1575
+      ],
+      [
+        "pedestrian",
+        0.4866,
+        8.376,
+        9.855,
+        -0.46,
+        1.74,
+        0.677,
+        0.703,
+        1.5429
+      ],
+      [
+        "pedestrian",
+        0.5094,
+        8.386,
+        13.867,
+        -0.291,
+        1.792,
+        0.636,
+        0.59,
+        2.876
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22485-22m, y\u2248-6 to -8m)",
+          "isometric": "Multiple small cuboids appear in a linear row along the ground plane without dense point clusters or physical structure"
+        },
+        "evidence": [
+          "A series of 'pedestrian' bounding boxes appear along a clean, straight line in the BEV view, which is physically implausible for actual pedestrians.",
+          "The isometric view shows these bounding boxes are largely empty of corresponding dense 3D point clusters, suggesting they are 'ghosts' or artifacts rather than physical obstacles.",
+          "There is no environmental feature (like a guardrail or wall) that would justify a line of detections, making this pattern highly characteristic of spoofed or injected ghost object attacks."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (does not typically form a neat, equidistant row of labelled objects)",
+          "Occlusion (no underlying structure suggests an occluded object)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:53.156441"
+}

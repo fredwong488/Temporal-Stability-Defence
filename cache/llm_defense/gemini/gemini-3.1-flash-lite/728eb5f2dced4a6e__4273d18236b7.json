@@ -1,0 +1,191 @@
+{
+  "key": {
+    "frame_id": "728eb5f2dced4a6e",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3626,
+        5.502,
+        37.437,
+        1.287,
+        1.775,
+        1.907,
+        4.591,
+        1.5389
+      ],
+      [
+        "car",
+        0.3707,
+        -6.943,
+        22.468,
+        0.104,
+        1.626,
+        1.861,
+        4.43,
+        -1.5931
+      ],
+      [
+        "car",
+        0.4042,
+        1.022,
+        -22.375,
+        -1.871,
+        1.799,
+        1.983,
+        4.746,
+        1.7687
+      ],
+      [
+        "car",
+        0.5892,
+        -3.249,
+        15.956,
+        -0.151,
+        1.59,
+        1.88,
+        4.514,
+        -1.6309
+      ],
+      [
+        "car",
+        0.8817,
+        -3.801,
+        -10.411,
+        -1.416,
+        1.696,
+        1.912,
+        4.714,
+        -1.4698
+      ],
+      [
+        "pedestrian",
+        0.3244,
+        9.005,
+        13.147,
+        -0.002,
+        1.77,
+        0.645,
+        0.657,
+        -1.5964
+      ],
+      [
+        "pedestrian",
+        0.3595,
+        7.007,
+        3.761,
+        -0.694,
+        1.747,
+        0.681,
+        0.787,
+        3.0908
+      ],
+      [
+        "pedestrian",
+        0.3836,
+        -8.295,
+        1.274,
+        -0.927,
+        1.784,
+        0.659,
+        0.736,
+        1.7949
+      ],
+      [
+        "pedestrian",
+        0.4117,
+        7.755,
+        7.4,
+        -0.383,
+        1.82,
+        0.676,
+        0.675,
+        2.2072
+      ],
+      [
+        "pedestrian",
+        0.435,
+        7.074,
+        9.356,
+        -0.314,
+        1.722,
+        0.637,
+        0.622,
+        -0.6819
+      ],
+      [
+        "pedestrian",
+        0.4538,
+        6.793,
+        -2.735,
+        -0.829,
+        1.796,
+        0.71,
+        0.813,
+        1.5128
+      ],
+      [
+        "pedestrian",
+        0.469,
+        8.469,
+        6.734,
+        -0.473,
+        1.809,
+        0.678,
+        0.692,
+        2.4491
+      ],
+      [
+        "pedestrian",
+        0.4862,
+        6.857,
+        6.856,
+        -0.466,
+        1.817,
+        0.69,
+        0.723,
+        -0.338
+      ],
+      [
+        "truck",
+        0.3008,
+        1.066,
+        -22.798,
+        -2.02,
+        1.89,
+        2.188,
+        5.759,
+        1.6447
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815, y\u22483.5)",
+          "isometric": "Cluster lacks consistent 3D point structure; box encompasses empty space"
+        },
+        "evidence": [
+          "In the isometric view, the detected box at (x\u224815, y\u22483.5) contains very sparse, non-volumetric points.",
+          "The box location appears to be in open space without a clear, dense cluster of points typically associated with a vehicle.",
+          "There is no discernible physical shadow behind the detected object, which is expected for opaque surfaces."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is possible, but the presence of a formal object detection (bounding box) on an area devoid of valid point-cloud structure is characteristic of a ghosting attack.",
+          "Low reflectivity: While possible, typical road debris would produce more coherent returns than the sparse points seen here."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:02.477442"
+}

@@ -1,0 +1,279 @@
+{
+  "key": {
+    "frame_id": "36ea9aa7253b408d",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3037,
+        -1.31,
+        -44.235,
+        -2.24,
+        1.834,
+        2.025,
+        4.725,
+        -1.5873
+      ],
+      [
+        "car",
+        0.329,
+        0.241,
+        -29.923,
+        -1.957,
+        1.791,
+        1.98,
+        4.671,
+        1.5418
+      ],
+      [
+        "car",
+        0.4118,
+        1.748,
+        42.264,
+        1.426,
+        1.761,
+        1.973,
+        4.576,
+        1.5784
+      ],
+      [
+        "car",
+        0.5218,
+        22.576,
+        -11.587,
+        -1.062,
+        1.63,
+        1.93,
+        4.59,
+        0.0052
+      ],
+      [
+        "car",
+        0.5231,
+        -3.799,
+        33.395,
+        0.659,
+        1.605,
+        1.862,
+        4.458,
+        1.4437
+      ],
+      [
+        "car",
+        0.676,
+        -7.345,
+        22.972,
+        0.1,
+        1.621,
+        1.896,
+        4.496,
+        0.1009
+      ],
+      [
+        "car",
+        0.7326,
+        -14.383,
+        21.266,
+        -0.37,
+        1.576,
+        1.864,
+        4.41,
+        0.1586
+      ],
+      [
+        "car",
+        0.7581,
+        4.633,
+        21.908,
+        0.103,
+        1.606,
+        1.856,
+        4.636,
+        1.5511
+      ],
+      [
+        "car",
+        0.8616,
+        -3.943,
+        -18.061,
+        -1.831,
+        1.608,
+        1.834,
+        4.447,
+        -1.5148
+      ],
+      [
+        "car",
+        0.9325,
+        -7.494,
+        6.577,
+        -0.965,
+        1.54,
+        1.888,
+        4.742,
+        -1.5871
+      ],
+      [
+        "pedestrian",
+        0.3045,
+        -21.336,
+        -5.917,
+        -1.043,
+        1.831,
+        0.653,
+        0.734,
+        2.7211
+      ],
+      [
+        "pedestrian",
+        0.3067,
+        -17.557,
+        -13.268,
+        -1.755,
+        1.822,
+        0.659,
+        0.689,
+        1.5351
+      ],
+      [
+        "pedestrian",
+        0.3136,
+        7.457,
+        -8.335,
+        -1.147,
+        1.888,
+        0.715,
+        0.687,
+        3.111
+      ],
+      [
+        "pedestrian",
+        0.3169,
+        8.208,
+        -6.387,
+        -1.209,
+        1.786,
+        0.65,
+        0.674,
+        -2.6021
+      ],
+      [
+        "pedestrian",
+        0.3377,
+        -8.39,
+        -14.823,
+        -1.408,
+        1.814,
+        0.66,
+        0.755,
+        -1.7014
+      ],
+      [
+        "pedestrian",
+        0.3551,
+        7.815,
+        -7.957,
+        -1.133,
+        1.886,
+        0.653,
+        0.633,
+        -2.9205
+      ],
+      [
+        "pedestrian",
+        0.3564,
+        6.613,
+        -21.448,
+        -1.569,
+        1.779,
+        0.654,
+        0.664,
+        1.9573
+      ],
+      [
+        "pedestrian",
+        0.3573,
+        6.375,
+        -7.833,
+        -1.249,
+        1.769,
+        0.627,
+        0.592,
+        -0.9115
+      ],
+      [
+        "pedestrian",
+        0.3635,
+        7.444,
+        -9.558,
+        -1.329,
+        1.807,
+        0.649,
+        0.615,
+        2.6227
+      ],
+      [
+        "pedestrian",
+        0.3695,
+        -12.265,
+        14.091,
+        -0.265,
+        1.772,
+        0.627,
+        0.649,
+        -1.1064
+      ],
+      [
+        "pedestrian",
+        0.3953,
+        6.519,
+        -10.21,
+        -1.426,
+        1.743,
+        0.637,
+        0.663,
+        1.8611
+      ],
+      [
+        "pedestrian",
+        0.4635,
+        6.67,
+        -13.317,
+        -1.418,
+        1.793,
+        0.64,
+        0.723,
+        -2.4158
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224822m, y\u22486m)",
+          "isometric": "Detected box at (x\u224822m, y\u22486m) appears to contain sparse, scattered points without a coherent physical structure typically seen in vehicle detections."
+        },
+        "evidence": [
+          "The bounding box near (22, 6) in the BEV encompasses a very sparse set of points.",
+          "The isometric view shows that these points lack the distinct geometric shape or vertical extent consistent with a vehicle.",
+          "The camera image is unavailable, preventing verification of whether this corresponds to a real object or a ghost detection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or poor reflectivity on a distant object, which could explain the sparse point return.",
+          "The object might be partially occluded or situated at the edge of the sensor's reliable detection range."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:51.050891"
+}

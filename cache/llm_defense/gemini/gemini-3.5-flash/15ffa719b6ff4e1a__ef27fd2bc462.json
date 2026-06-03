@@ -1,0 +1,163 @@
+{
+  "key": {
+    "frame_id": "15ffa719b6ff4e1a",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bus",
+        0.4036,
+        -5.084,
+        44.47,
+        2.206,
+        3.288,
+        2.863,
+        11.214,
+        1.5232
+      ],
+      [
+        "car",
+        0.4922,
+        6.767,
+        20.026,
+        0.339,
+        1.697,
+        1.939,
+        4.629,
+        -0.0157
+      ],
+      [
+        "car",
+        0.5926,
+        -17.158,
+        23.772,
+        -0.09,
+        1.73,
+        2.018,
+        4.687,
+        -0.0132
+      ],
+      [
+        "car",
+        0.8872,
+        -3.329,
+        0.461,
+        -1.206,
+        1.513,
+        1.873,
+        4.673,
+        1.6245
+      ],
+      [
+        "pedestrian",
+        0.3553,
+        -5.026,
+        9.068,
+        -0.575,
+        1.807,
+        0.754,
+        0.767,
+        1.5021
+      ],
+      [
+        "pedestrian",
+        0.4119,
+        -6.727,
+        8.75,
+        -0.572,
+        1.817,
+        0.662,
+        0.645,
+        0.7711
+      ],
+      [
+        "trailer",
+        0.933,
+        -3.162,
+        -15.773,
+        -0.402,
+        4.18,
+        2.777,
+        14.542,
+        1.6272
+      ],
+      [
+        "truck",
+        0.6945,
+        -0.121,
+        -8.13,
+        -1.063,
+        2.588,
+        2.28,
+        5.014,
+        1.6008
+      ],
+      [
+        "truck",
+        0.8878,
+        -3.41,
+        -7.768,
+        -0.343,
+        4.005,
+        2.657,
+        6.276,
+        1.6274
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.431822299957275,
+            0.7043302059173584,
+            -1.8773342370986938
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 17,
+          "reinjected_centroid": [
+            -16.19590187072754,
+            23.216943740844727,
+            -0.537952721118927
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224824m, y\u22488m)",
+          "isometric": "A 3D cuboid labeled 'car 0.59' is located high above the ground plane (z \u2248 3m to 4m) containing only sparse, non-car-like points."
+        },
+        "evidence": [
+          "In the isometric view, there is a 3D bounding box floating in mid-air at x\u224824m, y\u22488m, well above the road surface, with no support points beneath it.",
+          "The underlying point cluster inside this box is extremely sparse, lacks any vertical or L-shape structural signature of a real vehicle, and has no associated LiDAR shadow."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Overhead infrastructure (such as a sign or bridge) misclassified as a vehicle, because there is no dense, coherent structure present at that height"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:23.024298"
+}

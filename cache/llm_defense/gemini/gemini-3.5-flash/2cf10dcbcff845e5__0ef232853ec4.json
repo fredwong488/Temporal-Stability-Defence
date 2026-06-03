@@ -1,0 +1,198 @@
+{
+  "key": {
+    "frame_id": "2cf10dcbcff845e5",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3017,
+        13.419,
+        -9.306,
+        -1.655,
+        0.97,
+        3.168,
+        0.528,
+        2.7932
+      ],
+      [
+        "barrier",
+        0.3505,
+        14.828,
+        -5.968,
+        -1.246,
+        0.979,
+        3.259,
+        0.525,
+        2.7767
+      ],
+      [
+        "bicycle",
+        0.3051,
+        6.82,
+        6.829,
+        -0.452,
+        1.728,
+        0.628,
+        1.744,
+        1.2959
+      ],
+      [
+        "car",
+        0.3406,
+        21.413,
+        19.243,
+        0.735,
+        1.638,
+        1.954,
+        4.54,
+        2.9727
+      ],
+      [
+        "car",
+        0.876,
+        -3.322,
+        0.399,
+        -1.185,
+        1.509,
+        1.873,
+        4.629,
+        1.6605
+      ],
+      [
+        "pedestrian",
+        0.3073,
+        6.757,
+        6.575,
+        -0.396,
+        1.741,
+        0.709,
+        0.895,
+        1.5091
+      ],
+      [
+        "pedestrian",
+        0.3168,
+        0.546,
+        7.344,
+        -0.552,
+        1.791,
+        0.69,
+        0.786,
+        1.8489
+      ],
+      [
+        "pedestrian",
+        0.3367,
+        1.736,
+        8.592,
+        -0.515,
+        1.757,
+        0.689,
+        0.834,
+        2.1658
+      ],
+      [
+        "pedestrian",
+        0.4267,
+        -0.258,
+        8.788,
+        -0.465,
+        1.789,
+        0.678,
+        0.702,
+        2.6856
+      ],
+      [
+        "trailer",
+        0.9421,
+        -3.177,
+        -15.668,
+        -0.375,
+        4.165,
+        2.771,
+        14.064,
+        1.6239
+      ],
+      [
+        "truck",
+        0.6271,
+        -0.122,
+        -7.985,
+        -1.014,
+        2.454,
+        2.116,
+        4.727,
+        1.5593
+      ],
+      [
+        "truck",
+        0.8736,
+        -3.393,
+        -7.739,
+        -0.369,
+        3.949,
+        2.633,
+        6.231,
+        1.6263
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.113964080810547,
+            0.705477237701416,
+            -1.7826025485992432
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 11,
+          "reinjected_centroid": [
+            21.292287826538086,
+            18.88842010498047,
+            0.5422625541687012
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image is unavailable/blacked out",
+          "bev": "Region around x \u2248 7 to 9m, y \u2248 -2 to 1m containing multiple pedestrian detections",
+          "isometric": "Empty vertical cuboids for pedestrian predictions at x \u2248 7 to 9m, y \u2248 -2 to 1m with no vertical point clusters"
+        },
+        "evidence": [
+          "Multiple pedestrian bounding boxes (e.g., pedestrian 0.43, 0.32, 0.34) are predicted in empty space containing only flat ground plane LiDAR points.",
+          "There is a complete absence of vertical point clusters or 3D structures corresponding to pedestrians in the isometric view at these predicted locations.",
+          "The camera image is entirely blacked out / marked as ATTACKED, rendering cross-modal validation impossible while multiple ghost detections are generated."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity objects",
+          "Occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:05.589953"
+}

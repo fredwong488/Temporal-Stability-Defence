@@ -1,0 +1,200 @@
+{
+  "key": {
+    "frame_id": "cd74d5f3dd6b48ce",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bicycle",
+        0.3421,
+        1.034,
+        8.514,
+        -0.728,
+        1.71,
+        0.693,
+        1.648,
+        0.3777
+      ],
+      [
+        "car",
+        0.3303,
+        10.861,
+        19.985,
+        0.602,
+        1.684,
+        1.936,
+        4.679,
+        0.0834
+      ],
+      [
+        "car",
+        0.4787,
+        -14.281,
+        20.076,
+        -0.142,
+        1.721,
+        1.932,
+        4.62,
+        3.0172
+      ],
+      [
+        "car",
+        0.8911,
+        -3.33,
+        0.47,
+        -1.199,
+        1.563,
+        1.924,
+        4.733,
+        1.5937
+      ],
+      [
+        "motorcycle",
+        0.3806,
+        8.422,
+        19.795,
+        0.403,
+        1.733,
+        0.774,
+        2.04,
+        -1.5193
+      ],
+      [
+        "pedestrian",
+        0.3102,
+        0.638,
+        8.422,
+        -0.673,
+        1.713,
+        0.686,
+        0.837,
+        1.7904
+      ],
+      [
+        "pedestrian",
+        0.3353,
+        -3.377,
+        7.059,
+        -0.734,
+        1.727,
+        0.689,
+        0.751,
+        -2.7614
+      ],
+      [
+        "pedestrian",
+        0.369,
+        -3.496,
+        8.161,
+        -0.565,
+        1.786,
+        0.708,
+        0.741,
+        2.119
+      ],
+      [
+        "pedestrian",
+        0.3779,
+        -1.834,
+        8.798,
+        -0.625,
+        1.782,
+        0.676,
+        0.707,
+        -1.5027
+      ],
+      [
+        "trailer",
+        0.9418,
+        -3.114,
+        -15.903,
+        -0.4,
+        4.198,
+        2.78,
+        14.93,
+        1.6223
+      ],
+      [
+        "truck",
+        0.3456,
+        -40.929,
+        -13.539,
+        -0.789,
+        2.094,
+        2.312,
+        5.823,
+        1.5918
+      ],
+      [
+        "truck",
+        0.6081,
+        -0.171,
+        -7.977,
+        -1.001,
+        2.57,
+        2.214,
+        4.882,
+        1.5598
+      ],
+      [
+        "truck",
+        0.8682,
+        -3.407,
+        -7.72,
+        -0.377,
+        3.986,
+        2.629,
+        6.011,
+        1.6437
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.791807174682617,
+            0.7652468085289001,
+            -1.9625678062438965
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image unavailable due to attack/sensor failure",
+          "bev": "Region between x \u2248 7m to 10m, y \u2248 -2m to 4m",
+          "isometric": "Multiple small bounding boxes (pedestrians/bicycles) enclosing sparse or non-existent point clusters, and highly elevated boxes floating in mid-air at x \u2248 8m (z > 2m) and x \u2248 25m"
+        },
+        "evidence": [
+          "Multiple low-confidence detections (pedestrian, bicycle) clustered between x=7m and x=10m containing almost no corresponding LiDAR returns.",
+          "A large bounding box is completely floating in mid-air (z \u2248 2m) with zero supporting points underneath or inside it.",
+          "Detections at the far periphery (such as car 0.48 and motorcycle 0.38) do not align with any physical object structures."
+        ],
+        "alternatives_ruled_out": [
+          "Ground reflections",
+          "Sensor noise",
+          "Normal objects obscured by occlusions"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:10.777587"
+}

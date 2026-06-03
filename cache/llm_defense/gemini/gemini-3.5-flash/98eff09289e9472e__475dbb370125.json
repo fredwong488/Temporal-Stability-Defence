@@ -1,0 +1,133 @@
+{
+  "key": {
+    "frame_id": "98eff09289e9472e",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.3579,
+        -46.519,
+        36.85,
+        0.196,
+        1.65,
+        1.857,
+        4.51,
+        -3.1069
+      ],
+      [
+        "car",
+        0.8763,
+        -3.356,
+        0.554,
+        -1.145,
+        1.505,
+        1.865,
+        4.581,
+        1.6361
+      ],
+      [
+        "trailer",
+        0.327,
+        5.264,
+        41.383,
+        2.117,
+        3.738,
+        3.478,
+        6.016,
+        -1.6614
+      ],
+      [
+        "trailer",
+        0.9468,
+        -3.151,
+        -15.872,
+        -0.373,
+        4.2,
+        2.773,
+        14.929,
+        1.6187
+      ],
+      [
+        "truck",
+        0.3241,
+        -10.021,
+        48.734,
+        1.112,
+        2.262,
+        2.174,
+        5.651,
+        1.7339
+      ],
+      [
+        "truck",
+        0.6593,
+        -0.108,
+        -8.132,
+        -1.053,
+        2.563,
+        2.271,
+        4.959,
+        1.6066
+      ],
+      [
+        "truck",
+        0.8887,
+        -3.431,
+        -7.739,
+        -0.378,
+        3.974,
+        2.634,
+        6.076,
+        1.6327
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.091562747955322,
+            0.7393515110015869,
+            -1.7858211994171143
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera frame (indicated as ATTACKED and unavailable)",
+          "bev": "(x\u224815-30m, y\u22486-8m)",
+          "isometric": "Multiple floating bounding boxes at z > 2m with absolutely zero LiDAR point support"
+        },
+        "evidence": [
+          "The camera image is completely unavailable and labeled as ATTACKED.",
+          "Several 3D bounding boxes are predicted floating high in mid-air in the isometric view (e.g., at x\u224820m, y\u22488m, z\u22483m and x\u224830m, y\u22486m, z\u22482m) completely devoid of any underlying LiDAR points."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant vehicles (objects completely lack points and vertical structure)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:23.780710"
+}

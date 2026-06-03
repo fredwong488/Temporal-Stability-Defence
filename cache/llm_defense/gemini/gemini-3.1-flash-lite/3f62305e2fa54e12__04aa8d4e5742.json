@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "3f62305e2fa54e12",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3052,
+        -19.923,
+        0.235,
+        -1.123,
+        1.841,
+        0.693,
+        1.754,
+        1.5962
+      ],
+      [
+        "car",
+        0.3419,
+        -8.104,
+        34.254,
+        0.507,
+        1.718,
+        1.986,
+        4.609,
+        -3.0095
+      ],
+      [
+        "car",
+        0.4536,
+        22.43,
+        -0.119,
+        -0.582,
+        1.702,
+        1.971,
+        4.508,
+        0.1175
+      ],
+      [
+        "car",
+        0.4849,
+        1.916,
+        40.9,
+        1.344,
+        1.655,
+        1.914,
+        4.573,
+        1.4783
+      ],
+      [
+        "car",
+        0.5411,
+        -3.11,
+        -19.851,
+        -1.042,
+        1.789,
+        1.919,
+        4.633,
+        -1.3898
+      ],
+      [
+        "car",
+        0.56,
+        5.055,
+        33.287,
+        0.787,
+        1.867,
+        1.971,
+        4.817,
+        1.5431
+      ],
+      [
+        "car",
+        0.9362,
+        -3.753,
+        6.347,
+        -0.78,
+        1.61,
+        1.863,
+        4.436,
+        -1.6356
+      ],
+      [
+        "construction_vehicle",
+        0.4158,
+        11.657,
+        -39.558,
+        -0.518,
+        3.651,
+        3.016,
+        7.545,
+        1.9094
+      ],
+      [
+        "pedestrian",
+        0.3131,
+        9.367,
+        27.568,
+        0.584,
+        1.775,
+        0.644,
+        0.662,
+        2.4993
+      ],
+      [
+        "pedestrian",
+        0.3186,
+        -17.302,
+        -1.872,
+        -1.051,
+        1.788,
+        0.649,
+        0.653,
+        1.4672
+      ],
+      [
+        "pedestrian",
+        0.3226,
+        -10.244,
+        -20.551,
+        -1.384,
+        1.81,
+        0.637,
+        0.693,
+        -1.8408
+      ],
+      [
+        "pedestrian",
+        0.3894,
+        8.2,
+        -26.973,
+        -1.103,
+        1.833,
+        0.672,
+        0.72,
+        -1.7027
+      ],
+      [
+        "pedestrian",
+        0.4039,
+        -11.95,
+        -2.125,
+        -1.14,
+        1.704,
+        0.648,
+        0.692,
+        2.1921
+      ],
+      [
+        "pedestrian",
+        0.4511,
+        6.904,
+        -0.967,
+        -0.859,
+        1.74,
+        0.629,
+        0.683,
+        1.9097
+      ],
+      [
+        "pedestrian",
+        0.465,
+        6.833,
+        4.631,
+        -0.708,
+        1.74,
+        0.637,
+        0.613,
+        -1.1448
+      ],
+      [
+        "pedestrian",
+        0.5153,
+        7.558,
+        2.818,
+        -0.771,
+        1.766,
+        0.658,
+        0.61,
+        -3.1411
+      ],
+      [
+        "pedestrian",
+        0.6034,
+        6.779,
+        2.072,
+        -0.849,
+        1.765,
+        0.662,
+        0.641,
+        0.2446
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m, y\u22483m)",
+          "isometric": "Cluster appears to be an object with points, though sparse."
+        },
+        "evidence": [
+          "A car detection exists at (x\u22486m, y\u22483m) corresponding to a cluster of points.",
+          "The cluster has plausible 3D extents in the isometric view, despite appearing somewhat sparse.",
+          "There is no glaring physical impossibility (such as floating points or lack of shadow) to suggest an injection or spoofing attack."
+        ],
+        "alternatives_ruled_out": [
+          "The sparse nature of the point cluster is likely due to the limited number of LiDAR rays hitting the object at this range and angle, rather than a malicious ghost object.",
+          "The lack of camera image prevents confirmation of the visual object, but the existence of the LiDAR point cluster supports it as a genuine detection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:08.413712"
+}

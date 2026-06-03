@@ -1,0 +1,146 @@
+{
+  "key": {
+    "frame_id": "0abf2f4ff0844d20",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bicycle",
+        0.4061,
+        -9.312,
+        14.315,
+        -0.775,
+        1.821,
+        0.654,
+        1.626,
+        1.6315
+      ],
+      [
+        "bicycle",
+        0.4125,
+        -1.137,
+        14.719,
+        -0.513,
+        1.81,
+        0.673,
+        1.673,
+        1.367
+      ],
+      [
+        "bus",
+        0.8236,
+        10.406,
+        -16.636,
+        -0.693,
+        3.415,
+        2.948,
+        12.857,
+        2.4852
+      ],
+      [
+        "car",
+        0.3021,
+        18.864,
+        7.215,
+        -0.687,
+        1.608,
+        1.93,
+        4.489,
+        -2.2781
+      ],
+      [
+        "car",
+        0.3923,
+        14.958,
+        -5.867,
+        -0.815,
+        1.616,
+        1.878,
+        4.41,
+        0.9865
+      ],
+      [
+        "pedestrian",
+        0.3169,
+        2.572,
+        20.687,
+        -0.189,
+        1.832,
+        0.567,
+        0.584,
+        -1.3481
+      ],
+      [
+        "pedestrian",
+        0.3304,
+        1.341,
+        21.531,
+        -0.334,
+        1.871,
+        0.672,
+        0.661,
+        -1.0849
+      ],
+      [
+        "pedestrian",
+        0.3448,
+        7.881,
+        23.122,
+        -0.242,
+        1.822,
+        0.593,
+        0.553,
+        -1.415
+      ],
+      [
+        "pedestrian",
+        0.3949,
+        3.725,
+        20.815,
+        -0.128,
+        1.879,
+        0.568,
+        0.601,
+        -1.2742
+      ],
+      [
+        "truck",
+        0.4019,
+        10.26,
+        -0.871,
+        -0.135,
+        3.239,
+        2.493,
+        6.043,
+        0.9428
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple pedestrian bounding boxes at (x\u224821m, y\u2248-2m)",
+          "isometric": "Detected pedestrian boxes contain very sparse, disconnected points lacking coherent vertical structure."
+        },
+        "evidence": [
+          "The camera image is unavailable, preventing cross-modal verification.",
+          "The pedestrian bounding boxes in the BEV and isometric views encompass extremely sparse point clusters that do not resemble human-shaped objects.",
+          "The isometric view confirms a lack of consistent vertical extent for the detected pedestrains, suggesting potential false positives in the detector rather than malicious spoofing."
+        ],
+        "alternatives_ruled_out": [
+          "These could be sensor noise or standard detector artifacts due to low point density at distance, rather than an active adversarial attack."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:11.536672"
+}

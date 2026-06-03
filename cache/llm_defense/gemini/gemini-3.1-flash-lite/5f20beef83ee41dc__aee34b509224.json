@@ -1,0 +1,341 @@
+{
+  "key": {
+    "frame_id": "5f20beef83ee41dc",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.836,
+        6.093,
+        -18.87,
+        -1.09,
+        3.262,
+        2.904,
+        12.371,
+        2.4399
+      ],
+      [
+        "car",
+        0.3001,
+        -2.168,
+        11.054,
+        -0.609,
+        1.578,
+        1.824,
+        4.415,
+        1.9273
+      ],
+      [
+        "car",
+        0.3201,
+        18.702,
+        -14.188,
+        -0.894,
+        2.835,
+        2.361,
+        6.363,
+        1.992
+      ],
+      [
+        "car",
+        0.3642,
+        19.055,
+        8.503,
+        0.169,
+        1.692,
+        1.893,
+        4.488,
+        1.8864
+      ],
+      [
+        "car",
+        0.3973,
+        17.055,
+        21.012,
+        0.866,
+        1.822,
+        1.972,
+        4.582,
+        2.0675
+      ],
+      [
+        "car",
+        0.4135,
+        11.912,
+        18.382,
+        0.293,
+        1.722,
+        1.915,
+        4.686,
+        -1.1445
+      ],
+      [
+        "car",
+        0.4149,
+        14.843,
+        6.563,
+        -0.38,
+        1.79,
+        2.009,
+        4.701,
+        1.9546
+      ],
+      [
+        "car",
+        0.4785,
+        -0.303,
+        12.881,
+        -0.615,
+        1.681,
+        1.914,
+        4.598,
+        -1.2253
+      ],
+      [
+        "car",
+        0.5198,
+        22.318,
+        1.258,
+        -0.592,
+        1.77,
+        1.932,
+        4.584,
+        -1.1877
+      ],
+      [
+        "car",
+        0.5277,
+        24.749,
+        -10.823,
+        -1.378,
+        1.674,
+        1.879,
+        4.482,
+        1.7389
+      ],
+      [
+        "car",
+        0.6524,
+        18.159,
+        -0.468,
+        -0.804,
+        1.701,
+        1.894,
+        4.424,
+        0.3924
+      ],
+      [
+        "car",
+        0.6651,
+        4.401,
+        14.771,
+        -0.217,
+        1.929,
+        2.01,
+        4.881,
+        -1.1305
+      ],
+      [
+        "car",
+        0.6839,
+        22.352,
+        -11.703,
+        -1.56,
+        1.552,
+        1.892,
+        4.522,
+        1.9238
+      ],
+      [
+        "car",
+        0.6994,
+        15.806,
+        -1.428,
+        -0.851,
+        1.694,
+        1.942,
+        4.58,
+        -1.0614
+      ],
+      [
+        "car",
+        0.7219,
+        11.033,
+        4.318,
+        -0.766,
+        1.792,
+        1.987,
+        4.736,
+        1.9803
+      ],
+      [
+        "car",
+        0.7885,
+        6.342,
+        2.386,
+        -1.047,
+        1.483,
+        1.84,
+        4.567,
+        1.9956
+      ],
+      [
+        "car",
+        0.7977,
+        13.968,
+        -3.029,
+        -0.939,
+        1.598,
+        1.905,
+        4.539,
+        -1.0797
+      ],
+      [
+        "car",
+        0.8387,
+        1.967,
+        14.179,
+        -0.509,
+        1.604,
+        1.836,
+        4.324,
+        -1.1982
+      ],
+      [
+        "construction_vehicle",
+        0.8391,
+        29.776,
+        28.313,
+        1.132,
+        3.533,
+        3.579,
+        6.889,
+        2.0413
+      ],
+      [
+        "motorcycle",
+        0.538,
+        -7.444,
+        9.859,
+        -0.879,
+        1.366,
+        0.735,
+        2.134,
+        1.9377
+      ],
+      [
+        "motorcycle",
+        0.5685,
+        -10.734,
+        0.578,
+        -1.19,
+        1.344,
+        0.709,
+        2.239,
+        -1.2036
+      ],
+      [
+        "pedestrian",
+        0.3219,
+        -5.574,
+        -8.374,
+        -1.058,
+        1.766,
+        0.656,
+        0.596,
+        0.098
+      ],
+      [
+        "pedestrian",
+        0.3433,
+        -3.905,
+        -12.416,
+        -1.134,
+        1.765,
+        0.584,
+        0.568,
+        0.453
+      ],
+      [
+        "pedestrian",
+        0.3705,
+        -3.619,
+        -18.859,
+        -1.916,
+        1.78,
+        0.694,
+        0.745,
+        2.4711
+      ],
+      [
+        "pedestrian",
+        0.4219,
+        -4.442,
+        -10.926,
+        -1.134,
+        1.742,
+        0.649,
+        0.626,
+        0.2023
+      ],
+      [
+        "pedestrian",
+        0.5095,
+        -4.628,
+        -7.683,
+        -1.153,
+        1.743,
+        0.662,
+        0.628,
+        -0.0641
+      ],
+      [
+        "truck",
+        0.3751,
+        18.729,
+        -14.07,
+        -0.833,
+        2.572,
+        2.291,
+        5.96,
+        2.0268
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 96
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224810-15m, y\u2248-5m to 2m)",
+          "isometric": "Multiple bounding boxes appear in a dense formation without corresponding point clusters that resemble physical vehicles."
+        },
+        "evidence": [
+          "The BEV shows multiple tightly packed, overlapping 'car' bounding boxes clustered between x=10-15m and y=-5m to 2m.",
+          "In the isometric view, these bounding boxes are largely empty of significant point clusters, containing only sparse, incoherent points.",
+          "There is no discernible 3D structural signature of a vehicle (no L-shape, no clear vertical surfaces) within these boxes.",
+          "The density of the points is insufficient to support the detection of multiple cars in such a confined space."
+        ],
+        "alternatives_ruled_out": [
+          "Standard sensor noise would not produce such highly structured, repeated bounding box 'ghosting' artifacts.",
+          "Occlusion does not explain the presence of multiple object detections in an area with sparse point returns.",
+          "Infrastructure objects (trees, poles) do not align with the 'car' classification of these detector outputs."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:35:21.057372"
+}

@@ -1,0 +1,136 @@
+{
+  "key": {
+    "frame_id": "a3e2b99c4aff443c",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.8352,
+        10.462,
+        -17.333,
+        -0.669,
+        3.483,
+        2.915,
+        12.86,
+        2.3563
+      ],
+      [
+        "car",
+        0.3981,
+        25.36,
+        11.894,
+        -0.59,
+        1.642,
+        1.913,
+        4.456,
+        0.6909
+      ],
+      [
+        "car",
+        0.5233,
+        19.19,
+        6.896,
+        -0.789,
+        1.578,
+        1.871,
+        4.318,
+        -2.4034
+      ],
+      [
+        "motorcycle",
+        0.3795,
+        -0.724,
+        15.471,
+        -0.687,
+        1.659,
+        0.811,
+        2.083,
+        1.8044
+      ],
+      [
+        "pedestrian",
+        0.3038,
+        -7.689,
+        -7.135,
+        -0.947,
+        1.78,
+        0.633,
+        0.647,
+        1.6747
+      ],
+      [
+        "pedestrian",
+        0.3278,
+        9.478,
+        24.579,
+        -0.027,
+        1.844,
+        0.659,
+        0.634,
+        -1.6484
+      ],
+      [
+        "pedestrian",
+        0.3287,
+        7.62,
+        25.173,
+        -0.032,
+        1.866,
+        0.662,
+        0.69,
+        -1.1671
+      ],
+      [
+        "pedestrian",
+        0.3409,
+        21.13,
+        25.33,
+        -0.342,
+        1.751,
+        0.632,
+        0.718,
+        1.8878
+      ],
+      [
+        "truck",
+        0.5577,
+        10.448,
+        -0.668,
+        -0.395,
+        3.191,
+        2.466,
+        6.312,
+        0.7237
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22480.5m)",
+          "isometric": "Cluster appears in empty space without supporting point density or ground contact"
+        },
+        "evidence": [
+          "The bounding box labeled 'motorcycle' at x\u224815m, y\u22480.5m contains no underlying point cluster in the isometric view.",
+          "There is no discernible surface structure (L-shape or vertical profile) associated with this detection.",
+          "The detection appears to be floating or isolated in empty space."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: Random noise usually does not form coherent, single bounding box structures.",
+          "Occlusion: There are no nearby large objects that would naturally obscure this region."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:21.152041"
+}

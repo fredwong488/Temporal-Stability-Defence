@@ -1,0 +1,115 @@
+{
+  "key": {
+    "frame_id": "385241a680ae4a3f",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3209,
+        -1.088,
+        50.695,
+        0.437,
+        1.649,
+        1.901,
+        4.377,
+        -1.4503
+      ],
+      [
+        "car",
+        0.5303,
+        -3.4,
+        -24.876,
+        -2.002,
+        1.699,
+        1.927,
+        4.506,
+        -1.6248
+      ],
+      [
+        "car",
+        0.5457,
+        6.758,
+        42.614,
+        0.414,
+        1.616,
+        1.922,
+        4.429,
+        1.2827
+      ],
+      [
+        "car",
+        0.6405,
+        0.132,
+        -19.74,
+        -1.828,
+        1.688,
+        1.914,
+        4.491,
+        1.5861
+      ],
+      [
+        "pedestrian",
+        0.3489,
+        -6.074,
+        31.14,
+        0.011,
+        1.785,
+        0.659,
+        0.708,
+        1.5277
+      ],
+      [
+        "pedestrian",
+        0.4175,
+        7.367,
+        16.42,
+        -0.323,
+        1.784,
+        0.667,
+        0.704,
+        -2.0502
+      ],
+      [
+        "pedestrian",
+        0.458,
+        -9.426,
+        18.086,
+        -0.488,
+        1.828,
+        0.665,
+        0.716,
+        -1.6004
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u2248-7m), (x\u224831m, y\u22486m)",
+          "isometric": "Detected objects are represented by isolated boxes without any underlying dense point cluster or structural point-cloud support."
+        },
+        "evidence": [
+          "The bounding boxes in the BEV view correspond to empty regions with no discernible dense cluster of points that would indicate an object surface.",
+          "The isometric view confirms the absence of 3D structural integrity: the bounding boxes appear empty and lack any point-cloud support below or within them.",
+          "The point cloud data in these regions shows no vertical extent or geometric features consistent with a pedestrian; they appear to be purely synthetic detections."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or occlusion (the boxes are too distinct and structurally empty).",
+          "Distant real objects (there is no geometric or intensity signature of a pedestrian at those coordinates).",
+          "Calibration error (the rest of the scene aligns correctly)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:24.638132"
+}

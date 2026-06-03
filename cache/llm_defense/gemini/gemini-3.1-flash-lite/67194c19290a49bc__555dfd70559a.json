@@ -1,0 +1,191 @@
+{
+  "key": {
+    "frame_id": "67194c19290a49bc",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.5633,
+        -20.463,
+        6.764,
+        -1.348,
+        1.725,
+        1.949,
+        4.523,
+        0.1941
+      ],
+      [
+        "car",
+        0.5656,
+        -9.127,
+        21.456,
+        -0.114,
+        1.679,
+        1.915,
+        4.798,
+        -1.5568
+      ],
+      [
+        "car",
+        0.5956,
+        -21.774,
+        11.865,
+        -1.327,
+        1.657,
+        1.928,
+        4.544,
+        -2.9816
+      ],
+      [
+        "car",
+        0.6393,
+        -0.467,
+        15.063,
+        -0.244,
+        1.649,
+        1.87,
+        4.554,
+        1.1375
+      ],
+      [
+        "car",
+        0.7236,
+        -14.369,
+        6.635,
+        -1.218,
+        1.631,
+        1.92,
+        4.442,
+        0.1843
+      ],
+      [
+        "car",
+        0.8254,
+        -7.608,
+        -8.009,
+        -1.548,
+        1.681,
+        1.936,
+        4.789,
+        -1.5578
+      ],
+      [
+        "car",
+        0.8607,
+        -4.588,
+        17.051,
+        -0.46,
+        1.568,
+        1.831,
+        4.418,
+        -1.8279
+      ],
+      [
+        "car",
+        0.8982,
+        4.306,
+        7.306,
+        -0.764,
+        1.508,
+        1.844,
+        4.651,
+        1.5978
+      ],
+      [
+        "pedestrian",
+        0.3207,
+        4.729,
+        -29.46,
+        -1.545,
+        1.793,
+        0.65,
+        0.68,
+        -1.4377
+      ],
+      [
+        "pedestrian",
+        0.3289,
+        5.91,
+        -16.455,
+        -1.351,
+        1.849,
+        0.681,
+        0.749,
+        -1.7411
+      ],
+      [
+        "pedestrian",
+        0.3476,
+        7.35,
+        -16.359,
+        -1.343,
+        1.779,
+        0.604,
+        0.602,
+        -0.5056
+      ],
+      [
+        "pedestrian",
+        0.3695,
+        -11.114,
+        23.844,
+        0.043,
+        1.814,
+        0.627,
+        0.595,
+        -0.1152
+      ],
+      [
+        "pedestrian",
+        0.3796,
+        -5.355,
+        -29.178,
+        -1.853,
+        1.805,
+        0.652,
+        0.695,
+        -1.9212
+      ],
+      [
+        "pedestrian",
+        0.3823,
+        8.171,
+        8.601,
+        -0.529,
+        1.714,
+        0.615,
+        0.63,
+        -1.2067
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22487m, y\u2248-4m), (x\u224813m, y\u22481m), (x\u224816m, y\u22484m)",
+          "isometric": "Multiple bounding boxes identified in the BEV view appear to have loose correlation with the underlying point clusters."
+        },
+        "evidence": [
+          "The camera input is unavailable, preventing cross-modal verification of the detected objects.",
+          "The bounding boxes in the BEV view appear somewhat loosely fitted to the sparse LiDAR point clusters.",
+          "Without visual confirmation from the camera, it is impossible to distinguish between genuine, distant/sparse detections and spoofed ghost objects."
+        ],
+        "alternatives_ruled_out": [
+          "The detections could be valid, albeit low-confidence, interpretations of sparse point cloud data from legitimate, distant objects.",
+          "The sparsity of the clusters could be a result of sensor noise or range limitations rather than a deliberate injection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:18.227831"
+}

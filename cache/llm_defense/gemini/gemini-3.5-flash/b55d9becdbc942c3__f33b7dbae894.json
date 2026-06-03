@@ -1,0 +1,219 @@
+{
+  "key": {
+    "frame_id": "b55d9becdbc942c3",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.3342,
+        -5.97,
+        -0.321,
+        -1.35,
+        1.593,
+        1.871,
+        4.449,
+        -1.5414
+      ],
+      [
+        "car",
+        0.3726,
+        16.254,
+        19.881,
+        0.788,
+        1.684,
+        1.97,
+        4.709,
+        -3.105
+      ],
+      [
+        "car",
+        0.5734,
+        0.75,
+        23.16,
+        0.207,
+        1.616,
+        1.916,
+        4.63,
+        2.9733
+      ],
+      [
+        "car",
+        0.8902,
+        -3.323,
+        0.536,
+        -1.198,
+        1.505,
+        1.862,
+        4.664,
+        1.6307
+      ],
+      [
+        "construction_vehicle",
+        0.302,
+        -2.411,
+        8.196,
+        -0.592,
+        1.994,
+        1.301,
+        2.869,
+        -1.2931
+      ],
+      [
+        "construction_vehicle",
+        0.3214,
+        -5.302,
+        39.906,
+        2.107,
+        3.653,
+        3.52,
+        8.963,
+        1.2174
+      ],
+      [
+        "pedestrian",
+        0.315,
+        -7.761,
+        8.989,
+        -0.558,
+        1.822,
+        0.673,
+        0.712,
+        1.6507
+      ],
+      [
+        "pedestrian",
+        0.3843,
+        -5.964,
+        9.091,
+        -0.528,
+        1.796,
+        0.709,
+        0.795,
+        2.9572
+      ],
+      [
+        "trailer",
+        0.3076,
+        33.274,
+        17.221,
+        1.546,
+        4.074,
+        2.963,
+        12.163,
+        3.1083
+      ],
+      [
+        "trailer",
+        0.4066,
+        -5.209,
+        40.4,
+        2.095,
+        3.917,
+        2.788,
+        11.572,
+        1.2795
+      ],
+      [
+        "trailer",
+        0.9509,
+        -3.115,
+        -15.906,
+        -0.386,
+        4.195,
+        2.777,
+        14.969,
+        1.629
+      ],
+      [
+        "truck",
+        0.3915,
+        49.213,
+        22.275,
+        1.293,
+        2.237,
+        2.358,
+        5.881,
+        -2.936
+      ],
+      [
+        "truck",
+        0.4951,
+        -0.161,
+        -7.986,
+        -1.002,
+        2.478,
+        2.158,
+        4.829,
+        1.5604
+      ],
+      [
+        "truck",
+        0.8822,
+        -3.423,
+        -7.736,
+        -0.308,
+        4.052,
+        2.644,
+        6.008,
+        1.6417
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.470101833343506,
+            0.7574836015701294,
+            -1.8533952236175537
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 35,
+          "reinjected_centroid": [
+            0.9402885437011719,
+            22.453250885009766,
+            -0.28314855694770813
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (indicated as ATTACKED)",
+          "bev": "x \u2248 23m, y \u2248 -1m",
+          "isometric": "Bounding box for 'car 0.57' is floating high in the air (z \u2248 2m to 3.5m) with no supporting ground points or real car structure."
+        },
+        "evidence": [
+          "The bounding box labeled 'car 0.57' is located at x \u2248 23m, y \u2248 -1m, but in the isometric view, it is suspended high above the ground plane.",
+          "The floating bounding box lacks a coherent dense cluster representing a physical vehicle and has no contact with the ground level.",
+          "The camera image is unavailable/suppressed, typical of a denial-of-service or sensor-tampering attack accompanying spoofed signatures."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicle on an overpass (no roadway geometry supports this height at this close range)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:49.613790"
+}

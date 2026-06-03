@@ -1,0 +1,349 @@
+{
+  "key": {
+    "frame_id": "8186885684634ca1",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3174,
+        2.332,
+        -10.856,
+        -1.44,
+        1.044,
+        2.124,
+        0.544,
+        3.0884
+      ],
+      [
+        "barrier",
+        0.322,
+        2.764,
+        -17.237,
+        -1.451,
+        1.073,
+        2.019,
+        0.507,
+        -2.9372
+      ],
+      [
+        "barrier",
+        0.3242,
+        2.54,
+        -13.376,
+        -1.433,
+        1.102,
+        1.906,
+        0.663,
+        -3.1343
+      ],
+      [
+        "barrier",
+        0.3402,
+        2.624,
+        -15.642,
+        -1.448,
+        1.032,
+        2.034,
+        0.547,
+        -3.1176
+      ],
+      [
+        "car",
+        0.4889,
+        -0.739,
+        11.334,
+        -0.595,
+        1.83,
+        1.934,
+        4.669,
+        1.5706
+      ],
+      [
+        "car",
+        0.6683,
+        17.128,
+        -14.015,
+        -1.574,
+        1.713,
+        1.994,
+        4.686,
+        -1.5702
+      ],
+      [
+        "construction_vehicle",
+        0.4452,
+        -10.945,
+        28.96,
+        1.878,
+        3.719,
+        2.629,
+        8.124,
+        -1.5644
+      ],
+      [
+        "construction_vehicle",
+        0.591,
+        4.264,
+        -11.933,
+        -0.689,
+        2.85,
+        3.12,
+        3.985,
+        -1.4178
+      ],
+      [
+        "motorcycle",
+        0.534,
+        -6.769,
+        -5.222,
+        -0.826,
+        1.473,
+        0.805,
+        2.191,
+        0.2024
+      ],
+      [
+        "pedestrian",
+        0.3133,
+        -4.114,
+        -25.223,
+        -1.032,
+        1.822,
+        0.696,
+        0.655,
+        2.9024
+      ],
+      [
+        "pedestrian",
+        0.3464,
+        3.395,
+        -18.288,
+        -1.083,
+        1.795,
+        0.677,
+        0.689,
+        -1.2391
+      ],
+      [
+        "pedestrian",
+        0.3549,
+        -0.716,
+        -21.296,
+        -1.087,
+        1.775,
+        0.634,
+        0.648,
+        -1.0477
+      ],
+      [
+        "pedestrian",
+        0.3691,
+        -12.344,
+        9.541,
+        0.643,
+        1.802,
+        0.641,
+        0.644,
+        -0.3648
+      ],
+      [
+        "traffic_cone",
+        0.3202,
+        8.971,
+        16.642,
+        -1.188,
+        0.749,
+        0.406,
+        0.402,
+        -1.5203
+      ],
+      [
+        "traffic_cone",
+        0.3403,
+        1.215,
+        15.154,
+        -1.121,
+        0.753,
+        0.373,
+        0.371,
+        2.1424
+      ],
+      [
+        "traffic_cone",
+        0.3555,
+        9.491,
+        4.926,
+        -1.424,
+        0.738,
+        0.395,
+        0.401,
+        -1.8454
+      ],
+      [
+        "traffic_cone",
+        0.3635,
+        1.949,
+        0.737,
+        -1.416,
+        0.749,
+        0.368,
+        0.356,
+        1.7027
+      ],
+      [
+        "traffic_cone",
+        0.3751,
+        2.221,
+        -4.763,
+        -1.534,
+        0.728,
+        0.392,
+        0.368,
+        2.864
+      ],
+      [
+        "traffic_cone",
+        0.4178,
+        5.117,
+        -10.107,
+        -1.531,
+        0.666,
+        0.373,
+        0.386,
+        2.7039
+      ],
+      [
+        "traffic_cone",
+        0.449,
+        9.767,
+        -0.143,
+        -1.574,
+        0.758,
+        0.401,
+        0.398,
+        -1.0462
+      ],
+      [
+        "traffic_cone",
+        0.513,
+        9.323,
+        9.488,
+        -1.379,
+        0.808,
+        0.394,
+        0.399,
+        -1.7928
+      ],
+      [
+        "traffic_cone",
+        0.5281,
+        1.871,
+        5.754,
+        -1.254,
+        0.721,
+        0.405,
+        0.397,
+        2.0942
+      ],
+      [
+        "traffic_cone",
+        0.585,
+        9.106,
+        13.34,
+        -1.313,
+        0.768,
+        0.413,
+        0.411,
+        -1.6448
+      ],
+      [
+        "trailer",
+        0.3076,
+        38.031,
+        -37.675,
+        -2.056,
+        2.948,
+        3.125,
+        14.073,
+        3.1262
+      ],
+      [
+        "truck",
+        0.8226,
+        14.588,
+        7.642,
+        -0.251,
+        3.006,
+        2.586,
+        6.619,
+        -1.5756
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 185,
+          "reinjected_centroid": [
+            12.947832107543945,
+            -5.767297744750977,
+            -1.5748107433319092
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -0.7112924456596375,
+            9.47095012664795,
+            -0.9548858404159546
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 83,
+          "reinjected_centroid": [
+            16.641368865966797,
+            -13.436062812805176,
+            -1.830419659614563
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "unknown (camera image not available)",
+          "bev": "(x\u224828m, y\u22487m)",
+          "isometric": "Large bounding box labeled 'construction_vehicle' floating high in mid-air (z \u2248 2m to 3.5m) with absolutely no underlying or internal LiDAR point clusters."
+        },
+        "evidence": [
+          "A large 3D bounding box for 'construction_vehicle' is predicted high above the ground plane where no LiDAR points are present.",
+          "The box is completely empty and lacks any 3D physical structure or ground support, which violates physical invariants of real vehicles."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real object",
+          "Ground reflection"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:20.753913"
+}

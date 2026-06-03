@@ -1,0 +1,245 @@
+{
+  "key": {
+    "frame_id": "eb6f17c9f184467b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3546,
+        -8.485,
+        28.486,
+        0.545,
+        1.678,
+        1.896,
+        4.607,
+        -1.6293
+      ],
+      [
+        "car",
+        0.3823,
+        -0.336,
+        -34.785,
+        -2.42,
+        1.748,
+        2.01,
+        4.749,
+        1.4318
+      ],
+      [
+        "car",
+        0.4701,
+        -20.587,
+        10.254,
+        -0.856,
+        1.671,
+        1.963,
+        4.544,
+        0.2275
+      ],
+      [
+        "car",
+        0.4732,
+        -8.425,
+        32.231,
+        0.665,
+        1.691,
+        1.918,
+        4.628,
+        -1.6567
+      ],
+      [
+        "car",
+        0.5493,
+        -4.139,
+        22.061,
+        0.228,
+        1.685,
+        1.942,
+        4.673,
+        -1.6504
+      ],
+      [
+        "car",
+        0.5753,
+        6.146,
+        42.922,
+        1.273,
+        1.816,
+        1.979,
+        4.593,
+        1.5039
+      ],
+      [
+        "car",
+        0.676,
+        -5.1,
+        12.983,
+        -0.335,
+        1.707,
+        1.978,
+        4.591,
+        -2.9015
+      ],
+      [
+        "car",
+        0.8138,
+        -14.464,
+        10.28,
+        -0.843,
+        1.617,
+        1.918,
+        4.624,
+        0.1663
+      ],
+      [
+        "car",
+        0.8477,
+        -7.584,
+        -4.262,
+        -1.492,
+        1.643,
+        1.906,
+        4.755,
+        -1.5813
+      ],
+      [
+        "car",
+        0.9357,
+        4.383,
+        10.841,
+        -0.558,
+        1.526,
+        1.827,
+        4.609,
+        1.5954
+      ],
+      [
+        "pedestrian",
+        0.3014,
+        8.478,
+        -13.417,
+        -1.506,
+        1.772,
+        0.658,
+        0.727,
+        -2.0639
+      ],
+      [
+        "pedestrian",
+        0.3179,
+        -11.703,
+        20.05,
+        -0.128,
+        1.761,
+        0.602,
+        0.652,
+        1.62
+      ],
+      [
+        "pedestrian",
+        0.3221,
+        7.161,
+        -21.212,
+        -1.87,
+        1.756,
+        0.63,
+        0.642,
+        -2.1628
+      ],
+      [
+        "pedestrian",
+        0.3246,
+        8.956,
+        9.912,
+        -0.367,
+        1.756,
+        0.635,
+        0.659,
+        2.3346
+      ],
+      [
+        "pedestrian",
+        0.345,
+        7.305,
+        -22.275,
+        -2.002,
+        1.769,
+        0.606,
+        0.585,
+        3.0611
+      ],
+      [
+        "pedestrian",
+        0.3732,
+        6.227,
+        -25.4,
+        -1.97,
+        1.812,
+        0.628,
+        0.622,
+        -2.9109
+      ],
+      [
+        "pedestrian",
+        0.3734,
+        6.078,
+        -23.168,
+        -2.072,
+        1.769,
+        0.61,
+        0.621,
+        2.4328
+      ],
+      [
+        "pedestrian",
+        0.3768,
+        6.171,
+        -20.894,
+        -1.887,
+        1.743,
+        0.624,
+        0.654,
+        1.6172
+      ],
+      [
+        "pedestrian",
+        0.4534,
+        8.307,
+        14.983,
+        -0.079,
+        1.801,
+        0.658,
+        0.66,
+        2.5069
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Global",
+          "isometric": "Global"
+        },
+        "evidence": [
+          "The camera image, which is critical for verifying cross-modal existence and identifying ghost objects, is missing.",
+          "Without the camera modality, it is impossible to distinguish between genuine road infrastructure/clutter and potential adversarial injections.",
+          "The current LiDAR scene appears consistent with typical urban scan data, but ambiguity remains regarding object existence without visual confirmation."
+        ],
+        "alternatives_ruled_out": [
+          "The system appears to be functioning normally for standard LiDAR-only detection tasks, but specific adversarial anomalies cannot be validated."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:17.162568"
+}

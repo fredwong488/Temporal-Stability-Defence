@@ -1,0 +1,220 @@
+{
+  "key": {
+    "frame_id": "6a499ee77fc6407a",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3993,
+        14.804,
+        -5.959,
+        -1.314,
+        0.986,
+        3.206,
+        0.511,
+        2.8
+      ],
+      [
+        "bus",
+        0.4443,
+        -4.9,
+        47.078,
+        2.678,
+        3.268,
+        2.968,
+        11.824,
+        1.5519
+      ],
+      [
+        "car",
+        0.3669,
+        7.905,
+        21.259,
+        0.454,
+        1.637,
+        1.885,
+        4.548,
+        -1.7311
+      ],
+      [
+        "car",
+        0.3896,
+        -14.084,
+        23.493,
+        0.013,
+        1.648,
+        1.991,
+        4.565,
+        -0.0954
+      ],
+      [
+        "car",
+        0.8609,
+        -3.295,
+        0.485,
+        -1.21,
+        1.532,
+        1.844,
+        4.532,
+        1.6055
+      ],
+      [
+        "construction_vehicle",
+        0.3275,
+        -5.785,
+        0.807,
+        -1.225,
+        1.934,
+        1.536,
+        2.573,
+        1.4834
+      ],
+      [
+        "pedestrian",
+        0.3146,
+        -1.821,
+        8.745,
+        -0.653,
+        1.762,
+        0.706,
+        0.754,
+        -1.7661
+      ],
+      [
+        "pedestrian",
+        0.3159,
+        -0.531,
+        7.062,
+        -0.635,
+        1.786,
+        0.707,
+        0.807,
+        2.5976
+      ],
+      [
+        "pedestrian",
+        0.3559,
+        -5.982,
+        7.325,
+        -0.689,
+        1.769,
+        0.658,
+        0.705,
+        0.4657
+      ],
+      [
+        "pedestrian",
+        0.3879,
+        -4.635,
+        9.125,
+        -0.673,
+        1.726,
+        0.67,
+        0.752,
+        1.9371
+      ],
+      [
+        "trailer",
+        0.5943,
+        40.824,
+        17.756,
+        2.302,
+        3.995,
+        2.724,
+        8.254,
+        -0.0057
+      ],
+      [
+        "trailer",
+        0.9278,
+        -3.159,
+        -15.983,
+        -0.358,
+        4.278,
+        2.781,
+        15.131,
+        1.6319
+      ],
+      [
+        "truck",
+        0.5816,
+        -0.136,
+        -7.995,
+        -0.986,
+        2.522,
+        2.131,
+        4.775,
+        1.5621
+      ],
+      [
+        "truck",
+        0.8786,
+        -3.411,
+        -7.759,
+        -0.35,
+        4.043,
+        2.649,
+        6.097,
+        1.6374
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.347837924957275,
+            0.7093844413757324,
+            -1.7995010614395142
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 23,
+          "reinjected_centroid": [
+            -14.025150299072266,
+            22.846939086914062,
+            -0.5112355947494507
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224825m, y\u22488m)",
+          "isometric": "Large bounding box (labeled car 0.39) floating extremely high in the air at z\u22483m with absolutely no supporting ground-level points or plausible physical structure."
+        },
+        "evidence": [
+          "A 3D bounding box for 'car 0.39' is predicted high above the ground plane (z\u22483m in the isometric view) containing no actual point cloud returns.",
+          "No physical structure, ground contact, or LiDAR shadow exists for this detection.",
+          "Another box is floating at x\u224812m, y\u22485m, z\u22482m without any significant point cluster or physical representation."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicle",
+          "Ground reflection"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:28.832931"
+}

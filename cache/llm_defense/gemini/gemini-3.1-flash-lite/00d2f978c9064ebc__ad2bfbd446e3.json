@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "00d2f978c9064ebc",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4794,
+        6.105,
+        37.799,
+        0.703,
+        1.745,
+        1.941,
+        4.638,
+        1.4481
+      ],
+      [
+        "car",
+        0.4949,
+        -21.674,
+        10.286,
+        -1.449,
+        1.646,
+        1.891,
+        4.429,
+        -2.9989
+      ],
+      [
+        "car",
+        0.5264,
+        -9.145,
+        20.549,
+        -0.218,
+        1.744,
+        1.957,
+        4.822,
+        -1.5274
+      ],
+      [
+        "car",
+        0.5682,
+        -0.428,
+        12.769,
+        -0.61,
+        1.548,
+        1.797,
+        4.294,
+        1.5977
+      ],
+      [
+        "car",
+        0.6006,
+        -20.471,
+        5.208,
+        -1.38,
+        1.683,
+        1.941,
+        4.382,
+        0.1596
+      ],
+      [
+        "car",
+        0.6296,
+        0.691,
+        17.499,
+        -0.2,
+        1.662,
+        1.914,
+        4.513,
+        1.3104
+      ],
+      [
+        "car",
+        0.822,
+        -14.379,
+        5.113,
+        -1.186,
+        1.694,
+        1.935,
+        4.539,
+        0.1684
+      ],
+      [
+        "car",
+        0.8831,
+        -5.13,
+        14.593,
+        -0.576,
+        1.621,
+        1.903,
+        4.57,
+        -1.9475
+      ],
+      [
+        "car",
+        0.9277,
+        4.312,
+        5.658,
+        -0.889,
+        1.493,
+        1.817,
+        4.62,
+        1.5968
+      ],
+      [
+        "car",
+        0.9368,
+        -7.674,
+        -9.466,
+        -1.61,
+        1.62,
+        1.912,
+        4.713,
+        -1.6077
+      ],
+      [
+        "pedestrian",
+        0.3115,
+        -4.418,
+        -30.721,
+        -1.865,
+        1.751,
+        0.67,
+        0.737,
+        -0.9384
+      ],
+      [
+        "pedestrian",
+        0.3544,
+        -11.756,
+        11.986,
+        -0.853,
+        1.727,
+        0.631,
+        0.676,
+        1.6872
+      ],
+      [
+        "pedestrian",
+        0.3548,
+        8.136,
+        5.892,
+        -0.555,
+        1.758,
+        0.669,
+        0.685,
+        1.7587
+      ],
+      [
+        "pedestrian",
+        0.3801,
+        6.013,
+        -28.544,
+        -1.42,
+        1.802,
+        0.655,
+        0.625,
+        -0.6632
+      ],
+      [
+        "pedestrian",
+        0.3865,
+        6.756,
+        -29.634,
+        -1.4,
+        1.788,
+        0.639,
+        0.625,
+        1.4957
+      ],
+      [
+        "pedestrian",
+        0.4074,
+        -11.826,
+        10.328,
+        -0.988,
+        1.734,
+        0.647,
+        0.745,
+        1.9298
+      ],
+      [
+        "truck",
+        0.3555,
+        -0.218,
+        -38.885,
+        -2.37,
+        1.907,
+        2.143,
+        5.491,
+        -1.551
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 110
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u22480.5m)",
+          "isometric": "cluster appears as a sparse, disconnected grouping of points"
+        },
+        "evidence": [
+          "The cluster labeled 'car 0.57' in the BEV shows extremely sparse and disjointed point returns in the isometric view, lacking the dense surface structure and L-shape characteristic of a real vehicle.",
+          "The isometric view confirms the cluster lacks vertical continuity, appearing more like scattered noise or injected points rather than a solid 3D object with a consistent volume.",
+          "There is no discernible 'shadow' or occlusion void behind the cluster in the point cloud, which is a physical requirement for an opaque object like a car."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: Random noise does not typically form a coherent, localized cluster that a 3D detector classifies with 0.57 confidence.",
+          "Natural objects (e.g., foliage): The cluster is isolated on the road/ground plane and lacks the height distribution of a bush or tree."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:28.178699"
+}

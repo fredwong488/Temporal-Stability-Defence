@@ -1,0 +1,225 @@
+{
+  "key": {
+    "frame_id": "5559ab8b776e4c88",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3186,
+        6.059,
+        -1.015,
+        -0.9,
+        1.346,
+        0.524,
+        1.666,
+        -1.6729
+      ],
+      [
+        "car",
+        0.3078,
+        -23.154,
+        13.176,
+        -1.332,
+        1.513,
+        1.893,
+        4.431,
+        0.191
+      ],
+      [
+        "car",
+        0.5001,
+        4.562,
+        40.094,
+        1.474,
+        1.687,
+        1.928,
+        4.536,
+        1.4779
+      ],
+      [
+        "car",
+        0.5632,
+        0.211,
+        41.072,
+        1.603,
+        1.783,
+        1.918,
+        4.563,
+        1.4045
+      ],
+      [
+        "car",
+        0.6947,
+        -3.716,
+        15.117,
+        -0.29,
+        1.693,
+        1.937,
+        4.767,
+        -1.636
+      ],
+      [
+        "car",
+        0.7765,
+        1.097,
+        -19.44,
+        -2.176,
+        1.627,
+        1.893,
+        4.506,
+        1.7576
+      ],
+      [
+        "pedestrian",
+        0.3319,
+        10.624,
+        24.439,
+        0.676,
+        1.811,
+        0.667,
+        0.692,
+        -2.4116
+      ],
+      [
+        "pedestrian",
+        0.3365,
+        -28.956,
+        21.256,
+        0.063,
+        1.827,
+        0.633,
+        0.649,
+        3.1094
+      ],
+      [
+        "pedestrian",
+        0.3391,
+        8.678,
+        14.568,
+        -0.073,
+        1.839,
+        0.685,
+        0.722,
+        1.7467
+      ],
+      [
+        "pedestrian",
+        0.3411,
+        -18.935,
+        17.534,
+        -0.354,
+        1.822,
+        0.614,
+        0.601,
+        0.8301
+      ],
+      [
+        "pedestrian",
+        0.3563,
+        -16.708,
+        15.995,
+        -0.399,
+        1.897,
+        0.662,
+        0.709,
+        1.6478
+      ],
+      [
+        "pedestrian",
+        0.3594,
+        6.961,
+        -13.401,
+        -1.499,
+        1.739,
+        0.665,
+        0.699,
+        -1.7999
+      ],
+      [
+        "pedestrian",
+        0.3731,
+        7.358,
+        10.935,
+        -0.462,
+        1.755,
+        0.655,
+        0.744,
+        2.4501
+      ],
+      [
+        "pedestrian",
+        0.3853,
+        7.967,
+        16.658,
+        -0.15,
+        1.739,
+        0.617,
+        0.582,
+        0.6179
+      ],
+      [
+        "pedestrian",
+        0.3901,
+        9.202,
+        20.035,
+        0.177,
+        1.803,
+        0.649,
+        0.606,
+        -3.0135
+      ],
+      [
+        "pedestrian",
+        0.397,
+        8.174,
+        19.693,
+        0.254,
+        1.769,
+        0.658,
+        0.629,
+        0.4917
+      ],
+      [
+        "pedestrian",
+        0.4183,
+        9.244,
+        16.354,
+        -0.245,
+        1.73,
+        0.636,
+        0.64,
+        2.407
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u22484m)",
+          "isometric": "Large 'car' bounding box detected at x\u224813m, y\u22484m with minimal point cluster support"
+        },
+        "evidence": [
+          "The camera image is unavailable, preventing verification of the object's physical existence.",
+          "In the BEV view, the bounding box labeled 'car 0.69' appears to be floating in relatively empty space with very few point returns inside the volume.",
+          "In the isometric view, the cluster within the 'car' bounding box lacks the dense, coherent point structure typical of a vehicle, appearing sparse and potentially noisy."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or poor reflectivity on a distant, genuine object",
+          "Sparse returns due to occlusions",
+          "Calibration errors resulting in shifted bounding boxes"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:11.883889"
+}

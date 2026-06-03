@@ -1,0 +1,317 @@
+{
+  "key": {
+    "frame_id": "fbc328959f614656",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3247,
+        2.121,
+        -18.169,
+        -1.735,
+        1.058,
+        2.102,
+        0.554,
+        3.0886
+      ],
+      [
+        "barrier",
+        0.3672,
+        2.128,
+        -14.824,
+        -1.706,
+        0.96,
+        2.978,
+        0.577,
+        3.0908
+      ],
+      [
+        "bicycle",
+        0.401,
+        -3.585,
+        -9.15,
+        -1.266,
+        1.059,
+        0.566,
+        1.631,
+        1.2769
+      ],
+      [
+        "car",
+        0.3064,
+        -13.097,
+        -41.177,
+        -1.598,
+        1.673,
+        2.023,
+        4.794,
+        -0.0119
+      ],
+      [
+        "car",
+        0.328,
+        13.051,
+        -12.785,
+        -1.355,
+        1.725,
+        2.031,
+        4.832,
+        -1.5432
+      ],
+      [
+        "car",
+        0.3594,
+        11.643,
+        -21.344,
+        -1.758,
+        2.189,
+        2.23,
+        5.592,
+        -1.557
+      ],
+      [
+        "car",
+        0.4186,
+        -2.739,
+        11.221,
+        -0.411,
+        2.056,
+        2.015,
+        5.177,
+        2.0999
+      ],
+      [
+        "car",
+        0.6312,
+        16.534,
+        -20.543,
+        -1.698,
+        1.643,
+        1.961,
+        4.74,
+        -1.5547
+      ],
+      [
+        "construction_vehicle",
+        0.6832,
+        3.788,
+        -18.1,
+        -0.711,
+        2.969,
+        3.439,
+        4.491,
+        -1.6057
+      ],
+      [
+        "traffic_cone",
+        0.375,
+        1.476,
+        9.344,
+        -1.115,
+        0.723,
+        0.394,
+        0.381,
+        2.5987
+      ],
+      [
+        "traffic_cone",
+        0.4005,
+        9.288,
+        7.393,
+        -1.291,
+        0.73,
+        0.395,
+        0.414,
+        -2.0456
+      ],
+      [
+        "traffic_cone",
+        0.4276,
+        2.105,
+        -10.659,
+        -1.784,
+        0.719,
+        0.38,
+        0.351,
+        1.2937
+      ],
+      [
+        "traffic_cone",
+        0.4674,
+        9.065,
+        14.929,
+        -0.993,
+        0.743,
+        0.408,
+        0.384,
+        2.1948
+      ],
+      [
+        "traffic_cone",
+        0.4717,
+        9.191,
+        10.789,
+        -1.194,
+        0.728,
+        0.39,
+        0.378,
+        -1.9282
+      ],
+      [
+        "traffic_cone",
+        0.4895,
+        2.027,
+        -4.96,
+        -1.594,
+        0.747,
+        0.359,
+        0.364,
+        1.4067
+      ],
+      [
+        "traffic_cone",
+        0.492,
+        9.538,
+        -1.092,
+        -1.574,
+        0.73,
+        0.379,
+        0.403,
+        -1.5688
+      ],
+      [
+        "traffic_cone",
+        0.5025,
+        1.747,
+        4.38,
+        -1.407,
+        0.686,
+        0.433,
+        0.436,
+        -3.0058
+      ],
+      [
+        "traffic_cone",
+        0.6732,
+        9.453,
+        3.51,
+        -1.359,
+        0.773,
+        0.395,
+        0.399,
+        -1.5274
+      ],
+      [
+        "trailer",
+        0.5509,
+        15.68,
+        -13.072,
+        -0.394,
+        4.249,
+        3.065,
+        16.346,
+        1.6604
+      ],
+      [
+        "truck",
+        0.3282,
+        11.739,
+        -22.073,
+        -1.672,
+        2.111,
+        2.286,
+        6.026,
+        -1.5199
+      ],
+      [
+        "truck",
+        0.3737,
+        15.124,
+        -10.308,
+        -0.621,
+        3.836,
+        2.969,
+        11.535,
+        -1.5185
+      ],
+      [
+        "truck",
+        0.6262,
+        14.718,
+        1.828,
+        -0.294,
+        3.146,
+        2.651,
+        6.886,
+        -1.5279
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 29,
+          "reinjected_centroid": [
+            15.77143383026123,
+            -20.31850814819336,
+            -2.0280444622039795
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 110,
+          "reinjected_centroid": [
+            12.651081085205078,
+            -12.209321022033691,
+            -1.9082778692245483
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -2.479435682296753,
+            10.2031831741333,
+            -0.9246274828910828
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "(x\u224811m, y\u22483m)",
+          "isometric": "Bounding box for 'car 0.42' contains very sparse points lacking vertical structure and physical shape of a vehicle, appearing to float above the road surface"
+        },
+        "evidence": [
+          "The bounding box 'car 0.42' at x\u224811m, y\u22483m contains extremely sparse LiDAR points that do not form a vehicle shape.",
+          "In the isometric view, the points within this predicted 3D bounding box lack the geometric features (such as height profile and L-shape) expected of a real car, suggesting an injection/spoofing attempt.",
+          "There is no clear occlusion shadow behind the detected object as would be expected for a solid vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Low reflectivity surface"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:55.298998"
+}

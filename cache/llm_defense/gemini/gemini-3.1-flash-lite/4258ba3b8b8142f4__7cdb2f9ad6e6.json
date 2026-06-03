@@ -1,0 +1,193 @@
+{
+  "key": {
+    "frame_id": "4258ba3b8b8142f4",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.9081,
+        10.568,
+        -16.435,
+        -0.497,
+        3.432,
+        2.886,
+        12.63,
+        2.5348
+      ],
+      [
+        "car",
+        0.646,
+        18.393,
+        7.463,
+        -0.72,
+        1.554,
+        1.881,
+        4.383,
+        -2.2343
+      ],
+      [
+        "construction_vehicle",
+        0.3202,
+        23.95,
+        -30.234,
+        1.953,
+        4.007,
+        3.155,
+        7.715,
+        2.4756
+      ],
+      [
+        "motorcycle",
+        0.3677,
+        20.419,
+        3.488,
+        -1.006,
+        1.313,
+        0.739,
+        2.171,
+        1.2637
+      ],
+      [
+        "pedestrian",
+        0.3084,
+        2.794,
+        22.384,
+        -0.404,
+        1.888,
+        0.555,
+        0.616,
+        -1.2698
+      ],
+      [
+        "pedestrian",
+        0.3132,
+        6.953,
+        25.96,
+        -0.083,
+        1.809,
+        0.63,
+        0.627,
+        -2.2303
+      ],
+      [
+        "pedestrian",
+        0.3192,
+        7.138,
+        27.648,
+        0.195,
+        1.833,
+        0.617,
+        0.613,
+        -1.9501
+      ],
+      [
+        "pedestrian",
+        0.3215,
+        1.726,
+        20.46,
+        -0.464,
+        1.843,
+        0.583,
+        0.581,
+        -1.3398
+      ],
+      [
+        "pedestrian",
+        0.3357,
+        5.251,
+        22.456,
+        -0.297,
+        1.849,
+        0.545,
+        0.599,
+        -1.296
+      ],
+      [
+        "pedestrian",
+        0.3702,
+        5.263,
+        24.7,
+        -0.259,
+        1.823,
+        0.613,
+        0.633,
+        -1.1983
+      ],
+      [
+        "pedestrian",
+        0.3735,
+        2.942,
+        20.62,
+        -0.411,
+        1.856,
+        0.527,
+        0.546,
+        -1.397
+      ],
+      [
+        "pedestrian",
+        0.4076,
+        7.057,
+        22.993,
+        -0.292,
+        1.81,
+        0.568,
+        0.544,
+        -1.0109
+      ],
+      [
+        "pedestrian",
+        0.4113,
+        3.71,
+        21.196,
+        -0.467,
+        1.841,
+        0.516,
+        0.557,
+        -1.717
+      ],
+      [
+        "truck",
+        0.4421,
+        10.193,
+        -0.868,
+        -0.225,
+        2.979,
+        2.412,
+        5.829,
+        0.8696
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820-30m, y\u2248-6 to -1m)",
+          "isometric": "Cluster of multiple 'pedestrian' boxes appearing in empty space without physical support or ground-plane contact"
+        },
+        "evidence": [
+          "The cluster of numerous pedestrian bounding boxes on the right side (x: 20-30m, y: -1 to -6m) appears completely isolated in the isometric view.",
+          "There is a complete lack of supporting point cloud data (no geometry, no surface profile) that would correspond to physical pedestrians in that region; the boxes are floating in empty space.",
+          "The density and pattern of these 'pedestrian' detections are inconsistent with natural environmental features like vegetation, which usually present as more chaotic or clustered point formations rather than discrete, repetitive bounding boxes.",
+          "The lack of visual evidence (camera image is unavailable, but these clusters represent a significant anomaly in LiDAR data alone) combined with the physical impossibility of the detections (floating) strongly suggests injected LiDAR points."
+        ],
+        "alternatives_ruled_out": [
+          "Sparse vegetation (would show points in isometric view, not just empty boxes).",
+          "Sensor noise/calibration error (noise is typically more random and does not form structured 'pedestrian' boxes).",
+          "Occlusion (there is nothing in front of this empty space to explain the 'absence' of points)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:25.041553"
+}

@@ -1,0 +1,218 @@
+{
+  "key": {
+    "frame_id": "f1d840bc1b7c48ce",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3596,
+        1.389,
+        20.842,
+        -0.074,
+        1.71,
+        1.945,
+        4.601,
+        1.4625
+      ],
+      [
+        "car",
+        0.4533,
+        -0.425,
+        13.487,
+        -0.621,
+        1.661,
+        1.835,
+        4.333,
+        1.5007
+      ],
+      [
+        "car",
+        0.454,
+        -28.422,
+        1.07,
+        -1.753,
+        1.769,
+        2.063,
+        4.675,
+        0.1164
+      ],
+      [
+        "car",
+        0.5237,
+        -19.91,
+        3.019,
+        -1.629,
+        1.666,
+        1.92,
+        4.45,
+        -3.0621
+      ],
+      [
+        "car",
+        0.5608,
+        -26.906,
+        7.601,
+        -1.647,
+        1.583,
+        1.917,
+        4.383,
+        -2.9901
+      ],
+      [
+        "car",
+        0.6397,
+        6.124,
+        35.766,
+        0.693,
+        1.754,
+        1.947,
+        4.618,
+        1.4406
+      ],
+      [
+        "car",
+        0.7337,
+        -21.68,
+        8.341,
+        -1.563,
+        1.56,
+        1.891,
+        4.367,
+        -2.98
+      ],
+      [
+        "car",
+        0.7927,
+        -14.473,
+        2.944,
+        -1.404,
+        1.633,
+        1.925,
+        4.562,
+        0.1584
+      ],
+      [
+        "car",
+        0.8892,
+        -5.48,
+        11.923,
+        -0.674,
+        1.529,
+        1.859,
+        4.618,
+        -2.0408
+      ],
+      [
+        "car",
+        0.9026,
+        -7.665,
+        -11.572,
+        -1.672,
+        1.611,
+        1.872,
+        4.618,
+        -1.5729
+      ],
+      [
+        "car",
+        0.9401,
+        4.265,
+        3.596,
+        -0.983,
+        1.574,
+        1.879,
+        4.728,
+        1.593
+      ],
+      [
+        "pedestrian",
+        0.3282,
+        8.307,
+        -17.063,
+        -1.144,
+        1.804,
+        0.622,
+        0.608,
+        -2.8613
+      ],
+      [
+        "pedestrian",
+        0.391,
+        7.347,
+        -17.499,
+        -1.128,
+        1.814,
+        0.628,
+        0.655,
+        -1.7792
+      ],
+      [
+        "pedestrian",
+        0.4484,
+        -11.629,
+        8.52,
+        -1.005,
+        1.799,
+        0.662,
+        0.761,
+        -1.6316
+      ],
+      [
+        "pedestrian",
+        0.4549,
+        11.395,
+        19.087,
+        0.148,
+        1.823,
+        0.673,
+        0.652,
+        -1.7981
+      ],
+      [
+        "pedestrian",
+        0.4871,
+        -11.707,
+        6.956,
+        -1.223,
+        1.774,
+        0.619,
+        0.715,
+        -1.6003
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 118
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480m)",
+          "isometric": "Cluster at x\u224812m, y\u22480m is very small, sparse, and lacks coherent 3D structure (e.g., vertical extent or L-shape) typical of a vehicle."
+        },
+        "evidence": [
+          "The cluster in the BEV at (x\u224812m, y\u22480m) is unusually sparse and does not resemble the characteristic shape of a vehicle, despite being classified as 'car 0.45'.",
+          "The isometric view shows this cluster has minimal vertical extent, failing to exhibit the 3D structure expected of a real vehicle.",
+          "There is no clear LiDAR shadow behind this cluster, which is a physical invariant expected for an opaque object of that size."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or clutter; while possible, the confidence score for this detection (0.45) is noticeably lower than others, suggesting uncertainty in the detector itself.",
+          "Distant object occlusion; the location is well within the effective range of the sensor."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:39.829846"
+}

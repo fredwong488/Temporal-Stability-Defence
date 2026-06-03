@@ -1,0 +1,115 @@
+{
+  "key": {
+    "frame_id": "385241a680ae4a3f",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3209,
+        -1.088,
+        50.695,
+        0.437,
+        1.649,
+        1.901,
+        4.377,
+        -1.4503
+      ],
+      [
+        "car",
+        0.5303,
+        -3.4,
+        -24.876,
+        -2.002,
+        1.699,
+        1.927,
+        4.506,
+        -1.6248
+      ],
+      [
+        "car",
+        0.5457,
+        6.758,
+        42.614,
+        0.414,
+        1.616,
+        1.922,
+        4.429,
+        1.2827
+      ],
+      [
+        "car",
+        0.6405,
+        0.132,
+        -19.74,
+        -1.828,
+        1.688,
+        1.914,
+        4.491,
+        1.5861
+      ],
+      [
+        "pedestrian",
+        0.3489,
+        -6.074,
+        31.14,
+        0.011,
+        1.785,
+        0.659,
+        0.708,
+        1.5275
+      ],
+      [
+        "pedestrian",
+        0.4175,
+        7.367,
+        16.42,
+        -0.323,
+        1.784,
+        0.667,
+        0.704,
+        -2.0503
+      ],
+      [
+        "pedestrian",
+        0.458,
+        -9.426,
+        18.086,
+        -0.489,
+        1.828,
+        0.665,
+        0.716,
+        -1.6005
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u224817m, y\u2248-7m; x\u224831m, y\u22486m",
+          "isometric": "Multiple floating clusters with associated pedestrian bounding boxes"
+        },
+        "evidence": [
+          "Camera image is unavailable, preventing cross-modal verification of the detected pedestrians.",
+          "The pedestrian bounding boxes in the isometric view appear to be placed on sparse or isolated point clusters that do not clearly resemble human morphology.",
+          "Several detected 'pedestrians' appear in regions that could be distant background noise or sensor artifacts, lacking robust physical support in the point cloud."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise: Cannot be ruled out without visual confirmation.",
+          "Distant, low-resolution objects: Cannot be ruled out due to lack of image data.",
+          "Reflections or multipath interference: Plausible, but inconclusive."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:26:33.862675"
+}

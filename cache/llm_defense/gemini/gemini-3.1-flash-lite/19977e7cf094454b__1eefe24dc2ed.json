@@ -1,0 +1,259 @@
+{
+  "key": {
+    "frame_id": "19977e7cf094454b",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.9297,
+        10.7,
+        -15.596,
+        -0.196,
+        3.504,
+        2.91,
+        12.556,
+        2.6343
+      ],
+      [
+        "car",
+        0.3673,
+        23.82,
+        4.699,
+        -0.617,
+        1.651,
+        1.937,
+        4.602,
+        -2.1096
+      ],
+      [
+        "car",
+        0.3699,
+        13.227,
+        -3.632,
+        -0.792,
+        1.619,
+        1.896,
+        4.559,
+        1.32
+      ],
+      [
+        "car",
+        0.3719,
+        15.685,
+        -5.334,
+        -0.73,
+        1.644,
+        1.921,
+        4.478,
+        0.9081
+      ],
+      [
+        "car",
+        0.3914,
+        24.447,
+        28.409,
+        0.19,
+        1.659,
+        1.914,
+        4.469,
+        -1.9736
+      ],
+      [
+        "car",
+        0.3932,
+        21.989,
+        29.529,
+        0.134,
+        1.711,
+        1.942,
+        4.581,
+        1.0762
+      ],
+      [
+        "car",
+        0.553,
+        19.206,
+        6.876,
+        -0.344,
+        1.63,
+        1.876,
+        4.384,
+        -2.0666
+      ],
+      [
+        "car",
+        0.6967,
+        21.421,
+        5.369,
+        -0.327,
+        1.644,
+        1.911,
+        4.463,
+        -2.1351
+      ],
+      [
+        "car",
+        0.8365,
+        17.299,
+        8.135,
+        -0.38,
+        1.601,
+        1.868,
+        4.33,
+        -2.1606
+      ],
+      [
+        "motorcycle",
+        0.3845,
+        17.351,
+        15.78,
+        -0.579,
+        1.365,
+        0.724,
+        2.112,
+        2.916
+      ],
+      [
+        "pedestrian",
+        0.3172,
+        4.143,
+        23.551,
+        -0.159,
+        1.841,
+        0.643,
+        0.6,
+        -2.051
+      ],
+      [
+        "pedestrian",
+        0.3199,
+        2.162,
+        23.921,
+        -0.256,
+        1.792,
+        0.609,
+        0.622,
+        -0.9103
+      ],
+      [
+        "pedestrian",
+        0.3331,
+        3.549,
+        24.822,
+        -0.193,
+        1.802,
+        0.643,
+        0.643,
+        -2.2188
+      ],
+      [
+        "pedestrian",
+        0.3442,
+        3.895,
+        25.285,
+        -0.174,
+        1.829,
+        0.617,
+        0.601,
+        -1.9955
+      ],
+      [
+        "pedestrian",
+        0.3485,
+        1.37,
+        20.328,
+        -0.213,
+        1.832,
+        0.562,
+        0.583,
+        -1.2694
+      ],
+      [
+        "pedestrian",
+        0.376,
+        2.466,
+        21.579,
+        -0.149,
+        1.834,
+        0.614,
+        0.578,
+        -0.7792
+      ],
+      [
+        "pedestrian",
+        0.4033,
+        -10.873,
+        10.986,
+        -1.016,
+        1.735,
+        0.603,
+        0.687,
+        -2.3776
+      ],
+      [
+        "pedestrian",
+        0.4114,
+        0.369,
+        19.499,
+        -0.222,
+        1.845,
+        0.563,
+        0.584,
+        -1.1842
+      ],
+      [
+        "pedestrian",
+        0.4353,
+        4.165,
+        22.24,
+        -0.216,
+        1.798,
+        0.628,
+        0.595,
+        -0.9993
+      ],
+      [
+        "truck",
+        0.4331,
+        10.196,
+        -1.215,
+        -0.018,
+        3.092,
+        2.35,
+        5.701,
+        1.0354
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820-25m, y\u2248-1 to -5m)",
+          "isometric": "Multiple small clusters of points labeled as 'pedestrian' are floating in mid-air or lack vertical structural continuity."
+        },
+        "evidence": [
+          "In the BEV, multiple bounding boxes are tightly packed in an unnatural formation, lacking the distinct geometric signatures of individual humans.",
+          "In the isometric view, these detection boxes surround sparse, disconnected points that do not exhibit the typical vertical stature or surface reflection expected of pedestrians.",
+          "The complete absence of a plausible ground-plane support for these clusters in the isometric view strongly suggests they are artificial point injections rather than genuine objects.",
+          "The detector's high-confidence labeling of multiple distinct 'pedestrians' in a cluster that physically resembles random noise or injection-artifacts is highly characteristic of a ghosting attack."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion (the scene is sparse and open, there is no large object causing these patterns).",
+          "Sensor noise (standard noise is usually stochastic and scattered; these are localized, grouped, and erroneously identified as distinct objects).",
+          "Environmental objects like signs or trees (the 'pedestrian' classification and the specific 'cloud' of small, floating points do not match typical background geometry)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:18.018134"
+}

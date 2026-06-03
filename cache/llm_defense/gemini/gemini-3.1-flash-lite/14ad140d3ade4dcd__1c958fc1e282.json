@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "14ad140d3ade4dcd",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3009,
+        -1.999,
+        -41.017,
+        -2.513,
+        1.617,
+        1.855,
+        4.301,
+        1.6023
+      ],
+      [
+        "car",
+        0.3968,
+        -9.117,
+        20.501,
+        -0.268,
+        1.693,
+        1.875,
+        4.551,
+        -1.5093
+      ],
+      [
+        "car",
+        0.4394,
+        6.194,
+        38.76,
+        0.699,
+        1.814,
+        1.974,
+        4.792,
+        1.3687
+      ],
+      [
+        "car",
+        0.4535,
+        -21.678,
+        11.168,
+        -1.185,
+        1.65,
+        1.866,
+        4.406,
+        -3.0144
+      ],
+      [
+        "car",
+        0.5416,
+        0.12,
+        16.337,
+        -0.235,
+        1.779,
+        1.91,
+        4.628,
+        1.2008
+      ],
+      [
+        "car",
+        0.6362,
+        -20.159,
+        6.046,
+        -1.224,
+        1.702,
+        1.927,
+        4.46,
+        0.1406
+      ],
+      [
+        "car",
+        0.7019,
+        -4.798,
+        16.007,
+        -0.511,
+        1.571,
+        1.863,
+        4.669,
+        -1.9072
+      ],
+      [
+        "car",
+        0.7179,
+        -14.433,
+        5.88,
+        -1.143,
+        1.614,
+        1.926,
+        4.502,
+        0.1859
+      ],
+      [
+        "car",
+        0.925,
+        4.341,
+        6.662,
+        -0.865,
+        1.51,
+        1.876,
+        4.775,
+        1.5922
+      ],
+      [
+        "car",
+        0.9359,
+        -7.643,
+        -8.656,
+        -1.583,
+        1.628,
+        1.897,
+        4.67,
+        -1.6072
+      ],
+      [
+        "construction_vehicle",
+        0.3306,
+        11.219,
+        38.834,
+        1.709,
+        3.409,
+        2.714,
+        7.144,
+        1.6372
+      ],
+      [
+        "pedestrian",
+        0.3014,
+        8.729,
+        8.653,
+        -0.374,
+        1.789,
+        0.654,
+        0.634,
+        -2.2115
+      ],
+      [
+        "pedestrian",
+        0.3209,
+        8.289,
+        7.34,
+        -0.483,
+        1.631,
+        0.667,
+        0.669,
+        2.756
+      ],
+      [
+        "pedestrian",
+        0.3398,
+        8.175,
+        -15.597,
+        -1.237,
+        1.782,
+        0.641,
+        0.638,
+        -1.76
+      ],
+      [
+        "pedestrian",
+        0.3489,
+        -11.857,
+        13.402,
+        -0.699,
+        1.793,
+        0.648,
+        0.659,
+        -1.0349
+      ],
+      [
+        "pedestrian",
+        0.3696,
+        4.402,
+        -30.199,
+        -1.48,
+        1.804,
+        0.706,
+        0.775,
+        -1.8204
+      ],
+      [
+        "pedestrian",
+        0.4018,
+        -11.949,
+        11.772,
+        -0.911,
+        1.758,
+        0.649,
+        0.672,
+        0.8089
+      ],
+      [
+        "truck",
+        0.3502,
+        -0.128,
+        -38.284,
+        -2.435,
+        1.984,
+        2.264,
+        5.745,
+        1.6079
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple detected objects visible",
+          "isometric": "Multiple detected objects visible"
+        },
+        "evidence": [
+          "The camera input is unavailable, which is a critical modality for cross-validation.",
+          "Without camera verification, it is impossible to distinguish between genuine object detection, environmental noise, or potential ghosting/hiding attacks.",
+          "LiDAR data shows scattered points, but without visual confirmation, distinguishing between genuine traffic participants and spurious reflections is unreliable."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (cannot be fully ruled out without camera corroboration)",
+          "Distant sensor limitations (cannot be fully ruled out)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:44.870317"
+}

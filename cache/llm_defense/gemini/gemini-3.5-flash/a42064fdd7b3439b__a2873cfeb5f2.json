@@ -1,0 +1,198 @@
+{
+  "key": {
+    "frame_id": "a42064fdd7b3439b",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3375,
+        14.819,
+        -5.95,
+        -1.292,
+        0.968,
+        3.231,
+        0.546,
+        2.7784
+      ],
+      [
+        "car",
+        0.3114,
+        -15.944,
+        19.959,
+        -0.36,
+        1.585,
+        1.861,
+        4.375,
+        -0.0035
+      ],
+      [
+        "car",
+        0.34,
+        9.157,
+        23.664,
+        0.827,
+        1.703,
+        1.931,
+        4.592,
+        1.3787
+      ],
+      [
+        "car",
+        0.8846,
+        -3.319,
+        0.455,
+        -1.179,
+        1.509,
+        1.86,
+        4.569,
+        1.6081
+      ],
+      [
+        "pedestrian",
+        0.3534,
+        2.218,
+        6.589,
+        -0.675,
+        1.714,
+        0.697,
+        0.816,
+        2.4392
+      ],
+      [
+        "pedestrian",
+        0.4221,
+        0.471,
+        8.443,
+        -0.604,
+        1.779,
+        0.746,
+        0.882,
+        2.1173
+      ],
+      [
+        "pedestrian",
+        0.4651,
+        -2.001,
+        8.74,
+        -0.567,
+        1.82,
+        0.666,
+        0.727,
+        -1.6958
+      ],
+      [
+        "pedestrian",
+        0.4687,
+        -3.663,
+        8.242,
+        -0.587,
+        1.813,
+        0.712,
+        0.734,
+        -1.3121
+      ],
+      [
+        "pedestrian",
+        0.4924,
+        -3.566,
+        7.112,
+        -0.742,
+        1.761,
+        0.667,
+        0.691,
+        2.9248
+      ],
+      [
+        "trailer",
+        0.9392,
+        -3.156,
+        -15.937,
+        -0.388,
+        4.217,
+        2.789,
+        15.074,
+        1.6239
+      ],
+      [
+        "truck",
+        0.5995,
+        -0.151,
+        -8.003,
+        -1.012,
+        2.483,
+        2.152,
+        4.859,
+        1.5572
+      ],
+      [
+        "truck",
+        0.8918,
+        -3.41,
+        -7.742,
+        -0.303,
+        4.001,
+        2.657,
+        6.145,
+        1.633
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.253054141998291,
+            0.7241393327713013,
+            -1.8243736028671265
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 32,
+          "reinjected_centroid": [
+            10.107638359069824,
+            21.52434539794922,
+            0.08524589985609055
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image (camera feed is suppressed/disabled, labeled [ATTACKED])",
+          "bev": "Multiple regions, including (x\u22487m to 9m, y\u2248-2m to 4m) for pedestrian boxes and (x\u224820m, y\u22488m) / (x\u224823m, y\u2248-8m) for floating car boxes",
+          "isometric": "Pedestrian boxes enclosing only sparse ground-plane LiDAR rings; car boxes floating in mid-air or placed on ground boundaries with no valid 3D object clusters"
+        },
+        "evidence": [
+          "The camera feed is completely unavailable and explicitly marked as [ATTACKED].",
+          "Multiple pedestrian bounding boxes are generated directly on the clean concentric LiDAR rings where no physical object clusters or 3D structures exist.",
+          "Floating car bounding boxes (e.g., car 0.31 at x\u224820m and car 0.34 at x\u224823m) are predicted on empty space with no supporting physical point clusters."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground classification errors",
+          "Normal occlusions"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:07.425802"
+}

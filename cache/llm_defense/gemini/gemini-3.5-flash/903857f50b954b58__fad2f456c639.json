@@ -1,0 +1,242 @@
+{
+  "key": {
+    "frame_id": "903857f50b954b58",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3012,
+        12.645,
+        -11.849,
+        -1.684,
+        0.901,
+        3.202,
+        0.525,
+        2.9168
+      ],
+      [
+        "barrier",
+        0.3929,
+        14.828,
+        -5.95,
+        -1.275,
+        0.985,
+        3.208,
+        0.541,
+        2.7667
+      ],
+      [
+        "bicycle",
+        0.3976,
+        1.888,
+        8.343,
+        -0.714,
+        1.196,
+        0.597,
+        1.541,
+        -3.0459
+      ],
+      [
+        "car",
+        0.3246,
+        -46.548,
+        36.851,
+        0.203,
+        1.621,
+        1.855,
+        4.502,
+        3.1169
+      ],
+      [
+        "car",
+        0.8592,
+        -3.33,
+        0.482,
+        -1.158,
+        1.495,
+        1.88,
+        4.593,
+        1.6175
+      ],
+      [
+        "pedestrian",
+        0.3037,
+        -2.552,
+        7.988,
+        -0.56,
+        1.79,
+        0.709,
+        0.747,
+        3.0023
+      ],
+      [
+        "pedestrian",
+        0.3228,
+        1.463,
+        8.356,
+        -0.677,
+        1.671,
+        0.661,
+        0.758,
+        2.2054
+      ],
+      [
+        "pedestrian",
+        0.3578,
+        -1.028,
+        8.805,
+        -0.554,
+        1.81,
+        0.681,
+        0.719,
+        3.0905
+      ],
+      [
+        "pedestrian",
+        0.3662,
+        -2.545,
+        7.02,
+        -0.612,
+        1.772,
+        0.704,
+        0.785,
+        2.578
+      ],
+      [
+        "pedestrian",
+        0.3695,
+        3.644,
+        7.64,
+        -0.523,
+        1.748,
+        0.71,
+        0.795,
+        1.8465
+      ],
+      [
+        "pedestrian",
+        0.4402,
+        -4.508,
+        8.166,
+        -0.597,
+        1.723,
+        0.647,
+        0.712,
+        -2.9113
+      ],
+      [
+        "trailer",
+        0.3553,
+        5.146,
+        41.433,
+        1.946,
+        3.732,
+        3.463,
+        6.171,
+        -1.6908
+      ],
+      [
+        "trailer",
+        0.9346,
+        -3.155,
+        -16.054,
+        -0.347,
+        4.251,
+        2.8,
+        15.059,
+        1.6234
+      ],
+      [
+        "truck",
+        0.3062,
+        -10.03,
+        48.767,
+        1.119,
+        2.321,
+        2.204,
+        5.689,
+        1.7408
+      ],
+      [
+        "truck",
+        0.5158,
+        -0.091,
+        -8.061,
+        -1.035,
+        2.509,
+        2.186,
+        4.783,
+        1.6237
+      ],
+      [
+        "truck",
+        0.9014,
+        -3.414,
+        -7.809,
+        -0.351,
+        4.028,
+        2.669,
+        6.067,
+        1.6408
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.1174845695495605,
+            0.5690259337425232,
+            -1.7742798328399658
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 27,
+          "reinjected_centroid": [
+            16.605375289916992,
+            21.44767951965332,
+            0.6541965007781982
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire frame (camera image not available/suppressed)",
+          "bev": "Region x\u22487m to 10m, y\u2248-4m to 4m",
+          "isometric": "Multiple pedestrian and bicycle bounding boxes (x\u22488m) enclosing no distinct 3D point clusters other than flat road/ground scan lines"
+        },
+        "evidence": [
+          "A cluster of multiple pedestrian (0.44, 0.30, 0.36, 0.32, 0.37) and bicycle (0.40) detections are generated along a transverse line around x \u2248 8m.",
+          "Both BEV and isometric views show that these bounding boxes are empty or contain only flat background ground returns, lacking any corresponding vertical point cloud structure typical of humans or bicycles.",
+          "The camera image is completely unavailable/blacked out and flagged as ATTACKED, preventing visual cross-modal verification."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant ground reflections",
+          "Legitimate occlusion (the region is completely open and in direct line-of-sight of the LiDAR)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:24.128072"
+}

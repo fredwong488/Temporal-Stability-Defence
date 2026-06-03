@@ -1,0 +1,208 @@
+{
+  "key": {
+    "frame_id": "0129c875ffa741cd",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bicycle",
+        0.4294,
+        0.549,
+        7.523,
+        -0.698,
+        1.752,
+        0.626,
+        1.809,
+        1.7401
+      ],
+      [
+        "car",
+        0.3054,
+        -27.905,
+        20.655,
+        -0.58,
+        1.652,
+        1.922,
+        4.5,
+        0.1005
+      ],
+      [
+        "car",
+        0.847,
+        -3.323,
+        0.496,
+        -1.163,
+        1.524,
+        1.881,
+        4.62,
+        1.6186
+      ],
+      [
+        "construction_vehicle",
+        0.3436,
+        -5.152,
+        50.977,
+        2.021,
+        2.91,
+        2.655,
+        7.363,
+        1.6659
+      ],
+      [
+        "pedestrian",
+        0.3255,
+        -1.038,
+        8.645,
+        -0.733,
+        1.747,
+        0.716,
+        0.864,
+        3.0729
+      ],
+      [
+        "pedestrian",
+        0.3742,
+        -5.027,
+        7.146,
+        -0.698,
+        1.82,
+        0.7,
+        0.719,
+        1.3937
+      ],
+      [
+        "pedestrian",
+        0.401,
+        -3.626,
+        8.959,
+        -0.602,
+        1.79,
+        0.722,
+        0.827,
+        -2.5241
+      ],
+      [
+        "pedestrian",
+        0.4894,
+        -7.741,
+        8.191,
+        -0.582,
+        1.8,
+        0.676,
+        0.736,
+        1.6169
+      ],
+      [
+        "pedestrian",
+        0.4904,
+        -5.348,
+        8.585,
+        -0.598,
+        1.843,
+        0.741,
+        0.753,
+        1.4833
+      ],
+      [
+        "trailer",
+        0.9549,
+        -3.09,
+        -15.878,
+        -0.308,
+        4.215,
+        2.779,
+        14.417,
+        1.6242
+      ],
+      [
+        "truck",
+        0.6374,
+        -3.779,
+        20.714,
+        0.08,
+        1.95,
+        2.074,
+        5.462,
+        3.047
+      ],
+      [
+        "truck",
+        0.6701,
+        -0.168,
+        -7.957,
+        -1.007,
+        2.594,
+        2.21,
+        4.814,
+        1.5627
+      ],
+      [
+        "truck",
+        0.8913,
+        -3.399,
+        -7.841,
+        -0.341,
+        4.047,
+        2.711,
+        6.043,
+        1.6115
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.128851413726807,
+            0.7255216240882874,
+            -1.6683714389801025
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 14,
+          "reinjected_centroid": [
+            16.51677894592285,
+            21.622848510742188,
+            0.08746622502803802
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire frame (camera feed is unavailable/blocked)",
+          "bev": "x\u22487m to 10m, y\u2248-1m to 8m",
+          "isometric": "Multiple pedestrian and bicycle boxes bounding empty space or sparse single-point scan returns on the ground plane"
+        },
+        "evidence": [
+          "A series of 5 pedestrian detections and 1 bicycle detection are generated in a semi-circular arc matching the LiDAR's concentric scan patterns.",
+          "Both BEV and Isometric views show that these bounding boxes are virtually empty, containing no 3D point clusters representing physical objects.",
+          "The camera image is completely unavailable/blacked out, indicating a potential sensor tampering or denial-of-service attack accompanying the spoofed detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (too many highly confident pedestrian/bicycle bounding boxes on clean ground rings)",
+          "Distant objects (objects are close, x < 10m, and should have dense, easily recognizable point clusters)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:46.079855"
+}

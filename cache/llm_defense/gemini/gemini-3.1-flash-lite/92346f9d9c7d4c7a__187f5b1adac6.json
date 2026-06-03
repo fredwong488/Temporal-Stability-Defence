@@ -1,0 +1,302 @@
+{
+  "key": {
+    "frame_id": "92346f9d9c7d4c7a",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3168,
+        6.22,
+        -10.021,
+        -0.764,
+        1.823,
+        0.658,
+        1.695,
+        -1.7382
+      ],
+      [
+        "car",
+        0.3135,
+        14.199,
+        -1.058,
+        -0.758,
+        1.757,
+        2.071,
+        4.593,
+        -3.1276
+      ],
+      [
+        "car",
+        0.4028,
+        3.361,
+        40.44,
+        1.706,
+        2.014,
+        2.024,
+        4.858,
+        1.4409
+      ],
+      [
+        "car",
+        0.4095,
+        6.605,
+        41.782,
+        1.511,
+        1.799,
+        1.972,
+        4.703,
+        1.5242
+      ],
+      [
+        "car",
+        0.5664,
+        -2.228,
+        25.316,
+        0.381,
+        1.581,
+        1.881,
+        4.557,
+        1.4629
+      ],
+      [
+        "car",
+        0.6032,
+        1.077,
+        -21.017,
+        -1.83,
+        1.757,
+        1.92,
+        4.602,
+        1.737
+      ],
+      [
+        "car",
+        0.6816,
+        -6.153,
+        27.038,
+        0.434,
+        1.643,
+        1.916,
+        4.546,
+        -1.7321
+      ],
+      [
+        "car",
+        0.8986,
+        -4.165,
+        -1.03,
+        -1.108,
+        1.661,
+        1.954,
+        4.81,
+        -1.5526
+      ],
+      [
+        "pedestrian",
+        0.3067,
+        -8.258,
+        5.915,
+        -0.724,
+        1.785,
+        0.691,
+        0.782,
+        -1.3902
+      ],
+      [
+        "pedestrian",
+        0.3097,
+        -11.668,
+        8.171,
+        -0.654,
+        1.735,
+        0.605,
+        0.614,
+        1.805
+      ],
+      [
+        "pedestrian",
+        0.3234,
+        9.53,
+        17.202,
+        0.095,
+        1.785,
+        0.655,
+        0.639,
+        -1.5634
+      ],
+      [
+        "pedestrian",
+        0.3335,
+        6.809,
+        2.134,
+        -0.843,
+        1.802,
+        0.683,
+        0.782,
+        -1.8409
+      ],
+      [
+        "pedestrian",
+        0.3387,
+        -10.415,
+        -10.14,
+        -1.346,
+        1.781,
+        0.631,
+        0.722,
+        -1.8107
+      ],
+      [
+        "pedestrian",
+        0.3399,
+        11.034,
+        14.35,
+        -0.397,
+        1.664,
+        0.603,
+        0.627,
+        2.0619
+      ],
+      [
+        "pedestrian",
+        0.3569,
+        7.355,
+        8.445,
+        -0.537,
+        1.719,
+        0.653,
+        0.702,
+        -1.1746
+      ],
+      [
+        "pedestrian",
+        0.3597,
+        7.553,
+        -19.652,
+        -1.421,
+        1.812,
+        0.671,
+        0.686,
+        -1.4781
+      ],
+      [
+        "pedestrian",
+        0.3605,
+        6.142,
+        -9.805,
+        -0.954,
+        1.826,
+        0.691,
+        0.778,
+        -1.6952
+      ],
+      [
+        "pedestrian",
+        0.3607,
+        7.172,
+        11.553,
+        -0.314,
+        1.742,
+        0.634,
+        0.601,
+        0.1284
+      ],
+      [
+        "pedestrian",
+        0.371,
+        8.624,
+        10.313,
+        -0.397,
+        1.796,
+        0.666,
+        0.673,
+        2.1236
+      ],
+      [
+        "pedestrian",
+        0.3844,
+        -10.119,
+        -14.717,
+        -1.766,
+        1.809,
+        0.617,
+        0.686,
+        1.312
+      ],
+      [
+        "pedestrian",
+        0.3912,
+        -12.741,
+        8.316,
+        -0.619,
+        1.783,
+        0.625,
+        0.656,
+        1.5192
+      ],
+      [
+        "pedestrian",
+        0.392,
+        8.74,
+        13.445,
+        -0.192,
+        1.793,
+        0.63,
+        0.599,
+        -2.5548
+      ],
+      [
+        "pedestrian",
+        0.444,
+        8.214,
+        8.418,
+        -0.456,
+        1.75,
+        0.678,
+        0.733,
+        -1.9463
+      ],
+      [
+        "pedestrian",
+        0.5367,
+        7.521,
+        14.101,
+        -0.18,
+        1.757,
+        0.639,
+        0.659,
+        0.3745
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22482m, y\u22480m)",
+          "isometric": "Dense cluster of points concentrated immediately in front of the ego vehicle (x\u22480-2m, y\u2248-1 to 1m) without physical coherence or shadow."
+        },
+        "evidence": [
+          "A highly anomalous, dense cluster of LiDAR points exists directly in front of the ego vehicle at (x\u22480-2m, y\u22480m).",
+          "This cluster appears as a tight, unnatural grouping of points that does not correspond to any physical geometry of a road object or environment structure.",
+          "The cluster has no corresponding occlusion shadow behind it, which is physically inconsistent with a genuine, opaque, solid object (like a vehicle or barrier) located at that range."
+        ],
+        "alternatives_ruled_out": [
+          "Genuine nearby traffic (no vehicle shape, no shadow, too close to be a standard detected object).",
+          "Sensor noise (the points are too highly concentrated and structured to be random environmental noise).",
+          "Infrastructure (the position is in the middle of the driving path)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:23.012065"
+}

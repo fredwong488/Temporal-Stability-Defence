@@ -1,0 +1,330 @@
+{
+  "key": {
+    "frame_id": "279105929fa14301",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3098,
+        -8.63,
+        19.808,
+        -0.674,
+        1.56,
+        1.898,
+        4.683,
+        -1.562
+      ],
+      [
+        "car",
+        0.3622,
+        -14.571,
+        -1.876,
+        -1.764,
+        1.638,
+        1.91,
+        4.558,
+        0.0868
+      ],
+      [
+        "car",
+        0.364,
+        2.535,
+        27.196,
+        0.296,
+        1.69,
+        1.926,
+        4.582,
+        1.27
+      ],
+      [
+        "car",
+        0.3783,
+        -9.151,
+        14.188,
+        -0.608,
+        1.557,
+        1.85,
+        4.387,
+        -1.6553
+      ],
+      [
+        "car",
+        0.4768,
+        6.783,
+        33.604,
+        0.743,
+        1.857,
+        2.051,
+        4.923,
+        1.4665
+      ],
+      [
+        "car",
+        0.4928,
+        -8.714,
+        -18.423,
+        -2.193,
+        1.751,
+        1.932,
+        4.752,
+        -1.501
+      ],
+      [
+        "car",
+        0.595,
+        -29.659,
+        2.784,
+        -1.851,
+        1.52,
+        1.858,
+        4.333,
+        -2.9648
+      ],
+      [
+        "car",
+        0.6354,
+        -24.279,
+        3.795,
+        -2.003,
+        1.603,
+        1.878,
+        4.39,
+        -2.8921
+      ],
+      [
+        "car",
+        0.8029,
+        -5.796,
+        6.689,
+        -1.12,
+        1.501,
+        1.828,
+        4.645,
+        -2.1129
+      ],
+      [
+        "car",
+        0.8926,
+        -7.743,
+        8.458,
+        -1.138,
+        1.599,
+        1.864,
+        4.413,
+        -2.1947
+      ],
+      [
+        "car",
+        0.9399,
+        4.236,
+        -1.094,
+        -1.181,
+        1.601,
+        1.904,
+        4.735,
+        1.583
+      ],
+      [
+        "construction_vehicle",
+        0.3514,
+        -7.731,
+        48.756,
+        1.814,
+        2.857,
+        2.452,
+        6.747,
+        -1.6846
+      ],
+      [
+        "motorcycle",
+        0.3292,
+        6.047,
+        -1.578,
+        -1.424,
+        1.437,
+        0.74,
+        2.12,
+        -1.6661
+      ],
+      [
+        "pedestrian",
+        0.3046,
+        1.119,
+        -38.087,
+        -1.761,
+        1.806,
+        0.674,
+        0.712,
+        1.0897
+      ],
+      [
+        "pedestrian",
+        0.3246,
+        9.018,
+        24.417,
+        0.393,
+        1.817,
+        0.671,
+        0.694,
+        -2.5703
+      ],
+      [
+        "pedestrian",
+        0.3626,
+        6.245,
+        -21.332,
+        -1.418,
+        1.841,
+        0.641,
+        0.596,
+        2.7263
+      ],
+      [
+        "pedestrian",
+        0.3941,
+        7.772,
+        -4.166,
+        -0.994,
+        1.799,
+        0.652,
+        0.676,
+        1.6196
+      ],
+      [
+        "pedestrian",
+        0.3976,
+        8.461,
+        4.333,
+        -0.5,
+        1.807,
+        0.696,
+        0.793,
+        1.1
+      ],
+      [
+        "trailer",
+        0.3227,
+        22.423,
+        -10.092,
+        0.066,
+        3.84,
+        2.81,
+        13.328,
+        -1.2398
+      ],
+      [
+        "truck",
+        0.3436,
+        -7.584,
+        48.396,
+        1.648,
+        2.053,
+        2.083,
+        5.351,
+        1.5262
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.033536434173584,
+            -1.6418063640594482,
+            -2.0105650424957275
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -7.031047344207764,
+            8.221921920776367,
+            -1.486574411392212
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 24,
+          "reinjected_centroid": [
+            -22.48545265197754,
+            4.292509078979492,
+            -2.2910969257354736
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 66,
+          "reinjected_centroid": [
+            -8.610411643981934,
+            -17.30340003967285,
+            -2.6350948810577393
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 17,
+          "reinjected_centroid": [
+            -28.42434310913086,
+            2.52990984916687,
+            -2.4136219024658203
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 12,
+          "reinjected_centroid": [
+            -9.145005226135254,
+            21.0405330657959,
+            -1.0889846086502075
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 12,
+          "reinjected_centroid": [
+            6.299967288970947,
+            31.76460838317871,
+            0.12115518003702164
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818m, y\u22487m)",
+          "isometric": "Cluster at x\u224818m is floating significantly above ground level (z>0) with no supporting geometry or surface, indicative of injected LiDAR points."
+        },
+        "evidence": [
+          "The bounding box at x\u224818m, y\u22487m encapsulates sparse, non-structural points that lack the L-shape profile of a vehicle.",
+          "The isometric view confirms these points are floating in mid-air (z > 2m) with no connection to the ground plane.",
+          "There is no clear LiDAR shadow behind this object, which is physically required for a real, opaque vehicle at that range."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise (noise is usually less structured and not clustered into box-like shapes).",
+          "Overhead infrastructure (no geometric connectivity to surrounding structures visible in point cloud)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:20.810904"
+}

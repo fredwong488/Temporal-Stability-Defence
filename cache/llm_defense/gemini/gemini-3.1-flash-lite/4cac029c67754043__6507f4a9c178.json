@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "4cac029c67754043",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.9631,
+        10.45,
+        -14.503,
+        -0.42,
+        3.259,
+        2.804,
+        12.142,
+        2.8588
+      ],
+      [
+        "car",
+        0.3138,
+        26.186,
+        4.718,
+        -0.128,
+        1.619,
+        1.844,
+        4.324,
+        -2.0388
+      ],
+      [
+        "car",
+        0.3306,
+        19.604,
+        7.068,
+        -0.71,
+        1.672,
+        1.893,
+        4.519,
+        -1.7727
+      ],
+      [
+        "car",
+        0.3435,
+        16.534,
+        29.692,
+        -0.52,
+        1.647,
+        1.879,
+        4.396,
+        1.4187
+      ],
+      [
+        "car",
+        0.4621,
+        14.228,
+        30.156,
+        -0.573,
+        1.611,
+        1.867,
+        4.35,
+        1.2686
+      ],
+      [
+        "car",
+        0.4797,
+        28.818,
+        4.129,
+        0.144,
+        1.718,
+        1.942,
+        4.648,
+        -1.986
+      ],
+      [
+        "car",
+        0.5338,
+        18.279,
+        15.974,
+        -0.773,
+        1.618,
+        1.874,
+        4.372,
+        1.2929
+      ],
+      [
+        "car",
+        0.787,
+        17.189,
+        7.798,
+        -0.587,
+        1.663,
+        1.901,
+        4.52,
+        -1.8521
+      ],
+      [
+        "car",
+        0.9519,
+        14.914,
+        8.658,
+        -0.692,
+        1.533,
+        1.827,
+        4.374,
+        -1.9077
+      ],
+      [
+        "pedestrian",
+        0.3159,
+        -5.333,
+        15.866,
+        -0.382,
+        1.793,
+        0.587,
+        0.581,
+        0.5408
+      ],
+      [
+        "pedestrian",
+        0.3389,
+        -6.648,
+        15.091,
+        -0.558,
+        1.777,
+        0.643,
+        0.628,
+        -0.4301
+      ],
+      [
+        "pedestrian",
+        0.3509,
+        -4.538,
+        -14.66,
+        -0.911,
+        1.791,
+        0.629,
+        0.621,
+        0.7775
+      ],
+      [
+        "pedestrian",
+        0.3572,
+        -2.769,
+        17.913,
+        -0.62,
+        1.76,
+        0.577,
+        0.553,
+        -0.3998
+      ],
+      [
+        "pedestrian",
+        0.4157,
+        -3.553,
+        16.617,
+        -0.537,
+        1.776,
+        0.61,
+        0.565,
+        -0.4303
+      ],
+      [
+        "pedestrian",
+        0.4545,
+        -12.452,
+        5.31,
+        -1.159,
+        1.733,
+        0.602,
+        0.681,
+        -1.9361
+      ],
+      [
+        "pedestrian",
+        0.4786,
+        -1.224,
+        19.065,
+        -0.673,
+        1.723,
+        0.61,
+        0.622,
+        -0.7323
+      ],
+      [
+        "truck",
+        0.4876,
+        10.384,
+        -2.371,
+        0.127,
+        3.392,
+        2.591,
+        6.511,
+        1.2229
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22483m to 6m)",
+          "isometric": "Cluster of pedestrians near x=15m, y=4m"
+        },
+        "evidence": [
+          "The camera input is missing, preventing cross-modal verification.",
+          "Multiple 'pedestrian' detections are clustered in a narrow band at x\u224815m, which could be valid objects or potentially spoofed injection.",
+          "The point density in the isometric view for these pedestrian detections appears sparse and lacks clear structural definition characteristic of humans, but without camera context, this is ambiguous."
+        ],
+        "alternatives_ruled_out": [
+          "Natural environmental noise or reflections from roadside objects could account for the point clusters.",
+          "The detections might be valid pedestrians obscured by poor resolution or lack of data in the provided view."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:40.619600"
+}

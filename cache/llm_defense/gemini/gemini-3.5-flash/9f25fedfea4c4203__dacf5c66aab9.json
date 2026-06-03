@@ -1,0 +1,178 @@
+{
+  "key": {
+    "frame_id": "9f25fedfea4c4203",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3831,
+        14.802,
+        -5.972,
+        -1.281,
+        0.971,
+        3.223,
+        0.535,
+        2.7644
+      ],
+      [
+        "car",
+        0.8803,
+        -3.32,
+        0.477,
+        -1.208,
+        1.538,
+        1.925,
+        4.746,
+        1.6321
+      ],
+      [
+        "pedestrian",
+        0.3039,
+        5.132,
+        7.934,
+        -0.422,
+        1.823,
+        0.695,
+        0.743,
+        -2.4458
+      ],
+      [
+        "pedestrian",
+        0.4181,
+        3.57,
+        7.065,
+        -0.591,
+        1.809,
+        0.72,
+        0.815,
+        -2.5692
+      ],
+      [
+        "pedestrian",
+        0.4286,
+        3.647,
+        9.418,
+        -0.436,
+        1.752,
+        0.658,
+        0.67,
+        -2.9182
+      ],
+      [
+        "pedestrian",
+        0.4636,
+        10.843,
+        5.137,
+        -0.29,
+        1.789,
+        0.69,
+        0.732,
+        -2.6222
+      ],
+      [
+        "pedestrian",
+        0.4637,
+        9.916,
+        4.333,
+        -0.283,
+        1.811,
+        0.687,
+        0.732,
+        1.2551
+      ],
+      [
+        "trailer",
+        0.9305,
+        -3.141,
+        -16.089,
+        -0.368,
+        4.278,
+        2.811,
+        14.974,
+        1.6286
+      ],
+      [
+        "truck",
+        0.3218,
+        -40.905,
+        -13.519,
+        -0.928,
+        2.05,
+        2.297,
+        5.596,
+        1.619
+      ],
+      [
+        "truck",
+        0.5422,
+        -0.125,
+        -7.964,
+        -0.994,
+        2.519,
+        2.132,
+        4.722,
+        1.5717
+      ],
+      [
+        "truck",
+        0.9071,
+        -3.405,
+        -7.779,
+        -0.367,
+        4.019,
+        2.659,
+        6.011,
+        1.642
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.516689300537109,
+            0.7169371843338013,
+            -1.85929536819458
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire image unavailable",
+          "bev": "Region around (x\u22487m to 10m, y\u2248-3m to -5m)",
+          "isometric": "Empty vertical bounding boxes for pedestrians with minimal/no underlying 3D point clusters at x\u22487m to 10m, y\u2248-3m to -5m"
+        },
+        "evidence": [
+          "Multiple pedestrian bounding boxes (e.g., pedestrian 0.42, 0.43, 0.30) are predicted in regions containing extremely sparse or non-existent 3D point clusters.",
+          "The isometric view shows these pedestrian boxes have vertical height profiles but contain no solid vertical point structures supporting a physical object.",
+          "The camera sensor stream is completely unavailable/suppressed, indicating a potential multi-modal attack or denial-of-service."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant small objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:48.456853"
+}

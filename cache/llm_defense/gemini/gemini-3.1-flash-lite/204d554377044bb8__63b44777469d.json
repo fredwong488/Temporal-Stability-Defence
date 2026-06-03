@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "204d554377044bb8",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.315,
+        -8.614,
+        33.42,
+        0.986,
+        1.69,
+        1.902,
+        4.587,
+        -1.6079
+      ],
+      [
+        "car",
+        0.3208,
+        -8.523,
+        39.013,
+        1.179,
+        1.722,
+        1.867,
+        4.516,
+        -1.5801
+      ],
+      [
+        "car",
+        0.5878,
+        0.253,
+        -31.426,
+        -2.337,
+        1.751,
+        1.948,
+        4.659,
+        1.7888
+      ],
+      [
+        "car",
+        0.6755,
+        -3.764,
+        -26.339,
+        -2.295,
+        1.701,
+        1.932,
+        4.547,
+        -1.5248
+      ],
+      [
+        "car",
+        0.7016,
+        -6.969,
+        19.484,
+        0.126,
+        1.745,
+        1.972,
+        4.577,
+        0.2686
+      ],
+      [
+        "car",
+        0.7019,
+        -14.358,
+        17.656,
+        -0.311,
+        1.546,
+        1.84,
+        4.479,
+        0.1435
+      ],
+      [
+        "car",
+        0.8822,
+        -7.546,
+        2.909,
+        -1.15,
+        1.573,
+        1.939,
+        4.922,
+        -1.6229
+      ],
+      [
+        "car",
+        0.8884,
+        4.506,
+        18.228,
+        -0.025,
+        1.564,
+        1.886,
+        4.698,
+        1.6005
+      ],
+      [
+        "construction_vehicle",
+        0.456,
+        7.05,
+        -39.81,
+        -2.526,
+        3.115,
+        2.719,
+        6.872,
+        -1.341
+      ],
+      [
+        "pedestrian",
+        0.3003,
+        8.193,
+        -9.257,
+        -1.348,
+        1.715,
+        0.657,
+        0.685,
+        2.1182
+      ],
+      [
+        "pedestrian",
+        0.3093,
+        -8.386,
+        -18.396,
+        -1.99,
+        1.799,
+        0.644,
+        0.713,
+        -1.4055
+      ],
+      [
+        "pedestrian",
+        0.3262,
+        6.283,
+        -11.888,
+        -1.488,
+        1.701,
+        0.65,
+        0.669,
+        -1.7214
+      ],
+      [
+        "pedestrian",
+        0.3368,
+        -19.695,
+        -17.35,
+        -2.108,
+        1.82,
+        0.645,
+        0.701,
+        1.2124
+      ],
+      [
+        "pedestrian",
+        0.3516,
+        6.373,
+        -14.313,
+        -1.677,
+        1.757,
+        0.659,
+        0.67,
+        1.4539
+      ],
+      [
+        "pedestrian",
+        0.3909,
+        7.334,
+        -12.445,
+        -1.369,
+        1.85,
+        0.677,
+        0.625,
+        -2.7301
+      ],
+      [
+        "pedestrian",
+        0.4684,
+        7.869,
+        -10.82,
+        -1.322,
+        1.748,
+        0.64,
+        0.639,
+        2.2047
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224819m, y\u2248-5m)",
+          "isometric": "Cluster at x\u224819m, y\u2248-5m appears as a thin vertical line of points rather than a volumetric vehicle shape"
+        },
+        "evidence": [
+          "The bounding box at (x\u224819m, y\u2248-5m) encloses a very sparse, vertically oriented linear point structure, which lacks the characteristic L-shape or volumetric density of a vehicle.",
+          "The isometric view confirms the lack of structural depth for this particular detection, making it potentially anomalous.",
+          "The absence of the camera modality prevents definitive verification of whether a real object exists at that location."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or reflections from non-vehicle infrastructure (e.g., a sign post or thin pole) could explain the linear vertical point structure.",
+          "The sparsity of the cluster could be due to occlusion or distance-based downsampling."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:57.580017"
+}

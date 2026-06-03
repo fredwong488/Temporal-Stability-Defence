@@ -1,0 +1,192 @@
+{
+  "key": {
+    "frame_id": "a82a4b2509dd4b86",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.8704,
+        10.716,
+        -15.927,
+        -0.371,
+        3.573,
+        2.869,
+        12.31,
+        2.5941
+      ],
+      [
+        "car",
+        0.3095,
+        17.37,
+        -7.101,
+        -0.819,
+        1.658,
+        1.901,
+        4.504,
+        0.9927
+      ],
+      [
+        "car",
+        0.3282,
+        15.547,
+        -5.46,
+        -0.751,
+        1.643,
+        1.914,
+        4.503,
+        0.8863
+      ],
+      [
+        "car",
+        0.3401,
+        18.909,
+        -8.529,
+        -1.0,
+        1.569,
+        1.877,
+        4.398,
+        1.1709
+      ],
+      [
+        "car",
+        0.3537,
+        29.598,
+        24.249,
+        -0.295,
+        1.652,
+        1.889,
+        4.351,
+        -1.8438
+      ],
+      [
+        "car",
+        0.3609,
+        21.423,
+        4.91,
+        -0.604,
+        1.649,
+        1.905,
+        4.451,
+        -2.0754
+      ],
+      [
+        "car",
+        0.4098,
+        13.138,
+        -3.8,
+        -1.017,
+        1.612,
+        1.923,
+        4.561,
+        0.837
+      ],
+      [
+        "car",
+        0.6207,
+        19.755,
+        6.23,
+        -0.488,
+        1.632,
+        1.885,
+        4.423,
+        -2.2548
+      ],
+      [
+        "car",
+        0.6419,
+        17.953,
+        7.756,
+        -0.744,
+        1.556,
+        1.888,
+        4.429,
+        -2.1993
+      ],
+      [
+        "pedestrian",
+        0.3293,
+        0.673,
+        19.841,
+        -0.331,
+        1.861,
+        0.626,
+        0.612,
+        -1.2573
+      ],
+      [
+        "pedestrian",
+        0.3319,
+        1.724,
+        20.524,
+        -0.157,
+        1.824,
+        0.589,
+        0.573,
+        -1.3802
+      ],
+      [
+        "pedestrian",
+        0.3677,
+        1.928,
+        19.975,
+        -0.146,
+        1.86,
+        0.626,
+        0.664,
+        -0.8748
+      ],
+      [
+        "pedestrian",
+        0.4053,
+        2.902,
+        21.106,
+        -0.142,
+        1.865,
+        0.568,
+        0.569,
+        -1.2987
+      ],
+      [
+        "truck",
+        0.6176,
+        10.214,
+        -0.967,
+        -0.202,
+        3.12,
+        2.346,
+        5.603,
+        0.8884
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820m, y\u2248-1m)",
+          "isometric": "Cluster of small, disconnected boxes at x\u224820m, y\u2248-1m without any coherent underlying LiDAR point structure"
+        },
+        "evidence": [
+          "Multiple overlapping bounding boxes labeled 'pedestrian' appear at x\u224820m, y\u2248-1m in the BEV view.",
+          "The isometric view confirms there is no vertical structural coherence (no points clearly representing a pedestrian) corresponding to the location of these boxes.",
+          "The point density in the region of the boxes is sparse and scattered, inconsistent with the sharp geometry of the detected bounding boxes.",
+          "The proximity of multiple overlapping detections for a single, sparse region is a classic signature of a ghosting attack trying to trigger multiple spurious detections."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (noise is usually more diffuse and does not result in highly structured, overlapping object-class bounding boxes).",
+          "Occlusion (no underlying obstacle or structure exists in the isometric view to explain the detections)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:26.100644"
+}

@@ -1,0 +1,200 @@
+{
+  "key": {
+    "frame_id": "0f2a329b61274555",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.3188,
+        8.342,
+        -45.934,
+        -2.04,
+        3.635,
+        2.85,
+        12.028,
+        -1.534
+      ],
+      [
+        "bus",
+        0.6377,
+        4.554,
+        -11.24,
+        -0.563,
+        3.634,
+        2.968,
+        8.801,
+        1.4987
+      ],
+      [
+        "bus",
+        0.8235,
+        4.95,
+        -2.229,
+        -0.39,
+        3.123,
+        2.8,
+        9.259,
+        1.5791
+      ],
+      [
+        "car",
+        0.311,
+        -0.384,
+        -34.957,
+        -2.85,
+        1.691,
+        1.945,
+        4.712,
+        -1.7615
+      ],
+      [
+        "car",
+        0.4418,
+        -6.741,
+        -36.333,
+        -2.447,
+        1.913,
+        2.08,
+        5.125,
+        -1.6549
+      ],
+      [
+        "construction_vehicle",
+        0.3817,
+        -8.417,
+        -5.592,
+        -1.001,
+        2.09,
+        1.535,
+        3.013,
+        -1.6644
+      ],
+      [
+        "construction_vehicle",
+        0.566,
+        -18.226,
+        38.31,
+        1.739,
+        4.197,
+        3.331,
+        6.723,
+        -2.0817
+      ],
+      [
+        "construction_vehicle",
+        0.8767,
+        -5.463,
+        1.004,
+        -0.722,
+        2.222,
+        2.614,
+        7.129,
+        -1.5821
+      ],
+      [
+        "traffic_cone",
+        0.3059,
+        -6.011,
+        17.42,
+        -0.642,
+        0.73,
+        0.381,
+        0.401,
+        2.9033
+      ],
+      [
+        "traffic_cone",
+        0.3805,
+        -3.393,
+        2.202,
+        -1.335,
+        0.716,
+        0.36,
+        0.333,
+        -1.8333
+      ],
+      [
+        "traffic_cone",
+        0.4242,
+        -5.849,
+        -3.649,
+        -1.49,
+        1.029,
+        0.507,
+        0.537,
+        -0.1418
+      ],
+      [
+        "traffic_cone",
+        0.4424,
+        -3.513,
+        10.722,
+        -0.98,
+        0.713,
+        0.37,
+        0.379,
+        1.6468
+      ],
+      [
+        "traffic_cone",
+        0.4986,
+        -4.227,
+        14.987,
+        -0.785,
+        0.793,
+        0.386,
+        0.39,
+        1.8184
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 8,
+          "reinjected_centroid": [
+            -6.405375957489014,
+            -34.291221618652344,
+            -2.651109457015991
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224810m to 15m, y\u22485m)",
+          "isometric": "Large bounding box floating high in the air (z\u22481.5m to 3m) enclosing only sparse overhead noise/vegetation points."
+        },
+        "evidence": [
+          "A large 3D bounding box is predicted high above the ground plane (z \u2248 1.5m to 3m) at x \u2248 10-15m, y \u2248 5m.",
+          "The isometric view confirms this box is completely floating and does not contain any coherent physical object cluster (only high-altitude sparse noise/canopy points).",
+          "There is no realistic ground-based object at this location that matches the scale of the predicted cuboid."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground-plane reflection",
+          "High-riding vehicle (e.g., semi-truck, which would have points extending down to the ground)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:18:52.712711"
+}

@@ -1,0 +1,361 @@
+{
+  "key": {
+    "frame_id": "c0787d4b9da34c18",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3138,
+        2.204,
+        -16.555,
+        -1.65,
+        1.045,
+        2.054,
+        0.515,
+        3.0669
+      ],
+      [
+        "barrier",
+        0.325,
+        2.147,
+        -18.135,
+        -1.737,
+        1.038,
+        2.084,
+        0.547,
+        3.1079
+      ],
+      [
+        "barrier",
+        0.3371,
+        -6.446,
+        21.557,
+        -0.085,
+        1.036,
+        2.154,
+        0.488,
+        -1.6699
+      ],
+      [
+        "barrier",
+        0.4561,
+        2.176,
+        -13.339,
+        -1.666,
+        0.933,
+        3.061,
+        0.531,
+        3.1085
+      ],
+      [
+        "car",
+        0.3481,
+        1.849,
+        37.985,
+        0.212,
+        1.659,
+        1.868,
+        4.412,
+        1.5187
+      ],
+      [
+        "car",
+        0.408,
+        11.644,
+        -19.646,
+        -1.631,
+        2.174,
+        2.229,
+        5.52,
+        1.5454
+      ],
+      [
+        "car",
+        0.4387,
+        13.226,
+        -11.057,
+        -1.345,
+        1.731,
+        1.981,
+        4.933,
+        -1.5594
+      ],
+      [
+        "car",
+        0.6866,
+        16.698,
+        -19.299,
+        -1.832,
+        1.738,
+        1.981,
+        4.788,
+        -1.5369
+      ],
+      [
+        "construction_vehicle",
+        0.3467,
+        26.087,
+        -24.49,
+        -0.55,
+        2.852,
+        2.847,
+        7.659,
+        -0.3127
+      ],
+      [
+        "construction_vehicle",
+        0.4031,
+        -20.276,
+        -15.457,
+        0.244,
+        3.688,
+        3.089,
+        6.846,
+        1.2482
+      ],
+      [
+        "construction_vehicle",
+        0.5629,
+        31.423,
+        -41.338,
+        -2.661,
+        1.884,
+        2.056,
+        4.749,
+        3.0421
+      ],
+      [
+        "construction_vehicle",
+        0.6035,
+        3.897,
+        -16.69,
+        -0.814,
+        2.868,
+        3.398,
+        4.248,
+        -1.6489
+      ],
+      [
+        "pedestrian",
+        0.3348,
+        -3.9,
+        -23.761,
+        -1.246,
+        1.798,
+        0.629,
+        0.625,
+        -2.1181
+      ],
+      [
+        "pedestrian",
+        0.3539,
+        -12.468,
+        6.779,
+        0.291,
+        1.852,
+        0.682,
+        0.67,
+        -0.5279
+      ],
+      [
+        "traffic_cone",
+        0.3243,
+        8.549,
+        22.48,
+        -0.871,
+        0.768,
+        0.413,
+        0.46,
+        -1.4597
+      ],
+      [
+        "traffic_cone",
+        0.3478,
+        9.116,
+        12.271,
+        -1.207,
+        0.711,
+        0.402,
+        0.392,
+        -1.6888
+      ],
+      [
+        "traffic_cone",
+        0.3772,
+        8.638,
+        21.14,
+        -0.881,
+        0.777,
+        0.434,
+        0.454,
+        -1.4358
+      ],
+      [
+        "traffic_cone",
+        0.3834,
+        8.58,
+        23.983,
+        -0.747,
+        0.789,
+        0.405,
+        0.437,
+        -1.5361
+      ],
+      [
+        "traffic_cone",
+        0.4046,
+        1.704,
+        5.865,
+        -1.323,
+        0.75,
+        0.388,
+        0.396,
+        2.3935
+      ],
+      [
+        "traffic_cone",
+        0.4493,
+        2.17,
+        -9.112,
+        -1.715,
+        0.718,
+        0.383,
+        0.347,
+        1.3207
+      ],
+      [
+        "traffic_cone",
+        0.5131,
+        2.018,
+        -3.454,
+        -1.591,
+        0.723,
+        0.358,
+        0.366,
+        1.3995
+      ],
+      [
+        "traffic_cone",
+        0.5893,
+        9.312,
+        9.045,
+        -1.235,
+        0.786,
+        0.406,
+        0.409,
+        -1.7734
+      ],
+      [
+        "trailer",
+        0.3319,
+        15.635,
+        -11.31,
+        -0.367,
+        4.075,
+        2.941,
+        16.297,
+        -0.7348
+      ],
+      [
+        "trailer",
+        0.4909,
+        15.771,
+        -11.268,
+        -0.512,
+        4.14,
+        3.005,
+        16.412,
+        1.5001
+      ],
+      [
+        "truck",
+        0.4225,
+        15.145,
+        -8.655,
+        -0.471,
+        3.826,
+        2.977,
+        11.12,
+        -1.5033
+      ],
+      [
+        "truck",
+        0.8389,
+        14.717,
+        3.161,
+        -0.537,
+        2.995,
+        2.665,
+        7.004,
+        -1.5553
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 53,
+          "reinjected_centroid": [
+            16.12691879272461,
+            -18.556854248046875,
+            -1.7817009687423706
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 125,
+          "reinjected_centroid": [
+            12.694502830505371,
+            -10.475111961364746,
+            -1.8092408180236816
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -1.4504992961883545,
+            10.079309463500977,
+            -0.9543173313140869
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224821m, y\u22486m)",
+          "isometric": "A 3D bounding box for 'barrier' is predicted at x\u224821m, y\u22486m, but there are no point clusters within or around the box in the isometric view."
+        },
+        "evidence": [
+          "A predicted 'barrier' box exists in the BEV view at x \u2248 21m, y \u2248 6m with a confidence score of 0.34.",
+          "In both the BEV and Isometric views, this bounding box is completely empty with no underlying LiDAR points.",
+          "The surrounding area lacks physical evidence or occlusions that could justify a barrier prediction at this location."
+        ],
+        "alternatives_ruled_out": [
+          "Low reflectivity surfaces",
+          "Sensor noise",
+          "Occlusion by other objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:45.803560"
+}

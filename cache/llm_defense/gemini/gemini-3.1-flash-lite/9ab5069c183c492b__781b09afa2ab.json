@@ -1,0 +1,169 @@
+{
+  "key": {
+    "frame_id": "9ab5069c183c492b",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bicycle",
+        0.4512,
+        0.585,
+        16.022,
+        -0.489,
+        1.71,
+        0.653,
+        1.768,
+        1.4462
+      ],
+      [
+        "bus",
+        0.6757,
+        9.557,
+        -18.107,
+        -0.91,
+        3.436,
+        3.084,
+        12.085,
+        2.3024
+      ],
+      [
+        "car",
+        0.3113,
+        14.293,
+        -6.223,
+        -0.776,
+        1.775,
+        1.959,
+        4.464,
+        0.6386
+      ],
+      [
+        "car",
+        0.3172,
+        17.523,
+        -10.036,
+        -0.811,
+        1.608,
+        1.893,
+        4.272,
+        3.0234
+      ],
+      [
+        "car",
+        0.3887,
+        12.592,
+        -4.3,
+        -0.873,
+        1.598,
+        1.875,
+        4.356,
+        0.7203
+      ],
+      [
+        "car",
+        0.3965,
+        15.898,
+        -8.476,
+        -0.843,
+        1.648,
+        1.926,
+        4.336,
+        0.5382
+      ],
+      [
+        "car",
+        0.4365,
+        21.285,
+        3.85,
+        -0.846,
+        1.623,
+        1.914,
+        4.462,
+        -2.7784
+      ],
+      [
+        "car",
+        0.4454,
+        19.009,
+        -11.949,
+        -0.729,
+        1.815,
+        1.982,
+        4.597,
+        0.6127
+      ],
+      [
+        "car",
+        0.5637,
+        19.829,
+        6.06,
+        -0.797,
+        1.596,
+        1.925,
+        4.259,
+        -2.5974
+      ],
+      [
+        "pedestrian",
+        0.3195,
+        7.731,
+        22.393,
+        0.226,
+        1.871,
+        0.631,
+        0.687,
+        -2.3639
+      ],
+      [
+        "pedestrian",
+        0.3518,
+        9.46,
+        23.272,
+        0.094,
+        1.869,
+        0.601,
+        0.64,
+        -1.888
+      ],
+      [
+        "truck",
+        0.5274,
+        10.41,
+        -0.699,
+        -0.132,
+        3.334,
+        2.569,
+        6.597,
+        0.6234
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224816m, y\u22480.5m)",
+          "isometric": "Cluster appears isolated in space without a corresponding surface or vertical structure"
+        },
+        "evidence": [
+          "The detected 'bicycle' at x\u224816m, y\u22480.5m shows no substantial underlying point cluster in the isometric view.",
+          "The isometric view shows a 'pedestrian' detection at x\u224822m, y\u2248-7m which also lacks a dense, physically plausible point cluster structure.",
+          "Multiple other box predictions appear in the BEV/isometric views that seem to contain either zero or negligible point cloud returns, suggesting ghost object injection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely to cause multiple structured bounding box predictions for non-existent objects.",
+          "Occlusion does not explain the lack of underlying point clusters for the objects detected in open space."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:18.628683"
+}

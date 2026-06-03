@@ -1,0 +1,114 @@
+{
+  "key": {
+    "frame_id": "dfcda1c420184056",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.4619,
+        9.839,
+        -17.476,
+        -0.657,
+        3.565,
+        2.954,
+        13.02,
+        2.3607
+      ],
+      [
+        "car",
+        0.3024,
+        12.824,
+        -4.376,
+        -0.887,
+        1.634,
+        1.866,
+        4.37,
+        0.6742
+      ],
+      [
+        "car",
+        0.3561,
+        14.47,
+        -6.166,
+        -0.83,
+        1.782,
+        1.96,
+        4.474,
+        0.2738
+      ],
+      [
+        "car",
+        0.4374,
+        21.112,
+        4.421,
+        -0.802,
+        1.572,
+        1.924,
+        4.405,
+        -2.5952
+      ],
+      [
+        "car",
+        0.4756,
+        19.423,
+        6.645,
+        -0.799,
+        1.571,
+        1.891,
+        4.467,
+        -2.3989
+      ],
+      [
+        "pedestrian",
+        0.3481,
+        22.204,
+        24.87,
+        -0.335,
+        1.813,
+        0.629,
+        0.679,
+        -2.6196
+      ],
+      [
+        "truck",
+        0.5173,
+        10.531,
+        -0.672,
+        -0.312,
+        3.332,
+        2.531,
+        6.547,
+        0.6882
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m, y\u2248-2m)",
+          "isometric": "Cluster appears to be floating with minimal point density and no clear connection to ground plane."
+        },
+        "evidence": [
+          "In the BEV view, the bounding box at approximately (x=6m, y=-2m) encapsulates a very sparse, non-structural set of points that lack the geometric features (like L-shape) characteristic of a vehicle.",
+          "In the isometric view, this cluster appears isolated and structurally implausible, lacking a solid vertical profile and not resting on the road surface.",
+          "The lack of an associated shadow region in the LiDAR point cloud suggests these returns are not from a solid, opaque physical object."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (the points form a distinct, localized cluster that the detector mistakenly classified).",
+          "Distant occluded object (the location is in the near-field where data is usually dense and high-quality)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:08.359954"
+}

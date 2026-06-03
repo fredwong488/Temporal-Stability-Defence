@@ -1,0 +1,273 @@
+{
+  "key": {
+    "frame_id": "884067f5aa0a432e",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3058,
+        14.958,
+        11.661,
+        0.252,
+        1.804,
+        1.916,
+        4.593,
+        1.6122
+      ],
+      [
+        "car",
+        0.3693,
+        16.521,
+        11.734,
+        0.205,
+        1.706,
+        1.912,
+        4.594,
+        1.5881
+      ],
+      [
+        "car",
+        0.372,
+        21.311,
+        11.904,
+        0.753,
+        1.877,
+        2.008,
+        4.715,
+        1.5967
+      ],
+      [
+        "car",
+        0.3739,
+        18.932,
+        11.95,
+        0.327,
+        1.709,
+        1.92,
+        4.471,
+        1.5416
+      ],
+      [
+        "car",
+        0.3926,
+        23.744,
+        11.97,
+        0.693,
+        1.727,
+        1.914,
+        4.404,
+        1.5133
+      ],
+      [
+        "car",
+        0.5038,
+        -20.374,
+        -6.847,
+        -1.993,
+        1.686,
+        1.938,
+        4.548,
+        0.013
+      ],
+      [
+        "car",
+        0.5394,
+        -8.977,
+        14.636,
+        -0.797,
+        1.738,
+        1.975,
+        4.851,
+        -1.6281
+      ],
+      [
+        "car",
+        0.6125,
+        -14.571,
+        -6.928,
+        -1.65,
+        1.61,
+        1.879,
+        4.403,
+        0.21
+      ],
+      [
+        "car",
+        0.6265,
+        -7.71,
+        -21.33,
+        -2.028,
+        1.641,
+        1.869,
+        4.513,
+        -1.5908
+      ],
+      [
+        "car",
+        0.6316,
+        -21.791,
+        -1.379,
+        -1.825,
+        1.662,
+        1.935,
+        4.376,
+        -3.0605
+      ],
+      [
+        "car",
+        0.7173,
+        5.929,
+        26.076,
+        0.308,
+        1.677,
+        1.927,
+        4.732,
+        1.4409
+      ],
+      [
+        "car",
+        0.7256,
+        12.4,
+        11.841,
+        -0.071,
+        1.548,
+        1.837,
+        4.413,
+        1.6066
+      ],
+      [
+        "car",
+        0.7653,
+        -0.316,
+        12.414,
+        -0.606,
+        1.541,
+        1.798,
+        4.369,
+        1.4962
+      ],
+      [
+        "car",
+        0.8015,
+        -9.228,
+        8.185,
+        -1.065,
+        1.525,
+        1.862,
+        4.606,
+        -1.5605
+      ],
+      [
+        "car",
+        0.9185,
+        4.214,
+        -5.944,
+        -1.323,
+        1.55,
+        1.915,
+        4.82,
+        1.5796
+      ],
+      [
+        "car",
+        0.9263,
+        -6.122,
+        1.659,
+        -1.194,
+        1.526,
+        1.832,
+        4.468,
+        -2.1386
+      ],
+      [
+        "construction_vehicle",
+        0.307,
+        7.354,
+        12.396,
+        -0.217,
+        2.274,
+        1.208,
+        2.289,
+        1.4152
+      ],
+      [
+        "pedestrian",
+        0.367,
+        8.671,
+        21.034,
+        0.246,
+        1.769,
+        0.685,
+        0.742,
+        2.1763
+      ],
+      [
+        "traffic_cone",
+        0.341,
+        -7.702,
+        18.71,
+        -0.733,
+        1.247,
+        0.377,
+        0.38,
+        3.0312
+      ],
+      [
+        "truck",
+        0.4272,
+        21.337,
+        12.373,
+        0.592,
+        2.076,
+        2.25,
+        5.903,
+        1.5466
+      ],
+      [
+        "truck",
+        0.4325,
+        -7.959,
+        42.147,
+        1.355,
+        2.735,
+        2.467,
+        6.719,
+        1.5344
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 117
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480m, y\u22480m)",
+          "isometric": "Small dense cluster at origin with no corresponding vehicle structure"
+        },
+        "evidence": [
+          "A highly dense, localized cluster of points exists at the ego-vehicle coordinate origin (0,0), characteristic of near-range point injection.",
+          "The cluster lacks any coherent 3D shape or surface profile consistent with a vehicle or obstacle.",
+          "The point cluster at the origin is detached from the ground plane and lacks physical dimensions of a real object, highly suggestive of an adversarial spoofing injection."
+        ],
+        "alternatives_ruled_out": [
+          "Ego vehicle noise (this cluster is abnormally dense and localized compared to typical sensor noise).",
+          "Reflections from road surfaces."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:16.342120"
+}

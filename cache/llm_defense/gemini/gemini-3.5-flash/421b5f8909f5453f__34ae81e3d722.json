@@ -1,0 +1,279 @@
+{
+  "key": {
+    "frame_id": "421b5f8909f5453f",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.302,
+        -1.745,
+        30.563,
+        0.205,
+        1.031,
+        2.132,
+        0.368,
+        -2.2896
+      ],
+      [
+        "barrier",
+        0.302,
+        8.135,
+        14.04,
+        -0.899,
+        1.171,
+        1.958,
+        0.654,
+        3.0323
+      ],
+      [
+        "barrier",
+        0.3127,
+        7.88,
+        11.756,
+        -1.001,
+        1.13,
+        2.023,
+        0.628,
+        3.0307
+      ],
+      [
+        "barrier",
+        0.3169,
+        7.162,
+        2.78,
+        -1.228,
+        1.209,
+        1.897,
+        0.661,
+        3.0995
+      ],
+      [
+        "barrier",
+        0.3357,
+        8.507,
+        20.68,
+        -0.641,
+        1.058,
+        2.08,
+        0.554,
+        3.0859
+      ],
+      [
+        "barrier",
+        0.3466,
+        9.512,
+        15.61,
+        -0.763,
+        1.191,
+        1.999,
+        0.607,
+        3.0744
+      ],
+      [
+        "barrier",
+        0.3473,
+        7.339,
+        6.093,
+        -1.176,
+        1.262,
+        1.88,
+        0.723,
+        2.9905
+      ],
+      [
+        "barrier",
+        0.3754,
+        7.709,
+        9.935,
+        -1.022,
+        1.177,
+        1.996,
+        0.631,
+        3.0572
+      ],
+      [
+        "barrier",
+        0.3789,
+        18.086,
+        18.999,
+        -0.479,
+        1.034,
+        2.102,
+        0.515,
+        -1.5581
+      ],
+      [
+        "barrier",
+        0.3865,
+        8.272,
+        16.579,
+        -0.763,
+        1.163,
+        1.981,
+        0.594,
+        3.0084
+      ],
+      [
+        "barrier",
+        0.3882,
+        8.47,
+        18.998,
+        -0.67,
+        1.095,
+        2.013,
+        0.567,
+        3.1114
+      ],
+      [
+        "barrier",
+        0.4007,
+        7.046,
+        -0.463,
+        -1.3,
+        1.093,
+        1.959,
+        0.653,
+        -3.1272
+      ],
+      [
+        "barrier",
+        0.4063,
+        7.08,
+        1.25,
+        -1.244,
+        1.149,
+        1.864,
+        0.651,
+        3.112
+      ],
+      [
+        "barrier",
+        0.4126,
+        7.487,
+        7.554,
+        -1.109,
+        1.21,
+        1.942,
+        0.664,
+        3.0327
+      ],
+      [
+        "bus",
+        0.328,
+        -15.462,
+        -33.171,
+        -0.287,
+        3.891,
+        2.937,
+        13.864,
+        -1.6925
+      ],
+      [
+        "construction_vehicle",
+        0.6049,
+        -4.483,
+        3.612,
+        -0.131,
+        3.678,
+        3.234,
+        10.511,
+        1.6102
+      ],
+      [
+        "motorcycle",
+        0.301,
+        6.683,
+        23.069,
+        -0.09,
+        1.373,
+        0.804,
+        2.054,
+        -1.5719
+      ],
+      [
+        "pedestrian",
+        0.3037,
+        -2.679,
+        -25.05,
+        -1.814,
+        1.769,
+        0.659,
+        0.701,
+        -1.6492
+      ],
+      [
+        "pedestrian",
+        0.3369,
+        -0.429,
+        -25.099,
+        -1.717,
+        1.802,
+        0.64,
+        0.616,
+        -0.7112
+      ],
+      [
+        "traffic_cone",
+        0.405,
+        6.944,
+        -2.527,
+        -1.528,
+        0.787,
+        0.385,
+        0.388,
+        2.8661
+      ],
+      [
+        "truck",
+        0.3667,
+        -4.56,
+        3.572,
+        -0.24,
+        3.375,
+        3.101,
+        11.355,
+        1.5931
+      ],
+      [
+        "truck",
+        0.4975,
+        7.95,
+        39.259,
+        0.651,
+        1.82,
+        1.993,
+        5.032,
+        1.4387
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224823m, y\u2248-6.5m)",
+          "isometric": "A 3D bounding box for a motorcycle is predicted in a completely empty region of the point cloud with absolutely zero LiDAR returns inside or immediately surrounding the box."
+        },
+        "evidence": [
+          "The bounding box 'motorcycle 0.30' at x\u224823m, y\u2248-6.5m has zero physical LiDAR returns within its boundaries in both the BEV and Isometric views.",
+          "There is no occlusion or physical explanation for a vehicle to exist in that location without reflecting any laser pulses."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity surface",
+          "Occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:56:53.586909"
+}

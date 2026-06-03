@@ -1,0 +1,155 @@
+{
+  "key": {
+    "frame_id": "33786e63c2ae450b",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.368,
+        14.828,
+        -5.919,
+        -1.242,
+        0.978,
+        3.235,
+        0.521,
+        2.7874
+      ],
+      [
+        "car",
+        0.7921,
+        -3.337,
+        0.468,
+        -1.194,
+        1.495,
+        1.875,
+        4.644,
+        1.6128
+      ],
+      [
+        "pedestrian",
+        0.3107,
+        0.966,
+        7.512,
+        -0.538,
+        1.804,
+        0.695,
+        0.782,
+        -3.0717
+      ],
+      [
+        "pedestrian",
+        0.359,
+        0.37,
+        8.948,
+        -0.41,
+        1.746,
+        0.698,
+        0.794,
+        2.2372
+      ],
+      [
+        "pedestrian",
+        0.4517,
+        1.27,
+        8.269,
+        -0.483,
+        1.797,
+        0.688,
+        0.747,
+        2.544
+      ],
+      [
+        "pedestrian",
+        0.4759,
+        2.09,
+        8.455,
+        -0.488,
+        1.788,
+        0.697,
+        0.75,
+        2.8104
+      ],
+      [
+        "trailer",
+        0.9436,
+        -3.181,
+        -15.648,
+        -0.373,
+        4.17,
+        2.773,
+        14.116,
+        1.6277
+      ],
+      [
+        "truck",
+        0.6207,
+        -0.127,
+        -7.998,
+        -1.029,
+        2.466,
+        2.12,
+        4.71,
+        1.5539
+      ],
+      [
+        "truck",
+        0.8885,
+        -3.412,
+        -7.759,
+        -0.344,
+        3.966,
+        2.611,
+        6.084,
+        1.6222
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.9339094161987305,
+            0.619748055934906,
+            -1.6667556762695312
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 8.5m, y \u2248 -1m",
+          "isometric": "Multiple overlapping pedestrian bounding boxes enclosing a very sparse point cluster"
+        },
+        "evidence": [
+          "Four overlapping pedestrian bounding boxes (pedestrian 0.36, 0.31, 0.45, 0.48) are generated at x \u2248 8.5m, y \u2248 -1m.",
+          "The underlying point cloud in this region is extremely sparse and lacks the height, shape, and physical profile of multiple pedestrians.",
+          "There is no distinctive shadow or occlusion pattern behind this cluster that would indicate solid physical obstacles."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (which would not generate multiple highly-confident overlapping pedestrian predictions)",
+          "Distant real pedestrians (the location is close to the ego vehicle at 8.5 meters, where genuine pedestrians would return a much cleaner, more structured point signature)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:10.038611"
+}

@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "5559ab8b776e4c88",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3144,
+        6.056,
+        -1.02,
+        -0.905,
+        1.337,
+        0.52,
+        1.664,
+        -1.6592
+      ],
+      [
+        "car",
+        0.308,
+        -23.154,
+        13.176,
+        -1.332,
+        1.513,
+        1.893,
+        4.431,
+        0.191
+      ],
+      [
+        "car",
+        0.5001,
+        4.562,
+        40.094,
+        1.474,
+        1.687,
+        1.928,
+        4.536,
+        1.4779
+      ],
+      [
+        "car",
+        0.5632,
+        0.211,
+        41.072,
+        1.603,
+        1.783,
+        1.918,
+        4.563,
+        1.4045
+      ],
+      [
+        "car",
+        0.6947,
+        -3.716,
+        15.117,
+        -0.29,
+        1.693,
+        1.937,
+        4.767,
+        -1.636
+      ],
+      [
+        "car",
+        0.7765,
+        1.097,
+        -19.44,
+        -2.176,
+        1.627,
+        1.893,
+        4.506,
+        1.7576
+      ],
+      [
+        "pedestrian",
+        0.3319,
+        10.624,
+        24.439,
+        0.676,
+        1.811,
+        0.667,
+        0.692,
+        -2.4109
+      ],
+      [
+        "pedestrian",
+        0.3365,
+        -28.956,
+        21.256,
+        0.063,
+        1.827,
+        0.633,
+        0.649,
+        3.1098
+      ],
+      [
+        "pedestrian",
+        0.3391,
+        8.678,
+        14.568,
+        -0.073,
+        1.839,
+        0.685,
+        0.722,
+        1.7466
+      ],
+      [
+        "pedestrian",
+        0.3411,
+        -18.935,
+        17.534,
+        -0.354,
+        1.822,
+        0.614,
+        0.601,
+        0.8299
+      ],
+      [
+        "pedestrian",
+        0.3563,
+        -16.708,
+        15.995,
+        -0.399,
+        1.898,
+        0.662,
+        0.709,
+        1.6481
+      ],
+      [
+        "pedestrian",
+        0.3593,
+        6.961,
+        -13.401,
+        -1.5,
+        1.739,
+        0.665,
+        0.699,
+        -1.7986
+      ],
+      [
+        "pedestrian",
+        0.3728,
+        7.358,
+        10.936,
+        -0.462,
+        1.755,
+        0.655,
+        0.744,
+        2.4454
+      ],
+      [
+        "pedestrian",
+        0.3853,
+        7.967,
+        16.658,
+        -0.15,
+        1.739,
+        0.617,
+        0.582,
+        0.6163
+      ],
+      [
+        "pedestrian",
+        0.3901,
+        9.202,
+        20.035,
+        0.177,
+        1.803,
+        0.649,
+        0.606,
+        -3.0136
+      ],
+      [
+        "pedestrian",
+        0.397,
+        8.174,
+        19.693,
+        0.254,
+        1.769,
+        0.658,
+        0.629,
+        0.4912
+      ],
+      [
+        "pedestrian",
+        0.4184,
+        9.244,
+        16.354,
+        -0.246,
+        1.73,
+        0.636,
+        0.64,
+        2.4086
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22483m)",
+          "isometric": "Cluster at x\u224815m, y\u22483m corresponding to 'car' detection"
+        },
+        "evidence": [
+          "The primary evidence for a potential anomaly is a detection labeled 'car' at approximately (x=15m, y=3m) in the BEV view.",
+          "In the isometric view, this region shows very sparse, low-density LiDAR returns that lack the volumetric structure (no clear L-shape or vertical surfaces) expected of a vehicle at that distance.",
+          "Due to the 'Camera image not available' status, I cannot verify if this object corresponds to a real vehicle or if it is a phantom detection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (LiDAR returns at this distance can be sparse and may be misclassified by the detector as a car if the threshold is low).",
+          "Occlusion (without camera verification, I cannot confirm if this is occluded by another object or just a sparse return cluster)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:44.889832"
+}

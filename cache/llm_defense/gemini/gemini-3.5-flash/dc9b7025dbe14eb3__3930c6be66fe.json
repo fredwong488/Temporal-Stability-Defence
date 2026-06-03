@@ -1,0 +1,316 @@
+{
+  "key": {
+    "frame_id": "dc9b7025dbe14eb3",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3157,
+        3.09,
+        -9.291,
+        -1.596,
+        1.036,
+        1.986,
+        0.53,
+        -3.1131
+      ],
+      [
+        "barrier",
+        0.3806,
+        3.441,
+        -12.548,
+        -1.624,
+        1.026,
+        2.007,
+        0.562,
+        -3.0342
+      ],
+      [
+        "barrier",
+        0.4103,
+        3.64,
+        -14.119,
+        -1.658,
+        1.06,
+        2.036,
+        0.557,
+        -3.0266
+      ],
+      [
+        "barrier",
+        0.4293,
+        2.809,
+        -6.268,
+        -1.499,
+        0.946,
+        2.725,
+        0.557,
+        -3.0965
+      ],
+      [
+        "bus",
+        0.4661,
+        24.06,
+        12.148,
+        -0.049,
+        3.213,
+        2.954,
+        9.517,
+        1.6369
+      ],
+      [
+        "car",
+        0.3106,
+        -1.353,
+        11.284,
+        -0.407,
+        1.895,
+        2.007,
+        4.87,
+        1.7021
+      ],
+      [
+        "car",
+        0.7473,
+        18.109,
+        -10.239,
+        -1.852,
+        1.558,
+        1.925,
+        4.686,
+        -1.4862
+      ],
+      [
+        "construction_vehicle",
+        0.3393,
+        14.064,
+        38.84,
+        2.234,
+        4.048,
+        3.689,
+        8.291,
+        -1.6813
+      ],
+      [
+        "construction_vehicle",
+        0.4716,
+        5.093,
+        -8.915,
+        -0.741,
+        2.752,
+        2.816,
+        3.541,
+        -1.4689
+      ],
+      [
+        "pedestrian",
+        0.3217,
+        4.522,
+        -15.421,
+        -1.376,
+        1.799,
+        0.678,
+        0.666,
+        -1.5106
+      ],
+      [
+        "pedestrian",
+        0.3278,
+        -7.021,
+        -15.235,
+        -1.025,
+        1.758,
+        0.629,
+        0.677,
+        -1.4022
+      ],
+      [
+        "pedestrian",
+        0.3556,
+        0.289,
+        -18.325,
+        -1.412,
+        1.76,
+        0.651,
+        0.66,
+        0.8633
+      ],
+      [
+        "pedestrian",
+        0.3636,
+        -6.869,
+        -11.038,
+        -0.944,
+        1.751,
+        0.639,
+        0.661,
+        -1.341
+      ],
+      [
+        "traffic_cone",
+        0.3123,
+        11.174,
+        -3.703,
+        -1.58,
+        0.763,
+        0.379,
+        0.38,
+        3.0206
+      ],
+      [
+        "traffic_cone",
+        0.4486,
+        10.801,
+        -0.504,
+        -1.424,
+        1.222,
+        0.415,
+        0.395,
+        1.3561
+      ],
+      [
+        "traffic_cone",
+        0.5344,
+        10.118,
+        -1.346,
+        -1.663,
+        0.742,
+        0.384,
+        0.382,
+        -2.1794
+      ],
+      [
+        "traffic_cone",
+        0.5617,
+        1.804,
+        3.525,
+        -1.47,
+        0.644,
+        0.454,
+        0.464,
+        3.1103
+      ],
+      [
+        "traffic_cone",
+        0.593,
+        10.652,
+        -6.065,
+        -1.683,
+        0.741,
+        0.423,
+        0.394,
+        -2.9313
+      ],
+      [
+        "traffic_cone",
+        0.599,
+        1.428,
+        8.521,
+        -1.218,
+        0.759,
+        0.361,
+        0.366,
+        -2.9761
+      ],
+      [
+        "trailer",
+        0.3341,
+        15.645,
+        -2.338,
+        -0.417,
+        4.126,
+        3.403,
+        15.238,
+        -1.4374
+      ],
+      [
+        "truck",
+        0.3046,
+        13.326,
+        -15.293,
+        -0.863,
+        3.653,
+        3.326,
+        15.528,
+        -1.3711
+      ],
+      [
+        "truck",
+        0.8187,
+        13.941,
+        11.348,
+        -0.214,
+        3.133,
+        2.647,
+        7.004,
+        -1.4554
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            13.459909439086914,
+            -1.8689701557159424,
+            -1.82500422000885
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 83,
+          "reinjected_centroid": [
+            17.397066116333008,
+            -9.747638702392578,
+            -2.1443984508514404
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -1.1141661405563354,
+            9.510021209716797,
+            -0.8115358948707581
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u22481.5m)",
+          "isometric": "Empty/sparse box at x\u224811m with no coherent vertical structure, L-shape, or shadow casting consistent with a real car"
+        },
+        "evidence": [
+          "The bounding box labeled 'car 0.31' at x\u224811m, y\u22481.5m contains a very small, sparse set of LiDAR points (~20-30 scattered returns) with no coherent geometric shape or vehicle structure.",
+          "In the isometric view, the points inside the 'car 0.31' box lack the vertical extent or height expected of a real car.",
+          "There is no occlusion 'shadow' (void region) behind this cluster along the laser's line of sight, confirming there is no solid physical object at this location."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise / spurious reflections (unlikely to form a structured 3D detection without deliberate injection or perturbation)",
+          "Low reflectivity / dark paint (still expected to exhibit an occlusion shadow and some surface geometry)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:09.976607"
+}

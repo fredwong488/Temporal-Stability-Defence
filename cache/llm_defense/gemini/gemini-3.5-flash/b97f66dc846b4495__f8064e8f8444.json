@@ -1,0 +1,145 @@
+{
+  "key": {
+    "frame_id": "b97f66dc846b4495",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "barrier",
+        0.3004,
+        11.72,
+        17.46,
+        -0.687,
+        1.011,
+        1.796,
+        0.498,
+        2.2003
+      ],
+      [
+        "bus",
+        0.3614,
+        8.251,
+        -45.381,
+        -2.295,
+        3.497,
+        2.869,
+        12.036,
+        -1.5552
+      ],
+      [
+        "bus",
+        0.6839,
+        4.875,
+        -2.03,
+        -0.429,
+        3.257,
+        2.823,
+        9.194,
+        1.5885
+      ],
+      [
+        "bus",
+        0.7183,
+        4.594,
+        -10.342,
+        -0.576,
+        3.636,
+        2.982,
+        10.479,
+        1.5132
+      ],
+      [
+        "car",
+        0.5525,
+        -6.226,
+        -35.922,
+        -2.648,
+        1.847,
+        2.006,
+        4.837,
+        -1.4939
+      ],
+      [
+        "construction_vehicle",
+        0.593,
+        -18.121,
+        38.788,
+        1.897,
+        3.918,
+        3.151,
+        6.966,
+        -2.2514
+      ],
+      [
+        "construction_vehicle",
+        0.8982,
+        -5.473,
+        1.436,
+        -0.761,
+        2.173,
+        2.554,
+        7.209,
+        -1.6177
+      ],
+      [
+        "traffic_cone",
+        0.481,
+        -3.374,
+        6.084,
+        -1.168,
+        0.714,
+        0.371,
+        0.366,
+        -1.4914
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 10,
+          "reinjected_centroid": [
+            -6.271462440490723,
+            -33.89084243774414,
+            -2.7329883575439453
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (Camera image is blacked out / suppressed)",
+          "bev": "Region around x \u2248 10m to 14m, y \u2248 5m to 7m",
+          "isometric": "Floating bounding box at x \u2248 12m, y \u2248 6m, elevated in z \u2248 2m to 3.5m"
+        },
+        "evidence": [
+          "The camera image is completely unavailable/blacked out, labeled as '[ATTACKED]', indicating a sensor denial-of-service or suppression.",
+          "A 3D bounding box is generated in the isometric view at x \u2248 12m, y \u2248 6m, elevated high above the ground plane (z \u2248 2.5m).",
+          "This elevated box contains only sparse background points corresponding to high-altitude vegetation or canopy noise, rather than a real ground vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Valid ground vehicle detection (the box floats completely in mid-air)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:18:54.631674"
+}

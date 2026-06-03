@@ -1,0 +1,246 @@
+{
+  "key": {
+    "frame_id": "07a66eee9b8746da",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.951,
+        10.52,
+        -14.519,
+        -0.343,
+        3.245,
+        2.81,
+        12.18,
+        2.8027
+      ],
+      [
+        "car",
+        0.3674,
+        20.38,
+        29.165,
+        -0.23,
+        1.634,
+        1.906,
+        4.425,
+        -1.7658
+      ],
+      [
+        "car",
+        0.4158,
+        3.067,
+        29.415,
+        -0.56,
+        1.605,
+        1.924,
+        4.332,
+        -0.3905
+      ],
+      [
+        "car",
+        0.4443,
+        26.309,
+        4.15,
+        -0.079,
+        1.585,
+        1.821,
+        4.258,
+        -1.8379
+      ],
+      [
+        "car",
+        0.5159,
+        18.075,
+        29.937,
+        -0.338,
+        1.649,
+        1.88,
+        4.384,
+        1.3372
+      ],
+      [
+        "car",
+        0.536,
+        19.688,
+        6.876,
+        -0.655,
+        1.608,
+        1.888,
+        4.521,
+        -1.8983
+      ],
+      [
+        "car",
+        0.5431,
+        18.935,
+        15.918,
+        -0.677,
+        1.64,
+        1.886,
+        4.413,
+        1.208
+      ],
+      [
+        "car",
+        0.5552,
+        24.42,
+        5.195,
+        -0.253,
+        1.678,
+        1.978,
+        4.691,
+        -1.9298
+      ],
+      [
+        "car",
+        0.5561,
+        29.17,
+        3.626,
+        0.305,
+        1.884,
+        2.039,
+        4.988,
+        -1.9704
+      ],
+      [
+        "car",
+        0.6306,
+        15.656,
+        30.391,
+        -0.459,
+        1.634,
+        1.915,
+        4.509,
+        1.2185
+      ],
+      [
+        "car",
+        0.6736,
+        17.55,
+        7.767,
+        -0.556,
+        1.647,
+        1.897,
+        4.402,
+        -1.8992
+      ],
+      [
+        "car",
+        0.7469,
+        15.477,
+        8.717,
+        -0.625,
+        1.55,
+        1.909,
+        4.534,
+        -1.9853
+      ],
+      [
+        "motorcycle",
+        0.4247,
+        -5.295,
+        10.046,
+        -0.687,
+        1.559,
+        0.765,
+        2.036,
+        1.8836
+      ],
+      [
+        "pedestrian",
+        0.3037,
+        -3.432,
+        16.086,
+        -0.504,
+        1.761,
+        0.601,
+        0.565,
+        0.0844
+      ],
+      [
+        "pedestrian",
+        0.3133,
+        -0.907,
+        20.768,
+        -0.447,
+        1.773,
+        0.618,
+        0.556,
+        -0.5006
+      ],
+      [
+        "pedestrian",
+        0.3457,
+        -2.019,
+        18.79,
+        -0.359,
+        1.809,
+        0.631,
+        0.601,
+        0.0225
+      ],
+      [
+        "pedestrian",
+        0.3759,
+        -2.847,
+        17.518,
+        -0.459,
+        1.769,
+        0.567,
+        0.541,
+        -0.5291
+      ],
+      [
+        "pedestrian",
+        0.3876,
+        -5.012,
+        -14.007,
+        -0.92,
+        1.756,
+        0.627,
+        0.656,
+        -1.2141
+      ],
+      [
+        "truck",
+        0.4758,
+        10.353,
+        -1.964,
+        0.138,
+        3.306,
+        2.405,
+        6.006,
+        1.1867
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m to 22m, y\u22482m to 5m)",
+          "isometric": "series of 4 boxes arranged in a line at z=0 with no corresponding physical structure in the point cloud"
+        },
+        "evidence": [
+          "The BEV shows four small bounding boxes labeled 'pedestrian' (confidence scores 0.30, 0.38, 0.35, 0.31) aligned linearly in free space.",
+          "The isometric view confirms there is no vertical point cluster associated with these bounding boxes; they are placed on the ground plane where no actual obstacles exist.",
+          "The boxes lack depth and vertical structure consistent with human pedestrians, and there is no occlusion or physical feature in the scan that would justify these detections."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise (random noise is usually scattered, not neatly organized into a line of detector-like labels).",
+          "Small roadside objects (there is no geometric support for these objects in the point cloud)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:39.176712"
+}

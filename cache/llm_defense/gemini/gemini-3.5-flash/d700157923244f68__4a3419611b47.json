@@ -1,0 +1,226 @@
+{
+  "key": {
+    "frame_id": "d700157923244f68",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3499,
+        14.801,
+        -5.992,
+        -1.244,
+        0.974,
+        3.2,
+        0.552,
+        2.7947
+      ],
+      [
+        "bus",
+        0.7375,
+        -7.472,
+        34.563,
+        1.466,
+        3.495,
+        2.934,
+        11.456,
+        0.9755
+      ],
+      [
+        "car",
+        0.4807,
+        -8.562,
+        20.854,
+        0.013,
+        1.694,
+        1.965,
+        4.708,
+        -0.0369
+      ],
+      [
+        "car",
+        0.6161,
+        8.444,
+        22.195,
+        0.62,
+        1.634,
+        1.933,
+        4.612,
+        3.0701
+      ],
+      [
+        "car",
+        0.833,
+        -3.326,
+        0.445,
+        -1.163,
+        1.511,
+        1.866,
+        4.606,
+        1.6178
+      ],
+      [
+        "pedestrian",
+        0.3132,
+        -3.11,
+        7.43,
+        -0.683,
+        1.697,
+        0.687,
+        0.787,
+        1.0534
+      ],
+      [
+        "pedestrian",
+        0.3171,
+        -8.399,
+        7.38,
+        -0.725,
+        1.765,
+        0.631,
+        0.665,
+        0.5917
+      ],
+      [
+        "pedestrian",
+        0.38,
+        -9.012,
+        9.346,
+        -0.616,
+        1.811,
+        0.676,
+        0.728,
+        1.8203
+      ],
+      [
+        "pedestrian",
+        0.4067,
+        -7.11,
+        9.095,
+        -0.538,
+        1.789,
+        0.699,
+        0.713,
+        1.2495
+      ],
+      [
+        "trailer",
+        0.9379,
+        -3.136,
+        -16.035,
+        -0.378,
+        4.218,
+        2.782,
+        15.143,
+        1.6281
+      ],
+      [
+        "truck",
+        0.6465,
+        -0.087,
+        -8.126,
+        -1.05,
+        2.456,
+        2.183,
+        4.867,
+        1.608
+      ],
+      [
+        "truck",
+        0.7109,
+        21.681,
+        16.696,
+        1.309,
+        3.62,
+        2.79,
+        8.103,
+        0.0693
+      ],
+      [
+        "truck",
+        0.8989,
+        -3.415,
+        -7.794,
+        -0.327,
+        3.989,
+        2.659,
+        6.143,
+        1.6285
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.127824306488037,
+            0.6444443464279175,
+            -1.7708258628845215
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            7.964878559112549,
+            21.542871475219727,
+            0.10365601629018784
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224821m, y\u22487m)",
+          "isometric": "Box 'car 0.48' is completely empty of LiDAR points and exhibits no physical structure or 3D shadow."
+        },
+        "evidence": [
+          "The bounding box 'car 0.48' contains no LiDAR point returns inside its volume in either the BEV or isometric views.",
+          "There is no occlusion shadow or physical surface profile corresponding to a vehicle at this location."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity surface",
+          "Occlusion"
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224822m, y\u2248-7m)",
+          "isometric": "Box 'car 0.62' contains no LiDAR point returns and is empty."
+        },
+        "evidence": [
+          "The bounding box 'car 0.62' at x\u224822m, y\u2248-7m does not envelope any point cluster.",
+          "No supporting ground or object points are present within or directly under the bounding box."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity surface",
+          "Occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:37.685373"
+}

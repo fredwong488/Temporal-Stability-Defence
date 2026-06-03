@@ -1,0 +1,268 @@
+{
+  "key": {
+    "frame_id": "1f6edbb8133745d1",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3352,
+        7.026,
+        -26.954,
+        -0.547,
+        1.223,
+        0.589,
+        1.585,
+        -3.1026
+      ],
+      [
+        "bus",
+        0.3364,
+        13.976,
+        46.987,
+        2.74,
+        3.319,
+        3.103,
+        12.635,
+        1.4495
+      ],
+      [
+        "car",
+        0.3394,
+        -1.353,
+        32.243,
+        1.278,
+        1.603,
+        1.914,
+        4.499,
+        -1.4621
+      ],
+      [
+        "car",
+        0.4137,
+        -14.096,
+        -4.367,
+        -1.466,
+        1.655,
+        1.917,
+        4.437,
+        0.0821
+      ],
+      [
+        "car",
+        0.5039,
+        -5.512,
+        30.439,
+        1.328,
+        1.774,
+        1.966,
+        4.683,
+        -1.6954
+      ],
+      [
+        "car",
+        0.7085,
+        1.08,
+        -20.173,
+        -2.363,
+        1.632,
+        1.93,
+        4.576,
+        1.7333
+      ],
+      [
+        "car",
+        0.8419,
+        -4.155,
+        6.214,
+        -0.685,
+        1.776,
+        1.964,
+        4.707,
+        -1.5944
+      ],
+      [
+        "pedestrian",
+        0.3006,
+        9.212,
+        17.037,
+        0.337,
+        1.77,
+        0.668,
+        0.639,
+        -2.61
+      ],
+      [
+        "pedestrian",
+        0.3254,
+        -29.346,
+        16.678,
+        0.181,
+        1.843,
+        0.65,
+        0.676,
+        -1.4659
+      ],
+      [
+        "pedestrian",
+        0.3295,
+        -20.607,
+        3.766,
+        -1.153,
+        1.815,
+        0.661,
+        0.682,
+        -1.1243
+      ],
+      [
+        "pedestrian",
+        0.3415,
+        -10.616,
+        -5.871,
+        -1.288,
+        1.875,
+        0.684,
+        0.807,
+        -1.3659
+      ],
+      [
+        "pedestrian",
+        0.3445,
+        6.082,
+        -5.8,
+        -1.117,
+        1.839,
+        0.707,
+        0.813,
+        -0.2781
+      ],
+      [
+        "pedestrian",
+        0.356,
+        9.024,
+        12.982,
+        -0.073,
+        1.8,
+        0.719,
+        0.765,
+        2.6169
+      ],
+      [
+        "pedestrian",
+        0.3666,
+        -11.388,
+        12.4,
+        -0.178,
+        1.764,
+        0.626,
+        0.665,
+        1.8894
+      ],
+      [
+        "pedestrian",
+        0.3931,
+        7.586,
+        12.161,
+        -0.189,
+        1.751,
+        0.713,
+        0.721,
+        1.0433
+      ],
+      [
+        "pedestrian",
+        0.4415,
+        7.098,
+        6.071,
+        -0.584,
+        1.765,
+        0.657,
+        0.702,
+        1.5593
+      ],
+      [
+        "pedestrian",
+        0.4733,
+        8.451,
+        11.138,
+        -0.216,
+        1.749,
+        0.666,
+        0.715,
+        -2.3201
+      ],
+      [
+        "pedestrian",
+        0.4877,
+        8.601,
+        15.682,
+        0.194,
+        1.8,
+        0.683,
+        0.62,
+        3.108
+      ],
+      [
+        "pedestrian",
+        0.5067,
+        -12.335,
+        12.535,
+        -0.243,
+        1.767,
+        0.616,
+        0.639,
+        1.3228
+      ],
+      [
+        "pedestrian",
+        0.5098,
+        7.7,
+        15.039,
+        0.107,
+        1.82,
+        0.679,
+        0.666,
+        1.2917
+      ],
+      [
+        "trailer",
+        0.3181,
+        -11.563,
+        47.577,
+        2.933,
+        3.313,
+        2.689,
+        7.544,
+        1.6839
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m, y\u22483m)",
+          "isometric": "Large bounding box at (x\u22486, y\u22483) with sparse/no point cluster support"
+        },
+        "evidence": [
+          "The bounding box in the BEV at (x\u22486, y\u22483) is disproportionately large compared to the actual point return density in that region.",
+          "The isometric view confirms the region enclosed by the box is extremely sparse and lacks the vertical structural integrity or surface profile (like a vehicle L-shape) expected for a detected car.",
+          "The absence of a dense cluster of points supporting the bounding box suggests injected or spoofed metadata rather than a physical object return."
+        ],
+        "alternatives_ruled_out": [
+          "Normal sensor noise: The box is too spatially coherent and specific to be random noise.",
+          "Occlusion: While the area is near the ego vehicle, there is no physical structure or reason for such a large void that would necessitate a false positive of this magnitude."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:18.044790"
+}

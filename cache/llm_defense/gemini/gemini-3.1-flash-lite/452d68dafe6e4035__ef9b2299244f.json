@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "452d68dafe6e4035",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3383,
+        -8.467,
+        29.269,
+        0.33,
+        1.663,
+        1.892,
+        4.661,
+        -1.6297
+      ],
+      [
+        "car",
+        0.3875,
+        -2.09,
+        13.304,
+        -0.311,
+        1.781,
+        1.918,
+        4.625,
+        0.7744
+      ],
+      [
+        "car",
+        0.4541,
+        -0.142,
+        -35.792,
+        -2.29,
+        1.823,
+        2.011,
+        4.8,
+        1.5328
+      ],
+      [
+        "car",
+        0.5279,
+        -19.96,
+        8.184,
+        -0.996,
+        1.704,
+        1.961,
+        4.48,
+        0.1491
+      ],
+      [
+        "car",
+        0.6132,
+        -21.787,
+        13.277,
+        -0.993,
+        1.65,
+        1.886,
+        4.314,
+        -2.9743
+      ],
+      [
+        "car",
+        0.6985,
+        -8.952,
+        22.777,
+        -0.294,
+        1.605,
+        1.905,
+        4.635,
+        -1.6183
+      ],
+      [
+        "car",
+        0.7828,
+        -14.392,
+        7.905,
+        -1.026,
+        1.569,
+        1.876,
+        4.464,
+        0.2167
+      ],
+      [
+        "car",
+        0.8452,
+        -7.612,
+        -6.614,
+        -1.567,
+        1.65,
+        1.884,
+        4.69,
+        -1.5824
+      ],
+      [
+        "car",
+        0.927,
+        4.335,
+        8.54,
+        -0.764,
+        1.52,
+        1.853,
+        4.678,
+        1.5973
+      ],
+      [
+        "construction_vehicle",
+        0.363,
+        8.245,
+        -45.851,
+        -2.077,
+        3.153,
+        3.156,
+        6.052,
+        1.2609
+      ],
+      [
+        "pedestrian",
+        0.3143,
+        7.189,
+        -25.379,
+        -1.653,
+        1.794,
+        0.661,
+        0.635,
+        2.3695
+      ],
+      [
+        "pedestrian",
+        0.3424,
+        5.951,
+        -15.184,
+        -1.336,
+        1.839,
+        0.641,
+        0.684,
+        3.0156
+      ],
+      [
+        "pedestrian",
+        0.3929,
+        7.436,
+        -16.069,
+        -1.386,
+        1.852,
+        0.61,
+        0.604,
+        -2.6896
+      ],
+      [
+        "pedestrian",
+        0.4087,
+        7.835,
+        -14.997,
+        -1.338,
+        1.842,
+        0.619,
+        0.645,
+        -2.5376
+      ],
+      [
+        "pedestrian",
+        0.4228,
+        8.294,
+        10.786,
+        -0.317,
+        1.749,
+        0.659,
+        0.674,
+        -1.566
+      ],
+      [
+        "pedestrian",
+        0.4319,
+        8.779,
+        9.332,
+        -0.342,
+        1.74,
+        0.632,
+        0.642,
+        2.1268
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22482m)",
+          "isometric": "cluster appears sparse and lacks clear 3D structure"
+        },
+        "evidence": [
+          "The camera input is unavailable, preventing verification of object existence.",
+          "The bounding box at x\u224812m, y\u22482m encloses a very sparse set of points that do not clearly resemble a vehicle structure.",
+          "Several other bounding boxes are placed around point clusters that also appear sparse or lack definitive vehicle geometry."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise in a low-resolution scan.",
+          "Detector over-sensitivity to sparse point clusters."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:32.087419"
+}

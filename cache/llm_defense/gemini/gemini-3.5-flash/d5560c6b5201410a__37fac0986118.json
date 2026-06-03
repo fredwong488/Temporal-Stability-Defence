@@ -1,0 +1,198 @@
+{
+  "key": {
+    "frame_id": "d5560c6b5201410a",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3217,
+        -2.699,
+        -0.463,
+        -1.276,
+        0.924,
+        1.87,
+        0.543,
+        0.0351
+      ],
+      [
+        "car",
+        0.4204,
+        14.896,
+        20.185,
+        0.805,
+        1.783,
+        2.1,
+        4.96,
+        0.1296
+      ],
+      [
+        "car",
+        0.4295,
+        -10.261,
+        21.426,
+        -0.181,
+        1.59,
+        1.842,
+        4.354,
+        -0.0376
+      ],
+      [
+        "car",
+        0.6892,
+        -3.405,
+        0.384,
+        -1.141,
+        1.513,
+        1.917,
+        4.693,
+        1.6523
+      ],
+      [
+        "pedestrian",
+        0.3481,
+        -4.679,
+        8.144,
+        -0.559,
+        1.765,
+        0.698,
+        0.797,
+        0.6312
+      ],
+      [
+        "pedestrian",
+        0.3622,
+        -1.148,
+        8.935,
+        -0.504,
+        1.79,
+        0.715,
+        0.792,
+        2.1802
+      ],
+      [
+        "pedestrian",
+        0.3642,
+        -2.689,
+        8.008,
+        -0.561,
+        1.758,
+        0.704,
+        0.782,
+        0.1817
+      ],
+      [
+        "pedestrian",
+        0.3948,
+        -2.693,
+        7.003,
+        -0.643,
+        1.774,
+        0.715,
+        0.841,
+        -0.3758
+      ],
+      [
+        "pedestrian",
+        0.4284,
+        1.201,
+        8.322,
+        -0.669,
+        1.651,
+        0.64,
+        0.727,
+        2.6566
+      ],
+      [
+        "trailer",
+        0.935,
+        -3.15,
+        -16.048,
+        -0.389,
+        4.247,
+        2.791,
+        15.19,
+        1.6266
+      ],
+      [
+        "truck",
+        0.6372,
+        -0.143,
+        -8.025,
+        -1.036,
+        2.487,
+        2.145,
+        4.816,
+        1.5562
+      ],
+      [
+        "truck",
+        0.8926,
+        -3.423,
+        -7.803,
+        -0.328,
+        4.014,
+        2.649,
+        6.185,
+        1.6322
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.586861610412598,
+            0.6499347686767578,
+            -1.5510917901992798
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 19,
+          "reinjected_centroid": [
+            -9.413448333740234,
+            20.681432723999023,
+            -0.44435444474220276
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not applicable (camera image not available/attacked)",
+          "bev": "x\u224821m, y\u22488m and x\u224821m, y\u2248-8m",
+          "isometric": "floating bounding boxes at z\u22483m and z\u2248-1m containing no lidar point clusters"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes (labeled 'car 0.43' and 'car 0.42') are predicted in empty regions of space.",
+          "The isometric view confirms these boxes are floating above and below the ground plane with absolutely no underlying LiDAR points or point clusters inside them.",
+          "There are no physical obstructions or surfaces to justify these detections, indicating synthetic or spoofed bounding boxes (ghost objects)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant vehicles beyond maximum range"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:23.964468"
+}

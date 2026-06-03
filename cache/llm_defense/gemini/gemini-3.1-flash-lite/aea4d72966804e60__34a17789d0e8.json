@@ -1,0 +1,302 @@
+{
+  "key": {
+    "frame_id": "aea4d72966804e60",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.4035,
+        -6.745,
+        -19.66,
+        -1.471,
+        1.995,
+        0.74,
+        1.799,
+        -1.4272
+      ],
+      [
+        "car",
+        0.3091,
+        -9.299,
+        -30.309,
+        -2.404,
+        1.524,
+        1.823,
+        4.477,
+        -1.5139
+      ],
+      [
+        "car",
+        0.365,
+        21.502,
+        -5.855,
+        -0.373,
+        1.67,
+        1.938,
+        4.343,
+        -2.8905
+      ],
+      [
+        "car",
+        0.4179,
+        -9.201,
+        24.33,
+        -0.256,
+        1.71,
+        1.967,
+        4.605,
+        -1.8253
+      ],
+      [
+        "car",
+        0.4188,
+        3.859,
+        -44.272,
+        -2.89,
+        1.671,
+        1.874,
+        4.456,
+        1.6144
+      ],
+      [
+        "car",
+        0.423,
+        -8.85,
+        3.045,
+        -0.757,
+        3.113,
+        2.51,
+        7.825,
+        -1.6103
+      ],
+      [
+        "car",
+        0.4329,
+        5.84,
+        29.525,
+        0.632,
+        1.931,
+        2.007,
+        5.001,
+        1.5667
+      ],
+      [
+        "car",
+        0.4763,
+        6.259,
+        11.359,
+        -0.73,
+        1.763,
+        2.006,
+        5.034,
+        1.5835
+      ],
+      [
+        "car",
+        0.5622,
+        5.389,
+        -7.895,
+        -1.345,
+        1.889,
+        2.032,
+        5.059,
+        1.6835
+      ],
+      [
+        "car",
+        0.6529,
+        5.82,
+        -14.992,
+        -1.713,
+        1.671,
+        1.891,
+        4.447,
+        1.4927
+      ],
+      [
+        "car",
+        0.6654,
+        6.175,
+        22.847,
+        0.035,
+        1.584,
+        1.909,
+        4.747,
+        1.6938
+      ],
+      [
+        "car",
+        0.6891,
+        -3.977,
+        11.395,
+        -0.842,
+        1.563,
+        1.802,
+        4.324,
+        -1.7011
+      ],
+      [
+        "car",
+        0.703,
+        5.301,
+        3.918,
+        -0.926,
+        1.953,
+        2.0,
+        5.116,
+        1.5399
+      ],
+      [
+        "car",
+        0.708,
+        -10.015,
+        12.896,
+        -0.85,
+        2.05,
+        2.087,
+        5.267,
+        -1.6788
+      ],
+      [
+        "car",
+        0.9124,
+        5.223,
+        -2.132,
+        -1.277,
+        1.845,
+        1.925,
+        4.709,
+        1.5949
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.370387554168701,
+            -2.8166582584381104,
+            -1.7554328441619873
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            5.766403675079346,
+            -8.639474868774414,
+            -1.7543259859085083
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            5.906579494476318,
+            10.47307014465332,
+            -0.9093086123466492
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.123230457305908,
+            4.509201526641846,
+            -1.4513981342315674
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 22,
+          "reinjected_centroid": [
+            5.909674167633057,
+            21.29450035095215,
+            -0.7711613178253174
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 176,
+          "reinjected_centroid": [
+            -3.7613260746002197,
+            10.39952564239502,
+            -1.1634472608566284
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 102,
+          "reinjected_centroid": [
+            5.394369125366211,
+            -14.148887634277344,
+            -1.96251380443573
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 11,
+          "reinjected_centroid": [
+            5.715092182159424,
+            27.4631404876709,
+            0.4333520233631134
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 171,
+          "reinjected_centroid": [
+            -9.43067455291748,
+            12.292357444763184,
+            -1.1925033330917358
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 155,
+          "reinjected_centroid": [
+            13.5101957321167,
+            -1.6439294815063477,
+            -0.8344871401786804
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224813m, y\u2248-7m)",
+          "isometric": "Empty space"
+        },
+        "evidence": [
+          "A bounding box is present in the BEV around x=13, y=-7, but the isometric view shows this region is devoid of any dense point cluster corresponding to a vehicle.",
+          "The box encloses an empty region with no 3D structure (no points, no vertical extent).",
+          "The lack of underlying LiDAR points confirms this is a ghost object injection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (noise typically doesn't form coherent, isolated boxes like this).",
+          "Occlusion (no object exists in the scene to be occluded)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:00.077943"
+}

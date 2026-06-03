@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "c4a4d1b455434dba",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3787,
+        -19.891,
+        -1.291,
+        -0.877,
+        1.921,
+        0.677,
+        1.797,
+        1.6147
+      ],
+      [
+        "car",
+        0.3238,
+        4.986,
+        31.962,
+        0.422,
+        1.706,
+        1.914,
+        4.673,
+        1.5498
+      ],
+      [
+        "car",
+        0.5887,
+        0.945,
+        -24.83,
+        -1.225,
+        1.588,
+        1.877,
+        4.453,
+        1.7305
+      ],
+      [
+        "car",
+        0.6659,
+        -2.891,
+        -22.558,
+        -1.041,
+        1.747,
+        1.962,
+        4.661,
+        -1.4223
+      ],
+      [
+        "car",
+        0.6835,
+        -7.406,
+        16.526,
+        -0.499,
+        1.658,
+        1.969,
+        4.803,
+        -1.6133
+      ],
+      [
+        "car",
+        0.9364,
+        -3.868,
+        3.441,
+        -0.941,
+        1.535,
+        1.845,
+        4.478,
+        -1.6381
+      ],
+      [
+        "pedestrian",
+        0.3712,
+        6.963,
+        -2.343,
+        -0.904,
+        1.695,
+        0.651,
+        0.754,
+        1.7072
+      ],
+      [
+        "pedestrian",
+        0.3844,
+        6.737,
+        3.267,
+        -0.83,
+        1.703,
+        0.652,
+        0.66,
+        0.626
+      ],
+      [
+        "pedestrian",
+        0.4062,
+        -11.957,
+        -3.783,
+        -0.95,
+        1.76,
+        0.689,
+        0.711,
+        -2.4874
+      ],
+      [
+        "pedestrian",
+        0.4104,
+        6.632,
+        0.693,
+        -0.934,
+        1.721,
+        0.641,
+        0.638,
+        0.5762
+      ],
+      [
+        "pedestrian",
+        0.4146,
+        -9.997,
+        -22.144,
+        -1.04,
+        1.882,
+        0.694,
+        0.719,
+        -2.0014
+      ],
+      [
+        "pedestrian",
+        0.4184,
+        6.546,
+        -21.283,
+        -0.824,
+        1.839,
+        0.642,
+        0.675,
+        -1.8271
+      ],
+      [
+        "pedestrian",
+        0.4628,
+        7.961,
+        0.34,
+        -0.838,
+        1.789,
+        0.643,
+        0.635,
+        2.2657
+      ],
+      [
+        "pedestrian",
+        0.4694,
+        7.627,
+        2.545,
+        -0.797,
+        1.782,
+        0.657,
+        0.662,
+        2.6962
+      ],
+      [
+        "pedestrian",
+        0.5158,
+        8.469,
+        2.107,
+        -0.821,
+        1.809,
+        0.663,
+        0.638,
+        2.8806
+      ],
+      [
+        "pedestrian",
+        0.5293,
+        7.544,
+        1.274,
+        -0.836,
+        1.784,
+        0.656,
+        0.655,
+        -2.6906
+      ],
+      [
+        "trailer",
+        0.3592,
+        17.302,
+        18.877,
+        1.394,
+        4.115,
+        3.011,
+        16.183,
+        0.0455
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224830m, y\u2248-4m)",
+          "isometric": "Large bounding box at x\u224830m, y\u2248-4m appears to be enclosing sparse points or noise"
+        },
+        "evidence": [
+          "The bounding box in the far right (x\u224830m, y\u2248-4m) contains very few point returns, raising questions about whether this is a genuine object detection or a false positive.",
+          "The camera input is missing, preventing cross-modal verification of the object's existence.",
+          "Several other bounding boxes, such as the cluster of pedestrians at x\u22481-5m, y\u2248-6m, contain point clusters that are visually dense, but without the camera image, it is difficult to confirm if these are legitimate entities or sensor noise/ghosting."
+        ],
+        "alternatives_ruled_out": [
+          "The sparse nature of the point cloud at the detection site could be due to range-dependent LiDAR signal attenuation, causing a legitimate distant vehicle to appear sparse.",
+          "The multiple detections could be environmental noise or reflections correctly ignored by a sophisticated system but highlighted here due to the lack of camera context."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:37.702985"
+}

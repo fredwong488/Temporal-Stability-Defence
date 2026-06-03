@@ -1,0 +1,349 @@
+{
+  "key": {
+    "frame_id": "6c5250cdca43468d",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3355,
+        -6.244,
+        23.091,
+        -0.111,
+        0.947,
+        2.744,
+        0.473,
+        -1.6333
+      ],
+      [
+        "barrier",
+        0.3522,
+        2.252,
+        -14.905,
+        -1.55,
+        1.057,
+        2.017,
+        0.531,
+        3.1203
+      ],
+      [
+        "barrier",
+        0.3875,
+        10.133,
+        -18.218,
+        -1.615,
+        1.088,
+        2.149,
+        0.458,
+        0.0562
+      ],
+      [
+        "barrier",
+        0.4129,
+        2.276,
+        -16.598,
+        -1.597,
+        1.069,
+        2.049,
+        0.557,
+        -3.1386
+      ],
+      [
+        "barrier",
+        0.4644,
+        2.208,
+        -11.709,
+        -1.498,
+        0.955,
+        2.808,
+        0.56,
+        -3.1402
+      ],
+      [
+        "car",
+        0.4027,
+        -1.238,
+        11.919,
+        -0.48,
+        1.788,
+        1.954,
+        4.718,
+        1.7909
+      ],
+      [
+        "car",
+        0.4202,
+        17.021,
+        -17.334,
+        -1.534,
+        1.678,
+        2.002,
+        4.78,
+        1.2098
+      ],
+      [
+        "car",
+        0.4322,
+        11.771,
+        -18.282,
+        -1.363,
+        2.254,
+        2.206,
+        5.603,
+        -1.5692
+      ],
+      [
+        "construction_vehicle",
+        0.7585,
+        4.004,
+        -14.658,
+        -0.896,
+        2.806,
+        3.344,
+        4.418,
+        -1.6062
+      ],
+      [
+        "motorcycle",
+        0.4511,
+        -6.858,
+        -7.8,
+        -0.896,
+        1.328,
+        0.752,
+        2.148,
+        1.2678
+      ],
+      [
+        "traffic_cone",
+        0.3104,
+        8.27,
+        15.76,
+        -1.038,
+        0.707,
+        0.436,
+        0.447,
+        1.509
+      ],
+      [
+        "traffic_cone",
+        0.3297,
+        9.441,
+        2.018,
+        -1.554,
+        0.705,
+        0.372,
+        0.384,
+        -2.4235
+      ],
+      [
+        "traffic_cone",
+        0.3619,
+        8.577,
+        24.084,
+        -0.973,
+        0.778,
+        0.427,
+        0.436,
+        -1.4358
+      ],
+      [
+        "traffic_cone",
+        0.3768,
+        9.776,
+        -2.908,
+        -1.746,
+        0.706,
+        0.398,
+        0.4,
+        -2.6611
+      ],
+      [
+        "traffic_cone",
+        0.384,
+        1.751,
+        7.507,
+        -1.268,
+        0.685,
+        0.388,
+        0.408,
+        -2.5583
+      ],
+      [
+        "traffic_cone",
+        0.4318,
+        2.208,
+        -7.546,
+        -1.673,
+        0.725,
+        0.382,
+        0.351,
+        2.211
+      ],
+      [
+        "traffic_cone",
+        0.5046,
+        1.997,
+        -1.938,
+        -1.487,
+        0.733,
+        0.366,
+        0.361,
+        1.5761
+      ],
+      [
+        "traffic_cone",
+        0.5082,
+        8.535,
+        25.513,
+        -1.008,
+        0.77,
+        0.432,
+        0.455,
+        -1.5017
+      ],
+      [
+        "traffic_cone",
+        0.5233,
+        9.457,
+        6.592,
+        -1.286,
+        0.736,
+        0.386,
+        0.382,
+        -2.1497
+      ],
+      [
+        "traffic_cone",
+        0.531,
+        1.886,
+        2.993,
+        -1.387,
+        0.751,
+        0.38,
+        0.362,
+        3.1123
+      ],
+      [
+        "traffic_cone",
+        0.5318,
+        8.49,
+        26.825,
+        -0.983,
+        0.747,
+        0.421,
+        0.442,
+        -1.4654
+      ],
+      [
+        "traffic_cone",
+        0.5384,
+        9.099,
+        18.001,
+        -0.991,
+        0.76,
+        0.394,
+        0.408,
+        1.6512
+      ],
+      [
+        "traffic_cone",
+        0.5446,
+        9.104,
+        13.86,
+        -1.205,
+        0.696,
+        0.404,
+        0.398,
+        -2.5917
+      ],
+      [
+        "truck",
+        0.6131,
+        15.117,
+        -6.941,
+        -0.42,
+        3.846,
+        2.96,
+        10.597,
+        -1.535
+      ],
+      [
+        "truck",
+        0.7644,
+        14.715,
+        4.757,
+        -0.411,
+        3.009,
+        2.627,
+        6.918,
+        -1.5669
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 161,
+          "reinjected_centroid": [
+            13.016472816467285,
+            -8.893871307373047,
+            -1.7146005630493164
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 48,
+          "reinjected_centroid": [
+            16.25394630432129,
+            -17.04828453063965,
+            -1.8253254890441895
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -0.828553318977356,
+            10.057723999023438,
+            -0.9134630560874939
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "x \u2248 11m, y \u2248 1m",
+          "isometric": "The 3D bounding box labeled 'car 0.40' is shifted away from the dense physical point cluster located at x \u2248 8m, y \u2248 3m."
+        },
+        "evidence": [
+          "A clear, dense L-shaped vehicle point cluster is visible at x \u2248 8m, y \u2248 3m in the BEV and Isometric views.",
+          "The predicted bounding box ('car 0.40') is translated further away along the depth axis (centered around x \u2248 11m, y \u2248 1m), leaving the actual point cluster mostly un-enveloped."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Sparsity at range",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:37.197653"
+}

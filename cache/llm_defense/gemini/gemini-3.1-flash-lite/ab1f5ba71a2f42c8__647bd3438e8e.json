@@ -1,0 +1,202 @@
+{
+  "key": {
+    "frame_id": "ab1f5ba71a2f42c8",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3214,
+        -4.397,
+        30.465,
+        0.651,
+        1.598,
+        1.898,
+        4.484,
+        -1.3041
+      ],
+      [
+        "car",
+        0.4427,
+        -7.263,
+        20.487,
+        -0.002,
+        1.576,
+        1.876,
+        4.414,
+        -2.9396
+      ],
+      [
+        "car",
+        0.647,
+        0.274,
+        -31.055,
+        -2.355,
+        1.766,
+        1.96,
+        4.708,
+        1.8059
+      ],
+      [
+        "car",
+        0.6995,
+        -14.354,
+        18.741,
+        -0.248,
+        1.628,
+        1.977,
+        4.659,
+        0.1475
+      ],
+      [
+        "car",
+        0.7949,
+        4.532,
+        19.134,
+        0.038,
+        1.564,
+        1.868,
+        4.573,
+        1.6468
+      ],
+      [
+        "car",
+        0.8006,
+        -3.807,
+        -23.963,
+        -2.245,
+        1.628,
+        1.881,
+        4.522,
+        -1.5111
+      ],
+      [
+        "car",
+        0.9218,
+        -7.538,
+        3.974,
+        -1.068,
+        1.558,
+        1.916,
+        4.862,
+        -1.5931
+      ],
+      [
+        "pedestrian",
+        0.31,
+        8.67,
+        26.15,
+        0.473,
+        1.75,
+        0.655,
+        0.735,
+        2.5644
+      ],
+      [
+        "pedestrian",
+        0.3324,
+        -17.232,
+        -15.852,
+        -2.186,
+        1.822,
+        0.664,
+        0.688,
+        1.9473
+      ],
+      [
+        "pedestrian",
+        0.3478,
+        -12.188,
+        11.831,
+        -0.498,
+        1.777,
+        0.63,
+        0.631,
+        1.2555
+      ],
+      [
+        "pedestrian",
+        0.382,
+        6.376,
+        -13.24,
+        -1.601,
+        1.784,
+        0.682,
+        0.704,
+        1.5992
+      ],
+      [
+        "pedestrian",
+        0.4073,
+        8.225,
+        -8.454,
+        -1.322,
+        1.717,
+        0.642,
+        0.676,
+        2.0161
+      ],
+      [
+        "pedestrian",
+        0.4155,
+        7.601,
+        -12.494,
+        -1.602,
+        1.808,
+        0.662,
+        0.669,
+        -2.8873
+      ],
+      [
+        "pedestrian",
+        0.4659,
+        6.275,
+        -10.758,
+        -1.374,
+        1.788,
+        0.673,
+        0.702,
+        0.0322
+      ],
+      [
+        "pedestrian",
+        0.5324,
+        7.853,
+        -9.947,
+        -1.282,
+        1.781,
+        0.643,
+        0.609,
+        -3.0958
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480m, y\u22480m)",
+          "isometric": "A dense, localized cluster of points at the ego vehicle's center, accompanied by spurious bounding box predictions."
+        },
+        "evidence": [
+          "A highly localized and dense point cloud cluster appears directly at the ego vehicle origin (x\u22480, y\u22480), which is physically impossible for legitimate sensor returns of external objects.",
+          "The cluster is accompanied by several small bounding box detections ('car' and 'pedestrian') that lack the geometric volume, surface structure, or context (e.g., ground support) of real objects.",
+          "These anomalies are characteristic of point injection/spoofing attacks aiming to destabilize the perception system by injecting data into the ego-centric region."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or reflections (the geometry is too structured and clustered).",
+          "Ego vehicle structure (the detections are outside the physical dimensions of the vehicle itself)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:30.211625"
+}

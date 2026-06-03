@@ -1,0 +1,165 @@
+{
+  "key": {
+    "frame_id": "462f996c43714289",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.3813,
+        -6.252,
+        0.449,
+        -1.582,
+        1.584,
+        1.818,
+        4.221,
+        1.6132
+      ],
+      [
+        "car",
+        0.8797,
+        -3.301,
+        0.444,
+        -1.231,
+        1.55,
+        1.912,
+        4.706,
+        1.5995
+      ],
+      [
+        "pedestrian",
+        0.303,
+        9.425,
+        4.733,
+        -0.506,
+        1.715,
+        0.658,
+        0.695,
+        1.5067
+      ],
+      [
+        "pedestrian",
+        0.3058,
+        3.025,
+        9.461,
+        -0.353,
+        1.793,
+        0.682,
+        0.726,
+        -2.697
+      ],
+      [
+        "pedestrian",
+        0.4136,
+        2.936,
+        7.151,
+        -0.613,
+        1.774,
+        0.677,
+        0.689,
+        2.5141
+      ],
+      [
+        "pedestrian",
+        0.43,
+        3.602,
+        7.858,
+        -0.616,
+        1.778,
+        0.624,
+        0.628,
+        -2.3997
+      ],
+      [
+        "trailer",
+        0.9441,
+        -3.135,
+        -15.923,
+        -0.321,
+        4.221,
+        2.794,
+        15.298,
+        1.6178
+      ],
+      [
+        "truck",
+        0.345,
+        -40.938,
+        -13.537,
+        -0.749,
+        2.12,
+        2.318,
+        5.831,
+        1.6051
+      ],
+      [
+        "truck",
+        0.6023,
+        -0.162,
+        -7.997,
+        -0.998,
+        2.541,
+        2.214,
+        4.84,
+        1.5704
+      ],
+      [
+        "truck",
+        0.8662,
+        -3.39,
+        -7.753,
+        -0.345,
+        4.015,
+        2.639,
+        6.029,
+        1.6464
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.739309787750244,
+            0.7345258593559265,
+            -2.0453834533691406
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "entire camera frame",
+          "bev": null,
+          "isometric": null
+        },
+        "evidence": [
+          "The camera image is completely unavailable and explicitly marked as [ATTACKED] in the header",
+          "Complete denial of the camera modality prevents any cross-modal validation of LiDAR detections"
+        ],
+        "alternatives_ruled_out": [
+          "Temporary sensor blockage",
+          "Hardware disconnection (ruled out due to explicit ATTACKED label in telemetry/frame header)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:41.202392"
+}

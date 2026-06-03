@@ -1,0 +1,231 @@
+{
+  "key": {
+    "frame_id": "e753421f12d34040",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4754,
+        5.452,
+        37.955,
+        1.355,
+        1.739,
+        1.905,
+        4.541,
+        1.5659
+      ],
+      [
+        "car",
+        0.5724,
+        1.035,
+        -22.265,
+        -1.89,
+        1.707,
+        1.909,
+        4.525,
+        1.7724
+      ],
+      [
+        "car",
+        0.58,
+        -3.161,
+        16.759,
+        -0.131,
+        1.609,
+        1.798,
+        4.317,
+        -1.6478
+      ],
+      [
+        "car",
+        0.6556,
+        -6.971,
+        22.808,
+        0.044,
+        1.568,
+        1.85,
+        4.352,
+        -1.6209
+      ],
+      [
+        "car",
+        0.9077,
+        -3.889,
+        -9.452,
+        -1.382,
+        1.719,
+        1.884,
+        4.574,
+        -1.5052
+      ],
+      [
+        "pedestrian",
+        0.3268,
+        6.848,
+        -2.24,
+        -0.953,
+        1.726,
+        0.649,
+        0.746,
+        1.2592
+      ],
+      [
+        "pedestrian",
+        0.343,
+        7.859,
+        -22.863,
+        -1.451,
+        1.778,
+        0.652,
+        0.674,
+        -1.5133
+      ],
+      [
+        "pedestrian",
+        0.3522,
+        8.527,
+        7.16,
+        -0.522,
+        1.781,
+        0.666,
+        0.658,
+        2.4814
+      ],
+      [
+        "pedestrian",
+        0.3621,
+        7.772,
+        7.958,
+        -0.499,
+        1.779,
+        0.638,
+        0.641,
+        2.0508
+      ],
+      [
+        "pedestrian",
+        0.3976,
+        -11.849,
+        3.607,
+        -0.882,
+        1.764,
+        0.692,
+        0.717,
+        -2.8326
+      ],
+      [
+        "pedestrian",
+        0.402,
+        6.292,
+        -14.214,
+        -1.135,
+        1.768,
+        0.657,
+        0.68,
+        -1.6928
+      ],
+      [
+        "pedestrian",
+        0.4026,
+        7.089,
+        4.298,
+        -0.636,
+        1.785,
+        0.729,
+        0.782,
+        1.337
+      ],
+      [
+        "pedestrian",
+        0.4615,
+        6.806,
+        7.382,
+        -0.468,
+        1.767,
+        0.675,
+        0.707,
+        1.1097
+      ],
+      [
+        "pedestrian",
+        0.4693,
+        7.037,
+        9.923,
+        -0.328,
+        1.742,
+        0.655,
+        0.665,
+        -1.3559
+      ],
+      [
+        "pedestrian",
+        0.4823,
+        8.108,
+        9.307,
+        -0.313,
+        1.807,
+        0.69,
+        0.676,
+        -2.96
+      ],
+      [
+        "trailer",
+        0.4341,
+        11.957,
+        40.293,
+        1.996,
+        4.175,
+        2.839,
+        13.112,
+        1.5333
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u224815m, y\u22483m)",
+          "isometric": "Empty space with no underlying point cluster"
+        },
+        "evidence": [
+          "The bounding box at (x\u224815m, y\u22483m) encloses empty space with no discernible point cluster or surface structure in the isometric view.",
+          "The box appears to be a 'ghost' detection as there is no LiDAR return density supporting the presence of an object at this location.",
+          "No occlusion shadow is cast behind the box, which would be expected if it were a physical, opaque object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: This is a structured bounding box detection, not random noise.",
+          "Distant object: The region is well within the effective range of the LiDAR, and the lack of points confirms the absence of an object."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u224822m, y\u22486m)",
+          "isometric": "Empty space with no underlying point cluster"
+        },
+        "evidence": [
+          "The bounding box at (x\u224822m, y\u22486m) is floating in empty space with no supporting point cloud data.",
+          "The isometric view confirms the absence of any vertical structure or point return density corresponding to this vehicle detection.",
+          "Lack of LiDAR occlusion shadow indicates the object is not physically present."
+        ],
+        "alternatives_ruled_out": [
+          "Low reflectivity: While some objects have low reflectivity, a total absence of point returns in a region known to be within sensing range indicates an empty space rather than a hidden object.",
+          "Sensor occlusion: No surrounding geometry exists that would block LiDAR beams in this specific location."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:02.257469"
+}

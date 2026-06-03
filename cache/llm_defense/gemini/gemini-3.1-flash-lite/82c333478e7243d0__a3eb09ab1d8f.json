@@ -1,0 +1,191 @@
+{
+  "key": {
+    "frame_id": "82c333478e7243d0",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3525,
+        1.101,
+        45.347,
+        1.517,
+        1.743,
+        1.921,
+        4.569,
+        1.3932
+      ],
+      [
+        "car",
+        0.36,
+        9.321,
+        51.024,
+        1.698,
+        1.727,
+        1.948,
+        4.511,
+        1.5405
+      ],
+      [
+        "car",
+        0.4443,
+        4.993,
+        40.15,
+        1.28,
+        1.77,
+        1.985,
+        4.692,
+        1.4745
+      ],
+      [
+        "car",
+        0.5986,
+        -3.388,
+        19.495,
+        -0.202,
+        1.723,
+        1.925,
+        4.657,
+        -1.6412
+      ],
+      [
+        "car",
+        0.7443,
+        0.979,
+        -19.289,
+        -2.079,
+        1.667,
+        1.893,
+        4.458,
+        1.6949
+      ],
+      [
+        "pedestrian",
+        0.3027,
+        -16.452,
+        18.304,
+        -0.358,
+        1.791,
+        0.615,
+        0.626,
+        1.2919
+      ],
+      [
+        "pedestrian",
+        0.3142,
+        -10.453,
+        1.875,
+        -1.054,
+        1.803,
+        0.671,
+        0.754,
+        2.3117
+      ],
+      [
+        "pedestrian",
+        0.3497,
+        -10.742,
+        -2.587,
+        -1.424,
+        1.783,
+        0.66,
+        0.75,
+        2.1683
+      ],
+      [
+        "pedestrian",
+        0.3777,
+        8.474,
+        21.876,
+        0.07,
+        1.753,
+        0.626,
+        0.654,
+        1.0326
+      ],
+      [
+        "pedestrian",
+        0.4091,
+        6.059,
+        1.312,
+        -0.773,
+        1.779,
+        0.65,
+        0.746,
+        -1.5183
+      ],
+      [
+        "pedestrian",
+        0.4279,
+        7.637,
+        13.441,
+        -0.338,
+        1.823,
+        0.69,
+        0.716,
+        2.3693
+      ],
+      [
+        "pedestrian",
+        0.4435,
+        6.757,
+        -11.676,
+        -1.274,
+        1.75,
+        0.651,
+        0.716,
+        -1.7296
+      ],
+      [
+        "pedestrian",
+        0.5375,
+        9.371,
+        18.036,
+        -0.111,
+        1.801,
+        0.67,
+        0.698,
+        1.9032
+      ],
+      [
+        "pedestrian",
+        0.5409,
+        8.434,
+        18.983,
+        -0.09,
+        1.809,
+        0.699,
+        0.77,
+        0.7776
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818m, y\u22483m)",
+          "isometric": "Detected as a car, but the corresponding point cluster is extremely sparse and lacks the structural definition (no L-shape or clear surface profile) expected of a vehicle at that range."
+        },
+        "evidence": [
+          "The bounding box identified as 'car 0.60' lacks a significant, dense cluster of LiDAR returns that would be consistent with a physical vehicle at that range.",
+          "The cluster within the bounding box does not exhibit typical 3D structural features like a defined rear or side profile.",
+          "The bounding box appears to be floating or misaligned with actual surface returns, indicating it may be a phantom detection."
+        ],
+        "alternatives_ruled_out": [
+          "Sparse point cloud due to distance (while plausible, the detection confidence and clear bounding box without supporting dense cluster geometry are indicative of a ghosting artifact rather than a naturally weak detection).",
+          "Occlusion (no large object is blocking the LiDAR beams from reaching that coordinate)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:42.153812"
+}

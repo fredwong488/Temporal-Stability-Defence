@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "139d5e756c1f461b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3004,
+        -12.364,
+        -19.147,
+        -2.06,
+        1.652,
+        1.955,
+        4.499,
+        -2.9884
+      ],
+      [
+        "car",
+        0.5425,
+        -2.589,
+        22.471,
+        0.477,
+        1.594,
+        1.889,
+        4.592,
+        1.4797
+      ],
+      [
+        "car",
+        0.6246,
+        1.107,
+        -21.343,
+        -1.955,
+        1.713,
+        1.889,
+        4.496,
+        1.7691
+      ],
+      [
+        "car",
+        0.6956,
+        -4.147,
+        -3.916,
+        -1.171,
+        1.717,
+        1.95,
+        4.676,
+        -1.5307
+      ],
+      [
+        "car",
+        0.7069,
+        -6.547,
+        25.515,
+        0.512,
+        1.634,
+        1.909,
+        4.52,
+        -1.6482
+      ],
+      [
+        "construction_vehicle",
+        0.3602,
+        -7.781,
+        -37.078,
+        -1.879,
+        2.261,
+        1.632,
+        3.442,
+        -1.4433
+      ],
+      [
+        "pedestrian",
+        0.311,
+        6.189,
+        -11.197,
+        -0.854,
+        1.834,
+        0.687,
+        0.739,
+        -1.0501
+      ],
+      [
+        "pedestrian",
+        0.3119,
+        -10.365,
+        -11.752,
+        -1.715,
+        1.801,
+        0.588,
+        0.626,
+        -1.3695
+      ],
+      [
+        "pedestrian",
+        0.3225,
+        -12.753,
+        6.64,
+        -0.717,
+        1.786,
+        0.676,
+        0.705,
+        1.5783
+      ],
+      [
+        "pedestrian",
+        0.3261,
+        8.54,
+        12.005,
+        -0.237,
+        1.8,
+        0.672,
+        0.656,
+        -2.9164
+      ],
+      [
+        "pedestrian",
+        0.329,
+        7.168,
+        7.068,
+        -0.486,
+        1.738,
+        0.677,
+        0.674,
+        -0.819
+      ],
+      [
+        "pedestrian",
+        0.3372,
+        8.06,
+        10.783,
+        -0.222,
+        1.794,
+        0.62,
+        0.592,
+        -3.0755
+      ],
+      [
+        "pedestrian",
+        0.3626,
+        6.807,
+        0.698,
+        -0.784,
+        1.791,
+        0.65,
+        0.703,
+        1.2502
+      ],
+      [
+        "pedestrian",
+        0.3777,
+        8.11,
+        7.444,
+        -0.443,
+        1.777,
+        0.664,
+        0.687,
+        -2.859
+      ],
+      [
+        "pedestrian",
+        0.3786,
+        7.697,
+        -20.67,
+        -1.513,
+        1.806,
+        0.688,
+        0.691,
+        -2.4409
+      ],
+      [
+        "pedestrian",
+        0.393,
+        7.337,
+        12.619,
+        -0.124,
+        1.743,
+        0.635,
+        0.612,
+        -1.1798
+      ],
+      [
+        "pedestrian",
+        0.4694,
+        7.094,
+        10.012,
+        -0.309,
+        1.788,
+        0.661,
+        0.642,
+        0.1804
+      ],
+      [
+        "pedestrian",
+        0.4806,
+        8.667,
+        9.221,
+        -0.362,
+        1.814,
+        0.688,
+        0.677,
+        2.414
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u22486m, y\u22480m)",
+          "isometric": "Cluster of dense points at (x\u22486m, y\u22480m) that appears to float or exist as a solitary, unnaturally dense anomaly in close proximity to the ego vehicle without physical ground-plane support typical of real objects."
+        },
+        "evidence": [
+          "A highly suspicious, dense cluster of LiDAR returns is visible in the BEV and isometric views at x\u22486m, y\u22480m, directly in the ego vehicle's path.",
+          "There is no corresponding camera input available to verify an object, and the point cluster lacks the structural geometry of a vehicle or pedestrian (e.g., no vertical L-shape or coherent human-like shape).",
+          "The cluster appears as an isolated anomaly in a region that should be clear, characteristic of point-injection spoofing."
+        ],
+        "alternatives_ruled_out": [
+          "Natural reflections: The density and isolation of the cluster are not consistent with standard road noise or reflective traffic signs.",
+          "Sensor occlusion: There is no object present to cause such an occlusion, nor is there a clear 3D shadow cast by the object that would suggest a physical occlusion."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:24.799410"
+}

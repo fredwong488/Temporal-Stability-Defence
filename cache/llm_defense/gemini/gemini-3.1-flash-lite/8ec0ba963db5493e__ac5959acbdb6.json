@@ -1,0 +1,202 @@
+{
+  "key": {
+    "frame_id": "8ec0ba963db5493e",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3104,
+        -8.401,
+        -18.053,
+        -1.849,
+        1.549,
+        0.612,
+        1.666,
+        -1.4074
+      ],
+      [
+        "car",
+        0.3428,
+        22.022,
+        -14.327,
+        -1.143,
+        1.58,
+        1.912,
+        4.311,
+        -0.0516
+      ],
+      [
+        "car",
+        0.3856,
+        -3.856,
+        30.068,
+        0.595,
+        1.64,
+        1.927,
+        4.463,
+        -1.7247
+      ],
+      [
+        "car",
+        0.5313,
+        -7.115,
+        20.233,
+        0.132,
+        1.642,
+        1.948,
+        4.567,
+        0.1952
+      ],
+      [
+        "car",
+        0.6056,
+        0.2,
+        -31.15,
+        -2.293,
+        1.784,
+        1.992,
+        4.736,
+        1.658
+      ],
+      [
+        "car",
+        0.7083,
+        -14.365,
+        18.385,
+        -0.113,
+        1.602,
+        1.923,
+        4.619,
+        0.1606
+      ],
+      [
+        "car",
+        0.7093,
+        -3.858,
+        -24.739,
+        -2.176,
+        1.69,
+        1.906,
+        4.509,
+        -1.5359
+      ],
+      [
+        "car",
+        0.8535,
+        4.544,
+        18.781,
+        0.059,
+        1.603,
+        1.906,
+        4.723,
+        1.5956
+      ],
+      [
+        "car",
+        0.9368,
+        -7.527,
+        3.546,
+        -1.075,
+        1.586,
+        1.896,
+        4.688,
+        -1.5985
+      ],
+      [
+        "pedestrian",
+        0.3188,
+        6.373,
+        -13.564,
+        -1.618,
+        1.826,
+        0.719,
+        0.778,
+        -0.8092
+      ],
+      [
+        "pedestrian",
+        0.3205,
+        6.247,
+        -11.213,
+        -1.446,
+        1.743,
+        0.65,
+        0.68,
+        -2.9986
+      ],
+      [
+        "pedestrian",
+        0.3449,
+        -12.248,
+        11.589,
+        -0.544,
+        1.774,
+        0.64,
+        0.675,
+        -1.372
+      ],
+      [
+        "pedestrian",
+        0.4156,
+        7.357,
+        -11.737,
+        -1.316,
+        1.817,
+        0.646,
+        0.614,
+        -2.9292
+      ],
+      [
+        "pedestrian",
+        0.4186,
+        6.593,
+        -16.53,
+        -1.66,
+        1.808,
+        0.626,
+        0.672,
+        -1.7094
+      ],
+      [
+        "pedestrian",
+        0.4471,
+        7.919,
+        -10.268,
+        -1.255,
+        1.771,
+        0.665,
+        0.647,
+        -2.6445
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481.5m, y\u22480m)",
+          "isometric": "Cluster of dense points centered at origin with no plausible vehicle structure or ground contact."
+        },
+        "evidence": [
+          "A highly anomalous, dense cluster of points is located directly at the ego vehicle's origin (0,0), which is physically impossible for a genuine external object.",
+          "The cluster has a distinct, small, and overly dense signature characteristic of localized LiDAR spoofing or sensor injection.",
+          "The bounding box ('car 0.94') is placed on top of the ego vehicle's own internal noise or near-field reflections rather than a real object, as no such object would be inside the ego frame."
+        ],
+        "alternatives_ruled_out": [
+          "Genuine nearby traffic, as the object is inside the ego vehicle coordinates.",
+          "Reflections, as the density is too high and clustered specifically for a vehicle detection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:30.895393"
+}

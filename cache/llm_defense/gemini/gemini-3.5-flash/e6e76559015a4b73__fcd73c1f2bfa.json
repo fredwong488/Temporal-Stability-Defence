@@ -1,0 +1,327 @@
+{
+  "key": {
+    "frame_id": "e6e76559015a4b73",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3102,
+        3.919,
+        -10.843,
+        -1.615,
+        1.057,
+        2.028,
+        0.534,
+        -2.969
+      ],
+      [
+        "barrier",
+        0.3613,
+        11.509,
+        -8.428,
+        -1.547,
+        1.048,
+        2.069,
+        0.44,
+        0.263
+      ],
+      [
+        "barrier",
+        0.4257,
+        3.611,
+        -9.276,
+        -1.573,
+        1.056,
+        1.995,
+        0.523,
+        -3.0069
+      ],
+      [
+        "barrier",
+        0.4497,
+        2.985,
+        -4.502,
+        -1.47,
+        0.97,
+        2.253,
+        0.56,
+        -3.0414
+      ],
+      [
+        "bus",
+        0.3393,
+        23.478,
+        14.79,
+        0.184,
+        3.331,
+        3.083,
+        10.717,
+        -1.472
+      ],
+      [
+        "car",
+        0.3019,
+        -15.668,
+        -45.999,
+        -0.716,
+        1.715,
+        1.932,
+        4.492,
+        1.562
+      ],
+      [
+        "car",
+        0.3473,
+        -7.599,
+        -2.732,
+        -0.796,
+        1.648,
+        1.824,
+        4.389,
+        -1.8843
+      ],
+      [
+        "car",
+        0.6308,
+        18.865,
+        -7.863,
+        -1.756,
+        1.633,
+        1.94,
+        4.659,
+        -1.4922
+      ],
+      [
+        "construction_vehicle",
+        0.3915,
+        -16.521,
+        4.326,
+        0.874,
+        4.181,
+        3.289,
+        7.289,
+        1.5375
+      ],
+      [
+        "construction_vehicle",
+        0.4315,
+        5.276,
+        -7.412,
+        -0.476,
+        3.015,
+        3.072,
+        3.534,
+        -1.4918
+      ],
+      [
+        "motorcycle",
+        0.3591,
+        -0.975,
+        6.953,
+        -0.534,
+        1.463,
+        0.717,
+        1.966,
+        -3.0644
+      ],
+      [
+        "pedestrian",
+        0.3368,
+        2.811,
+        -17.306,
+        -1.492,
+        1.756,
+        0.656,
+        0.683,
+        -2.6435
+      ],
+      [
+        "traffic_cone",
+        0.3006,
+        2.345,
+        -0.584,
+        -1.46,
+        0.712,
+        0.39,
+        0.38,
+        2.2785
+      ],
+      [
+        "traffic_cone",
+        0.3029,
+        5.09,
+        31.638,
+        -0.644,
+        0.773,
+        0.454,
+        0.464,
+        -1.4082
+      ],
+      [
+        "traffic_cone",
+        0.3216,
+        5.871,
+        26.966,
+        -0.603,
+        0.733,
+        0.417,
+        0.42,
+        -1.3727
+      ],
+      [
+        "traffic_cone",
+        0.3508,
+        1.713,
+        4.975,
+        -1.279,
+        0.737,
+        0.41,
+        0.392,
+        -3.0411
+      ],
+      [
+        "traffic_cone",
+        0.3545,
+        5.236,
+        30.176,
+        -0.612,
+        0.765,
+        0.436,
+        0.432,
+        -1.4232
+      ],
+      [
+        "traffic_cone",
+        0.3677,
+        8.62,
+        9.895,
+        -1.175,
+        0.763,
+        0.378,
+        0.378,
+        1.4529
+      ],
+      [
+        "traffic_cone",
+        0.5048,
+        0.99,
+        9.955,
+        -1.236,
+        0.698,
+        0.375,
+        0.404,
+        1.8293
+      ],
+      [
+        "traffic_cone",
+        0.5437,
+        10.184,
+        0.471,
+        -1.504,
+        0.71,
+        0.375,
+        0.378,
+        -3.0793
+      ],
+      [
+        "traffic_cone",
+        0.5476,
+        10.921,
+        -4.169,
+        -1.642,
+        0.695,
+        0.388,
+        0.362,
+        -3.037
+      ],
+      [
+        "truck",
+        0.3134,
+        15.455,
+        1.686,
+        -0.004,
+        3.928,
+        3.28,
+        12.842,
+        -1.3531
+      ],
+      [
+        "truck",
+        0.7876,
+        13.396,
+        13.346,
+        0.025,
+        3.259,
+        2.619,
+        6.657,
+        -1.4538
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 199,
+          "reinjected_centroid": [
+            13.788407325744629,
+            0.17920255661010742,
+            -1.546249508857727
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 89,
+          "reinjected_centroid": [
+            18.077320098876953,
+            -7.293184280395508,
+            -2.0222067832946777
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -1.3223289251327515,
+            9.599656105041504,
+            -0.9766542911529541
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Image completely unavailable, marked as ATTACKED",
+          "bev": "Region with y < -5m, specifically around (x\u224815m, y\u2248-10m) and (x\u22483m, y\u2248-10m)",
+          "isometric": "Large bounding boxes labeled as 'truck 0.79' and 'truck 0.31' are generated in completely empty space with no underlying LiDAR points"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes corresponding to heavy vehicles (trucks) and traffic cones are predicted in areas of the point cloud that contain absolutely zero points.",
+          "The camera image is totally missing/suppressed with an explicit '[ATTACKED]' warning in the header."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity",
+          "Distant objects close to range limit"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:10.863085"
+}

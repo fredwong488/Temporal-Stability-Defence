@@ -1,0 +1,268 @@
+{
+  "key": {
+    "frame_id": "f3a114ae2fc34683",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3022,
+        9.882,
+        -0.502,
+        -1.369,
+        1.128,
+        1.922,
+        0.633,
+        3.0527
+      ],
+      [
+        "barrier",
+        0.3064,
+        8.623,
+        -1.179,
+        -1.415,
+        1.093,
+        1.894,
+        0.565,
+        3.03
+      ],
+      [
+        "barrier",
+        0.3117,
+        6.587,
+        -18.071,
+        -1.791,
+        1.191,
+        1.941,
+        0.61,
+        3.0437
+      ],
+      [
+        "barrier",
+        0.3189,
+        7.569,
+        -10.064,
+        -1.585,
+        0.942,
+        3.043,
+        0.578,
+        3.0226
+      ],
+      [
+        "barrier",
+        0.3267,
+        8.145,
+        -6.058,
+        -1.541,
+        1.103,
+        2.445,
+        0.635,
+        3.0296
+      ],
+      [
+        "barrier",
+        0.3268,
+        11.006,
+        13.284,
+        -0.904,
+        1.086,
+        2.071,
+        0.557,
+        3.0928
+      ],
+      [
+        "barrier",
+        0.3313,
+        8.49,
+        -2.797,
+        -1.495,
+        1.101,
+        1.891,
+        0.593,
+        3.0529
+      ],
+      [
+        "barrier",
+        0.3496,
+        10.774,
+        9.435,
+        -1.047,
+        1.021,
+        1.945,
+        0.637,
+        -3.1252
+      ],
+      [
+        "barrier",
+        0.3926,
+        10.9,
+        11.656,
+        -0.966,
+        1.106,
+        2.001,
+        0.604,
+        3.0812
+      ],
+      [
+        "barrier",
+        0.402,
+        6.749,
+        -16.599,
+        -1.763,
+        1.102,
+        2.39,
+        0.599,
+        3.0102
+      ],
+      [
+        "barrier",
+        0.4363,
+        10.105,
+        3.464,
+        -1.242,
+        1.008,
+        1.957,
+        0.624,
+        3.0315
+      ],
+      [
+        "bus",
+        0.3292,
+        -9.918,
+        -45.228,
+        1.693,
+        3.856,
+        2.944,
+        12.864,
+        -1.6383
+      ],
+      [
+        "car",
+        0.4386,
+        39.644,
+        30.253,
+        -0.719,
+        1.662,
+        1.993,
+        4.581,
+        3.0347
+      ],
+      [
+        "car",
+        0.5388,
+        -3.074,
+        23.819,
+        -0.042,
+        1.925,
+        2.029,
+        5.086,
+        1.8663
+      ],
+      [
+        "car",
+        0.6499,
+        8.183,
+        16.006,
+        -0.4,
+        1.657,
+        1.9,
+        4.502,
+        1.4439
+      ],
+      [
+        "pedestrian",
+        0.3382,
+        22.162,
+        7.738,
+        -0.869,
+        1.797,
+        0.641,
+        0.638,
+        2.0075
+      ],
+      [
+        "traffic_cone",
+        0.3146,
+        15.683,
+        -6.873,
+        -2.334,
+        0.967,
+        0.371,
+        0.378,
+        2.6235
+      ],
+      [
+        "traffic_cone",
+        0.3789,
+        -2.622,
+        -14.665,
+        -1.706,
+        1.021,
+        0.388,
+        0.364,
+        1.3291
+      ],
+      [
+        "traffic_cone",
+        0.5109,
+        9.056,
+        2.906,
+        -1.434,
+        0.801,
+        0.402,
+        0.407,
+        3.0152
+      ],
+      [
+        "truck",
+        0.3443,
+        13.161,
+        31.836,
+        0.804,
+        2.022,
+        2.12,
+        5.612,
+        1.061
+      ],
+      [
+        "truck",
+        0.7239,
+        -4.741,
+        -16.253,
+        -0.581,
+        3.429,
+        2.969,
+        10.311,
+        1.5269
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224824m, y\u22483m)",
+          "isometric": "A 3D cuboid labeled 'car' at x\u224824m, y\u22483m is completely empty, containing no underlying LiDAR points and casting no LiDAR physical shadow."
+        },
+        "evidence": [
+          "In the BEV view, the prediction box labeled 'car 0.54' at x\u224824m, y\u22483m is positioned over an empty region of the road.",
+          "In the isometric view, the correspondng 3D cuboid contains zero LiDAR points.",
+          "There is no physical occlusion shadow behind the box, which is physically impossible for an actual opaque vehicle of that size."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (no sparse noise cluster is present at all, the region is completely void)",
+          "Low reflectivity (even dark or low-reflectivity vehicles return at least some scattered points at 24 meters, and they cast a physical lidar shadow behind them)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:26.070889"
+}

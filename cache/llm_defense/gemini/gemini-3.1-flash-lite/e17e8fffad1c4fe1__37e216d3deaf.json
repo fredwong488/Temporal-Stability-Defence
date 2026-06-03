@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "e17e8fffad1c4fe1",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3367,
+        -3.702,
+        42.537,
+        0.8,
+        1.643,
+        1.891,
+        4.494,
+        -1.7352
+      ],
+      [
+        "car",
+        0.4047,
+        22.473,
+        -4.311,
+        -0.964,
+        1.687,
+        1.965,
+        4.49,
+        -0.0958
+      ],
+      [
+        "car",
+        0.6269,
+        0.878,
+        -26.233,
+        -1.157,
+        1.603,
+        1.847,
+        4.377,
+        1.7819
+      ],
+      [
+        "car",
+        0.6479,
+        4.484,
+        29.184,
+        0.233,
+        1.627,
+        1.888,
+        4.534,
+        1.5811
+      ],
+      [
+        "car",
+        0.8661,
+        -3.923,
+        -2.237,
+        -1.14,
+        1.546,
+        1.839,
+        4.643,
+        -1.6058
+      ],
+      [
+        "car",
+        0.8916,
+        -7.565,
+        13.833,
+        -0.657,
+        1.585,
+        1.913,
+        4.776,
+        -1.5852
+      ],
+      [
+        "pedestrian",
+        0.3213,
+        -8.171,
+        -7.501,
+        -0.939,
+        1.853,
+        0.694,
+        0.716,
+        -0.4723
+      ],
+      [
+        "pedestrian",
+        0.3575,
+        7.811,
+        -1.772,
+        -0.989,
+        1.774,
+        0.642,
+        0.648,
+        2.8539
+      ],
+      [
+        "pedestrian",
+        0.3588,
+        -9.864,
+        -25.354,
+        -1.39,
+        1.805,
+        0.638,
+        0.723,
+        -1.4236
+      ],
+      [
+        "pedestrian",
+        0.3663,
+        6.582,
+        -2.17,
+        -1.097,
+        1.736,
+        0.649,
+        0.679,
+        1.3212
+      ],
+      [
+        "pedestrian",
+        0.3834,
+        8.376,
+        -0.14,
+        -0.958,
+        1.766,
+        0.628,
+        0.606,
+        -3.1112
+      ],
+      [
+        "pedestrian",
+        0.4142,
+        7.51,
+        -0.412,
+        -0.925,
+        1.767,
+        0.646,
+        0.642,
+        2.3144
+      ],
+      [
+        "pedestrian",
+        0.4311,
+        6.558,
+        0.238,
+        -0.955,
+        1.712,
+        0.597,
+        0.575,
+        0.9861
+      ],
+      [
+        "pedestrian",
+        0.4504,
+        6.857,
+        -12.728,
+        -1.053,
+        1.756,
+        0.655,
+        0.717,
+        1.3757
+      ],
+      [
+        "pedestrian",
+        0.4597,
+        6.872,
+        -5.316,
+        -0.925,
+        1.75,
+        0.635,
+        0.709,
+        1.6753
+      ],
+      [
+        "trailer",
+        0.3844,
+        -33.277,
+        -15.818,
+        -0.174,
+        4.137,
+        2.875,
+        16.101,
+        1.2807
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u22480m, y\u22480m)",
+          "isometric": "Small dense cluster at z\u2248-1.5m to 0m (near the ego vehicle origin)"
+        },
+        "evidence": [
+          "A highly dense, distinct cluster of points is located extremely close to the ego vehicle (near origin, x\u22480, y\u22480), which is a classic signature of localized LiDAR point injection spoofing.",
+          "The cluster lacks any physical structure corresponding to a vehicle or pedestrian (e.g., no L-shape or vertical body).",
+          "The cluster appears to be positioned below the apparent ground plane or in an area typically reserved for the ego vehicle, inconsistent with a real object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The cluster is too dense and compact to be random sensor noise.",
+          "Infrastructure: The location is at the ego vehicle's own position, not external infrastructure."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:14.426696"
+}

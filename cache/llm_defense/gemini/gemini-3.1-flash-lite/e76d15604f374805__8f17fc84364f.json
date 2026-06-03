@@ -1,0 +1,218 @@
+{
+  "key": {
+    "frame_id": "e76d15604f374805",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3472,
+        -19.805,
+        2.885,
+        -1.627,
+        1.699,
+        1.943,
+        4.518,
+        0.0927
+      ],
+      [
+        "car",
+        0.4224,
+        -28.462,
+        0.946,
+        -2.009,
+        1.761,
+        2.115,
+        4.744,
+        0.0861
+      ],
+      [
+        "car",
+        0.5033,
+        -14.721,
+        2.761,
+        -1.43,
+        1.82,
+        2.035,
+        4.844,
+        0.1728
+      ],
+      [
+        "car",
+        0.532,
+        -0.302,
+        13.101,
+        -0.638,
+        1.662,
+        1.858,
+        4.497,
+        1.5077
+      ],
+      [
+        "car",
+        0.5578,
+        -26.987,
+        7.413,
+        -1.702,
+        1.563,
+        1.941,
+        4.432,
+        -3.0182
+      ],
+      [
+        "car",
+        0.6343,
+        6.16,
+        35.465,
+        0.755,
+        1.859,
+        1.964,
+        4.705,
+        1.3689
+      ],
+      [
+        "car",
+        0.6421,
+        -21.721,
+        8.267,
+        -1.523,
+        1.587,
+        1.937,
+        4.376,
+        -3.0087
+      ],
+      [
+        "car",
+        0.867,
+        -5.566,
+        11.764,
+        -0.697,
+        1.559,
+        1.894,
+        4.654,
+        -2.0537
+      ],
+      [
+        "car",
+        0.8851,
+        -7.682,
+        -11.741,
+        -1.64,
+        1.64,
+        1.888,
+        4.678,
+        -1.5962
+      ],
+      [
+        "car",
+        0.9375,
+        4.317,
+        3.365,
+        -0.959,
+        1.613,
+        1.899,
+        4.702,
+        1.5919
+      ],
+      [
+        "pedestrian",
+        0.3039,
+        8.593,
+        7.174,
+        -0.464,
+        1.749,
+        0.634,
+        0.661,
+        1.4851
+      ],
+      [
+        "pedestrian",
+        0.3078,
+        7.323,
+        -17.519,
+        -1.234,
+        1.798,
+        0.633,
+        0.646,
+        1.4533
+      ],
+      [
+        "pedestrian",
+        0.3287,
+        11.412,
+        18.898,
+        0.072,
+        1.776,
+        0.629,
+        0.608,
+        -2.2381
+      ],
+      [
+        "pedestrian",
+        0.3691,
+        8.285,
+        -17.094,
+        -1.125,
+        1.812,
+        0.617,
+        0.604,
+        -3.0097
+      ],
+      [
+        "pedestrian",
+        0.3884,
+        -11.52,
+        8.425,
+        -1.215,
+        1.734,
+        0.61,
+        0.67,
+        -1.346
+      ],
+      [
+        "pedestrian",
+        0.5145,
+        -11.682,
+        6.763,
+        -1.279,
+        1.754,
+        0.625,
+        0.71,
+        1.8397
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 117
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Unavailable",
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "Cluster at (x\u224812m, y\u22480.5m) lacks vertical depth and coherent surface structure"
+        },
+        "evidence": [
+          "The cluster labeled 'car 0.53' in the BEV view contains a very sparse set of points that lacks the characteristic L-shape or volumetric surface structure of a real vehicle.",
+          "In the isometric view, this specific cluster appears as a localized, thin grouping of points without the consistent vertical extent expected of a car.",
+          "There is no visible occlusion shadow behind the cluster in the LiDAR point cloud, suggesting it is a collection of injected points rather than an opaque physical object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: The points are structured and assigned a specific, low-confidence detection box, which is characteristic of targeted injection rather than random environmental noise.",
+          "Natural occlusion: The lack of 3D shadow is a strong indicator against a physical object."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:40.574331"
+}

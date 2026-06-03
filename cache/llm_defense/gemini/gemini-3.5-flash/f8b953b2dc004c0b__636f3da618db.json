@@ -1,0 +1,145 @@
+{
+  "key": {
+    "frame_id": "f8b953b2dc004c0b",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3017,
+        14.819,
+        -6.047,
+        -1.247,
+        0.968,
+        3.141,
+        0.553,
+        2.8376
+      ],
+      [
+        "bicycle",
+        0.4233,
+        -0.312,
+        8.511,
+        -0.713,
+        1.67,
+        0.7,
+        1.668,
+        -0.4614
+      ],
+      [
+        "car",
+        0.4665,
+        0.886,
+        20.44,
+        0.251,
+        1.682,
+        1.97,
+        4.736,
+        -0.0888
+      ],
+      [
+        "car",
+        0.8669,
+        -3.322,
+        0.518,
+        -1.184,
+        1.503,
+        1.857,
+        4.595,
+        1.6127
+      ],
+      [
+        "trailer",
+        0.3475,
+        23.001,
+        21.411,
+        1.884,
+        3.064,
+        2.933,
+        15.66,
+        0.0625
+      ],
+      [
+        "trailer",
+        0.9525,
+        -3.147,
+        -15.893,
+        -0.38,
+        4.214,
+        2.791,
+        14.738,
+        1.6298
+      ],
+      [
+        "truck",
+        0.6634,
+        -0.158,
+        -7.988,
+        -1.018,
+        2.558,
+        2.213,
+        4.816,
+        1.5639
+      ],
+      [
+        "truck",
+        0.9012,
+        -3.414,
+        -7.876,
+        -0.332,
+        4.017,
+        2.722,
+        6.1,
+        1.6045
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.221769332885742,
+            0.7143734097480774,
+            -1.8750007152557373
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (labeled as [ATTACKED])",
+          "bev": "(x\u22489m, y\u22481m)",
+          "isometric": "Box labeled as bicycle 0.42 at x\u22489m, y\u22481m is completely empty of point clusters and lacks any 3D vertical structure or shadow."
+        },
+        "evidence": [
+          "A 3D bounding box for 'bicycle' is predicted at (x\u22489m, y\u22481m) with zero physical point density inside or immediately surrounding it.",
+          "There is no corresponding physical occlusion or 3D shadow cast behind the predicted object location.",
+          "The camera image is entirely unavailable and labeled as attacked, preventing cross-modal verification."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low-reflectivity object",
+          "Distant object occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:49.866086"
+}

@@ -1,0 +1,197 @@
+{
+  "key": {
+    "frame_id": "9247dd64ee2941fa",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.353,
+        -2.707,
+        -0.482,
+        -1.287,
+        0.926,
+        1.913,
+        0.543,
+        0.014
+      ],
+      [
+        "barrier",
+        0.3848,
+        14.786,
+        -6.055,
+        -1.329,
+        0.99,
+        3.191,
+        0.55,
+        2.7444
+      ],
+      [
+        "bus",
+        0.8325,
+        -12.04,
+        29.49,
+        1.202,
+        3.205,
+        2.854,
+        9.576,
+        0.603
+      ],
+      [
+        "car",
+        0.5585,
+        -2.588,
+        22.467,
+        0.244,
+        1.599,
+        1.905,
+        4.606,
+        0.0325
+      ],
+      [
+        "car",
+        0.6898,
+        -3.339,
+        0.49,
+        -1.124,
+        1.538,
+        1.894,
+        4.648,
+        1.6099
+      ],
+      [
+        "pedestrian",
+        0.367,
+        -5.82,
+        7.983,
+        -0.682,
+        1.793,
+        0.684,
+        0.683,
+        0.501
+      ],
+      [
+        "pedestrian",
+        0.3928,
+        -5.158,
+        9.013,
+        -0.573,
+        1.797,
+        0.674,
+        0.693,
+        0.5578
+      ],
+      [
+        "pedestrian",
+        0.4512,
+        -8.483,
+        9.519,
+        -0.527,
+        1.841,
+        0.718,
+        0.772,
+        1.9095
+      ],
+      [
+        "trailer",
+        0.9426,
+        -3.153,
+        -16.034,
+        -0.41,
+        4.22,
+        2.785,
+        14.997,
+        1.628
+      ],
+      [
+        "truck",
+        0.5823,
+        -0.125,
+        -7.997,
+        -1.03,
+        2.494,
+        2.154,
+        4.772,
+        1.5726
+      ],
+      [
+        "truck",
+        0.8784,
+        11.0,
+        16.439,
+        0.876,
+        3.389,
+        2.675,
+        7.571,
+        0.0124
+      ],
+      [
+        "truck",
+        0.903,
+        -3.421,
+        -7.808,
+        -0.306,
+        4.005,
+        2.629,
+        6.013,
+        1.631
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.75119161605835,
+            0.6134889125823975,
+            -1.5602421760559082
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 73,
+          "reinjected_centroid": [
+            -2.7658636569976807,
+            21.865463256835938,
+            -0.1970035880804062
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire frame (camera feed is unavailable/blocked)",
+          "bev": "(x\u22488m to 10m, y\u22486m)",
+          "isometric": "Several boxes labeled as pedestrians are placed around z\u22481.5m to 3.0m on sparse, floating points that lack human-like vertical structure and physical contact with the ground plane."
+        },
+        "evidence": [
+          "The camera image is completely missing and labeled '[ATTACKED]', indicating a potential sensor denial-of-service or physical blocking attack.",
+          "Multiple pedestrian detections (e.g., 'pedestrian 0.37', 'pedestrian 0.39') are generated on floating point clusters high above the ground plane (z > 1.5m) in the isometric view, which lack any physical support or realistic pedestrian dimensions."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground-plane reflections",
+          "Real pedestrians (ruled out due to extreme height and floating nature of the point clusters)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:22.473117"
+}

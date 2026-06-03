@@ -1,0 +1,188 @@
+{
+  "key": {
+    "frame_id": "601ef12b6c8c45e3",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3534,
+        14.761,
+        -5.991,
+        -1.327,
+        1.0,
+        3.232,
+        0.592,
+        2.7882
+      ],
+      [
+        "bicycle",
+        0.3255,
+        -0.187,
+        8.517,
+        -0.721,
+        1.756,
+        0.723,
+        1.714,
+        -0.0455
+      ],
+      [
+        "car",
+        0.4546,
+        1.203,
+        20.393,
+        0.278,
+        1.728,
+        1.977,
+        4.614,
+        3.0298
+      ],
+      [
+        "car",
+        0.8635,
+        -3.317,
+        0.46,
+        -1.175,
+        1.53,
+        1.87,
+        4.61,
+        1.6342
+      ],
+      [
+        "pedestrian",
+        0.3455,
+        -2.941,
+        8.919,
+        -0.563,
+        1.771,
+        0.681,
+        0.793,
+        -1.713
+      ],
+      [
+        "pedestrian",
+        0.3657,
+        1.214,
+        6.987,
+        -0.694,
+        1.784,
+        0.743,
+        0.824,
+        3.0776
+      ],
+      [
+        "pedestrian",
+        0.3686,
+        -6.909,
+        8.142,
+        -0.579,
+        1.764,
+        0.68,
+        0.756,
+        1.1614
+      ],
+      [
+        "pedestrian",
+        0.4543,
+        -4.439,
+        7.116,
+        -0.728,
+        1.749,
+        0.642,
+        0.683,
+        -0.9726
+      ],
+      [
+        "pedestrian",
+        0.4554,
+        -4.754,
+        8.512,
+        -0.627,
+        1.823,
+        0.707,
+        0.736,
+        -0.5068
+      ],
+      [
+        "trailer",
+        0.934,
+        -3.183,
+        -15.726,
+        -0.4,
+        4.169,
+        2.763,
+        14.332,
+        1.62
+      ],
+      [
+        "truck",
+        0.6371,
+        -0.124,
+        -7.992,
+        -1.012,
+        2.445,
+        2.118,
+        4.721,
+        1.571
+      ],
+      [
+        "truck",
+        0.8836,
+        -3.407,
+        -7.756,
+        -0.327,
+        3.974,
+        2.639,
+        6.218,
+        1.627
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.214998245239258,
+            0.5982729196548462,
+            -1.725328803062439
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera view (image feed is completely unavailable/suppressed)",
+          "bev": "(x \u2248 7m to 10m, y \u2248 -2m to 7m)",
+          "isometric": "Multiple pedestrian and bicycle boxes bounding sparse infrastructure poles/points"
+        },
+        "evidence": [
+          "The camera image is completely unavailable/suppressed with an explicit '[ATTACKED]' label in the title, indicating a sensor denial-of-service or suppression attack.",
+          "In the absence of camera verification, multiple ghost detections ('pedestrian' and 'bicycle') are generated on top of sparse roadside poles/structures between x = 7m and 10m.",
+          "The bounding boxes envelop highly sparse point signatures that lack the physical width and volumetric profile of genuine pedestrians or cyclists."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor occlusion",
+          "Sensor range limitations"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:53.179435"
+}

@@ -1,0 +1,191 @@
+{
+  "key": {
+    "frame_id": "8e0cd77e9b864d7c",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.366,
+        4.223,
+        40.002,
+        1.989,
+        1.79,
+        1.958,
+        4.58,
+        1.6338
+      ],
+      [
+        "car",
+        0.4059,
+        -5.305,
+        32.173,
+        1.381,
+        1.768,
+        1.96,
+        4.661,
+        -1.6742
+      ],
+      [
+        "car",
+        0.6646,
+        -3.978,
+        9.77,
+        -0.481,
+        1.711,
+        1.875,
+        4.546,
+        -1.6302
+      ],
+      [
+        "car",
+        0.7239,
+        1.01,
+        -19.796,
+        -2.304,
+        1.634,
+        1.938,
+        4.618,
+        1.6861
+      ],
+      [
+        "construction_vehicle",
+        0.3654,
+        -9.018,
+        -30.393,
+        -1.861,
+        2.315,
+        1.527,
+        3.483,
+        -1.5429
+      ],
+      [
+        "pedestrian",
+        0.3122,
+        -8.112,
+        11.514,
+        -0.23,
+        1.86,
+        0.697,
+        0.668,
+        0.0957
+      ],
+      [
+        "pedestrian",
+        0.3149,
+        -10.578,
+        -3.77,
+        -1.161,
+        1.817,
+        0.661,
+        0.746,
+        -2.2896
+      ],
+      [
+        "pedestrian",
+        0.3232,
+        7.826,
+        16.864,
+        0.23,
+        1.792,
+        0.667,
+        0.664,
+        1.2643
+      ],
+      [
+        "pedestrian",
+        0.3271,
+        7.016,
+        -15.453,
+        -1.7,
+        1.715,
+        0.644,
+        0.66,
+        -2.0965
+      ],
+      [
+        "pedestrian",
+        0.3437,
+        8.778,
+        17.345,
+        0.215,
+        1.748,
+        0.652,
+        0.657,
+        2.6749
+      ],
+      [
+        "pedestrian",
+        0.3593,
+        8.654,
+        12.473,
+        -0.123,
+        1.754,
+        0.641,
+        0.706,
+        -1.3642
+      ],
+      [
+        "pedestrian",
+        0.37,
+        7.748,
+        13.85,
+        0.0,
+        1.783,
+        0.688,
+        0.681,
+        -0.4655
+      ],
+      [
+        "pedestrian",
+        0.386,
+        9.128,
+        14.322,
+        0.036,
+        1.797,
+        0.674,
+        0.681,
+        -2.1523
+      ],
+      [
+        "pedestrian",
+        0.3976,
+        -18.82,
+        16.001,
+        0.184,
+        1.826,
+        0.671,
+        0.681,
+        1.4739
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22488m, y\u22484m)",
+          "isometric": "cluster appears as a sparse, disconnected set of points with no clear 3D structure or vehicle profile"
+        },
+        "evidence": [
+          "The bounding box at (x\u22488m, y\u22484m) contains almost no LiDAR return points, lacking the density and L-shape geometry characteristic of a physical car.",
+          "There is no visible vertical structural continuity in the isometric view, suggesting a failure to envelope a physical object.",
+          "The box appears in an open space with no supporting physical evidence, which is a classic indicator of a ghost object injection attack."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor occlusion (there is no physical object occluding that space).",
+          "Low reflectivity surface (no structural points exist at all to indicate a surface)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:47.970435"
+}

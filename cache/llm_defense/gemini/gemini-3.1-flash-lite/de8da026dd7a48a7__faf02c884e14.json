@@ -1,0 +1,295 @@
+{
+  "key": {
+    "frame_id": "de8da026dd7a48a7",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3404,
+        6.591,
+        36.947,
+        0.467,
+        1.752,
+        1.97,
+        4.707,
+        1.4554
+      ],
+      [
+        "car",
+        0.4719,
+        -29.016,
+        6.967,
+        -1.696,
+        1.639,
+        1.943,
+        4.533,
+        -2.9663
+      ],
+      [
+        "car",
+        0.5919,
+        -30.251,
+        0.292,
+        -1.809,
+        1.782,
+        2.005,
+        4.667,
+        0.1851
+      ],
+      [
+        "car",
+        0.5969,
+        -23.177,
+        8.289,
+        -1.626,
+        1.559,
+        1.872,
+        4.208,
+        -2.9101
+      ],
+      [
+        "car",
+        0.6569,
+        -6.614,
+        12.684,
+        -0.757,
+        1.581,
+        1.895,
+        4.568,
+        -2.1395
+      ],
+      [
+        "car",
+        0.6961,
+        -16.274,
+        2.488,
+        -1.65,
+        1.648,
+        1.968,
+        4.667,
+        0.2824
+      ],
+      [
+        "car",
+        0.8412,
+        -8.646,
+        -13.933,
+        -2.001,
+        1.661,
+        1.945,
+        4.718,
+        -1.5387
+      ],
+      [
+        "car",
+        0.8912,
+        4.302,
+        2.665,
+        -1.094,
+        1.693,
+        1.972,
+        4.976,
+        1.5803
+      ],
+      [
+        "pedestrian",
+        0.3464,
+        -11.555,
+        7.345,
+        -1.132,
+        1.737,
+        0.628,
+        0.688,
+        -1.4831
+      ],
+      [
+        "pedestrian",
+        0.3507,
+        -3.098,
+        -33.408,
+        -1.865,
+        1.776,
+        0.629,
+        0.687,
+        -1.4971
+      ],
+      [
+        "pedestrian",
+        0.3625,
+        7.301,
+        -18.064,
+        -1.11,
+        1.758,
+        0.605,
+        0.573,
+        0.6755
+      ],
+      [
+        "pedestrian",
+        0.4097,
+        8.235,
+        -17.408,
+        -0.989,
+        1.75,
+        0.607,
+        0.594,
+        -2.8745
+      ],
+      [
+        "pedestrian",
+        0.4299,
+        -11.685,
+        5.801,
+        -1.207,
+        1.762,
+        0.633,
+        0.723,
+        -1.5312
+      ],
+      [
+        "pedestrian",
+        0.442,
+        8.612,
+        6.859,
+        -0.378,
+        1.776,
+        0.635,
+        0.649,
+        2.5238
+      ],
+      [
+        "traffic_cone",
+        0.3078,
+        -7.495,
+        27.726,
+        -0.134,
+        1.276,
+        0.416,
+        0.402,
+        2.333
+      ],
+      [
+        "trailer",
+        0.3936,
+        28.456,
+        -11.883,
+        0.229,
+        4.16,
+        2.998,
+        13.534,
+        -1.6922
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            5.248164176940918,
+            3.3456192016601562,
+            -1.6144888401031494
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 142,
+          "reinjected_centroid": [
+            -8.336670875549316,
+            -12.700692176818848,
+            -2.222010850906372
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 85,
+          "reinjected_centroid": [
+            -15.22142505645752,
+            2.5875043869018555,
+            -1.955065369606018
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 186,
+          "reinjected_centroid": [
+            -5.94830846786499,
+            12.345863342285156,
+            -1.0903165340423584
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 18,
+          "reinjected_centroid": [
+            -27.330066680908203,
+            7.033529281616211,
+            -1.8464603424072266
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 25,
+          "reinjected_centroid": [
+            -22.31768226623535,
+            7.7566680908203125,
+            -1.8293468952178955
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 8,
+          "reinjected_centroid": [
+            6.174068927764893,
+            34.853755950927734,
+            -0.0008208593353629112
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            -28.830018997192383,
+            0.18487891554832458,
+            -2.172480583190918
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22482m, y\u2248-4m)",
+          "isometric": "Low-density cluster at x\u22482m, y\u2248-4m, z\u22480m"
+        },
+        "evidence": [
+          "The bounding box at x\u22482m, y\u2248-4m encloses a very sparse cluster of points that lacks the coherent 3D structure typical of a vehicle.",
+          "The cluster shows no clear geometric features or surface profile indicative of a car in the isometric view.",
+          "The bounding box is small and isolated near the ego vehicle, which is characteristic of injection attacks intended to trigger false positives at close range."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise: While possible, the presence of a localized, labeled 'car' bounding box suggests a systematic detection rather than random scatter.",
+          "Actual vehicle: The lack of 3D structural density and the failure to present a coherent physical profile (like an L-shape) makes a physical vehicle unlikely."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:04.550966"
+}

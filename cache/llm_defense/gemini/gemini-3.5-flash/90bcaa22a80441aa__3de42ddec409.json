@@ -1,0 +1,190 @@
+{
+  "key": {
+    "frame_id": "90bcaa22a80441aa",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "barrier",
+        0.31,
+        3.799,
+        -18.074,
+        -2.245,
+        0.907,
+        3.056,
+        0.537,
+        -3.0684
+      ],
+      [
+        "bus",
+        0.3982,
+        0.415,
+        -24.584,
+        -0.993,
+        3.29,
+        2.95,
+        9.388,
+        1.6616
+      ],
+      [
+        "bus",
+        0.7991,
+        7.567,
+        29.571,
+        1.687,
+        3.598,
+        2.982,
+        12.884,
+        -2.4298
+      ],
+      [
+        "bus",
+        0.8198,
+        7.412,
+        29.6,
+        1.559,
+        3.683,
+        2.946,
+        12.623,
+        2.855
+      ],
+      [
+        "car",
+        0.336,
+        -14.224,
+        -22.716,
+        -2.141,
+        1.704,
+        1.963,
+        4.723,
+        1.2388
+      ],
+      [
+        "car",
+        0.3586,
+        -15.769,
+        -28.975,
+        -2.414,
+        1.645,
+        1.869,
+        4.344,
+        1.2696
+      ],
+      [
+        "car",
+        0.548,
+        -15.869,
+        -39.861,
+        -2.765,
+        1.778,
+        1.99,
+        4.859,
+        2.7373
+      ],
+      [
+        "car",
+        0.6086,
+        3.584,
+        26.491,
+        0.059,
+        1.638,
+        1.887,
+        4.468,
+        -0.1947
+      ],
+      [
+        "car",
+        0.8719,
+        0.668,
+        -10.669,
+        -1.34,
+        1.901,
+        1.955,
+        4.6,
+        1.6034
+      ],
+      [
+        "construction_vehicle",
+        0.5339,
+        4.463,
+        -1.578,
+        -1.195,
+        2.296,
+        2.404,
+        4.313,
+        -1.7125
+      ],
+      [
+        "traffic_cone",
+        0.5641,
+        2.223,
+        -5.253,
+        -1.504,
+        1.066,
+        0.645,
+        0.601,
+        1.5411
+      ],
+      [
+        "trailer",
+        0.3556,
+        12.349,
+        -25.888,
+        -0.044,
+        4.302,
+        2.932,
+        16.206,
+        1.7096
+      ],
+      [
+        "trailer",
+        0.4492,
+        20.601,
+        -20.175,
+        1.029,
+        4.452,
+        3.329,
+        14.607,
+        1.69
+      ],
+      [
+        "truck",
+        0.3482,
+        0.227,
+        -23.119,
+        -1.396,
+        2.964,
+        2.62,
+        7.256,
+        1.6032
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 25m to 28m, y \u2248 -3m to -6m",
+          "isometric": "Empty bounding box labeled 'car 0.61' centered at x \u2248 26m, y \u2248 -4m"
+        },
+        "evidence": [
+          "The predicted bounding box labeled 'car 0.61' at x \u2248 26m, y \u2248 -4m is entirely empty, containing no LiDAR returns in either the BEV or isometric views.",
+          "There is no physical structure or point cluster corresponding to a vehicle at this location, violating basic 3D structural and physical invariants."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (an entire empty bounding box of this size cannot be triggered by noise without any points present)",
+          "Occlusion (there are points further down the range at x \u2248 28-30m, which would be blocked if an actual vehicle existed at x \u2248 26m)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:20:33.654204"
+}

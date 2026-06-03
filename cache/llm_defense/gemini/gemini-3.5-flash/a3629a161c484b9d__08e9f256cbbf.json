@@ -1,0 +1,197 @@
+{
+  "key": {
+    "frame_id": "a3629a161c484b9d",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3829,
+        14.82,
+        -5.958,
+        -1.265,
+        0.978,
+        3.225,
+        0.534,
+        2.778
+      ],
+      [
+        "car",
+        0.3189,
+        8.975,
+        19.973,
+        0.415,
+        1.613,
+        1.916,
+        4.724,
+        0.0121
+      ],
+      [
+        "car",
+        0.8956,
+        -3.325,
+        0.472,
+        -1.198,
+        1.522,
+        1.893,
+        4.68,
+        1.5965
+      ],
+      [
+        "construction_vehicle",
+        0.3004,
+        4.596,
+        41.391,
+        1.654,
+        3.4,
+        4.012,
+        4.132,
+        1.3601
+      ],
+      [
+        "pedestrian",
+        0.3569,
+        -5.842,
+        8.015,
+        -0.725,
+        1.8,
+        0.691,
+        0.699,
+        1.0699
+      ],
+      [
+        "pedestrian",
+        0.4023,
+        0.38,
+        8.449,
+        -0.583,
+        1.773,
+        0.752,
+        0.899,
+        2.0914
+      ],
+      [
+        "pedestrian",
+        0.4465,
+        -3.737,
+        8.322,
+        -0.669,
+        1.838,
+        0.738,
+        0.807,
+        1.5487
+      ],
+      [
+        "pedestrian",
+        0.4515,
+        -2.051,
+        8.749,
+        -0.519,
+        1.85,
+        0.699,
+        0.783,
+        -1.6295
+      ],
+      [
+        "trailer",
+        0.9255,
+        -3.16,
+        -16.025,
+        -0.389,
+        4.257,
+        2.805,
+        15.218,
+        1.626
+      ],
+      [
+        "truck",
+        0.3016,
+        -41.225,
+        -13.588,
+        -0.748,
+        2.097,
+        2.516,
+        5.742,
+        1.5867
+      ],
+      [
+        "truck",
+        0.6202,
+        -0.135,
+        -8.01,
+        -1.034,
+        2.425,
+        2.136,
+        4.845,
+        1.5707
+      ],
+      [
+        "truck",
+        0.8932,
+        -3.409,
+        -7.793,
+        -0.335,
+        3.998,
+        2.641,
+        6.213,
+        1.6353
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.698467254638672,
+            0.7276330590248108,
+            -1.8479763269424438
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 55,
+          "reinjected_centroid": [
+            -4.914953231811523,
+            9.809731483459473,
+            -1.2422720193862915
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (image missing/corrupted)",
+          "bev": "x \u2248 8m to 9m, y \u2248 -1m to 6m",
+          "isometric": "Four pedestrian bounding boxes aligned in a line at x \u2248 8-9m with absolutely no LiDAR points contained inside or around them"
+        },
+        "evidence": [
+          "Four pedestrian detections are predicted in a neat line roughly 8-9 meters in front of the ego vehicle.",
+          "There is a complete absence of LiDAR points within or near any of these four bounding boxes in both the BEV and Isometric views.",
+          "There are no physical shadows or occlusions on the ground plane behind these detections that would suggest the presence of real physical obstacles."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or reflection (sensor noise does not produce multiple cleanly structured bounding boxes in a line without any underlying point clusters)",
+          "Distant or low-reflectivity objects (at 8 meters distance, any real pedestrian would return multiple strong LiDAR points)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:06.155764"
+}

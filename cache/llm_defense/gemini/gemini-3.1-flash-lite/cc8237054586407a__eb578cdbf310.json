@@ -1,0 +1,340 @@
+{
+  "key": {
+    "frame_id": "cc8237054586407a",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3363,
+        8.543,
+        18.366,
+        -0.132,
+        1.851,
+        0.745,
+        1.678,
+        1.5203
+      ],
+      [
+        "bicycle",
+        0.3612,
+        8.52,
+        -2.081,
+        -0.922,
+        1.691,
+        0.637,
+        1.647,
+        0.6397
+      ],
+      [
+        "car",
+        0.3171,
+        15.805,
+        27.037,
+        0.361,
+        1.63,
+        1.92,
+        4.544,
+        1.4291
+      ],
+      [
+        "car",
+        0.3462,
+        25.42,
+        23.083,
+        1.053,
+        1.758,
+        1.982,
+        4.696,
+        -1.5802
+      ],
+      [
+        "car",
+        0.3594,
+        5.465,
+        38.235,
+        0.675,
+        1.746,
+        1.938,
+        4.552,
+        1.7041
+      ],
+      [
+        "car",
+        0.4452,
+        5.739,
+        31.972,
+        0.34,
+        1.703,
+        1.92,
+        4.546,
+        1.4968
+      ],
+      [
+        "car",
+        0.4869,
+        -21.898,
+        -5.918,
+        -1.807,
+        1.669,
+        1.937,
+        4.444,
+        -2.9598
+      ],
+      [
+        "car",
+        0.5103,
+        -19.881,
+        -11.046,
+        -2.007,
+        1.639,
+        1.917,
+        4.491,
+        0.126
+      ],
+      [
+        "car",
+        0.5219,
+        23.902,
+        7.627,
+        0.419,
+        1.777,
+        1.956,
+        4.563,
+        1.3856
+      ],
+      [
+        "car",
+        0.535,
+        5.759,
+        21.668,
+        -0.257,
+        1.568,
+        1.858,
+        4.434,
+        -1.5152
+      ],
+      [
+        "car",
+        0.5527,
+        -28.535,
+        -13.012,
+        -2.211,
+        1.608,
+        1.937,
+        4.494,
+        -2.9972
+      ],
+      [
+        "car",
+        0.5592,
+        5.765,
+        26.412,
+        0.06,
+        1.677,
+        1.965,
+        4.793,
+        -1.5093
+      ],
+      [
+        "car",
+        0.6204,
+        16.459,
+        7.772,
+        -0.111,
+        1.678,
+        1.91,
+        4.506,
+        1.6117
+      ],
+      [
+        "car",
+        0.7038,
+        -0.441,
+        13.172,
+        -0.67,
+        1.589,
+        1.828,
+        4.331,
+        1.5897
+      ],
+      [
+        "car",
+        0.7054,
+        -7.616,
+        -25.562,
+        -1.955,
+        1.729,
+        1.932,
+        4.668,
+        -1.6373
+      ],
+      [
+        "car",
+        0.7427,
+        -14.596,
+        -11.014,
+        -1.882,
+        1.616,
+        1.926,
+        4.602,
+        0.1672
+      ],
+      [
+        "car",
+        0.7674,
+        12.352,
+        7.794,
+        -0.266,
+        1.671,
+        1.9,
+        4.562,
+        1.5507
+      ],
+      [
+        "car",
+        0.8109,
+        -9.015,
+        10.5,
+        -0.887,
+        1.726,
+        1.934,
+        4.616,
+        -1.6403
+      ],
+      [
+        "car",
+        0.8374,
+        18.48,
+        -2.146,
+        -0.363,
+        1.661,
+        1.878,
+        4.351,
+        -0.0122
+      ],
+      [
+        "car",
+        0.8691,
+        4.192,
+        -10.065,
+        -1.342,
+        1.538,
+        1.882,
+        4.704,
+        1.5712
+      ],
+      [
+        "car",
+        0.8977,
+        -9.226,
+        3.935,
+        -1.361,
+        1.518,
+        1.84,
+        4.646,
+        -1.5821
+      ],
+      [
+        "car",
+        0.9209,
+        -6.206,
+        -2.633,
+        -1.346,
+        1.555,
+        1.834,
+        4.498,
+        -2.1472
+      ],
+      [
+        "construction_vehicle",
+        0.3447,
+        7.333,
+        8.255,
+        -0.582,
+        2.172,
+        1.186,
+        2.293,
+        1.5442
+      ],
+      [
+        "pedestrian",
+        0.3155,
+        7.568,
+        -15.936,
+        -1.063,
+        1.78,
+        0.588,
+        0.609,
+        -2.6632
+      ],
+      [
+        "pedestrian",
+        0.3651,
+        -11.191,
+        -11.74,
+        -1.826,
+        1.77,
+        0.64,
+        0.645,
+        -1.3262
+      ],
+      [
+        "pedestrian",
+        0.3913,
+        8.507,
+        18.117,
+        -0.036,
+        1.783,
+        0.735,
+        0.864,
+        1.6434
+      ],
+      [
+        "pedestrian",
+        0.4074,
+        8.445,
+        -2.036,
+        -0.84,
+        1.772,
+        0.687,
+        0.794,
+        1.0033
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 94
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "cluster appears as a dense, isolated set of points at ground level with no vertical extent, inconsistent with a vehicle's geometry"
+        },
+        "evidence": [
+          "The cluster at (x\u224812m, y\u22480.5m) consists of a very small number of points that do not exhibit the L-shape or volumetric structure typical of a vehicle.",
+          "The cluster lacks any physical shadow behind it in the LiDAR data, suggesting it is a set of injected points rather than an opaque object.",
+          "The detection is highly localized and isolated from the rest of the scene geometry, which is characteristic of point-injection ghosting."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too structured and specific in location).",
+          "Distant object (the object is close at ~12m, should have high point density if real).",
+          "Low reflectivity object (a real vehicle at 12m would return a substantial point cloud with vertical structure)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:29.295232"
+}

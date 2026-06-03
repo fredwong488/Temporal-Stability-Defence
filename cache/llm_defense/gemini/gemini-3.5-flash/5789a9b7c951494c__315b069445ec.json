@@ -1,0 +1,188 @@
+{
+  "key": {
+    "frame_id": "5789a9b7c951494c",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "car",
+        0.3085,
+        -6.015,
+        0.185,
+        -1.454,
+        1.551,
+        1.798,
+        4.168,
+        1.816
+      ],
+      [
+        "car",
+        0.3149,
+        10.841,
+        42.731,
+        2.032,
+        1.804,
+        1.927,
+        4.428,
+        1.4177
+      ],
+      [
+        "car",
+        0.894,
+        -3.326,
+        0.475,
+        -1.203,
+        1.523,
+        1.897,
+        4.698,
+        1.6025
+      ],
+      [
+        "pedestrian",
+        0.3243,
+        3.818,
+        7.609,
+        -0.601,
+        1.781,
+        0.683,
+        0.702,
+        2.9294
+      ],
+      [
+        "pedestrian",
+        0.3275,
+        9.722,
+        4.448,
+        -0.356,
+        1.761,
+        0.654,
+        0.683,
+        1.0902
+      ],
+      [
+        "pedestrian",
+        0.329,
+        3.405,
+        9.443,
+        -0.349,
+        1.788,
+        0.699,
+        0.756,
+        -2.497
+      ],
+      [
+        "pedestrian",
+        0.3481,
+        10.572,
+        5.235,
+        -0.349,
+        1.724,
+        0.643,
+        0.644,
+        2.9725
+      ],
+      [
+        "pedestrian",
+        0.3757,
+        6.812,
+        6.979,
+        -0.449,
+        1.791,
+        0.742,
+        0.82,
+        0.3971
+      ],
+      [
+        "trailer",
+        0.9369,
+        -3.171,
+        -15.803,
+        -0.366,
+        4.199,
+        2.783,
+        14.753,
+        1.621
+      ],
+      [
+        "truck",
+        0.3379,
+        -40.938,
+        -13.505,
+        -0.845,
+        2.071,
+        2.287,
+        5.652,
+        1.572
+      ],
+      [
+        "truck",
+        0.6541,
+        -0.096,
+        -8.126,
+        -1.083,
+        2.456,
+        2.239,
+        4.987,
+        1.6129
+      ],
+      [
+        "truck",
+        0.8575,
+        -3.397,
+        -7.789,
+        -0.343,
+        4.017,
+        2.665,
+        6.364,
+        1.6289
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.544556140899658,
+            0.6833294034004211,
+            -1.9196242094039917
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Camera image not available",
+          "bev": "Region around (x\u22487m, y\u2248-3m to y\u2248-7m)",
+          "isometric": "Multiple tall pedestrian cuboids enclosing extremely sparse, scattered LiDAR points without cohesive human physical dimensions or geometry"
+        },
+        "evidence": [
+          "A cluster of 5 overlapping or closely spaced pedestrian detections ('pedestrian 0.33', 'pedestrian 0.32', 'pedestrian 0.38', etc.) are generated around x\u22487m in the negative y-quadrant.",
+          "The underlying point cloud in these regions shows no vertical structure resembling multiple pedestrians.",
+          "The lack of a camera image prevents visual verification, but the high density of overlapping low-confidence 3D pedestrian boxes on sparse noise points is a classic signature of a spoofing/ghost attack."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (which would not generate multiple coordinated bounding boxes in a cluster)",
+          "Real pedestrians (who would show distinct, high-density vertical profiles in the isometric view)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:43.812792"
+}

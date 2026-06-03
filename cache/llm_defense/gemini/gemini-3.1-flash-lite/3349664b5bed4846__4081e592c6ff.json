@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "3349664b5bed4846",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3,
+        6.256,
+        45.32,
+        1.564,
+        1.76,
+        1.942,
+        4.59,
+        1.5198
+      ],
+      [
+        "car",
+        0.3121,
+        -20.397,
+        13.282,
+        -0.853,
+        1.663,
+        1.899,
+        4.572,
+        -0.4143
+      ],
+      [
+        "car",
+        0.3332,
+        -8.501,
+        34.411,
+        0.808,
+        1.686,
+        1.886,
+        4.52,
+        -1.6061
+      ],
+      [
+        "car",
+        0.3552,
+        -8.566,
+        30.271,
+        0.711,
+        1.686,
+        1.886,
+        4.624,
+        -1.5947
+      ],
+      [
+        "car",
+        0.3616,
+        -8.601,
+        39.7,
+        0.927,
+        1.741,
+        1.926,
+        4.591,
+        -1.6283
+      ],
+      [
+        "car",
+        0.5887,
+        0.163,
+        -33.683,
+        -2.392,
+        1.659,
+        1.906,
+        4.503,
+        1.8315
+      ],
+      [
+        "car",
+        0.6219,
+        -3.915,
+        24.269,
+        0.248,
+        1.586,
+        1.872,
+        4.447,
+        -1.7083
+      ],
+      [
+        "car",
+        0.7297,
+        -6.462,
+        14.666,
+        -0.241,
+        1.648,
+        1.904,
+        4.473,
+        0.3003
+      ],
+      [
+        "car",
+        0.8917,
+        -14.394,
+        12.498,
+        -0.764,
+        1.604,
+        1.914,
+        4.555,
+        0.1733
+      ],
+      [
+        "car",
+        0.8947,
+        4.405,
+        13.058,
+        -0.391,
+        1.564,
+        1.835,
+        4.589,
+        1.602
+      ],
+      [
+        "car",
+        0.94,
+        -7.586,
+        -2.1,
+        -1.341,
+        1.587,
+        1.894,
+        4.694,
+        -1.5858
+      ],
+      [
+        "pedestrian",
+        0.3035,
+        8.587,
+        -11.042,
+        -1.372,
+        1.798,
+        0.651,
+        0.641,
+        -2.4835
+      ],
+      [
+        "pedestrian",
+        0.3083,
+        -8.326,
+        -23.521,
+        -2.223,
+        1.813,
+        0.678,
+        0.706,
+        -0.6552
+      ],
+      [
+        "pedestrian",
+        0.3155,
+        6.396,
+        -22.937,
+        -1.705,
+        1.814,
+        0.637,
+        0.678,
+        2.505
+      ],
+      [
+        "pedestrian",
+        0.346,
+        7.295,
+        -18.3,
+        -1.691,
+        1.809,
+        0.641,
+        0.625,
+        -2.4774
+      ],
+      [
+        "pedestrian",
+        0.3491,
+        6.202,
+        -20.331,
+        -1.922,
+        1.782,
+        0.659,
+        0.693,
+        -1.6958
+      ],
+      [
+        "pedestrian",
+        0.3719,
+        8.022,
+        -13.193,
+        -1.418,
+        1.796,
+        0.631,
+        0.624,
+        -1.7952
+      ],
+      [
+        "pedestrian",
+        0.4436,
+        8.457,
+        18.385,
+        0.141,
+        1.776,
+        0.655,
+        0.69,
+        1.5136
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": null,
+          "isometric": null
+        },
+        "evidence": [
+          "The camera image data is explicitly marked as unavailable, preventing any cross-modal validation.",
+          "The LiDAR point cloud data shows standard sparse returns consistent with natural road geometry (curbs, distant structures) and typical vehicle detections.",
+          "Bounding boxes align with discernible clusters of points that show vertical structure in the isometric view, consistent with expected objects rather than anomalous floating points."
+        ],
+        "alternatives_ruled_out": [
+          "The lack of evidence for spoofing or inconsistent geometry suggests the detections are valid outputs from a standard perception pipeline.",
+          "No evidence of localized, high-density point injection (a hallmark of typical ghost attacks) is present in the BEV or isometric views."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:44.320902"
+}

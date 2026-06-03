@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "139d5e756c1f461b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3004,
+        -12.364,
+        -19.147,
+        -2.06,
+        1.652,
+        1.955,
+        4.499,
+        -2.9883
+      ],
+      [
+        "car",
+        0.5425,
+        -2.589,
+        22.471,
+        0.477,
+        1.594,
+        1.889,
+        4.592,
+        1.4797
+      ],
+      [
+        "car",
+        0.6246,
+        1.107,
+        -21.343,
+        -1.955,
+        1.713,
+        1.889,
+        4.496,
+        1.7691
+      ],
+      [
+        "car",
+        0.707,
+        -6.548,
+        25.515,
+        0.512,
+        1.634,
+        1.909,
+        4.52,
+        -1.6482
+      ],
+      [
+        "car",
+        0.7123,
+        -4.148,
+        -3.909,
+        -1.174,
+        1.711,
+        1.949,
+        4.676,
+        -1.5179
+      ],
+      [
+        "construction_vehicle",
+        0.3602,
+        -7.781,
+        -37.078,
+        -1.879,
+        2.261,
+        1.632,
+        3.442,
+        -1.4433
+      ],
+      [
+        "pedestrian",
+        0.3108,
+        6.189,
+        -11.197,
+        -0.854,
+        1.834,
+        0.687,
+        0.738,
+        -1.059
+      ],
+      [
+        "pedestrian",
+        0.3121,
+        -10.365,
+        -11.752,
+        -1.714,
+        1.801,
+        0.588,
+        0.626,
+        -1.3698
+      ],
+      [
+        "pedestrian",
+        0.3226,
+        -12.753,
+        6.64,
+        -0.717,
+        1.786,
+        0.676,
+        0.705,
+        1.5784
+      ],
+      [
+        "pedestrian",
+        0.3257,
+        8.54,
+        12.006,
+        -0.236,
+        1.8,
+        0.672,
+        0.656,
+        -2.9041
+      ],
+      [
+        "pedestrian",
+        0.3294,
+        7.168,
+        7.068,
+        -0.486,
+        1.737,
+        0.677,
+        0.672,
+        -0.8018
+      ],
+      [
+        "pedestrian",
+        0.337,
+        8.06,
+        10.783,
+        -0.222,
+        1.794,
+        0.62,
+        0.592,
+        -3.052
+      ],
+      [
+        "pedestrian",
+        0.3651,
+        6.807,
+        0.697,
+        -0.78,
+        1.787,
+        0.647,
+        0.699,
+        1.2068
+      ],
+      [
+        "pedestrian",
+        0.3765,
+        8.11,
+        7.443,
+        -0.445,
+        1.777,
+        0.664,
+        0.686,
+        -2.8703
+      ],
+      [
+        "pedestrian",
+        0.3786,
+        7.697,
+        -20.67,
+        -1.513,
+        1.806,
+        0.688,
+        0.691,
+        -2.4408
+      ],
+      [
+        "pedestrian",
+        0.393,
+        7.337,
+        12.619,
+        -0.123,
+        1.743,
+        0.635,
+        0.612,
+        -1.1799
+      ],
+      [
+        "pedestrian",
+        0.4691,
+        7.095,
+        10.012,
+        -0.309,
+        1.789,
+        0.661,
+        0.641,
+        0.1773
+      ],
+      [
+        "pedestrian",
+        0.4802,
+        8.666,
+        9.222,
+        -0.362,
+        1.814,
+        0.688,
+        0.676,
+        2.4175
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480m, y\u22480m)",
+          "isometric": "Cluster of dense points appearing at ego origin, with no associated object geometry."
+        },
+        "evidence": [
+          "A highly dense, localized cluster of points is visible exactly at the ego vehicle's origin in the BEV view.",
+          "In the isometric view, this cluster appears as a localized artifact with no vertical structure or meaningful surface profile consistent with a vehicle or pedestrian.",
+          "The density and position (at the ego location) are classic signatures of a point-injection ghost object attack intended to disrupt perception systems."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise would be more distributed rather than a localized high-density spike at the origin.",
+          "The object is not a legitimate detection as the ego vehicle itself should not be detected as a separate bounding box in this context."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:57.555293"
+}

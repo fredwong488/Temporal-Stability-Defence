@@ -1,0 +1,318 @@
+{
+  "key": {
+    "frame_id": "04c98fec98ba4d3c",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3216,
+        -2.562,
+        25.962,
+        -0.075,
+        1.055,
+        2.172,
+        0.467,
+        1.4571
+      ],
+      [
+        "barrier",
+        0.4024,
+        0.674,
+        -18.086,
+        -1.723,
+        0.956,
+        2.902,
+        0.556,
+        3.0153
+      ],
+      [
+        "car",
+        0.4205,
+        11.649,
+        -17.195,
+        -1.581,
+        1.715,
+        1.995,
+        4.774,
+        -1.5671
+      ],
+      [
+        "car",
+        0.4678,
+        -3.852,
+        8.196,
+        -0.321,
+        2.135,
+        2.13,
+        5.259,
+        -0.7338
+      ],
+      [
+        "car",
+        0.4957,
+        14.317,
+        -25.725,
+        -1.963,
+        1.708,
+        1.934,
+        4.529,
+        -1.7253
+      ],
+      [
+        "construction_vehicle",
+        0.3057,
+        25.431,
+        -49.287,
+        -3.288,
+        2.732,
+        1.97,
+        4.008,
+        -1.8187
+      ],
+      [
+        "construction_vehicle",
+        0.3154,
+        8.658,
+        9.139,
+        -0.938,
+        1.752,
+        1.418,
+        2.949,
+        -0.1607
+      ],
+      [
+        "construction_vehicle",
+        0.5104,
+        2.077,
+        -21.148,
+        -0.669,
+        2.917,
+        3.443,
+        4.059,
+        -1.5797
+      ],
+      [
+        "pedestrian",
+        0.3422,
+        -12.555,
+        8.988,
+        0.367,
+        1.754,
+        0.631,
+        0.635,
+        1.792
+      ],
+      [
+        "traffic_cone",
+        0.3147,
+        1.86,
+        -3.125,
+        -1.548,
+        0.733,
+        0.381,
+        0.379,
+        1.3366
+      ],
+      [
+        "traffic_cone",
+        0.3218,
+        10.723,
+        21.124,
+        -0.92,
+        0.727,
+        0.416,
+        0.426,
+        -1.5376
+      ],
+      [
+        "traffic_cone",
+        0.3643,
+        9.311,
+        -4.937,
+        -1.607,
+        0.748,
+        0.391,
+        0.39,
+        -2.394
+      ],
+      [
+        "traffic_cone",
+        0.3775,
+        2.616,
+        12.228,
+        -1.11,
+        0.677,
+        0.413,
+        0.41,
+        0.8256
+      ],
+      [
+        "traffic_cone",
+        0.3949,
+        2.232,
+        6.144,
+        -1.244,
+        0.717,
+        0.374,
+        0.378,
+        1.5425
+      ],
+      [
+        "traffic_cone",
+        0.4355,
+        1.984,
+        1.283,
+        -1.38,
+        0.737,
+        0.345,
+        0.347,
+        1.615
+      ],
+      [
+        "traffic_cone",
+        0.4489,
+        10.303,
+        15.724,
+        -1.136,
+        0.737,
+        0.4,
+        0.409,
+        -1.5603
+      ],
+      [
+        "traffic_cone",
+        0.4665,
+        9.564,
+        -0.363,
+        -1.553,
+        0.717,
+        0.391,
+        0.396,
+        -1.3551
+      ],
+      [
+        "traffic_cone",
+        0.5378,
+        10.119,
+        12.444,
+        -1.257,
+        0.729,
+        0.397,
+        0.375,
+        -2.0403
+      ],
+      [
+        "traffic_cone",
+        0.6449,
+        9.856,
+        3.558,
+        -1.493,
+        0.729,
+        0.398,
+        0.394,
+        -2.7677
+      ],
+      [
+        "truck",
+        0.3085,
+        10.222,
+        48.101,
+        0.984,
+        2.098,
+        2.12,
+        5.521,
+        1.4481
+      ],
+      [
+        "truck",
+        0.5539,
+        9.805,
+        -25.592,
+        -1.558,
+        2.361,
+        2.272,
+        5.746,
+        -1.6671
+      ],
+      [
+        "truck",
+        0.5917,
+        14.041,
+        -14.767,
+        -0.732,
+        3.853,
+        3.041,
+        11.277,
+        -1.6237
+      ],
+      [
+        "truck",
+        0.5934,
+        14.778,
+        -2.472,
+        -0.35,
+        3.174,
+        2.659,
+        6.962,
+        -1.627
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 76,
+          "reinjected_centroid": [
+            11.25320816040039,
+            -16.158096313476562,
+            -2.00309681892395
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 15,
+          "reinjected_centroid": [
+            13.776308059692383,
+            -25.045246124267578,
+            -1.8211934566497803
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u22488m, y\u22485m",
+          "isometric": "Car bounding box is significantly shifted in range from the physical point cluster located at x\u22484m, y\u22483.5m"
+        },
+        "evidence": [
+          "A clear, dense LiDAR point cluster exists at x\u22484m, y\u22483.5m but is completely unboxed.",
+          "A predicted 'car' bounding box (confidence 0.47) is placed further away at x\u22488m, y\u22485m along a similar azimuth, but contains virtually no LiDAR points."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Occlusion",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:02:17.385149"
+}

@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "74fdedc12ad341ba",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3464,
+        2.059,
+        -18.985,
+        -1.785,
+        1.086,
+        1.9,
+        0.536,
+        -3.1214
+      ],
+      [
+        "barrier",
+        0.4233,
+        2.143,
+        -14.809,
+        -1.746,
+        0.913,
+        3.087,
+        0.533,
+        3.1181
+      ],
+      [
+        "bicycle",
+        0.3039,
+        -3.581,
+        -9.262,
+        -1.218,
+        1.073,
+        0.541,
+        1.592,
+        1.2998
+      ],
+      [
+        "car",
+        0.312,
+        -2.205,
+        9.323,
+        -0.528,
+        1.996,
+        2.029,
+        4.918,
+        1.9961
+      ],
+      [
+        "car",
+        0.4803,
+        16.622,
+        -20.968,
+        -1.829,
+        1.644,
+        1.903,
+        4.528,
+        -1.5411
+      ],
+      [
+        "construction_vehicle",
+        0.6911,
+        3.673,
+        -18.061,
+        -0.801,
+        2.924,
+        3.43,
+        4.242,
+        -1.6066
+      ],
+      [
+        "motorcycle",
+        0.3058,
+        8.139,
+        27.78,
+        -0.291,
+        1.709,
+        0.895,
+        2.143,
+        1.1768
+      ],
+      [
+        "traffic_cone",
+        0.3492,
+        9.594,
+        -1.22,
+        -1.558,
+        0.726,
+        0.398,
+        0.401,
+        -1.8965
+      ],
+      [
+        "traffic_cone",
+        0.4517,
+        9.424,
+        3.386,
+        -1.358,
+        0.74,
+        0.399,
+        0.401,
+        -2.5046
+      ],
+      [
+        "traffic_cone",
+        0.5007,
+        2.127,
+        -10.719,
+        -1.769,
+        0.712,
+        0.377,
+        0.351,
+        1.2795
+      ],
+      [
+        "traffic_cone",
+        0.5405,
+        1.757,
+        4.27,
+        -1.384,
+        0.756,
+        0.39,
+        0.384,
+        -3.0316
+      ],
+      [
+        "traffic_cone",
+        0.6031,
+        1.986,
+        -5.079,
+        -1.652,
+        0.741,
+        0.36,
+        0.36,
+        1.3311
+      ],
+      [
+        "truck",
+        0.568,
+        15.102,
+        -10.486,
+        -0.634,
+        3.745,
+        3.004,
+        11.149,
+        -1.5115
+      ],
+      [
+        "truck",
+        0.6317,
+        14.781,
+        1.511,
+        -0.155,
+        3.429,
+        2.711,
+        7.255,
+        -1.5431
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 105,
+          "reinjected_centroid": [
+            12.810111045837402,
+            -12.4550199508667,
+            -1.9115264415740967
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 23,
+          "reinjected_centroid": [
+            15.892446517944336,
+            -20.483612060546875,
+            -1.9446929693222046
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -2.7017104625701904,
+            10.435503959655762,
+            -0.976574182510376
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_TRANSLATION",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x\u22489m, y\u22482.5m",
+          "isometric": "Box predicted at x\u22489m, y\u22482.5m while the physical point cluster is located at x\u22485m, y\u22483m"
+        },
+        "evidence": [
+          "A dense, structured physical point cluster representing a vehicle is clearly visible at x\u22485m, y\u22483m.",
+          "The predicted 3D bounding box for the car is translated along the range/depth axis to x\u22489m, y\u22482.5m, failing to envelope the real cluster.",
+          "The predicted bounding box at x\u22489m, y\u22482.5m contains no underlying physical points and represents empty space."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object limitations",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:01:57.943386"
+}

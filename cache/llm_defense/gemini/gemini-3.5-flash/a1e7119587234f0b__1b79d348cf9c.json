@@ -1,0 +1,198 @@
+{
+  "key": {
+    "frame_id": "a1e7119587234f0b",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3041,
+        13.476,
+        -9.271,
+        -1.639,
+        0.973,
+        3.178,
+        0.503,
+        2.8292
+      ],
+      [
+        "barrier",
+        0.3531,
+        14.768,
+        -5.984,
+        -1.277,
+        0.974,
+        3.214,
+        0.532,
+        2.7893
+      ],
+      [
+        "car",
+        0.498,
+        -0.07,
+        19.059,
+        0.279,
+        1.716,
+        1.978,
+        4.776,
+        3.0124
+      ],
+      [
+        "car",
+        0.5834,
+        22.235,
+        23.219,
+        1.3,
+        1.696,
+        1.971,
+        4.627,
+        -2.9853
+      ],
+      [
+        "car",
+        0.883,
+        -3.302,
+        0.47,
+        -1.227,
+        1.519,
+        1.893,
+        4.695,
+        1.598
+      ],
+      [
+        "pedestrian",
+        0.3188,
+        2.275,
+        8.33,
+        -0.557,
+        1.695,
+        0.699,
+        0.788,
+        -3.0766
+      ],
+      [
+        "pedestrian",
+        0.3502,
+        -1.407,
+        7.966,
+        -0.645,
+        1.788,
+        0.714,
+        0.791,
+        -0.7736
+      ],
+      [
+        "pedestrian",
+        0.366,
+        -1.521,
+        6.883,
+        -0.692,
+        1.765,
+        0.691,
+        0.761,
+        -0.2626
+      ],
+      [
+        "pedestrian",
+        0.3778,
+        -3.32,
+        8.33,
+        -0.549,
+        1.774,
+        0.669,
+        0.728,
+        1.885
+      ],
+      [
+        "trailer",
+        0.9362,
+        -3.154,
+        -16.021,
+        -0.411,
+        4.202,
+        2.772,
+        15.194,
+        1.627
+      ],
+      [
+        "truck",
+        0.6034,
+        -0.148,
+        -8.029,
+        -1.018,
+        2.429,
+        2.134,
+        4.761,
+        1.5565
+      ],
+      [
+        "truck",
+        0.8796,
+        -3.433,
+        -7.787,
+        -0.282,
+        4.034,
+        2.643,
+        6.245,
+        1.6232
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.510324478149414,
+            0.6643323302268982,
+            -1.8276382684707642
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 22,
+          "reinjected_centroid": [
+            21.88227653503418,
+            22.575584411621094,
+            0.900288999080658
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 18m to 20m, y \u2248 -2m to 2m",
+          "isometric": "Box at x \u2248 19m, y \u2248 1m contains very sparse points and lacks any plausible 3D physical structure."
+        },
+        "evidence": [
+          "The bounding box 'car 0.50' at x \u2248 19m, y \u2248 1m contains an extremely sparse set of points that do not represent the surface geometry of a real vehicle.",
+          "There is no LiDAR shadow (occluded void region) behind the object; the LiDAR beams and scan rings continue uninterrupted behind and through the bounding box.",
+          "The cluster lacks the expected vertical height and structure of a car in the isometric view."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant object",
+          "Low-reflectivity surface"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:37.585875"
+}

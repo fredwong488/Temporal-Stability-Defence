@@ -1,0 +1,327 @@
+{
+  "key": {
+    "frame_id": "8e5517c7b20048ca",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3054,
+        25.17,
+        -3.134,
+        -0.002,
+        1.73,
+        1.977,
+        4.527,
+        1.5823
+      ],
+      [
+        "car",
+        0.3354,
+        25.589,
+        -22.373,
+        -0.889,
+        1.605,
+        1.86,
+        4.375,
+        1.5034
+      ],
+      [
+        "car",
+        0.3371,
+        23.114,
+        -23.099,
+        -1.112,
+        1.575,
+        1.806,
+        4.231,
+        1.6064
+      ],
+      [
+        "car",
+        0.3426,
+        3.848,
+        -42.268,
+        -2.603,
+        1.719,
+        1.945,
+        4.532,
+        1.549
+      ],
+      [
+        "car",
+        0.3447,
+        22.748,
+        -4.355,
+        -0.217,
+        1.665,
+        1.914,
+        4.409,
+        1.7727
+      ],
+      [
+        "car",
+        0.3727,
+        20.453,
+        -5.228,
+        -0.501,
+        1.67,
+        1.915,
+        4.446,
+        1.6444
+      ],
+      [
+        "car",
+        0.373,
+        -8.867,
+        4.969,
+        -0.565,
+        3.121,
+        2.527,
+        7.834,
+        -1.56
+      ],
+      [
+        "car",
+        0.3878,
+        12.258,
+        0.645,
+        -0.572,
+        1.718,
+        1.898,
+        4.584,
+        -1.4529
+      ],
+      [
+        "car",
+        0.4145,
+        20.641,
+        -23.663,
+        -1.009,
+        1.741,
+        1.954,
+        4.474,
+        1.6124
+      ],
+      [
+        "car",
+        0.424,
+        -9.353,
+        26.386,
+        0.221,
+        1.975,
+        1.995,
+        4.861,
+        -1.5224
+      ],
+      [
+        "car",
+        0.43,
+        -8.722,
+        13.358,
+        -0.687,
+        1.911,
+        2.019,
+        5.162,
+        -1.6025
+      ],
+      [
+        "car",
+        0.5331,
+        -9.365,
+        -28.347,
+        -2.387,
+        1.557,
+        1.834,
+        4.527,
+        -1.5366
+      ],
+      [
+        "car",
+        0.5923,
+        14.93,
+        0.167,
+        -0.427,
+        1.762,
+        1.918,
+        4.628,
+        -1.568
+      ],
+      [
+        "car",
+        0.6792,
+        15.253,
+        -5.157,
+        -0.775,
+        1.676,
+        1.865,
+        4.404,
+        -1.5682
+      ],
+      [
+        "car",
+        0.7299,
+        5.317,
+        29.195,
+        0.186,
+        1.592,
+        1.829,
+        4.581,
+        1.534
+      ],
+      [
+        "car",
+        0.764,
+        -3.327,
+        13.149,
+        -0.548,
+        1.592,
+        1.832,
+        4.306,
+        -1.6043
+      ],
+      [
+        "car",
+        0.7698,
+        5.639,
+        22.965,
+        -0.04,
+        1.637,
+        1.878,
+        4.666,
+        1.6074
+      ],
+      [
+        "car",
+        0.8073,
+        -0.351,
+        13.072,
+        -0.628,
+        1.543,
+        1.814,
+        4.353,
+        1.5202
+      ],
+      [
+        "car",
+        0.8602,
+        5.266,
+        5.874,
+        -0.757,
+        1.823,
+        2.012,
+        4.952,
+        1.5369
+      ],
+      [
+        "car",
+        0.8676,
+        5.131,
+        -11.121,
+        -1.46,
+        1.547,
+        1.775,
+        4.122,
+        1.5199
+      ],
+      [
+        "car",
+        0.8934,
+        5.209,
+        -5.901,
+        -1.199,
+        1.895,
+        2.035,
+        4.851,
+        1.6026
+      ],
+      [
+        "car",
+        0.9051,
+        5.343,
+        11.573,
+        -0.677,
+        1.684,
+        1.87,
+        4.412,
+        1.5745
+      ],
+      [
+        "car",
+        0.9465,
+        5.233,
+        -0.196,
+        -1.067,
+        1.818,
+        1.92,
+        4.657,
+        1.5564
+      ],
+      [
+        "motorcycle",
+        0.491,
+        -6.685,
+        -16.37,
+        -1.291,
+        1.685,
+        0.777,
+        1.941,
+        -1.4931
+      ],
+      [
+        "pedestrian",
+        0.3117,
+        -11.656,
+        2.794,
+        -1.234,
+        1.759,
+        0.645,
+        0.703,
+        -1.0669
+      ],
+      [
+        "truck",
+        0.3249,
+        -8.964,
+        5.014,
+        -0.621,
+        3.057,
+        2.719,
+        7.027,
+        -1.5845
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 104
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "Multiple locations throughout the scene",
+          "isometric": "Multiple locations throughout the scene"
+        },
+        "evidence": [
+          "The camera image is explicitly unavailable, making cross-modal verification impossible.",
+          "Without the camera image, it is impossible to confirm if the numerous 3D bounding boxes (detected cars, trucks, pedestrians) correspond to real objects or are ghost objects/injections.",
+          "The scene appears cluttered with many detections, but in the absence of visual confirmation, this cannot be definitively classified as benign or malicious."
+        ],
+        "alternatives_ruled_out": [
+          "The missing camera view precludes ruling out simple sensor failure versus an intentional denial-of-service attack on the camera feed."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:32:43.492704"
+}

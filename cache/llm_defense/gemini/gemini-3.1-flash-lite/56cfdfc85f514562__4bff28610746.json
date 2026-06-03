@@ -1,0 +1,136 @@
+{
+  "key": {
+    "frame_id": "56cfdfc85f514562",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.5715,
+        5.872,
+        40.586,
+        0.678,
+        1.664,
+        1.906,
+        4.588,
+        1.3757
+      ],
+      [
+        "car",
+        0.6265,
+        0.691,
+        -19.238,
+        -1.872,
+        1.649,
+        1.873,
+        4.377,
+        1.5686
+      ],
+      [
+        "construction_vehicle",
+        0.4063,
+        -24.606,
+        10.803,
+        -1.105,
+        2.171,
+        1.982,
+        4.794,
+        1.6663
+      ],
+      [
+        "pedestrian",
+        0.3023,
+        -9.977,
+        25.588,
+        -0.244,
+        1.748,
+        0.635,
+        0.644,
+        1.8435
+      ],
+      [
+        "pedestrian",
+        0.3448,
+        6.831,
+        20.23,
+        -0.228,
+        1.785,
+        0.66,
+        0.677,
+        1.9126
+      ],
+      [
+        "pedestrian",
+        0.3552,
+        9.531,
+        19.62,
+        -0.097,
+        1.8,
+        0.688,
+        0.674,
+        2.3143
+      ],
+      [
+        "pedestrian",
+        0.3611,
+        8.273,
+        18.669,
+        -0.233,
+        1.763,
+        0.674,
+        0.705,
+        1.5675
+      ],
+      [
+        "pedestrian",
+        0.3845,
+        9.314,
+        23.884,
+        -0.064,
+        1.802,
+        0.644,
+        0.682,
+        2.6679
+      ],
+      [
+        "pedestrian",
+        0.3876,
+        -10.18,
+        7.35,
+        -0.826,
+        1.785,
+        0.662,
+        0.735,
+        1.2887
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818m to 25m, y\u2248-6m to -8m)",
+          "isometric": "Cluster of boxes placed along a continuous linear structure, not individual objects."
+        },
+        "evidence": [
+          "Multiple 'pedestrian' bounding boxes are placed at regular intervals along a single, continuous, linear LiDAR return (likely a wall or concrete barrier).",
+          "The lack of individual point clusters corresponding to the 'pedestrian' geometry indicates these are false positives rather than actual people.",
+          "The isometric view confirms the boxes are resting on a continuous linear ground-level surface, inconsistent with the discrete vertical structure required for a pedestrian."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise: The systematic placement of multiple small boxes along a wall structure indicates an adversarial manipulation or a severe detector failure, not random noise.",
+          "Occlusion: The objects are not obscured; the point cloud clearly shows a continuous barrier, not separate pedestrians."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:35.666504"
+}

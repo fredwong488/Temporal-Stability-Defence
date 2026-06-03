@@ -1,0 +1,246 @@
+{
+  "key": {
+    "frame_id": "6fd68bafa78043c2",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bus",
+        0.3113,
+        9.901,
+        -18.884,
+        -0.9,
+        3.712,
+        2.999,
+        13.266,
+        -1.4734
+      ],
+      [
+        "car",
+        0.3179,
+        14.295,
+        -2.78,
+        -0.972,
+        1.694,
+        1.979,
+        4.465,
+        -3.1391
+      ],
+      [
+        "car",
+        0.3722,
+        14.667,
+        2.914,
+        -0.559,
+        1.774,
+        2.02,
+        4.683,
+        -3.0403
+      ],
+      [
+        "car",
+        0.659,
+        -4.187,
+        0.683,
+        -1.03,
+        1.715,
+        2.022,
+        5.015,
+        -1.5595
+      ],
+      [
+        "car",
+        0.7639,
+        1.042,
+        -20.651,
+        -1.792,
+        1.662,
+        1.871,
+        4.381,
+        1.7796
+      ],
+      [
+        "car",
+        0.7726,
+        -2.15,
+        27.092,
+        0.39,
+        1.625,
+        1.91,
+        4.592,
+        -1.6742
+      ],
+      [
+        "car",
+        0.821,
+        -6.161,
+        27.838,
+        0.384,
+        1.577,
+        1.874,
+        4.574,
+        -1.7118
+      ],
+      [
+        "pedestrian",
+        0.3299,
+        6.123,
+        -8.711,
+        -0.923,
+        1.818,
+        0.698,
+        0.735,
+        0.6424
+      ],
+      [
+        "pedestrian",
+        0.3394,
+        7.384,
+        -18.949,
+        -1.446,
+        1.785,
+        0.659,
+        0.695,
+        -2.6807
+      ],
+      [
+        "pedestrian",
+        0.346,
+        6.862,
+        3.105,
+        -0.73,
+        1.805,
+        0.681,
+        0.723,
+        1.7272
+      ],
+      [
+        "pedestrian",
+        0.3572,
+        8.239,
+        12.981,
+        -0.271,
+        1.846,
+        0.71,
+        0.68,
+        2.4936
+      ],
+      [
+        "pedestrian",
+        0.3604,
+        8.749,
+        14.331,
+        -0.205,
+        1.768,
+        0.654,
+        0.603,
+        3.0927
+      ],
+      [
+        "pedestrian",
+        0.3614,
+        -8.225,
+        6.967,
+        -0.531,
+        1.831,
+        0.677,
+        0.705,
+        -0.6833
+      ],
+      [
+        "pedestrian",
+        0.3645,
+        9.774,
+        18.03,
+        0.17,
+        1.763,
+        0.648,
+        0.672,
+        -1.1396
+      ],
+      [
+        "pedestrian",
+        0.3844,
+        7.416,
+        9.364,
+        -0.474,
+        1.71,
+        0.634,
+        0.646,
+        0.9279
+      ],
+      [
+        "pedestrian",
+        0.4058,
+        7.367,
+        12.468,
+        -0.385,
+        1.719,
+        0.63,
+        0.637,
+        1.4853
+      ],
+      [
+        "pedestrian",
+        0.4098,
+        8.315,
+        9.117,
+        -0.358,
+        1.741,
+        0.684,
+        0.733,
+        1.8789
+      ],
+      [
+        "pedestrian",
+        0.4238,
+        8.973,
+        10.95,
+        -0.452,
+        1.736,
+        0.636,
+        0.637,
+        2.258
+      ],
+      [
+        "pedestrian",
+        0.4399,
+        7.676,
+        15.049,
+        -0.288,
+        1.721,
+        0.639,
+        0.636,
+        -1.7292
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224810m, y\u2248-7m)",
+          "isometric": "Cluster of pedestrians predicted in a line at x=8-15m, y\u2248-7m"
+        },
+        "evidence": [
+          "The cluster of pedestrian predictions is arranged in an unnatural, highly regular linear formation along the negative y-axis.",
+          "There is no discernible point cluster density or structural shape (e.g., human-like verticality) in the isometric view corresponding to these multiple pedestrian bounding boxes; they appear to be floating or misaligned with the actual terrain/ground returns.",
+          "The density of the points in this region does not match the typical signature of genuine pedestrians."
+        ],
+        "alternatives_ruled_out": [
+          "Natural grouping of pedestrians (would show distinct, non-linear point clusters).",
+          "Sensor noise (would not typically manifest as high-confidence bounding boxes in a specific line)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:54.707135"
+}

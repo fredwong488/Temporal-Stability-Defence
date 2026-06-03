@@ -1,0 +1,207 @@
+{
+  "key": {
+    "frame_id": "ee11c1dc1f374cfe",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3914,
+        14.806,
+        -5.975,
+        -1.248,
+        0.991,
+        3.183,
+        0.537,
+        2.7364
+      ],
+      [
+        "bicycle",
+        0.3197,
+        1.093,
+        8.453,
+        -0.645,
+        1.84,
+        0.741,
+        1.651,
+        0.5273
+      ],
+      [
+        "car",
+        0.3523,
+        -5.956,
+        -0.28,
+        -1.396,
+        1.549,
+        1.868,
+        4.523,
+        -1.6536
+      ],
+      [
+        "car",
+        0.3903,
+        -46.579,
+        36.855,
+        0.161,
+        1.639,
+        1.861,
+        4.497,
+        3.1055
+      ],
+      [
+        "car",
+        0.4199,
+        12.233,
+        19.963,
+        0.562,
+        1.658,
+        1.929,
+        4.791,
+        0.0369
+      ],
+      [
+        "car",
+        0.8861,
+        -3.297,
+        0.464,
+        -1.191,
+        1.525,
+        1.872,
+        4.64,
+        1.6112
+      ],
+      [
+        "pedestrian",
+        0.327,
+        -3.116,
+        8.288,
+        -0.734,
+        1.766,
+        0.696,
+        0.753,
+        0.1584
+      ],
+      [
+        "pedestrian",
+        0.33,
+        0.924,
+        8.435,
+        -0.59,
+        1.724,
+        0.674,
+        0.816,
+        1.3039
+      ],
+      [
+        "pedestrian",
+        0.353,
+        -5.275,
+        8.004,
+        -0.585,
+        1.747,
+        0.669,
+        0.718,
+        -1.2778
+      ],
+      [
+        "pedestrian",
+        0.4048,
+        2.676,
+        6.549,
+        -0.523,
+        1.765,
+        0.697,
+        0.777,
+        2.1678
+      ],
+      [
+        "trailer",
+        0.934,
+        -3.111,
+        -16.001,
+        -0.296,
+        4.253,
+        2.772,
+        14.778,
+        1.6259
+      ],
+      [
+        "truck",
+        0.5754,
+        -0.152,
+        -8.009,
+        -0.995,
+        2.481,
+        2.128,
+        4.795,
+        1.5538
+      ],
+      [
+        "truck",
+        0.8931,
+        -3.415,
+        -7.821,
+        -0.341,
+        4.02,
+        2.667,
+        6.165,
+        1.6339
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.329062461853027,
+            0.7090061902999878,
+            -1.8636268377304077
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 10,
+          "reinjected_centroid": [
+            -13.014778137207031,
+            21.71196746826172,
+            -0.5266269445419312
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m to 8m, y\u2248-2m to 6m)",
+          "isometric": "Multiple vertical cuboids labeled as pedestrians at x\u22486-8m and a car box at x\u224813m, y\u2248-5m enclosing empty space or minimal noise points"
+        },
+        "evidence": [
+          "A series of 'pedestrian' detections (pedestrian 0.35, pedestrian 0.33, pedestrian 0.40) are generated in a semi-regular line with almost zero supporting point cloud reflections in both BEV and Isometric views.",
+          "A 'car 0.42' box is generated at x\u224813m, y\u2248-5m on the ground plane containing no points or structural geometry.",
+          "The camera stream is entirely unavailable ('[ATTACKED]'), indicating potential sensor tampering or denial-of-service accompanying these spoofed detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise / clutter (the detections are highly regularized, rectangular, and lack any physical cluster or corresponding shadow indicating real obstacles)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:15.293616"
+}

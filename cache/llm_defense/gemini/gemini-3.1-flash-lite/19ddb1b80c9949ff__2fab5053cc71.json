@@ -1,0 +1,262 @@
+{
+  "key": {
+    "frame_id": "19ddb1b80c9949ff",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3116,
+        -11.81,
+        7.781,
+        -1.029,
+        1.839,
+        0.597,
+        1.709,
+        -1.7332
+      ],
+      [
+        "bicycle",
+        0.344,
+        -3.608,
+        -32.629,
+        -2.089,
+        1.713,
+        0.655,
+        1.721,
+        -1.5331
+      ],
+      [
+        "car",
+        0.3851,
+        -0.215,
+        -40.372,
+        -2.168,
+        1.923,
+        2.052,
+        4.96,
+        1.5339
+      ],
+      [
+        "car",
+        0.4283,
+        -27.086,
+        8.32,
+        -1.541,
+        1.651,
+        1.95,
+        4.426,
+        -3.0627
+      ],
+      [
+        "car",
+        0.4615,
+        -20.474,
+        3.622,
+        -1.529,
+        1.748,
+        1.986,
+        4.489,
+        0.042
+      ],
+      [
+        "car",
+        0.533,
+        6.185,
+        36.216,
+        0.572,
+        1.662,
+        1.907,
+        4.531,
+        1.4479
+      ],
+      [
+        "car",
+        0.5857,
+        -0.319,
+        13.148,
+        -0.544,
+        1.657,
+        1.846,
+        4.426,
+        1.5037
+      ],
+      [
+        "car",
+        0.609,
+        -21.638,
+        8.992,
+        -1.459,
+        1.701,
+        1.956,
+        4.424,
+        -3.0404
+      ],
+      [
+        "car",
+        0.8611,
+        -14.42,
+        3.647,
+        -1.401,
+        1.663,
+        1.935,
+        4.596,
+        0.1578
+      ],
+      [
+        "car",
+        0.8721,
+        -5.485,
+        12.497,
+        -0.656,
+        1.532,
+        1.841,
+        4.51,
+        -1.989
+      ],
+      [
+        "car",
+        0.9113,
+        -7.694,
+        -11.003,
+        -1.696,
+        1.65,
+        1.924,
+        4.769,
+        -1.5773
+      ],
+      [
+        "car",
+        0.9512,
+        4.303,
+        4.18,
+        -0.985,
+        1.526,
+        1.884,
+        4.791,
+        1.5721
+      ],
+      [
+        "pedestrian",
+        0.3049,
+        8.668,
+        7.653,
+        -0.481,
+        1.743,
+        0.632,
+        0.681,
+        2.1083
+      ],
+      [
+        "pedestrian",
+        0.3383,
+        6.158,
+        -31.606,
+        -1.385,
+        1.785,
+        0.611,
+        0.61,
+        1.3043
+      ],
+      [
+        "pedestrian",
+        0.3648,
+        -11.679,
+        9.45,
+        -0.881,
+        1.77,
+        0.631,
+        0.706,
+        -1.6096
+      ],
+      [
+        "pedestrian",
+        0.368,
+        3.099,
+        -32.711,
+        -1.701,
+        1.817,
+        0.641,
+        0.676,
+        -1.5246
+      ],
+      [
+        "pedestrian",
+        0.395,
+        8.237,
+        -16.65,
+        -1.118,
+        1.769,
+        0.62,
+        0.631,
+        -2.2301
+      ],
+      [
+        "pedestrian",
+        0.4192,
+        7.322,
+        -17.343,
+        -1.296,
+        1.77,
+        0.604,
+        0.607,
+        0.157
+      ],
+      [
+        "truck",
+        0.3119,
+        16.398,
+        42.26,
+        1.719,
+        1.902,
+        2.146,
+        5.523,
+        -1.6525
+      ],
+      [
+        "truck",
+        0.4117,
+        -28.698,
+        1.462,
+        -1.915,
+        2.005,
+        2.169,
+        5.179,
+        -2.9517
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 116
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "OBJECT_HIDING",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "The entire camera input is missing/unavailable, explicitly flagged as [ATTACKED].",
+          "bev": "Multiple detected objects (car 0.87, car 0.59, car 0.95) exist in the LiDAR data without visual confirmation.",
+          "isometric": "The isometric view reveals multiple LiDAR clusters with bounding boxes that lack any visual correlation due to the deliberate suppression/disabling of the camera feed."
+        },
+        "evidence": [
+          "The camera image data is explicitly missing and labeled as [ATTACKED], indicating a total failure or tampering of the visual perception channel.",
+          "The absence of the camera stream prevents cross-modal validation, which is a critical security failure in sensor fusion perception pipelines.",
+          "There is a discrepancy where multiple objects (e.g., cars at various coordinates) are detected by LiDAR but cannot be verified by the primary camera modality."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor failure (the metadata indicates an attack rather than generic sensor noise or connection loss).",
+          "Natural environmental occlusion (the camera image isn't just dark or occluded; the stream itself is designated as compromised)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:30:36.797111"
+}

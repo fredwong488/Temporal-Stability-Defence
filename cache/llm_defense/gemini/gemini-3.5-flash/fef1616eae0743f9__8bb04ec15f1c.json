@@ -1,0 +1,207 @@
+{
+  "key": {
+    "frame_id": "fef1616eae0743f9",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3102,
+        12.527,
+        -12.444,
+        -1.777,
+        0.859,
+        3.047,
+        0.475,
+        2.9311
+      ],
+      [
+        "barrier",
+        0.3152,
+        -2.698,
+        -0.529,
+        -1.286,
+        0.92,
+        1.856,
+        0.525,
+        0.0173
+      ],
+      [
+        "barrier",
+        0.3633,
+        14.78,
+        -6.034,
+        -1.234,
+        0.987,
+        3.206,
+        0.567,
+        2.7461
+      ],
+      [
+        "bicycle",
+        0.3085,
+        0.188,
+        8.554,
+        -0.703,
+        1.687,
+        0.692,
+        1.607,
+        -0.1358
+      ],
+      [
+        "car",
+        0.3123,
+        -21.128,
+        20.423,
+        -0.402,
+        1.66,
+        1.936,
+        4.612,
+        -0.0499
+      ],
+      [
+        "car",
+        0.7066,
+        -3.394,
+        0.449,
+        -1.107,
+        1.514,
+        1.902,
+        4.65,
+        1.6339
+      ],
+      [
+        "pedestrian",
+        0.3144,
+        -4.159,
+        7.134,
+        -0.721,
+        1.767,
+        0.693,
+        0.776,
+        1.494
+      ],
+      [
+        "pedestrian",
+        0.3244,
+        -2.684,
+        8.933,
+        -0.576,
+        1.794,
+        0.709,
+        0.785,
+        -2.6758
+      ],
+      [
+        "pedestrian",
+        0.3387,
+        1.485,
+        6.891,
+        -0.509,
+        1.773,
+        0.719,
+        0.806,
+        2.2346
+      ],
+      [
+        "pedestrian",
+        0.4899,
+        -5.206,
+        10.109,
+        -0.577,
+        1.802,
+        0.713,
+        0.771,
+        1.5504
+      ],
+      [
+        "trailer",
+        0.9218,
+        -3.15,
+        -16.079,
+        -0.365,
+        4.286,
+        2.78,
+        15.069,
+        1.6245
+      ],
+      [
+        "truck",
+        0.5415,
+        -0.127,
+        -8.012,
+        -1.022,
+        2.454,
+        2.132,
+        4.789,
+        1.5649
+      ],
+      [
+        "truck",
+        0.9006,
+        -3.414,
+        -7.843,
+        -0.333,
+        4.056,
+        2.654,
+        6.108,
+        1.6362
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.55822229385376,
+            0.6491555571556091,
+            -1.5250667333602905
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 27,
+          "reinjected_centroid": [
+            -5.206532955169678,
+            10.130158424377441,
+            -0.739448070526123
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "Region spanning x\u22486m to 11m, y\u2248-2m to 6m",
+          "isometric": "Multiple tall vertical bounding boxes labeled pedestrian and bicycle floating with absolutely zero enclosed point returns"
+        },
+        "evidence": [
+          "Multiple pedestrian (0.31, 0.32, 0.49, 0.34) and bicycle (0.31) detections exist in empty space with no underlying LiDAR points.",
+          "The concentric rings of the LiDAR scanner pass directly through these bounding boxes without showing any reflections, scattering, or occlusion shadows.",
+          "The camera image is unavailable/suppressed (marked as [ATTACKED]), indicating a coordinated sensor/perception-level attack."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or low reflectivity surfaces, as there is a complete absence of any physical structure or points at these locations."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:55.031345"
+}

@@ -1,0 +1,307 @@
+{
+  "key": {
+    "frame_id": "a82f5396af8a43bd",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.33,
+        4.424,
+        -17.994,
+        -1.082,
+        3.657,
+        2.96,
+        9.643,
+        1.5262
+      ],
+      [
+        "bus",
+        0.9297,
+        4.731,
+        -11.055,
+        -0.787,
+        3.5,
+        2.947,
+        11.352,
+        1.5435
+      ],
+      [
+        "car",
+        0.319,
+        28.713,
+        -14.94,
+        -2.034,
+        1.733,
+        1.976,
+        4.512,
+        3.1238
+      ],
+      [
+        "car",
+        0.3411,
+        16.209,
+        -9.865,
+        -1.884,
+        1.683,
+        1.995,
+        4.559,
+        -3.0902
+      ],
+      [
+        "car",
+        0.4258,
+        -20.564,
+        5.915,
+        -0.516,
+        1.565,
+        1.89,
+        4.468,
+        2.589
+      ],
+      [
+        "car",
+        0.5443,
+        16.89,
+        -0.506,
+        -1.414,
+        1.845,
+        2.04,
+        4.845,
+        -3.0477
+      ],
+      [
+        "car",
+        0.5792,
+        16.399,
+        -3.816,
+        -1.725,
+        1.757,
+        2.019,
+        4.743,
+        -3.0884
+      ],
+      [
+        "car",
+        0.5939,
+        -26.897,
+        -0.285,
+        -0.456,
+        1.728,
+        1.981,
+        4.636,
+        -0.4729
+      ],
+      [
+        "car",
+        0.6142,
+        15.957,
+        -7.019,
+        -1.927,
+        1.584,
+        1.94,
+        4.481,
+        -3.1365
+      ],
+      [
+        "car",
+        0.8152,
+        17.139,
+        2.885,
+        -1.282,
+        1.573,
+        1.88,
+        4.433,
+        -0.0736
+      ],
+      [
+        "construction_vehicle",
+        0.9229,
+        -5.547,
+        -6.878,
+        -0.941,
+        2.39,
+        2.58,
+        7.209,
+        -1.6065
+      ],
+      [
+        "traffic_cone",
+        0.3858,
+        -3.399,
+        -5.557,
+        -1.622,
+        0.831,
+        0.389,
+        0.362,
+        -1.5068
+      ],
+      [
+        "traffic_cone",
+        0.4326,
+        -4.159,
+        7.09,
+        -1.069,
+        0.77,
+        0.379,
+        0.382,
+        2.4117
+      ],
+      [
+        "traffic_cone",
+        0.6306,
+        -3.636,
+        2.942,
+        -1.242,
+        0.763,
+        0.389,
+        0.388,
+        1.6099
+      ],
+      [
+        "traffic_cone",
+        0.6744,
+        -3.386,
+        -2.195,
+        -1.493,
+        0.751,
+        0.398,
+        0.405,
+        1.6471
+      ],
+      [
+        "truck",
+        0.3086,
+        -35.205,
+        24.75,
+        0.573,
+        3.159,
+        2.647,
+        6.634,
+        -0.5474
+      ],
+      [
+        "truck",
+        0.3543,
+        -27.509,
+        -5.104,
+        -0.313,
+        2.037,
+        2.201,
+        5.522,
+        -0.45
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 101,
+          "reinjected_centroid": [
+            15.328207015991211,
+            -0.6861841082572937,
+            -1.665045142173767
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 76,
+          "reinjected_centroid": [
+            16.079483032226562,
+            2.597255229949951,
+            -1.4539436101913452
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            14.649565696716309,
+            -9.388652801513672,
+            -2.145491361618042
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 38,
+          "reinjected_centroid": [
+            14.456052780151367,
+            -6.634866237640381,
+            -2.0296552181243896
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 67,
+          "reinjected_centroid": [
+            -24.095129013061523,
+            2.7339372634887695,
+            -0.5054196715354919
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 69,
+          "reinjected_centroid": [
+            15.102910995483398,
+            -3.6187727451324463,
+            -1.992154598236084
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 13,
+          "reinjected_centroid": [
+            -27.84803009033203,
+            -3.135990619659424,
+            -1.093306303024292
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 53,
+          "reinjected_centroid": [
+            -25.506359100341797,
+            0.4433542788028717,
+            -0.8536031246185303
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Region around (x \u2248 5m to 20m, y \u2248 -5m to -7m)",
+          "isometric": "A series of empty cuboid bounding boxes (classified as cars) are predicted along the negative y-axis (right side of the ego vehicle) where no physical LiDAR point clusters or structures exist."
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes are predicted at (x \u2248 5m to 20m, y \u2248 -5m to -7m) in the LiDAR space with zero underlying point cloud returns.",
+          "The isometric view confirms these bounding boxes are entirely empty and do not contain any physical objects, surfaces, or structural returns.",
+          "No occlusions or physical indicators are present that would justify these phantom detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (too many structured boxes to be random noise)",
+          "Occlusion (there are clear line-of-sight ground returns around these areas but nothing inside the boxes)",
+          "Ground reflections or clutter"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:04.521927"
+}

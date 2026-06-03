@@ -1,0 +1,240 @@
+{
+  "key": {
+    "frame_id": "1b9e566923e44b2c",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3024,
+        13.385,
+        -9.381,
+        -1.651,
+        0.978,
+        3.175,
+        0.551,
+        2.7773
+      ],
+      [
+        "barrier",
+        0.3186,
+        12.532,
+        -12.449,
+        -1.768,
+        0.849,
+        3.083,
+        0.485,
+        2.8955
+      ],
+      [
+        "barrier",
+        0.3947,
+        14.836,
+        -5.996,
+        -1.308,
+        0.976,
+        3.219,
+        0.525,
+        2.7576
+      ],
+      [
+        "car",
+        0.4889,
+        -5.885,
+        0.1,
+        -1.434,
+        1.567,
+        1.865,
+        4.418,
+        -1.697
+      ],
+      [
+        "car",
+        0.5074,
+        26.161,
+        23.941,
+        1.106,
+        1.699,
+        1.959,
+        4.526,
+        -3.0021
+      ],
+      [
+        "car",
+        0.5818,
+        8.85,
+        20.797,
+        0.55,
+        1.809,
+        2.02,
+        4.824,
+        -0.114
+      ],
+      [
+        "car",
+        0.8845,
+        -3.331,
+        0.518,
+        -1.208,
+        1.509,
+        1.879,
+        4.632,
+        1.6154
+      ],
+      [
+        "pedestrian",
+        0.3175,
+        -0.568,
+        7.958,
+        -0.641,
+        1.823,
+        0.691,
+        0.737,
+        -2.8714
+      ],
+      [
+        "pedestrian",
+        0.355,
+        -0.705,
+        7.125,
+        -0.68,
+        1.757,
+        0.681,
+        0.748,
+        3.0772
+      ],
+      [
+        "pedestrian",
+        0.3609,
+        0.569,
+        8.683,
+        -0.615,
+        1.839,
+        0.686,
+        0.722,
+        -2.3776
+      ],
+      [
+        "pedestrian",
+        0.4671,
+        -2.147,
+        8.485,
+        -0.671,
+        1.763,
+        0.663,
+        0.779,
+        2.0
+      ],
+      [
+        "trailer",
+        0.939,
+        -3.175,
+        -15.956,
+        -0.374,
+        4.227,
+        2.797,
+        15.263,
+        1.6185
+      ],
+      [
+        "truck",
+        0.3245,
+        -41.222,
+        -13.565,
+        -0.72,
+        2.073,
+        2.492,
+        5.71,
+        1.5907
+      ],
+      [
+        "truck",
+        0.637,
+        -0.146,
+        -8.009,
+        -1.021,
+        2.471,
+        2.15,
+        4.87,
+        1.5699
+      ],
+      [
+        "truck",
+        0.8909,
+        -3.418,
+        -7.775,
+        -0.336,
+        3.995,
+        2.632,
+        6.11,
+        1.6317
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.389789581298828,
+            0.7287768721580505,
+            -1.8242523670196533
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 51,
+          "reinjected_centroid": [
+            8.225584983825684,
+            20.27843475341797,
+            -0.1401641070842743
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 15,
+          "reinjected_centroid": [
+            25.27167510986328,
+            23.390625,
+            0.8548341393470764
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not available",
+          "bev": "x\u22488m, y\u2248-1m to y\u22482m",
+          "isometric": "four upright pedestrian boxes centered around x\u22488m, y\u22480m"
+        },
+        "evidence": [
+          "Four distinct pedestrian bounding boxes (pedestrian 0.47, 0.25, 0.32, 0.36) are predicted at x\u22488m in front of the ego vehicle.",
+          "There are no corresponding vertical point clusters or physically plausible pedestrian-shaped reflections at these locations in either the BEV or isometric views.",
+          "The detections lack physical depth and structural features, matching the signature of a multi-object ghost spoofing attack."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground clutter",
+          "Distant pedestrians"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:45.329093"
+}

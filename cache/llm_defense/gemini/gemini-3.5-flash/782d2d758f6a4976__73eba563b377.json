@@ -1,0 +1,205 @@
+{
+  "key": {
+    "frame_id": "782d2d758f6a4976",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3347,
+        -2.689,
+        -0.514,
+        -1.288,
+        0.937,
+        1.908,
+        0.546,
+        0.0075
+      ],
+      [
+        "bicycle",
+        0.3801,
+        3.794,
+        6.95,
+        -0.539,
+        1.743,
+        0.633,
+        1.818,
+        1.3802
+      ],
+      [
+        "car",
+        0.4985,
+        -4.87,
+        21.528,
+        0.19,
+        1.681,
+        1.934,
+        4.456,
+        -0.1655
+      ],
+      [
+        "car",
+        0.676,
+        -3.382,
+        0.456,
+        -1.145,
+        1.514,
+        1.885,
+        4.657,
+        1.6298
+      ],
+      [
+        "pedestrian",
+        0.3275,
+        -0.539,
+        8.937,
+        -0.573,
+        1.746,
+        0.707,
+        0.802,
+        0.8317
+      ],
+      [
+        "pedestrian",
+        0.3619,
+        -3.977,
+        8.234,
+        -0.582,
+        1.771,
+        0.67,
+        0.741,
+        0.8834
+      ],
+      [
+        "pedestrian",
+        0.4167,
+        -2.063,
+        7.987,
+        -0.621,
+        1.766,
+        0.669,
+        0.732,
+        -2.3272
+      ],
+      [
+        "pedestrian",
+        0.4862,
+        -2.138,
+        7.066,
+        -0.711,
+        1.748,
+        0.669,
+        0.722,
+        2.7513
+      ],
+      [
+        "trailer",
+        0.9525,
+        -3.136,
+        -15.856,
+        -0.358,
+        4.206,
+        2.792,
+        14.705,
+        1.6215
+      ],
+      [
+        "truck",
+        0.6375,
+        -0.157,
+        -7.971,
+        -1.009,
+        2.574,
+        2.208,
+        4.823,
+        1.5689
+      ],
+      [
+        "truck",
+        0.8944,
+        -3.418,
+        -7.731,
+        -0.364,
+        4.021,
+        2.632,
+        5.986,
+        1.642
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.7949724197387695,
+            0.5569167137145996,
+            -1.6533852815628052
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 35,
+          "reinjected_centroid": [
+            -4.423622131347656,
+            20.85858726501465,
+            -0.20818361639976501
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 25,
+          "reinjected_centroid": [
+            18.66143035888672,
+            21.56529998779297,
+            0.7701525092124939
+          ]
+        },
+        {
+          "label_type": "bicycle",
+          "n_removed": 81,
+          "reinjected_centroid": [
+            2.4208157062530518,
+            10.34249210357666,
+            -1.2531803846359253
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (image missing/suppressed)",
+          "bev": "x \u2248 21m to 23m, y \u2248 3m to 7m",
+          "isometric": "Bounding box at x \u2248 21m, y \u2248 5m, z \u2248 1m contains absolutely no LiDAR points inside or nearby."
+        },
+        "evidence": [
+          "A 3D bounding box for 'car 0.50' is predicted at (x\u224822m, y\u22485m) in both BEV and Isometric views, but contains zero LiDAR points.",
+          "There is no physical object or point cluster corresponding to this bounding box, failing the fundamental physical requirement of LiDAR detection.",
+          "No occlusions exist that would explain a complete absence of returns at this location."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity surface",
+          "Extreme occlusion (no objects blocking the line of sight to this region)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:25.773274"
+}

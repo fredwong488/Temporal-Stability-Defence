@@ -1,0 +1,257 @@
+{
+  "key": {
+    "frame_id": "0c80906f5e7f4e7c",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.8412,
+        10.101,
+        -17.075,
+        -0.678,
+        3.459,
+        2.999,
+        12.797,
+        2.4072
+      ],
+      [
+        "car",
+        0.3311,
+        19.809,
+        -10.742,
+        -0.652,
+        1.667,
+        1.912,
+        4.505,
+        0.8813
+      ],
+      [
+        "car",
+        0.3376,
+        16.599,
+        -7.759,
+        -0.803,
+        1.617,
+        1.888,
+        4.493,
+        0.9391
+      ],
+      [
+        "car",
+        0.3529,
+        18.172,
+        -9.443,
+        -0.748,
+        1.597,
+        1.867,
+        4.501,
+        0.9887
+      ],
+      [
+        "car",
+        0.3621,
+        14.867,
+        -6.105,
+        -0.833,
+        1.64,
+        1.895,
+        4.437,
+        0.8528
+      ],
+      [
+        "car",
+        0.4044,
+        19.019,
+        6.958,
+        -0.813,
+        1.571,
+        1.906,
+        4.313,
+        -2.5474
+      ],
+      [
+        "motorcycle",
+        0.3203,
+        -0.89,
+        15.004,
+        -0.537,
+        1.587,
+        0.789,
+        2.038,
+        1.689
+      ],
+      [
+        "pedestrian",
+        0.307,
+        9.025,
+        27.879,
+        0.404,
+        1.85,
+        0.651,
+        0.659,
+        -2.458
+      ],
+      [
+        "pedestrian",
+        0.307,
+        10.915,
+        25.562,
+        -0.165,
+        1.816,
+        0.635,
+        0.665,
+        -2.0681
+      ],
+      [
+        "pedestrian",
+        0.3136,
+        20.579,
+        25.359,
+        -0.397,
+        1.75,
+        0.61,
+        0.666,
+        -2.1073
+      ],
+      [
+        "pedestrian",
+        0.3218,
+        8.654,
+        23.227,
+        -0.329,
+        1.851,
+        0.626,
+        0.653,
+        -2.0947
+      ],
+      [
+        "pedestrian",
+        0.3257,
+        9.273,
+        25.913,
+        0.113,
+        1.876,
+        0.666,
+        0.691,
+        -2.2349
+      ],
+      [
+        "pedestrian",
+        0.3259,
+        5.249,
+        21.922,
+        -0.123,
+        1.877,
+        0.526,
+        0.565,
+        -1.534
+      ],
+      [
+        "pedestrian",
+        0.3296,
+        4.372,
+        22.947,
+        -0.177,
+        1.862,
+        0.53,
+        0.569,
+        -1.3737
+      ],
+      [
+        "pedestrian",
+        0.3318,
+        4.609,
+        21.041,
+        -0.107,
+        1.873,
+        0.536,
+        0.569,
+        -1.6443
+      ],
+      [
+        "pedestrian",
+        0.3381,
+        -7.606,
+        -7.434,
+        -0.936,
+        1.681,
+        0.626,
+        0.62,
+        0.8842
+      ],
+      [
+        "pedestrian",
+        0.3514,
+        4.436,
+        23.939,
+        -0.03,
+        1.898,
+        0.59,
+        0.63,
+        -1.3245
+      ],
+      [
+        "pedestrian",
+        0.3732,
+        2.081,
+        21.865,
+        -0.07,
+        1.931,
+        0.739,
+        0.752,
+        -1.2399
+      ],
+      [
+        "pedestrian",
+        0.3927,
+        6.865,
+        22.977,
+        -0.101,
+        1.899,
+        0.604,
+        0.666,
+        -1.5793
+      ],
+      [
+        "truck",
+        0.4612,
+        10.267,
+        -0.656,
+        -0.464,
+        3.217,
+        2.478,
+        6.349,
+        0.7706
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u22480.5m)",
+          "isometric": "Bounding box for 'motorcycle' exists in empty space with zero underlying LiDAR points."
+        },
+        "evidence": [
+          "The bounding box for the 'motorcycle' at x=14m, y=0.5m contains no underlying LiDAR returns in the isometric view.",
+          "There is no physical structure or point cluster present at the location of the detected object in the LiDAR data.",
+          "The complete absence of points suggests a software-level or fusion-level injection of a ghost object, as even sensor noise would typically produce sparse returns."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor malfunction (other objects are detected correctly in the scene).",
+          "Occlusion (there is clear line-of-sight to the area around the ghost box)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:09.984382"
+}

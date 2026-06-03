@@ -1,0 +1,155 @@
+{
+  "key": {
+    "frame_id": "14cde4a1acab4870",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3723,
+        14.823,
+        -5.98,
+        -1.23,
+        0.979,
+        3.212,
+        0.566,
+        2.7989
+      ],
+      [
+        "car",
+        0.354,
+        -46.802,
+        36.902,
+        0.141,
+        1.832,
+        1.943,
+        4.719,
+        3.1305
+      ],
+      [
+        "car",
+        0.8859,
+        -3.337,
+        0.492,
+        -1.146,
+        1.48,
+        1.865,
+        4.585,
+        1.6283
+      ],
+      [
+        "pedestrian",
+        0.3758,
+        2.734,
+        8.265,
+        -0.509,
+        1.819,
+        0.695,
+        0.695,
+        -2.9388
+      ],
+      [
+        "pedestrian",
+        0.433,
+        1.141,
+        9.106,
+        -0.468,
+        1.779,
+        0.701,
+        0.741,
+        2.7406
+      ],
+      [
+        "trailer",
+        0.9396,
+        -3.181,
+        -15.717,
+        -0.394,
+        4.165,
+        2.766,
+        14.209,
+        1.6205
+      ],
+      [
+        "truck",
+        0.3034,
+        -10.042,
+        48.785,
+        1.107,
+        2.342,
+        2.215,
+        5.721,
+        1.7312
+      ],
+      [
+        "truck",
+        0.5984,
+        -0.124,
+        -7.994,
+        -1.066,
+        2.409,
+        2.132,
+        4.784,
+        1.5606
+      ],
+      [
+        "truck",
+        0.8841,
+        -3.401,
+        -7.759,
+        -0.37,
+        3.947,
+        2.631,
+        6.16,
+        1.6244
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.013018608093262,
+            0.6645336747169495,
+            -1.762668251991272
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22489m, y\u2248-1.5m)",
+          "isometric": "Two pedestrian boxes at (x\u22489m, y\u2248-1.5m) and (x\u22488m, y\u2248-2.5m) with height z close to ground level but no underlying dense/tall pedestrian-like clusters, or very sparse noise."
+        },
+        "evidence": [
+          "In the BEV and isometric views, two pedestrian boxes are predicted ('pedestrian 0.43' and 'pedestrian 0.38') around x\u22488-9m, y\u2248-2m to -1.5m.",
+          "The underlying point cloud contains almost no points inside these boxes except for minor ground plane reflections.",
+          "The camera image is marked as 'ATTACKED' / 'Camera image not available', indicating a sensor disruption or cross-modal mismatch where physical verification is obstructed, while LiDAR shows artificial-looking empty detections."
+        ],
+        "alternatives_ruled_out": [
+          "Natural pedestrians (ruled out due to lack of standard vertical height/profile in isometric view)",
+          "Distant occluded objects (the boxes are very close to the ego vehicle, where pedestrians would produce clear, distinct vertical point columns)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:12:16.492832"
+}

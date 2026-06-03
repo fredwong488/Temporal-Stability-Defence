@@ -1,0 +1,231 @@
+{
+  "key": {
+    "frame_id": "204d554377044bb8",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.315,
+        -8.614,
+        33.42,
+        0.986,
+        1.69,
+        1.902,
+        4.587,
+        -1.6078
+      ],
+      [
+        "car",
+        0.3207,
+        -8.523,
+        39.013,
+        1.179,
+        1.722,
+        1.867,
+        4.516,
+        -1.5802
+      ],
+      [
+        "car",
+        0.5878,
+        0.253,
+        -31.426,
+        -2.337,
+        1.751,
+        1.948,
+        4.659,
+        1.7888
+      ],
+      [
+        "car",
+        0.6755,
+        -3.763,
+        -26.339,
+        -2.295,
+        1.701,
+        1.932,
+        4.547,
+        -1.5248
+      ],
+      [
+        "car",
+        0.7016,
+        -6.969,
+        19.484,
+        0.126,
+        1.745,
+        1.972,
+        4.577,
+        0.2686
+      ],
+      [
+        "car",
+        0.7019,
+        -14.358,
+        17.656,
+        -0.311,
+        1.546,
+        1.84,
+        4.479,
+        0.1435
+      ],
+      [
+        "car",
+        0.8883,
+        -7.544,
+        2.902,
+        -1.156,
+        1.567,
+        1.935,
+        4.916,
+        -1.6212
+      ],
+      [
+        "car",
+        0.8884,
+        4.506,
+        18.228,
+        -0.025,
+        1.564,
+        1.886,
+        4.698,
+        1.6005
+      ],
+      [
+        "construction_vehicle",
+        0.456,
+        7.05,
+        -39.81,
+        -2.526,
+        3.115,
+        2.719,
+        6.873,
+        -1.341
+      ],
+      [
+        "pedestrian",
+        0.3044,
+        8.193,
+        -9.258,
+        -1.345,
+        1.712,
+        0.656,
+        0.683,
+        2.136
+      ],
+      [
+        "pedestrian",
+        0.3093,
+        -8.386,
+        -18.396,
+        -1.99,
+        1.799,
+        0.644,
+        0.713,
+        -1.4058
+      ],
+      [
+        "pedestrian",
+        0.3262,
+        6.284,
+        -11.888,
+        -1.488,
+        1.701,
+        0.65,
+        0.669,
+        -1.7216
+      ],
+      [
+        "pedestrian",
+        0.3368,
+        -19.695,
+        -17.35,
+        -2.108,
+        1.82,
+        0.645,
+        0.701,
+        1.2123
+      ],
+      [
+        "pedestrian",
+        0.3515,
+        6.373,
+        -14.313,
+        -1.678,
+        1.757,
+        0.659,
+        0.67,
+        1.4546
+      ],
+      [
+        "pedestrian",
+        0.3915,
+        7.334,
+        -12.445,
+        -1.369,
+        1.849,
+        0.676,
+        0.625,
+        -2.7349
+      ],
+      [
+        "pedestrian",
+        0.4702,
+        7.869,
+        -10.82,
+        -1.321,
+        1.746,
+        0.64,
+        0.638,
+        2.2172
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224819m, y\u22486m)",
+          "isometric": "Cluster at x\u224819m, y\u22486m shows no solid vertical structure or ground-plane support consistent with a vehicle"
+        },
+        "evidence": [
+          "In the isometric view, the bounding box at (x\u224819m, y\u22486m) encloses a sparse set of points that lack coherent surface geometry or vertical extent.",
+          "There is no discernible shadow or occlusion behind this cluster in the BEV plane, which is expected for a genuine opaque object.",
+          "The cluster appears isolated without consistent returns at ground level."
+        ],
+        "alternatives_ruled_out": [
+          "Natural environmental features like trees or signs, as the cluster is too sparse and lacks vertical structure.",
+          "Sensor noise, because a specific 3D detection bounding box was generated with high confidence score by the system."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224818m, y\u2248-4.5m)",
+          "isometric": "Box at x\u224818m, y\u2248-4.5m corresponds to a sparse, floating cluster"
+        },
+        "evidence": [
+          "The bounding box encloses a sparse, unconvincing point cluster in the isometric view.",
+          "The cluster lacks the L-shape or clear volumetric profile expected of a vehicle in the BEV view.",
+          "The points do not extend to the ground plane, suggesting non-physical returns."
+        ],
+        "alternatives_ruled_out": [
+          "Occlusion or low reflectivity, as these would typically leave some signature of the object's bulk or ground contact.",
+          "Standard sensor artifacts, as these do not typically produce a structured 3D box output."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:33.118354"
+}

@@ -1,0 +1,169 @@
+{
+  "key": {
+    "frame_id": "50fea3e15c1045aa",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.512,
+        9.479,
+        -17.75,
+        -0.862,
+        3.502,
+        3.002,
+        11.808,
+        2.3223
+      ],
+      [
+        "car",
+        0.3091,
+        12.723,
+        -4.278,
+        -0.87,
+        1.63,
+        1.877,
+        4.408,
+        0.7495
+      ],
+      [
+        "car",
+        0.3458,
+        34.817,
+        19.613,
+        -0.356,
+        1.697,
+        1.95,
+        4.696,
+        -2.5036
+      ],
+      [
+        "car",
+        0.3534,
+        15.818,
+        -8.369,
+        -0.786,
+        1.665,
+        1.904,
+        4.284,
+        0.4525
+      ],
+      [
+        "car",
+        0.379,
+        14.429,
+        -6.236,
+        -0.781,
+        1.745,
+        1.95,
+        4.482,
+        0.6883
+      ],
+      [
+        "car",
+        0.3896,
+        26.295,
+        10.856,
+        -0.581,
+        1.657,
+        1.913,
+        4.377,
+        0.6015
+      ],
+      [
+        "car",
+        0.3912,
+        20.832,
+        4.339,
+        -0.836,
+        1.583,
+        1.923,
+        4.365,
+        -2.7138
+      ],
+      [
+        "car",
+        0.5198,
+        19.622,
+        6.174,
+        -0.773,
+        1.559,
+        1.91,
+        4.225,
+        -2.6161
+      ],
+      [
+        "motorcycle",
+        0.3688,
+        0.39,
+        15.991,
+        -0.704,
+        1.574,
+        0.771,
+        2.121,
+        1.5316
+      ],
+      [
+        "pedestrian",
+        0.3012,
+        11.674,
+        26.183,
+        -0.02,
+        1.806,
+        0.62,
+        0.648,
+        -2.2695
+      ],
+      [
+        "pedestrian",
+        0.3636,
+        7.664,
+        22.402,
+        0.141,
+        1.914,
+        0.613,
+        0.646,
+        -1.9186
+      ],
+      [
+        "truck",
+        0.5881,
+        10.528,
+        -0.711,
+        -0.229,
+        3.342,
+        2.538,
+        6.688,
+        0.6498
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22480m)",
+          "isometric": "Empty space"
+        },
+        "evidence": [
+          "A detection labeled 'motorcycle' appears at x\u224815m, y\u22480m in the BEV and isometric views where there is no visible point cluster or supporting geometry in the raw LiDAR data.",
+          "The camera input is unavailable, preventing verification of whether this is a ghost object or a misclassification of noise.",
+          "The lack of underlying LiDAR structural integrity for the motorcycle detection suggests a potential ghost object, but without camera context, it remains ambiguous."
+        ],
+        "alternatives_ruled_out": [
+          "Occlusion (cannot be confirmed without camera)",
+          "Sensor noise (cannot be distinguished from intentional spoofing without camera data or further temporal context)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:19.311647"
+}

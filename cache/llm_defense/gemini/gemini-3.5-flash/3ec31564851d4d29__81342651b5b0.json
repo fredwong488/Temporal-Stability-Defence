@@ -1,0 +1,248 @@
+{
+  "key": {
+    "frame_id": "3ec31564851d4d29",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bus",
+        0.3078,
+        -18.935,
+        26.239,
+        0.59,
+        3.568,
+        2.672,
+        10.724,
+        0.2683
+      ],
+      [
+        "bus",
+        0.7096,
+        -1.886,
+        16.734,
+        0.514,
+        2.944,
+        2.706,
+        8.059,
+        -0.0107
+      ],
+      [
+        "car",
+        0.3382,
+        -46.626,
+        36.85,
+        0.416,
+        1.728,
+        1.945,
+        4.739,
+        -3.1192
+      ],
+      [
+        "car",
+        0.7254,
+        -16.054,
+        23.633,
+        -0.245,
+        1.588,
+        1.922,
+        4.487,
+        0.1387
+      ],
+      [
+        "car",
+        0.8953,
+        -3.324,
+        0.474,
+        -1.212,
+        1.529,
+        1.923,
+        4.72,
+        1.6104
+      ],
+      [
+        "pedestrian",
+        0.3544,
+        -12.274,
+        12.203,
+        -0.523,
+        1.861,
+        0.748,
+        0.82,
+        3.1164
+      ],
+      [
+        "pedestrian",
+        0.3618,
+        -15.123,
+        9.755,
+        -0.878,
+        1.797,
+        0.651,
+        0.695,
+        1.378
+      ],
+      [
+        "pedestrian",
+        0.3872,
+        -12.022,
+        9.926,
+        -0.717,
+        1.816,
+        0.692,
+        0.692,
+        1.2877
+      ],
+      [
+        "pedestrian",
+        0.4327,
+        -6.673,
+        7.57,
+        -0.689,
+        1.77,
+        0.687,
+        0.738,
+        1.3632
+      ],
+      [
+        "pedestrian",
+        0.46,
+        -7.734,
+        8.175,
+        -0.703,
+        1.771,
+        0.694,
+        0.71,
+        1.1583
+      ],
+      [
+        "trailer",
+        0.9545,
+        -3.081,
+        -15.866,
+        -0.266,
+        4.235,
+        2.787,
+        14.25,
+        1.6291
+      ],
+      [
+        "truck",
+        0.4051,
+        -18.83,
+        26.189,
+        0.61,
+        3.65,
+        2.975,
+        10.366,
+        0.262
+      ],
+      [
+        "truck",
+        0.4404,
+        4.638,
+        20.063,
+        0.449,
+        2.149,
+        2.139,
+        5.602,
+        -0.0792
+      ],
+      [
+        "truck",
+        0.6887,
+        -0.159,
+        -7.997,
+        -0.999,
+        2.601,
+        2.234,
+        4.865,
+        1.5641
+      ],
+      [
+        "truck",
+        0.9045,
+        -3.411,
+        -7.895,
+        -0.316,
+        4.065,
+        2.689,
+        6.024,
+        1.6046
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.832650661468506,
+            0.7496179342269897,
+            -1.884408712387085
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 45,
+          "reinjected_centroid": [
+            17.953792572021484,
+            18.681568145751953,
+            0.2651374340057373
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 9,
+          "reinjected_centroid": [
+            -14.986799240112305,
+            23.172847747802734,
+            -0.5675148963928223
+          ]
+        },
+        {
+          "label_type": "pedestrian",
+          "n_removed": 17,
+          "reinjected_centroid": [
+            -12.192017555236816,
+            12.180902481079102,
+            -0.6604028940200806
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "y > 8m, x \u2248 5m to 15m",
+          "isometric": "z \u2248 2m to 6m, floating well above the ground plane"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes (labeled as car, pedestrian) are floating high in mid-air (z between 2m and 6m) with no physical contact with the ground plane.",
+          "These floating bounding boxes contain extremely sparse, unstructured noise points that do not resemble real physical objects.",
+          "The camera image is completely unavailable/blank and labeled as [ATTACKED], preventing cross-modal validation of these high-altitude detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (ordinary sensor noise does not create highly structured, high-confidence 3D bounding boxes floating at height)",
+          "Distant real objects (the objects are close in range but physically impossible due to their z-coordinates)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:04.957287"
+}

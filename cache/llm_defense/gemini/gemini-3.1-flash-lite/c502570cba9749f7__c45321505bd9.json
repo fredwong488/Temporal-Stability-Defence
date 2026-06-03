@@ -1,0 +1,192 @@
+{
+  "key": {
+    "frame_id": "c502570cba9749f7",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3985,
+        -8.602,
+        37.015,
+        1.232,
+        1.781,
+        1.895,
+        4.625,
+        1.6049
+      ],
+      [
+        "car",
+        0.4352,
+        0.166,
+        -32.524,
+        -2.211,
+        1.679,
+        1.937,
+        4.514,
+        1.6319
+      ],
+      [
+        "car",
+        0.5388,
+        -3.811,
+        27.24,
+        0.553,
+        1.643,
+        1.917,
+        4.579,
+        -1.6854
+      ],
+      [
+        "car",
+        0.5518,
+        -3.613,
+        -31.877,
+        -2.205,
+        1.769,
+        2.011,
+        4.665,
+        -1.582
+      ],
+      [
+        "car",
+        0.566,
+        4.509,
+        16.021,
+        -0.173,
+        1.729,
+        1.931,
+        4.9,
+        1.5723
+      ],
+      [
+        "car",
+        0.5859,
+        -14.559,
+        15.505,
+        -0.452,
+        1.618,
+        1.97,
+        4.671,
+        0.1643
+      ],
+      [
+        "car",
+        0.7579,
+        -6.747,
+        17.594,
+        -0.001,
+        1.643,
+        1.939,
+        4.455,
+        0.1508
+      ],
+      [
+        "car",
+        0.9312,
+        -7.576,
+        0.738,
+        -1.25,
+        1.623,
+        1.924,
+        4.756,
+        -1.5905
+      ],
+      [
+        "pedestrian",
+        0.3255,
+        6.502,
+        -19.552,
+        -1.83,
+        1.819,
+        0.644,
+        0.739,
+        -1.788
+      ],
+      [
+        "pedestrian",
+        0.3329,
+        6.236,
+        -16.848,
+        -1.784,
+        1.775,
+        0.638,
+        0.655,
+        1.5624
+      ],
+      [
+        "pedestrian",
+        0.394,
+        6.224,
+        -14.495,
+        -1.591,
+        1.748,
+        0.62,
+        0.619,
+        -2.6391
+      ],
+      [
+        "pedestrian",
+        0.4164,
+        -8.421,
+        -20.563,
+        -1.791,
+        1.831,
+        0.658,
+        0.685,
+        0.7553
+      ],
+      [
+        "pedestrian",
+        0.4332,
+        7.351,
+        -14.939,
+        -1.48,
+        1.833,
+        0.633,
+        0.657,
+        -2.2188
+      ],
+      [
+        "pedestrian",
+        0.5083,
+        7.73,
+        -12.417,
+        -1.38,
+        1.785,
+        0.629,
+        0.652,
+        -2.0756
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815, y\u2248-5)",
+          "isometric": "Detected car box at (x\u224815, y\u2248-5) correlates to ground-plane noise"
+        },
+        "evidence": [
+          "The camera image is explicitly unavailable for this frame, preventing cross-modal verification.",
+          "The bounding box at BEV (x\u224815, y\u2248-5) encloses a sparse region of ground-level points that lacks the distinct structural signature of a vehicle (no L-shape or vertical profile).",
+          "Multiple other boxes are present in the scene, likely corresponding to legitimate infrastructure or noise, making it difficult to isolate a specific malicious intent without visual confirmation."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion",
+          "Sensor noise/misclassification of ground clutter",
+          "Distant objects within LiDAR range"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:36.454889"
+}

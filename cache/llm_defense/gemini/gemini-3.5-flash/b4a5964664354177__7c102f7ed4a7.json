@@ -1,0 +1,206 @@
+{
+  "key": {
+    "frame_id": "b4a5964664354177",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "bicycle",
+        0.3626,
+        5.116,
+        6.739,
+        -0.528,
+        1.692,
+        0.683,
+        1.7,
+        1.5499
+      ],
+      [
+        "car",
+        0.3039,
+        10.921,
+        42.666,
+        1.981,
+        1.774,
+        1.917,
+        4.439,
+        1.4102
+      ],
+      [
+        "car",
+        0.3979,
+        26.341,
+        24.322,
+        1.343,
+        1.976,
+        2.167,
+        5.046,
+        -2.9758
+      ],
+      [
+        "car",
+        0.6726,
+        7.884,
+        21.484,
+        0.48,
+        1.741,
+        1.991,
+        4.795,
+        -0.121
+      ],
+      [
+        "car",
+        0.8824,
+        -3.338,
+        0.5,
+        -1.219,
+        1.558,
+        1.926,
+        4.748,
+        1.5852
+      ],
+      [
+        "construction_vehicle",
+        0.7183,
+        -10.03,
+        49.693,
+        1.246,
+        2.625,
+        2.855,
+        7.319,
+        -1.4413
+      ],
+      [
+        "pedestrian",
+        0.3079,
+        -0.584,
+        7.939,
+        -0.647,
+        1.827,
+        0.716,
+        0.777,
+        -2.7305
+      ],
+      [
+        "pedestrian",
+        0.4449,
+        -2.323,
+        8.381,
+        -0.56,
+        1.79,
+        0.69,
+        0.769,
+        2.854
+      ],
+      [
+        "pedestrian",
+        0.4701,
+        0.505,
+        8.742,
+        -0.535,
+        1.799,
+        0.68,
+        0.743,
+        -1.6594
+      ],
+      [
+        "trailer",
+        0.9534,
+        -3.084,
+        -15.907,
+        -0.301,
+        4.216,
+        2.779,
+        14.488,
+        1.6225
+      ],
+      [
+        "truck",
+        0.6673,
+        -0.165,
+        -7.974,
+        -1.005,
+        2.605,
+        2.221,
+        4.819,
+        1.566
+      ],
+      [
+        "truck",
+        0.8921,
+        -3.407,
+        -7.716,
+        -0.381,
+        3.994,
+        2.645,
+        5.978,
+        1.6401
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.854968070983887,
+            0.856127917766571,
+            -1.9948114156723022
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 53,
+          "reinjected_centroid": [
+            7.059741497039795,
+            20.848920822143555,
+            -0.10548865050077438
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 21,
+          "reinjected_centroid": [
+            25.481985092163086,
+            23.6932315826416,
+            0.9645568132400513
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (image feed is suppressed/missing)",
+          "bev": "(x\u224822m, y\u2248-7m)",
+          "isometric": "A bounding box is floating high in mid-air at x\u224822m, y\u2248-7m, z\u22483m with absolutely no LiDAR points inside or underneath it."
+        },
+        "evidence": [
+          "In the isometric view, a 3D bounding box is predicted floating in the sky (z > 2m) completely devoid of any point cloud returns.",
+          "The corresponding detection at x\u224822m, y\u2248-7m on the ground contains extremely sparse, noise-like points that do not match any realistic vehicle structure.",
+          "The camera image is completely unavailable/suppressed, indicating potential system tampering or physical occlusion."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or reflections, as they would not produce a perfectly formed, empty floating bounding box in the sky",
+          "Overhanging infrastructure or trees, as there are no points detected at that elevated position"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:45.387915"
+}

@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "14ee7e2507054a68",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3,
+        7.581,
+        -0.423,
+        -1.377,
+        1.181,
+        1.934,
+        0.663,
+        3.0339
+      ],
+      [
+        "barrier",
+        0.3034,
+        8.718,
+        14.001,
+        -0.933,
+        1.133,
+        2.036,
+        0.579,
+        3.0932
+      ],
+      [
+        "barrier",
+        0.3119,
+        7.082,
+        -4.406,
+        -1.445,
+        1.085,
+        2.116,
+        0.601,
+        3.0465
+      ],
+      [
+        "barrier",
+        0.3221,
+        8.44,
+        9.239,
+        -1.029,
+        1.246,
+        1.944,
+        0.658,
+        3.0757
+      ],
+      [
+        "barrier",
+        0.3313,
+        9.997,
+        14.156,
+        -0.846,
+        1.108,
+        1.987,
+        0.604,
+        3.0592
+      ],
+      [
+        "barrier",
+        0.3394,
+        8.304,
+        7.688,
+        -1.088,
+        1.283,
+        1.904,
+        0.667,
+        3.0304
+      ],
+      [
+        "barrier",
+        0.347,
+        8.194,
+        6.054,
+        -1.147,
+        1.243,
+        1.923,
+        0.705,
+        3.0167
+      ],
+      [
+        "barrier",
+        0.3573,
+        6.987,
+        -6.755,
+        -1.528,
+        1.101,
+        2.027,
+        0.589,
+        3.1303
+      ],
+      [
+        "barrier",
+        0.3671,
+        8.576,
+        10.912,
+        -0.979,
+        1.19,
+        2.012,
+        0.613,
+        3.1167
+      ],
+      [
+        "barrier",
+        0.3799,
+        7.756,
+        1.247,
+        -1.29,
+        1.168,
+        1.963,
+        0.65,
+        3.0453
+      ],
+      [
+        "barrier",
+        0.3811,
+        6.939,
+        -8.404,
+        -1.597,
+        1.05,
+        1.98,
+        0.587,
+        3.1118
+      ],
+      [
+        "car",
+        0.4098,
+        -1.771,
+        29.481,
+        0.118,
+        1.771,
+        1.946,
+        4.684,
+        1.7195
+      ],
+      [
+        "car",
+        0.7037,
+        6.944,
+        19.876,
+        -0.333,
+        1.632,
+        1.834,
+        4.486,
+        1.4883
+      ],
+      [
+        "construction_vehicle",
+        0.3556,
+        -4.548,
+        -4.013,
+        -0.134,
+        3.526,
+        3.124,
+        11.229,
+        1.5236
+      ],
+      [
+        "pedestrian",
+        0.3388,
+        21.42,
+        20.827,
+        -0.212,
+        1.739,
+        0.621,
+        0.606,
+        0.8031
+      ],
+      [
+        "trailer",
+        0.4864,
+        -9.152,
+        -33.141,
+        0.024,
+        3.973,
+        2.825,
+        12.94,
+        -1.6246
+      ],
+      [
+        "truck",
+        0.3932,
+        -4.614,
+        -4.184,
+        -0.385,
+        3.267,
+        3.123,
+        11.038,
+        1.5494
+      ],
+      [
+        "truck",
+        0.6749,
+        9.06,
+        35.419,
+        0.286,
+        1.953,
+        1.977,
+        4.957,
+        1.4367
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820m, y\u2248-7m)",
+          "isometric": "Bounding box for 'car 0.70' floats high above the ground plane (z \u2248 1m to 2m) enclosing no LiDAR points at all."
+        },
+        "evidence": [
+          "The bounding box 'car 0.70' at x\u224820m, y\u2248-7m is entirely empty in both BEV and isometric views, lacking any physical point cluster.",
+          "The bounding box 'car 0.41' at x\u224829m, y\u22482m is also floating in mid-air with no substantial supporting LiDAR point cluster, indicating spoofed detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real vehicle (no point clusters or occlusion shadows exist)",
+          "Ground reflectivity issues"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:06.113150"
+}

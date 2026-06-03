@@ -1,0 +1,248 @@
+{
+  "key": {
+    "frame_id": "28c0960105f44498",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3115,
+        12.505,
+        -12.502,
+        -1.784,
+        0.873,
+        3.06,
+        0.469,
+        2.936
+      ],
+      [
+        "barrier",
+        0.3154,
+        14.788,
+        -6.043,
+        -1.296,
+        0.997,
+        3.171,
+        0.555,
+        2.747
+      ],
+      [
+        "car",
+        0.4459,
+        -18.81,
+        21.561,
+        -0.39,
+        1.692,
+        2.015,
+        4.738,
+        0.0031
+      ],
+      [
+        "car",
+        0.564,
+        4.755,
+        22.345,
+        0.34,
+        1.794,
+        2.05,
+        4.923,
+        -0.0008
+      ],
+      [
+        "car",
+        0.6411,
+        -3.371,
+        0.461,
+        -1.194,
+        1.52,
+        1.893,
+        4.636,
+        1.6576
+      ],
+      [
+        "pedestrian",
+        0.3106,
+        -6.683,
+        7.302,
+        -0.656,
+        1.814,
+        0.703,
+        0.755,
+        0.8095
+      ],
+      [
+        "pedestrian",
+        0.3454,
+        -1.883,
+        7.856,
+        -0.747,
+        1.781,
+        0.695,
+        0.742,
+        1.3049
+      ],
+      [
+        "pedestrian",
+        0.3816,
+        -9.95,
+        8.497,
+        -0.715,
+        1.782,
+        0.648,
+        0.75,
+        1.8299
+      ],
+      [
+        "pedestrian",
+        0.4042,
+        -1.333,
+        7.123,
+        -0.681,
+        1.766,
+        0.669,
+        0.701,
+        2.1212
+      ],
+      [
+        "pedestrian",
+        0.4294,
+        -5.412,
+        9.166,
+        -0.61,
+        1.797,
+        0.703,
+        0.749,
+        1.6353
+      ],
+      [
+        "trailer",
+        0.5693,
+        -5.339,
+        41.568,
+        1.944,
+        3.988,
+        2.843,
+        9.426,
+        1.4213
+      ],
+      [
+        "trailer",
+        0.9432,
+        -3.149,
+        -15.908,
+        -0.382,
+        4.205,
+        2.783,
+        15.159,
+        1.6227
+      ],
+      [
+        "truck",
+        0.363,
+        32.781,
+        22.295,
+        1.452,
+        2.116,
+        2.24,
+        5.711,
+        -2.9601
+      ],
+      [
+        "truck",
+        0.4658,
+        -0.158,
+        -7.985,
+        -1.015,
+        2.435,
+        2.153,
+        4.884,
+        1.5621
+      ],
+      [
+        "truck",
+        0.8744,
+        -3.431,
+        -7.733,
+        -0.314,
+        4.057,
+        2.63,
+        6.026,
+        1.6296
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -4.839483261108398,
+            0.6751512885093689,
+            -1.6611111164093018
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 39,
+          "reinjected_centroid": [
+            4.559425354003906,
+            21.616992950439453,
+            -0.24928775429725647
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224822m, y\u2248-5m)",
+          "isometric": "Bounding box for car 0.56 is elevated high above the ground plane (z > 1.5m) and envelopes only a sparse, flat line of points with no 3D structure or volume."
+        },
+        "evidence": [
+          "The bounding box at x\u224822m, y\u2248-5m (car 0.56) is floating at an implausible height above the ground plane as visible in the isometric view.",
+          "The point cluster inside this box lacks any 3D volume or vertical L-shape signature of a real vehicle, consisting instead of a sparse vertical line of points.",
+          "No occlusion shadow is cast behind the detected object, confirming it is not a solid, physical vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground classification error",
+          "Distant real vehicle"
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22481m, y\u22483m)",
+          "isometric": "Bounding box for car 0.64 floats in mid-air (z \u2248 1.5m to 3.5m) with no underlying ground-level point structure."
+        },
+        "evidence": [
+          "The bounding box at x\u22481m, y\u22483m (car 0.64) is suspended high above the physical ground plane, showing clear lack of vertical contact with the road.",
+          "The cluster lacks the dense surface returns expected of an adjacent passenger vehicle at such close range."
+        ],
+        "alternatives_ruled_out": [
+          "Low-reflectivity surface",
+          "Sensor misalignment"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:21.413127"
+}

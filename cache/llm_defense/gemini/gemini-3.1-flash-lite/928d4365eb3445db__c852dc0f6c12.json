@@ -1,0 +1,307 @@
+{
+  "key": {
+    "frame_id": "928d4365eb3445db",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "car",
+        0.3131,
+        0.601,
+        20.498,
+        -0.25,
+        1.583,
+        1.861,
+        4.448,
+        1.2503
+      ],
+      [
+        "car",
+        0.3362,
+        19.486,
+        -21.383,
+        -0.169,
+        1.642,
+        1.916,
+        4.294,
+        -0.4694
+      ],
+      [
+        "car",
+        0.3418,
+        17.963,
+        1.836,
+        -0.252,
+        1.796,
+        2.013,
+        4.676,
+        -0.0115
+      ],
+      [
+        "car",
+        0.3525,
+        -9.883,
+        -28.568,
+        -0.337,
+        1.84,
+        2.035,
+        4.95,
+        2.4004
+      ],
+      [
+        "car",
+        0.375,
+        28.616,
+        -6.848,
+        -0.306,
+        1.669,
+        1.975,
+        4.488,
+        2.7974
+      ],
+      [
+        "car",
+        0.4085,
+        -4.794,
+        -32.836,
+        0.332,
+        1.691,
+        1.896,
+        4.528,
+        2.4138
+      ],
+      [
+        "car",
+        0.416,
+        7.771,
+        -18.009,
+        -0.355,
+        1.765,
+        1.993,
+        4.69,
+        2.4735
+      ],
+      [
+        "car",
+        0.4364,
+        14.216,
+        15.839,
+        0.14,
+        1.659,
+        1.885,
+        4.435,
+        -2.1208
+      ],
+      [
+        "car",
+        0.4966,
+        29.36,
+        -1.45,
+        -0.378,
+        1.806,
+        1.963,
+        4.495,
+        -0.0044
+      ],
+      [
+        "car",
+        0.5262,
+        9.32,
+        -15.677,
+        -0.33,
+        1.673,
+        1.899,
+        4.388,
+        -0.7116
+      ],
+      [
+        "car",
+        0.5376,
+        -2.071,
+        -31.688,
+        0.161,
+        1.669,
+        1.928,
+        4.499,
+        2.4703
+      ],
+      [
+        "car",
+        0.5643,
+        6.608,
+        -19.829,
+        -0.277,
+        1.568,
+        1.85,
+        4.364,
+        2.4485
+      ],
+      [
+        "car",
+        0.6198,
+        -0.381,
+        13.636,
+        -0.733,
+        1.699,
+        1.859,
+        4.411,
+        1.5193
+      ],
+      [
+        "car",
+        0.6412,
+        29.331,
+        8.205,
+        -0.278,
+        1.623,
+        1.939,
+        4.433,
+        -3.093
+      ],
+      [
+        "car",
+        0.6673,
+        4.257,
+        -9.092,
+        -0.867,
+        1.58,
+        1.884,
+        4.501,
+        2.4871
+      ],
+      [
+        "car",
+        0.7276,
+        12.112,
+        -11.638,
+        -0.404,
+        1.721,
+        1.92,
+        4.523,
+        -0.5803
+      ],
+      [
+        "car",
+        0.7367,
+        29.204,
+        10.924,
+        -0.329,
+        1.731,
+        1.993,
+        4.577,
+        -3.1146
+      ],
+      [
+        "car",
+        0.738,
+        1.48,
+        -13.161,
+        -0.689,
+        1.789,
+        1.961,
+        4.62,
+        2.596
+      ],
+      [
+        "car",
+        0.7418,
+        9.386,
+        2.765,
+        -0.965,
+        1.674,
+        1.96,
+        4.723,
+        -3.1385
+      ],
+      [
+        "car",
+        0.7531,
+        -7.328,
+        -24.503,
+        -0.439,
+        1.631,
+        1.917,
+        4.473,
+        2.4935
+      ],
+      [
+        "car",
+        0.77,
+        18.028,
+        9.913,
+        -0.068,
+        1.77,
+        1.968,
+        4.535,
+        0.0401
+      ],
+      [
+        "car",
+        0.7704,
+        -3.031,
+        -18.95,
+        -0.727,
+        1.558,
+        1.899,
+        4.657,
+        2.532
+      ],
+      [
+        "car",
+        0.7822,
+        2.874,
+        10.672,
+        -0.967,
+        1.475,
+        1.804,
+        4.301,
+        -2.1164
+      ],
+      [
+        "truck",
+        0.5626,
+        -12.158,
+        -10.747,
+        -1.154,
+        2.013,
+        2.103,
+        5.237,
+        -0.6327
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 119
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224819m, y\u2248-1m)",
+          "isometric": "Box centered around x=19, y=-1, z=0 region, lacks dense point support"
+        },
+        "evidence": [
+          "The bounding box at (x\u224819m, y\u2248-1m) in the BEV view contains very sparse, isolated LiDAR points that do not form a coherent object structure like the other detected vehicles.",
+          "The isometric view shows this box floating in a region with minimal point density, lacking the vertical extent or solid surface profile expected of a vehicle.",
+          "There is no clear LiDAR shadow behind this object, which is expected for any solid, opaque object.",
+          "The system label indicates a camera failure/attack state, preventing cross-modal verification, but the LiDAR-only evidence strongly suggests an injection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (too structured as a bounding box).",
+          "Distant object (the box is close enough for dense returns if it were a real vehicle)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:40:06.155380"
+}

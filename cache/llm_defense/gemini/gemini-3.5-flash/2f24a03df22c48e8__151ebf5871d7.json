@@ -1,0 +1,210 @@
+{
+  "key": {
+    "frame_id": "2f24a03df22c48e8",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.3737,
+        8.292,
+        -36.232,
+        -1.499,
+        3.507,
+        2.897,
+        11.562,
+        -1.5572
+      ],
+      [
+        "bus",
+        0.5978,
+        4.767,
+        -2.021,
+        -0.472,
+        3.367,
+        2.882,
+        8.498,
+        1.5518
+      ],
+      [
+        "bus",
+        0.8573,
+        4.972,
+        7.003,
+        0.13,
+        3.406,
+        3.045,
+        8.778,
+        1.7534
+      ],
+      [
+        "car",
+        0.3493,
+        -7.548,
+        -42.561,
+        -2.702,
+        1.643,
+        1.888,
+        4.627,
+        1.388
+      ],
+      [
+        "car",
+        0.3635,
+        -19.325,
+        25.448,
+        0.89,
+        1.867,
+        2.024,
+        4.909,
+        -0.594
+      ],
+      [
+        "car",
+        0.613,
+        -6.27,
+        -26.749,
+        -2.089,
+        1.715,
+        1.863,
+        4.592,
+        -1.5013
+      ],
+      [
+        "construction_vehicle",
+        0.3404,
+        14.233,
+        -36.744,
+        -2.026,
+        2.961,
+        2.562,
+        7.471,
+        0.0475
+      ],
+      [
+        "construction_vehicle",
+        0.5121,
+        -5.304,
+        10.651,
+        -0.233,
+        2.618,
+        2.688,
+        7.307,
+        -1.6583
+      ],
+      [
+        "construction_vehicle",
+        0.9616,
+        -11.591,
+        4.126,
+        -0.236,
+        2.361,
+        2.503,
+        7.592,
+        3.1094
+      ],
+      [
+        "traffic_cone",
+        0.3294,
+        -3.309,
+        11.783,
+        -0.92,
+        0.805,
+        0.369,
+        0.377,
+        -1.7325
+      ],
+      [
+        "traffic_cone",
+        0.3315,
+        -8.419,
+        -3.743,
+        -1.304,
+        0.884,
+        0.365,
+        0.387,
+        2.1571
+      ],
+      [
+        "traffic_cone",
+        0.3834,
+        -5.53,
+        5.891,
+        -1.219,
+        0.752,
+        0.382,
+        0.392,
+        -0.6019
+      ],
+      [
+        "traffic_cone",
+        0.3958,
+        -9.809,
+        -3.792,
+        -1.221,
+        1.166,
+        0.388,
+        0.386,
+        -1.3152
+      ],
+      [
+        "traffic_cone",
+        0.431,
+        -7.777,
+        -3.776,
+        -1.4,
+        0.862,
+        0.363,
+        0.375,
+        1.633
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 23,
+          "reinjected_centroid": [
+            -6.237055778503418,
+            -25.233505249023438,
+            -2.4451842308044434
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22486m, y\u22486m)",
+          "isometric": "A 3D bounding box (construction_vehicle) is detected hovering in mid-air at z \u2248 2m to 3m with no underlying physical point cluster or surface structure inside or beneath it."
+        },
+        "evidence": [
+          "In the isometric view, there is a bounding box elevated significantly above the ground plane (z \u2248 2m) that is completely devoid of LiDAR points.",
+          "The corresponding BEV box (labeled construction_vehicle) contains no dense point clusters or L-shape signatures consistent with a physical vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflection",
+          "Distant object occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:18:33.743572"
+}

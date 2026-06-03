@@ -1,0 +1,207 @@
+{
+  "key": {
+    "frame_id": "4c850e12ce914a34",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3247,
+        5.337,
+        -9.09,
+        -1.55,
+        1.066,
+        2.065,
+        0.553,
+        -2.8895
+      ],
+      [
+        "barrier",
+        0.3364,
+        4.244,
+        -5.382,
+        -1.546,
+        1.04,
+        1.996,
+        0.537,
+        -2.9144
+      ],
+      [
+        "barrier",
+        0.482,
+        3.693,
+        -3.014,
+        -1.395,
+        1.017,
+        1.996,
+        0.528,
+        -2.9485
+      ],
+      [
+        "car",
+        0.718,
+        18.957,
+        -2.185,
+        -1.362,
+        1.678,
+        1.922,
+        4.579,
+        -1.2948
+      ],
+      [
+        "motorcycle",
+        0.3428,
+        -6.417,
+        0.49,
+        -0.613,
+        1.513,
+        0.766,
+        2.019,
+        1.3332
+      ],
+      [
+        "motorcycle",
+        0.38,
+        -1.314,
+        7.68,
+        -0.605,
+        1.553,
+        0.718,
+        1.915,
+        0.3528
+      ],
+      [
+        "pedestrian",
+        0.3305,
+        5.567,
+        -13.425,
+        -1.391,
+        1.75,
+        0.632,
+        0.645,
+        3.0848
+      ],
+      [
+        "pedestrian",
+        0.4761,
+        -6.871,
+        -10.34,
+        -0.993,
+        1.722,
+        0.626,
+        0.687,
+        -1.6114
+      ],
+      [
+        "traffic_cone",
+        0.3184,
+        8.565,
+        9.142,
+        -1.268,
+        0.753,
+        0.371,
+        0.373,
+        -3.0283
+      ],
+      [
+        "traffic_cone",
+        0.4933,
+        2.212,
+        2.83,
+        -1.342,
+        0.72,
+        0.389,
+        0.363,
+        2.1353
+      ],
+      [
+        "truck",
+        0.3428,
+        14.653,
+        6.949,
+        0.325,
+        3.791,
+        3.184,
+        10.76,
+        -1.273
+      ],
+      [
+        "truck",
+        0.7293,
+        11.469,
+        17.859,
+        0.211,
+        3.081,
+        2.586,
+        6.68,
+        -1.3287
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 71,
+          "reinjected_centroid": [
+            18.110342025756836,
+            -1.3172392845153809,
+            -1.4876015186309814
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 199,
+          "reinjected_centroid": [
+            12.804621696472168,
+            5.0198283195495605,
+            -1.3634997606277466
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -1.83672297000885,
+            9.98310661315918,
+            -0.8894842267036438
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Region around x \u2248 10m to 20m, y \u2248 -8m to -12m (outside standard roadway bounds)",
+          "isometric": "Multiple large, vertically elongated cuboids (classified as trucks) on the far right of the grid at x \u2248 10-25m, y < -6m"
+        },
+        "evidence": [
+          "Several large truck predictions ('truck 0.73', 'truck 0.34') appear in regions with no corresponding physical truck-like point clusters.",
+          "In the isometric view, these bounding boxes are unusually tall, vertically stretched, or floating, enclosing only sparse background/vegetation points with no structural similarity to actual vehicles.",
+          "There is no physical occlusion or shadow patterns supporting the presence of multiple massive trucks at those coordinates."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant vehicles",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:59:12.170611"
+}

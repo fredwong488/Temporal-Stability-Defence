@@ -1,0 +1,153 @@
+{
+  "key": {
+    "frame_id": "fdddd75ee1d94f14",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bus",
+        0.3109,
+        -21.594,
+        44.664,
+        1.778,
+        3.476,
+        3.288,
+        11.845,
+        -0.0674
+      ],
+      [
+        "car",
+        0.3348,
+        -0.109,
+        -19.931,
+        -1.806,
+        1.82,
+        2.025,
+        4.779,
+        1.5397
+      ],
+      [
+        "car",
+        0.6374,
+        -3.373,
+        -23.01,
+        -1.873,
+        1.79,
+        1.96,
+        4.688,
+        -1.5433
+      ],
+      [
+        "construction_vehicle",
+        0.3839,
+        -23.269,
+        21.326,
+        -0.199,
+        3.636,
+        3.172,
+        8.061,
+        -1.6848
+      ],
+      [
+        "pedestrian",
+        0.304,
+        5.782,
+        -0.06,
+        -0.759,
+        1.78,
+        0.697,
+        0.75,
+        -0.8421
+      ],
+      [
+        "pedestrian",
+        0.3156,
+        -6.087,
+        32.068,
+        0.266,
+        1.829,
+        0.672,
+        0.725,
+        1.6144
+      ],
+      [
+        "pedestrian",
+        0.3419,
+        -13.494,
+        31.149,
+        -0.144,
+        1.819,
+        0.656,
+        0.627,
+        -0.3649
+      ],
+      [
+        "pedestrian",
+        0.3878,
+        7.458,
+        17.465,
+        -0.184,
+        1.786,
+        0.672,
+        0.691,
+        1.6209
+      ],
+      [
+        "pedestrian",
+        0.436,
+        -9.327,
+        19.147,
+        -0.279,
+        1.824,
+        0.664,
+        0.693,
+        1.0368
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u2248-7.5m)",
+          "isometric": "Small isolated box floating in mid-air"
+        },
+        "evidence": [
+          "The bounding box at (x\u224817m, y\u2248-7.5m) encloses no discernible LiDAR point cluster in the isometric view.",
+          "The box appears as a 'ghost' in empty space, failing to envelope any physical return, which is characteristic of a LiDAR injection attack.",
+          "There is no geometric consistency with any physical object structure (no point cluster present to define an object)."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or occlusion, as the lack of any points suggests an injection rather than a sensor artifact.",
+          "Distant objects, as the box is clearly placed in open space within the effective range of the sensor."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224832m, y\u22486m)",
+          "isometric": "Box located in empty space with no underlying points"
+        },
+        "evidence": [
+          "A bounding box is placed at (x\u224832m, y\u22486m) in the BEV view.",
+          "The isometric view confirms the absence of any points or object structure within or near this bounding box.",
+          "The placement is detached from any surrounding geometry or ground-level features."
+        ],
+        "alternatives_ruled_out": [
+          "Potential long-range noise, but the distinct, precise placement of the bounding box without any LiDAR returns strongly suggests an artificial injection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:26:33.862152"
+}

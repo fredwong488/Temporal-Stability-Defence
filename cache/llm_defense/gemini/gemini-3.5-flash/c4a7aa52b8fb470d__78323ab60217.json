@@ -1,0 +1,136 @@
+{
+  "key": {
+    "frame_id": "c4a7aa52b8fb470d",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "bus",
+        0.6635,
+        0.24,
+        -23.882,
+        -1.009,
+        3.518,
+        3.215,
+        12.017,
+        1.64
+      ],
+      [
+        "bus",
+        0.8361,
+        1.113,
+        27.834,
+        1.663,
+        3.718,
+        3.006,
+        12.564,
+        2.5903
+      ],
+      [
+        "car",
+        0.309,
+        16.51,
+        -27.755,
+        -0.236,
+        2.007,
+        2.086,
+        4.844,
+        -3.0713
+      ],
+      [
+        "car",
+        0.3769,
+        -13.97,
+        -29.364,
+        -2.759,
+        1.687,
+        1.927,
+        4.632,
+        1.2473
+      ],
+      [
+        "car",
+        0.4494,
+        -14.654,
+        -45.504,
+        -3.392,
+        1.703,
+        1.94,
+        4.471,
+        2.7917
+      ],
+      [
+        "car",
+        0.9269,
+        0.378,
+        -9.579,
+        -1.469,
+        1.873,
+        2.011,
+        4.867,
+        1.5629
+      ],
+      [
+        "construction_vehicle",
+        0.5755,
+        4.939,
+        -6.757,
+        -1.212,
+        2.558,
+        2.652,
+        4.496,
+        -1.687
+      ],
+      [
+        "trailer",
+        0.3596,
+        21.196,
+        -29.561,
+        0.31,
+        4.354,
+        2.955,
+        16.003,
+        1.6676
+      ],
+      [
+        "truck",
+        0.3692,
+        -7.698,
+        24.115,
+        0.46,
+        1.948,
+        2.112,
+        5.457,
+        -0.2649
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "x \u2248 23m to 26m, y \u2248 5m to 8m",
+          "isometric": "Box labeled 'truck 0.37' is completely empty with no points enclosed or supporting it from underneath"
+        },
+        "evidence": [
+          "The 3D bounding box labeled 'truck 0.37' at approximately x=24m, y=7m contains zero LiDAR returns.",
+          "There is no occlusion shadow behind the predicted truck region; laser returns are visible farther down the range, which violates physical invariants.",
+          "The isometric view confirms that there is no 3D structure or cluster corresponding to this vehicle detection."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise or low reflectivity (since background ground points are clearly detected behind/beyond the object position)",
+          "Occlusion (no object exists in front of this location to block the LiDAR beams)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:20:53.054505"
+}

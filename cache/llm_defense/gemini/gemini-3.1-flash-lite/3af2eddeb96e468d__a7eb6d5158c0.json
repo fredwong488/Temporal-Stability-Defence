@@ -1,0 +1,268 @@
+{
+  "key": {
+    "frame_id": "3af2eddeb96e468d",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.9666,
+        10.765,
+        -14.957,
+        -0.515,
+        3.252,
+        2.868,
+        12.426,
+        2.7121
+      ],
+      [
+        "car",
+        0.3122,
+        7.676,
+        31.155,
+        -0.089,
+        1.634,
+        1.873,
+        4.484,
+        -1.7248
+      ],
+      [
+        "car",
+        0.3535,
+        20.471,
+        6.388,
+        -0.716,
+        1.642,
+        1.877,
+        4.401,
+        -1.998
+      ],
+      [
+        "car",
+        0.3723,
+        24.643,
+        3.942,
+        -0.718,
+        1.734,
+        1.878,
+        4.397,
+        -2.0522
+      ],
+      [
+        "car",
+        0.3964,
+        22.942,
+        28.439,
+        -0.271,
+        1.594,
+        1.913,
+        4.493,
+        1.7925
+      ],
+      [
+        "car",
+        0.3996,
+        20.668,
+        29.204,
+        -0.338,
+        1.572,
+        1.879,
+        4.395,
+        -1.7454
+      ],
+      [
+        "car",
+        0.5507,
+        19.916,
+        14.008,
+        -0.724,
+        1.507,
+        1.796,
+        4.32,
+        -1.8576
+      ],
+      [
+        "car",
+        0.6434,
+        18.408,
+        7.44,
+        -0.593,
+        1.664,
+        1.858,
+        4.409,
+        -2.0335
+      ],
+      [
+        "car",
+        0.8782,
+        16.346,
+        8.676,
+        -0.644,
+        1.564,
+        1.892,
+        4.408,
+        -2.0869
+      ],
+      [
+        "pedestrian",
+        0.3004,
+        -2.087,
+        19.56,
+        -0.46,
+        1.889,
+        0.475,
+        0.489,
+        -0.8887
+      ],
+      [
+        "pedestrian",
+        0.3127,
+        -5.75,
+        -12.363,
+        -0.974,
+        1.793,
+        0.64,
+        0.647,
+        -1.0231
+      ],
+      [
+        "pedestrian",
+        0.3147,
+        -0.384,
+        22.433,
+        -0.393,
+        1.813,
+        0.524,
+        0.512,
+        -0.5839
+      ],
+      [
+        "pedestrian",
+        0.3163,
+        -4.093,
+        17.952,
+        -0.454,
+        1.853,
+        0.604,
+        0.591,
+        -0.3979
+      ],
+      [
+        "pedestrian",
+        0.3304,
+        -1.717,
+        18.072,
+        -0.258,
+        1.848,
+        0.515,
+        0.499,
+        -0.377
+      ],
+      [
+        "pedestrian",
+        0.3549,
+        1.318,
+        23.877,
+        -0.439,
+        1.757,
+        0.602,
+        0.561,
+        -1.387
+      ],
+      [
+        "pedestrian",
+        0.3642,
+        -1.24,
+        20.02,
+        -0.474,
+        1.855,
+        0.445,
+        0.452,
+        -1.423
+      ],
+      [
+        "pedestrian",
+        0.3941,
+        -3.042,
+        17.427,
+        -0.267,
+        1.808,
+        0.566,
+        0.56,
+        -0.9452
+      ],
+      [
+        "pedestrian",
+        0.4163,
+        -11.673,
+        8.537,
+        -1.054,
+        1.732,
+        0.614,
+        0.679,
+        1.6327
+      ],
+      [
+        "pedestrian",
+        0.4164,
+        1.321,
+        22.375,
+        -0.329,
+        1.817,
+        0.547,
+        0.547,
+        -0.3766
+      ],
+      [
+        "pedestrian",
+        0.4237,
+        -1.035,
+        18.886,
+        -0.273,
+        1.849,
+        0.504,
+        0.493,
+        -1.1069
+      ],
+      [
+        "truck",
+        0.4907,
+        10.338,
+        -1.392,
+        -0.141,
+        3.207,
+        2.495,
+        6.072,
+        1.0837
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815-25m, y\u2248-2 to 4m)",
+          "isometric": "Cluster of multiple 'pedestrian' bounding boxes clustered in mid-air/empty space without clear ground-plane connectivity or geometric structure consistent with individuals."
+        },
+        "evidence": [
+          "Unnatural clustering of a large number of pedestrian detections in a compact region, which is physically implausible.",
+          "The isometric view shows these bounding boxes are floating or positioned without identifiable point-cloud density corresponding to human-shaped objects.",
+          "The lack of visible ground plane connectivity or surface structure for these specific boxes indicates point injection/spoofing rather than real pedestrians."
+        ],
+        "alternatives_ruled_out": [
+          "Crowd detection: While a crowd is possible, the 'ghost' signature of multiple bounding boxes hovering in disjoint, low-density LiDAR noise suggests a deliberate adversarial pattern rather than a dense crowd of pedestrians.",
+          "Sensor noise: This specific pattern of numerous, dense, oriented bounding boxes is characteristic of adversarial spoofing algorithms designed to trigger false positives."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:33.712843"
+}

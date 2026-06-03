@@ -1,0 +1,346 @@
+{
+  "key": {
+    "frame_id": "7c87f86969cc4dc2",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "car",
+        0.3129,
+        -12.378,
+        -28.648,
+        -0.194,
+        1.781,
+        1.939,
+        4.524,
+        2.2699
+      ],
+      [
+        "car",
+        0.315,
+        -4.632,
+        -32.047,
+        0.277,
+        1.598,
+        1.901,
+        4.516,
+        2.4172
+      ],
+      [
+        "car",
+        0.334,
+        -19.897,
+        -20.628,
+        -1.021,
+        1.681,
+        1.957,
+        4.452,
+        0.2791
+      ],
+      [
+        "car",
+        0.3369,
+        9.713,
+        1.226,
+        -0.875,
+        1.715,
+        1.981,
+        5.035,
+        3.1281
+      ],
+      [
+        "car",
+        0.3375,
+        27.971,
+        -9.501,
+        -0.019,
+        1.59,
+        1.879,
+        4.251,
+        -0.1516
+      ],
+      [
+        "car",
+        0.3563,
+        5.044,
+        -21.193,
+        -0.19,
+        1.686,
+        1.934,
+        4.702,
+        2.5971
+      ],
+      [
+        "car",
+        0.3827,
+        -7.572,
+        -33.147,
+        0.617,
+        1.705,
+        1.884,
+        4.412,
+        2.2655
+      ],
+      [
+        "car",
+        0.4223,
+        -4.502,
+        -19.483,
+        -0.669,
+        1.628,
+        1.928,
+        4.726,
+        2.4106
+      ],
+      [
+        "car",
+        0.443,
+        25.896,
+        -14.194,
+        0.197,
+        1.59,
+        1.9,
+        4.413,
+        2.8059
+      ],
+      [
+        "car",
+        0.463,
+        7.695,
+        -17.182,
+        -0.252,
+        1.583,
+        1.874,
+        4.629,
+        -0.3575
+      ],
+      [
+        "car",
+        0.4853,
+        29.015,
+        -4.623,
+        0.008,
+        1.644,
+        1.902,
+        4.288,
+        -0.1363
+      ],
+      [
+        "car",
+        0.4895,
+        0.314,
+        -13.861,
+        -0.644,
+        1.682,
+        1.897,
+        4.48,
+        2.4818
+      ],
+      [
+        "car",
+        0.5075,
+        -9.319,
+        -24.49,
+        -0.48,
+        1.561,
+        1.879,
+        4.453,
+        2.3989
+      ],
+      [
+        "car",
+        0.5094,
+        29.933,
+        7.807,
+        -0.312,
+        1.592,
+        1.931,
+        4.491,
+        -3.124
+      ],
+      [
+        "car",
+        0.5288,
+        2.271,
+        19.833,
+        -0.303,
+        1.623,
+        1.868,
+        4.53,
+        1.2504
+      ],
+      [
+        "car",
+        0.5395,
+        11.027,
+        -13.325,
+        -0.174,
+        1.729,
+        1.934,
+        4.528,
+        -0.6611
+      ],
+      [
+        "car",
+        0.6303,
+        -0.28,
+        13.07,
+        -0.825,
+        1.632,
+        1.877,
+        4.468,
+        1.4656
+      ],
+      [
+        "car",
+        0.6305,
+        29.804,
+        5.214,
+        -0.287,
+        1.61,
+        1.961,
+        4.482,
+        -3.1262
+      ],
+      [
+        "car",
+        0.6438,
+        3.798,
+        9.526,
+        -0.972,
+        1.485,
+        1.814,
+        4.327,
+        -2.2712
+      ],
+      [
+        "car",
+        0.6486,
+        18.318,
+        -0.416,
+        0.114,
+        1.946,
+        2.101,
+        4.781,
+        2.962
+      ],
+      [
+        "car",
+        0.6712,
+        3.366,
+        -10.079,
+        -0.667,
+        1.644,
+        1.865,
+        4.445,
+        2.4192
+      ],
+      [
+        "car",
+        0.8404,
+        18.871,
+        7.621,
+        -0.056,
+        1.772,
+        1.966,
+        4.548,
+        -0.024
+      ],
+      [
+        "construction_vehicle",
+        0.3096,
+        31.917,
+        20.517,
+        1.878,
+        3.498,
+        2.585,
+        8.023,
+        2.146
+      ],
+      [
+        "truck",
+        0.358,
+        -14.576,
+        -29.322,
+        -0.319,
+        2.06,
+        2.361,
+        6.191,
+        -2.9511
+      ],
+      [
+        "truck",
+        0.5156,
+        -22.993,
+        23.913,
+        -0.328,
+        3.82,
+        2.905,
+        11.05,
+        0.0428
+      ],
+      [
+        "truck",
+        0.5934,
+        10.089,
+        1.27,
+        -0.869,
+        1.938,
+        2.126,
+        5.64,
+        -3.1105
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 118
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224811m, y\u22480m)",
+          "isometric": "cluster appears as a sparse, disconnected group of points with no clear physical vehicle structure"
+        },
+        "evidence": [
+          "The bounding box at (x\u224811m, y\u22480m) encloses a sparse, low-density point cluster that lacks the geometric L-shape or volumetric structure typical of a vehicle.",
+          "The isometric view shows no vertical continuity or surface profile consistent with a car, suggesting artificially injected or noisy LiDAR returns.",
+          "The absence of a clear 3D shadow behind this specific cluster suggests it may not be a genuine opaque object."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely to form such a structured, localized detection box.",
+          "Distances are well within standard LiDAR range, so detection failure due to range limitations is not a factor."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224819m, y\u2248-2m)",
+          "isometric": "cluster is very sparse and lacks coherent 3D shape"
+        },
+        "evidence": [
+          "The bounding box at (x\u224819m, y\u2248-2m) contains very few LiDAR returns, which is insufficient to define the surface of a car.",
+          "There is no discernible shadow or occlusion zone behind this object in the point cloud, indicating it does not physically block laser pulses like a real car.",
+          "The cluster lacks the expected vertical height and depth in the isometric view."
+        ],
+        "alternatives_ruled_out": [
+          "Natural occlusion is not present as there is no background context suggesting the object is hidden by terrain.",
+          "Low reflectivity does not explain the lack of physical points entirely if the object were real."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:40:11.542527"
+}

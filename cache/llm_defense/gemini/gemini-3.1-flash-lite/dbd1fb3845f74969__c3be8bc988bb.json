@@ -1,0 +1,170 @@
+{
+  "key": {
+    "frame_id": "dbd1fb3845f74969",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "bicycle",
+        0.3198,
+        16.55,
+        6.057,
+        -0.837,
+        1.246,
+        0.618,
+        1.644,
+        -1.4116
+      ],
+      [
+        "car",
+        0.3003,
+        -0.382,
+        37.843,
+        0.286,
+        1.658,
+        1.892,
+        4.418,
+        -1.6646
+      ],
+      [
+        "car",
+        0.3496,
+        -6.205,
+        37.394,
+        0.24,
+        1.67,
+        1.917,
+        4.548,
+        1.4604
+      ],
+      [
+        "car",
+        0.4789,
+        -2.627,
+        -35.02,
+        -2.619,
+        1.81,
+        1.986,
+        4.727,
+        -1.6491
+      ],
+      [
+        "car",
+        0.7266,
+        0.357,
+        -19.778,
+        -1.799,
+        1.728,
+        1.932,
+        4.589,
+        1.5271
+      ],
+      [
+        "construction_vehicle",
+        0.3307,
+        -11.222,
+        -14.983,
+        -0.932,
+        2.365,
+        1.53,
+        2.896,
+        1.6589
+      ],
+      [
+        "pedestrian",
+        0.3161,
+        10.186,
+        28.821,
+        -0.048,
+        1.8,
+        0.662,
+        0.717,
+        1.7304
+      ],
+      [
+        "pedestrian",
+        0.3418,
+        5.556,
+        -4.417,
+        -0.93,
+        1.731,
+        0.658,
+        0.679,
+        -1.1001
+      ],
+      [
+        "pedestrian",
+        0.3944,
+        6.342,
+        -4.314,
+        -0.939,
+        1.734,
+        0.657,
+        0.724,
+        -1.54
+      ],
+      [
+        "pedestrian",
+        0.4389,
+        9.019,
+        23.863,
+        -0.15,
+        1.786,
+        0.624,
+        0.623,
+        1.1392
+      ],
+      [
+        "pedestrian",
+        0.4928,
+        10.099,
+        23.005,
+        -0.247,
+        1.792,
+        0.653,
+        0.682,
+        1.063
+      ],
+      [
+        "pedestrian",
+        0.5224,
+        6.883,
+        11.744,
+        -0.434,
+        1.785,
+        0.693,
+        0.747,
+        1.3634
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u2248-6m)",
+          "isometric": "pedestrian box at x\u224812m, y\u2248-6m"
+        },
+        "evidence": [
+          "A singular, isolated 3D bounding box labeled 'pedestrian' appears at (x\u224812m, y\u2248-6m) in the BEV view.",
+          "The underlying point cloud at this location is extremely sparse or non-existent in the isometric view, failing to show the characteristic vertical or horizontal structure of a pedestrian.",
+          "The camera image is unavailable, preventing verification of object existence.",
+          "The detector output confidence (0.52) is relatively low, often associated with noise or marginal detections."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (e.g., thermal noise or stray particles) is a plausible explanation for the single, isolated bounding box given the lack of supporting point geometry.",
+          "The object could be a very thin or low-reflectivity entity that the LiDAR failed to resolve adequately, but without visual confirmation, it remains ambiguous."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:29.639887"
+}

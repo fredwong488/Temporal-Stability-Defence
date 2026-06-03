@@ -1,0 +1,232 @@
+{
+  "key": {
+    "frame_id": "6a21e47cf21e4f22",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.309,
+        5.397,
+        3.825,
+        -1.199,
+        1.051,
+        2.013,
+        0.452,
+        -2.4241
+      ],
+      [
+        "barrier",
+        0.3433,
+        1.334,
+        8.759,
+        -1.061,
+        1.077,
+        2.153,
+        0.473,
+        -2.4432
+      ],
+      [
+        "barrier",
+        0.359,
+        6.078,
+        2.822,
+        -1.269,
+        1.066,
+        2.08,
+        0.457,
+        -2.4425
+      ],
+      [
+        "barrier",
+        0.3625,
+        2.863,
+        6.903,
+        -1.123,
+        1.061,
+        1.999,
+        0.493,
+        -2.5918
+      ],
+      [
+        "barrier",
+        0.4007,
+        4.355,
+        -21.417,
+        -1.303,
+        1.067,
+        2.035,
+        0.497,
+        -0.9261
+      ],
+      [
+        "car",
+        0.3203,
+        -3.56,
+        21.245,
+        -0.392,
+        1.459,
+        1.814,
+        4.295,
+        -0.9838
+      ],
+      [
+        "car",
+        0.4145,
+        5.341,
+        18.404,
+        -0.31,
+        1.613,
+        1.864,
+        4.507,
+        2.1245
+      ],
+      [
+        "car",
+        0.4636,
+        -5.48,
+        14.06,
+        -0.358,
+        2.063,
+        2.067,
+        5.059,
+        2.1736
+      ],
+      [
+        "construction_vehicle",
+        0.3194,
+        4.346,
+        7.701,
+        -0.164,
+        2.78,
+        3.015,
+        3.032,
+        -1.2585
+      ],
+      [
+        "pedestrian",
+        0.324,
+        7.778,
+        2.133,
+        -0.971,
+        1.788,
+        0.674,
+        0.691,
+        -2.9701
+      ],
+      [
+        "pedestrian",
+        0.3474,
+        9.374,
+        -0.902,
+        -0.938,
+        1.786,
+        0.673,
+        0.696,
+        -0.1118
+      ],
+      [
+        "pedestrian",
+        0.3508,
+        6.13,
+        -7.985,
+        -1.058,
+        1.678,
+        0.603,
+        0.659,
+        1.5952
+      ],
+      [
+        "pedestrian",
+        0.3604,
+        10.617,
+        0.078,
+        -0.886,
+        1.845,
+        0.694,
+        0.691,
+        2.185
+      ],
+      [
+        "pedestrian",
+        0.3653,
+        -3.966,
+        -0.563,
+        -0.806,
+        1.755,
+        0.691,
+        0.684,
+        0.626
+      ],
+      [
+        "pedestrian",
+        0.4013,
+        9.991,
+        -1.349,
+        -0.922,
+        1.807,
+        0.677,
+        0.717,
+        2.8978
+      ],
+      [
+        "truck",
+        0.6469,
+        0.51,
+        29.566,
+        1.071,
+        3.224,
+        2.595,
+        6.893,
+        -0.8955
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 185,
+          "reinjected_centroid": [
+            -4.702439785003662,
+            12.47488021850586,
+            -0.7298845648765564
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Region around (x\u224821m, y\u22484m) and (x\u224813m, y\u22485.5m)",
+          "isometric": "Several tall bounding boxes (e.g., labeled car 0.32 and car 0.46) are completely empty, containing no underlying physical point clusters or ground support."
+        },
+        "evidence": [
+          "Bounding box 'car 0.32' at (x\u224821m, y\u22484m) is entirely empty of LiDAR returns in both BEV and Isometric views.",
+          "Bounding box 'car 0.46' at (x\u224813m, y\u22485.5m) lacks a valid, dense 3D point cluster representing a real vehicle.",
+          "The camera image is entirely unavailable and explicitly flagged as '[ATTACKED]', indicating a complete denial-of-service or sensor compromise."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise (cannot explain perfectly shaped 3D bounding boxes in totally empty space)",
+          "Occlusion (there are no foreground obstacles blocking the line of sight to these coordinates)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:58:44.176802"
+}

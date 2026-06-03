@@ -1,0 +1,247 @@
+{
+  "key": {
+    "frame_id": "e010ebbff0b140ab",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3036,
+        11.004,
+        3.697,
+        -1.225,
+        1.03,
+        2.079,
+        0.508,
+        3.0614
+      ],
+      [
+        "barrier",
+        0.3099,
+        7.098,
+        -18.233,
+        -1.851,
+        0.935,
+        3.014,
+        0.55,
+        3.0063
+      ],
+      [
+        "barrier",
+        0.3104,
+        6.711,
+        -20.555,
+        -1.952,
+        1.004,
+        2.834,
+        0.575,
+        2.9667
+      ],
+      [
+        "barrier",
+        0.3106,
+        11.629,
+        9.194,
+        -0.903,
+        1.099,
+        1.94,
+        0.621,
+        3.0359
+      ],
+      [
+        "barrier",
+        0.3366,
+        10.815,
+        10.193,
+        -0.895,
+        1.107,
+        2.02,
+        0.565,
+        3.0988
+      ],
+      [
+        "barrier",
+        0.3409,
+        8.296,
+        -10.11,
+        -1.511,
+        1.164,
+        2.084,
+        0.66,
+        2.9982
+      ],
+      [
+        "barrier",
+        0.3506,
+        8.71,
+        -6.815,
+        -1.406,
+        1.04,
+        2.335,
+        0.612,
+        3.0018
+      ],
+      [
+        "barrier",
+        0.3571,
+        8.504,
+        -8.565,
+        -1.456,
+        1.135,
+        1.968,
+        0.619,
+        3.0105
+      ],
+      [
+        "barrier",
+        0.3703,
+        7.517,
+        -15.689,
+        -1.704,
+        1.033,
+        2.754,
+        0.618,
+        2.9608
+      ],
+      [
+        "barrier",
+        0.3803,
+        6.03,
+        -24.491,
+        -2.206,
+        0.94,
+        2.964,
+        0.544,
+        3.0019
+      ],
+      [
+        "barrier",
+        0.3929,
+        11.168,
+        12.527,
+        -0.718,
+        1.049,
+        2.061,
+        0.526,
+        3.0404
+      ],
+      [
+        "barrier",
+        0.4061,
+        9.98,
+        -4.66,
+        -1.438,
+        0.941,
+        3.044,
+        0.639,
+        2.9898
+      ],
+      [
+        "car",
+        0.3119,
+        31.288,
+        27.721,
+        -0.079,
+        1.78,
+        1.994,
+        4.603,
+        -0.0552
+      ],
+      [
+        "car",
+        0.3177,
+        32.458,
+        23.089,
+        -0.346,
+        1.66,
+        1.989,
+        4.605,
+        3.139
+      ],
+      [
+        "car",
+        0.439,
+        -4.505,
+        20.102,
+        -0.019,
+        1.952,
+        2.002,
+        5.244,
+        2.0369
+      ],
+      [
+        "car",
+        0.4979,
+        40.289,
+        21.468,
+        -0.634,
+        1.585,
+        1.891,
+        4.404,
+        2.9915
+      ],
+      [
+        "car",
+        0.7102,
+        9.539,
+        15.578,
+        -0.303,
+        1.609,
+        1.816,
+        4.352,
+        1.4436
+      ],
+      [
+        "construction_vehicle",
+        0.661,
+        -9.023,
+        31.257,
+        1.074,
+        3.237,
+        2.786,
+        4.542,
+        -0.1607
+      ],
+      [
+        "truck",
+        0.7452,
+        -5.495,
+        -23.074,
+        -0.933,
+        3.358,
+        2.794,
+        9.199,
+        1.4768
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224820m, y\u22484.5m)",
+          "isometric": "Bounding box for 'car' at x\u224820m, y\u22484.5m, z\u22481.5m floats in space and contains no physical point cluster or structural depth representation"
+        },
+        "evidence": [
+          "The bounding box 'car' at (x\u224820m, y\u22484.5m) contains zero point cloud returns in both the BEV projection and the isometric 3D view.",
+          "There is no matching physical structure or L-shape/geometric boundary corresponding to a vehicle at this location.",
+          "No occlusions or 3D shadows are cast by this supposed obstacle, which contradicts physical invariants of LiDAR sensors."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low-reflectivity surface",
+          "Distant object occlusion"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:41.211290"
+}

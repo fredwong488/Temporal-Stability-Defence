@@ -1,0 +1,147 @@
+{
+  "key": {
+    "frame_id": "61b66366def84b60",
+    "sequence_id": "2fc3753772e241f2ab2cd16a784cc680",
+    "predictions": [
+      [
+        "bus",
+        0.3652,
+        0.262,
+        -26.026,
+        -1.107,
+        3.493,
+        3.074,
+        11.757,
+        1.6232
+      ],
+      [
+        "bus",
+        0.9015,
+        7.286,
+        29.483,
+        1.182,
+        3.584,
+        3.279,
+        13.036,
+        2.7705
+      ],
+      [
+        "car",
+        0.4959,
+        -15.871,
+        -40.147,
+        -2.643,
+        1.687,
+        1.96,
+        4.752,
+        2.7656
+      ],
+      [
+        "car",
+        0.6664,
+        4.381,
+        26.044,
+        0.203,
+        1.662,
+        1.941,
+        4.647,
+        -0.256
+      ],
+      [
+        "car",
+        0.84,
+        0.62,
+        -10.568,
+        -1.317,
+        1.901,
+        1.984,
+        4.657,
+        1.5847
+      ],
+      [
+        "construction_vehicle",
+        0.3202,
+        -9.365,
+        47.617,
+        1.892,
+        3.434,
+        2.444,
+        6.707,
+        -1.6454
+      ],
+      [
+        "construction_vehicle",
+        0.5033,
+        4.508,
+        -1.733,
+        -1.141,
+        2.378,
+        2.329,
+        4.172,
+        1.3408
+      ],
+      [
+        "traffic_cone",
+        0.3522,
+        3.852,
+        -21.492,
+        -2.139,
+        1.175,
+        0.526,
+        0.53,
+        1.6678
+      ],
+      [
+        "traffic_cone",
+        0.3637,
+        6.673,
+        2.853,
+        -1.087,
+        1.333,
+        0.388,
+        0.407,
+        -2.6449
+      ],
+      [
+        "truck",
+        0.345,
+        -0.1,
+        -23.643,
+        -1.139,
+        3.589,
+        2.814,
+        9.832,
+        1.5354
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available (labeled as CLEAN but image missing)",
+          "bev": "x \u2248 25m to 27m, y \u2248 -3m to -5m",
+          "isometric": "Box labeled 'car' at x \u2248 26m is elevated significantly above the ground plane (z \u2248 2m to 3m) with no supporting structure or dense cluster of points."
+        },
+        "evidence": [
+          "A 3D bounding box for 'car' (confidence 0.67) is generated at x \u2248 26m, y \u2248 -4m.",
+          "In the isometric view, this bounding box is floating in mid-air at an implausible height above the ground plane.",
+          "The underlying point cluster inside this bounding box is extremely sparse, consisting of only a few scattered points, lacking any realistic 3D volume, shape, or L-shape silhouette of a vehicle."
+        ],
+        "alternatives_ruled_out": [
+          "Ground reflections or road debris (which would appear at ground level rather than floating high in the air)",
+          "Distant real vehicles (which would have supporting structures and points contacting the ground plane)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:20:32.711906"
+}

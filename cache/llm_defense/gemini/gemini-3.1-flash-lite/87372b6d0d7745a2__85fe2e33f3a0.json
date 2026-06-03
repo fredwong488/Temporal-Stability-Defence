@@ -1,0 +1,325 @@
+{
+  "key": {
+    "frame_id": "87372b6d0d7745a2",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3093,
+        16.36,
+        36.448,
+        1.277,
+        1.743,
+        1.906,
+        4.492,
+        1.4654
+      ],
+      [
+        "car",
+        0.3861,
+        2.046,
+        26.862,
+        0.229,
+        1.761,
+        1.942,
+        4.583,
+        1.5364
+      ],
+      [
+        "car",
+        0.4054,
+        -24.407,
+        4.575,
+        -1.953,
+        1.574,
+        1.882,
+        4.35,
+        -2.9663
+      ],
+      [
+        "car",
+        0.467,
+        -14.525,
+        -1.363,
+        -1.66,
+        1.603,
+        1.923,
+        4.562,
+        0.0579
+      ],
+      [
+        "car",
+        0.5017,
+        6.651,
+        34.052,
+        0.763,
+        1.779,
+        1.966,
+        4.617,
+        1.5552
+      ],
+      [
+        "car",
+        0.5344,
+        -29.844,
+        3.144,
+        -1.992,
+        1.597,
+        1.85,
+        4.356,
+        -2.8461
+      ],
+      [
+        "car",
+        0.5372,
+        -9.148,
+        -18.328,
+        -2.01,
+        1.633,
+        1.939,
+        4.673,
+        1.4478
+      ],
+      [
+        "car",
+        0.8106,
+        -5.787,
+        6.956,
+        -1.128,
+        1.53,
+        1.809,
+        4.451,
+        -2.1554
+      ],
+      [
+        "car",
+        0.8284,
+        -7.751,
+        9.076,
+        -1.186,
+        1.684,
+        1.92,
+        4.552,
+        -2.1973
+      ],
+      [
+        "car",
+        0.9312,
+        4.265,
+        -0.718,
+        -1.24,
+        1.561,
+        1.861,
+        4.609,
+        1.6126
+      ],
+      [
+        "construction_vehicle",
+        0.5691,
+        -7.656,
+        48.428,
+        1.702,
+        3.286,
+        2.625,
+        7.091,
+        -1.6852
+      ],
+      [
+        "motorcycle",
+        0.4564,
+        6.256,
+        -0.98,
+        -1.577,
+        1.632,
+        0.843,
+        2.196,
+        -1.6234
+      ],
+      [
+        "pedestrian",
+        0.3048,
+        -1.852,
+        -36.682,
+        -2.018,
+        1.803,
+        0.66,
+        0.728,
+        -1.7169
+      ],
+      [
+        "pedestrian",
+        0.3382,
+        1.201,
+        -37.768,
+        -1.736,
+        1.805,
+        0.674,
+        0.681,
+        -0.7945
+      ],
+      [
+        "pedestrian",
+        0.3423,
+        -11.472,
+        2.067,
+        -1.28,
+        1.826,
+        0.674,
+        0.77,
+        -1.5434
+      ],
+      [
+        "pedestrian",
+        0.3551,
+        -11.392,
+        15.604,
+        -0.308,
+        1.801,
+        0.615,
+        0.629,
+        0.435
+      ],
+      [
+        "pedestrian",
+        0.3598,
+        8.493,
+        4.743,
+        -0.597,
+        1.763,
+        0.651,
+        0.736,
+        1.3181
+      ],
+      [
+        "pedestrian",
+        0.384,
+        7.789,
+        -3.531,
+        -1.031,
+        1.809,
+        0.688,
+        0.722,
+        2.125
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            6.325704574584961,
+            -1.052101969718933,
+            -2.073330879211426
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -6.901583194732666,
+            8.902434349060059,
+            -1.6727808713912964
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 11,
+          "reinjected_centroid": [
+            6.316014289855957,
+            32.307071685791016,
+            0.00264406087808311
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 19,
+          "reinjected_centroid": [
+            -28.094398498535156,
+            3.211488962173462,
+            -2.320631265640259
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 50,
+          "reinjected_centroid": [
+            -8.604634284973145,
+            -17.128625869750977,
+            -2.6552493572235107
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 16,
+          "reinjected_centroid": [
+            -9.429101943969727,
+            21.380990982055664,
+            -1.0073198080062866
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 24,
+          "reinjected_centroid": [
+            -23.261945724487305,
+            4.862663269042969,
+            -2.531618118286133
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224826m, y\u2248-2m)",
+          "isometric": "Cluster at x\u224826m, y\u2248-2m shows a floating box with no point cluster density or structural surface"
+        },
+        "evidence": [
+          "The bounding box at x\u224826m, y\u2248-2m contains no underlying point cluster in the isometric or BEV views.",
+          "The detector outputs a high-confidence box where there is no physical geometry detected by the LiDAR.",
+          "This is a classic 'ghost object' signature where the system hallucinates an obstacle due to injected or spoofed detection signals."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is insufficient to create a coherent bounding box without any point data.",
+          "Occlusion cannot explain a total lack of points in a region where LiDAR returns are otherwise dense."
+        ]
+      },
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224832m, y\u2248-6m)",
+          "isometric": "Floating box in empty space"
+        },
+        "evidence": [
+          "A bounding box is present in the BEV at x\u224832m, y\u2248-6m, but the isometric view confirms there is absolutely no point cloud data or physical structure inside that volume.",
+          "The complete absence of LiDAR returns makes this an unambiguous hallucination/ghosting attack."
+        ],
+        "alternatives_ruled_out": [
+          "Low reflectivity: While objects can have low reflectivity, they still produce some returns; total emptiness at this range indicates no physical object exists.",
+          "Sensor dropout: System is clearly receiving data in nearby areas, so a localized drop-out is unlikely to result in a positive detection."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:20.196781"
+}

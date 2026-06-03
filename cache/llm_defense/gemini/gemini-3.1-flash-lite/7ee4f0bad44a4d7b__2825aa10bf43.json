@@ -1,0 +1,202 @@
+{
+  "key": {
+    "frame_id": "7ee4f0bad44a4d7b",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3008,
+        -8.723,
+        28.772,
+        0.464,
+        1.634,
+        1.86,
+        4.547,
+        -1.7123
+      ],
+      [
+        "car",
+        0.3286,
+        -20.055,
+        13.27,
+        -0.791,
+        1.652,
+        1.94,
+        4.465,
+        0.0846
+      ],
+      [
+        "car",
+        0.3949,
+        -0.197,
+        -33.53,
+        -2.199,
+        1.68,
+        1.932,
+        4.454,
+        1.4161
+      ],
+      [
+        "car",
+        0.4279,
+        -3.849,
+        24.627,
+        0.269,
+        1.581,
+        1.855,
+        4.365,
+        1.3218
+      ],
+      [
+        "car",
+        0.4384,
+        6.317,
+        45.662,
+        1.453,
+        1.878,
+        1.962,
+        4.731,
+        1.4477
+      ],
+      [
+        "car",
+        0.4607,
+        -2.967,
+        -39.532,
+        -2.618,
+        1.78,
+        1.952,
+        4.709,
+        -1.5362
+      ],
+      [
+        "car",
+        0.7354,
+        -14.418,
+        12.99,
+        -0.677,
+        1.685,
+        1.981,
+        4.547,
+        0.123
+      ],
+      [
+        "car",
+        0.7444,
+        -6.506,
+        15.14,
+        -0.166,
+        1.635,
+        1.945,
+        4.62,
+        0.2192
+      ],
+      [
+        "car",
+        0.9064,
+        4.356,
+        13.484,
+        -0.335,
+        1.501,
+        1.82,
+        4.501,
+        1.6225
+      ],
+      [
+        "car",
+        0.9448,
+        -7.577,
+        -1.696,
+        -1.371,
+        1.56,
+        1.876,
+        4.648,
+        -1.5716
+      ],
+      [
+        "construction_vehicle",
+        0.3021,
+        41.976,
+        10.047,
+        0.262,
+        3.848,
+        7.381,
+        9.771,
+        -3.1255
+      ],
+      [
+        "pedestrian",
+        0.3214,
+        6.29,
+        -19.824,
+        -1.978,
+        1.758,
+        0.658,
+        0.634,
+        1.8379
+      ],
+      [
+        "pedestrian",
+        0.3602,
+        6.359,
+        -22.363,
+        -1.917,
+        1.825,
+        0.636,
+        0.679,
+        1.8553
+      ],
+      [
+        "pedestrian",
+        0.3631,
+        8.453,
+        18.817,
+        0.035,
+        1.781,
+        0.624,
+        0.633,
+        -2.7308
+      ],
+      [
+        "pedestrian",
+        0.4335,
+        7.38,
+        -19.043,
+        -1.791,
+        1.809,
+        0.627,
+        0.548,
+        2.8653
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "BENIGN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224814m, y\u22484m)",
+          "isometric": "Cluster appears to be part of a continuous structure (likely roadside infrastructure or wall) rather than a discrete vehicle object."
+        },
+        "evidence": [
+          "The bounding box at (x\u224814, y\u22484) encloses a linear arrangement of points that appears more consistent with static roadside geometry (like a wall or barrier) rather than the distinct shape of a car.",
+          "The isometric view confirms these points share a similar height profile with other long, continuous features in the environment, suggesting they are background structures rather than an adversarial spoof.",
+          "The absence of a camera feed makes it difficult to definitively confirm the object type, but the point pattern is typical of infrastructure that detectors sometimes misclassify."
+        ],
+        "alternatives_ruled_out": [
+          "The detected 'car' at (x\u224814, y\u22484) is likely a false positive misclassification of static roadside infrastructure (e.g., a wall or fence) due to its linear, non-compact point distribution, rather than an intentional ghost object attack.",
+          "Other bounding boxes in the scene correspond to distinct, clustered point groups that are consistent with natural objects or structures in the environment."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:43.395723"
+}

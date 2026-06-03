@@ -1,0 +1,242 @@
+{
+  "key": {
+    "frame_id": "116ff76c779d4f1a",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3395,
+        14.795,
+        -6.02,
+        -1.298,
+        0.992,
+        3.256,
+        0.571,
+        2.7789
+      ],
+      [
+        "bus",
+        0.5117,
+        -8.294,
+        33.184,
+        1.384,
+        3.523,
+        2.893,
+        11.32,
+        0.981
+      ],
+      [
+        "car",
+        0.3205,
+        -5.943,
+        -0.302,
+        -1.446,
+        1.555,
+        1.875,
+        4.474,
+        -1.6161
+      ],
+      [
+        "car",
+        0.3245,
+        6.364,
+        22.839,
+        0.561,
+        1.832,
+        2.053,
+        4.903,
+        2.5172
+      ],
+      [
+        "car",
+        0.8873,
+        -3.323,
+        0.5,
+        -1.199,
+        1.533,
+        1.894,
+        4.645,
+        1.6279
+      ],
+      [
+        "pedestrian",
+        0.3549,
+        -4.164,
+        9.213,
+        -0.675,
+        1.756,
+        0.638,
+        0.664,
+        0.9455
+      ],
+      [
+        "pedestrian",
+        0.3553,
+        -12.305,
+        8.794,
+        -0.759,
+        1.785,
+        0.635,
+        0.665,
+        -0.38
+      ],
+      [
+        "pedestrian",
+        0.3594,
+        -3.516,
+        7.338,
+        -0.667,
+        1.763,
+        0.667,
+        0.707,
+        1.1704
+      ],
+      [
+        "pedestrian",
+        0.3904,
+        -7.429,
+        9.196,
+        -0.66,
+        1.859,
+        0.695,
+        0.741,
+        1.4346
+      ],
+      [
+        "pedestrian",
+        0.4407,
+        -4.435,
+        7.999,
+        -0.778,
+        1.778,
+        0.635,
+        0.645,
+        0.5242
+      ],
+      [
+        "pedestrian",
+        0.4432,
+        -9.369,
+        9.368,
+        -0.803,
+        1.777,
+        0.652,
+        0.683,
+        1.746
+      ],
+      [
+        "trailer",
+        0.938,
+        -3.156,
+        -16.086,
+        -0.368,
+        4.233,
+        2.788,
+        15.235,
+        1.6211
+      ],
+      [
+        "truck",
+        0.4068,
+        6.286,
+        22.959,
+        0.455,
+        1.958,
+        2.202,
+        5.511,
+        2.9939
+      ],
+      [
+        "truck",
+        0.5794,
+        -0.124,
+        -8.019,
+        -1.058,
+        2.395,
+        2.141,
+        4.875,
+        1.5759
+      ],
+      [
+        "truck",
+        0.6673,
+        19.15,
+        16.535,
+        1.213,
+        3.391,
+        2.846,
+        8.135,
+        0.059
+      ],
+      [
+        "truck",
+        0.8973,
+        -3.411,
+        -7.799,
+        -0.326,
+        3.978,
+        2.642,
+        6.145,
+        1.6362
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.366727352142334,
+            0.7077909111976624,
+            -1.874043583869934
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 64,
+          "reinjected_centroid": [
+            6.020310878753662,
+            22.1895809173584,
+            -0.13761629164218903
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Region around (x\u22488m to 10m, y\u22483m to 7m)",
+          "isometric": "Multiple vertical pedestrian bounding boxes (z\u22480m to 1.5m) containing extremely sparse or no point clusters, floating near the road structure"
+        },
+        "evidence": [
+          "Multiple pedestrian detections (pedestrian 0.36, 0.44, 0.39, 0.35) are generated in a cluster around x\u22488-10m, y\u22483-7m with no substantial supporting 3D point clusters representing pedestrians.",
+          "The bounding boxes lack any corresponding physical structures or high-density 3D points representing human figures in the isometric view.",
+          "The camera image is completely missing/suppressed ('Camera image not available'), preventing visual cross-modal verification of these objects."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground clutter reflection",
+          "Pedestrians hidden behind occlusions"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:34.393810"
+}

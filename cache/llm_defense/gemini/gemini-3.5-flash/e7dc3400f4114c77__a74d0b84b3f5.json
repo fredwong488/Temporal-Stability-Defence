@@ -1,0 +1,235 @@
+{
+  "key": {
+    "frame_id": "e7dc3400f4114c77",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3074,
+        7.097,
+        -5.198,
+        -1.501,
+        1.085,
+        2.266,
+        0.61,
+        3.1099
+      ],
+      [
+        "barrier",
+        0.3084,
+        7.953,
+        2.758,
+        -1.256,
+        1.142,
+        1.912,
+        0.581,
+        3.0119
+      ],
+      [
+        "barrier",
+        0.3087,
+        8.716,
+        12.496,
+        -0.914,
+        1.159,
+        1.944,
+        0.642,
+        3.1068
+      ],
+      [
+        "barrier",
+        0.3152,
+        7.408,
+        -1.972,
+        -1.496,
+        1.089,
+        2.398,
+        0.675,
+        3.0152
+      ],
+      [
+        "barrier",
+        0.3195,
+        8.496,
+        9.19,
+        -1.004,
+        1.259,
+        1.895,
+        0.669,
+        3.0912
+      ],
+      [
+        "barrier",
+        0.3201,
+        8.165,
+        5.222,
+        -1.144,
+        1.236,
+        1.929,
+        0.695,
+        3.0205
+      ],
+      [
+        "barrier",
+        0.3205,
+        8.577,
+        10.781,
+        -0.948,
+        1.227,
+        1.911,
+        0.65,
+        3.1006
+      ],
+      [
+        "barrier",
+        0.3207,
+        10.062,
+        16.439,
+        -0.75,
+        1.052,
+        2.031,
+        0.529,
+        2.9631
+      ],
+      [
+        "barrier",
+        0.327,
+        10.023,
+        14.243,
+        -0.859,
+        1.072,
+        2.025,
+        0.593,
+        3.0681
+      ],
+      [
+        "barrier",
+        0.3472,
+        8.387,
+        7.652,
+        -1.068,
+        1.262,
+        1.943,
+        0.675,
+        3.0789
+      ],
+      [
+        "barrier",
+        0.35,
+        7.003,
+        -6.853,
+        -1.528,
+        1.147,
+        1.984,
+        0.623,
+        3.1306
+      ],
+      [
+        "barrier",
+        0.3602,
+        6.905,
+        -9.229,
+        -1.615,
+        1.088,
+        1.991,
+        0.596,
+        3.131
+      ],
+      [
+        "barrier",
+        0.3892,
+        7.717,
+        0.473,
+        -1.363,
+        1.126,
+        1.925,
+        0.64,
+        3.0247
+      ],
+      [
+        "car",
+        0.6161,
+        -1.829,
+        29.189,
+        0.088,
+        1.827,
+        1.924,
+        4.663,
+        1.7695
+      ],
+      [
+        "car",
+        0.7261,
+        6.993,
+        19.566,
+        -0.319,
+        1.612,
+        1.837,
+        4.477,
+        1.4563
+      ],
+      [
+        "traffic_cone",
+        0.4923,
+        6.857,
+        -10.906,
+        -1.688,
+        1.008,
+        0.49,
+        0.497,
+        2.8537
+      ],
+      [
+        "truck",
+        0.565,
+        9.244,
+        35.248,
+        0.663,
+        2.043,
+        2.184,
+        5.275,
+        1.3804
+      ],
+      [
+        "truck",
+        0.6004,
+        -4.613,
+        -4.699,
+        -0.494,
+        3.366,
+        3.008,
+        10.713,
+        1.5854
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224829m, y\u22482m)",
+          "isometric": "Bounding box for 'car 0.62' contains absolutely zero lidar points inside or immediately surrounding it, indicating a ghost object detection."
+        },
+        "evidence": [
+          "The bounding box predicted as 'car 0.62' at x\u224829m, y\u22482m is completely devoid of LiDAR returns in both the BEV and Isometric views.",
+          "There is no occlusion shadow behind the purported vehicle location, which would physically exist if an opaque car were present."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low reflectivity target",
+          "Occlusion by other objects"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:08.370142"
+}

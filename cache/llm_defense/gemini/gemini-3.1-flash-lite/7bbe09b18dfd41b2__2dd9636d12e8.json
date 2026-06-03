@@ -1,0 +1,202 @@
+{
+  "key": {
+    "frame_id": "7bbe09b18dfd41b2",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3602,
+        0.967,
+        44.581,
+        1.455,
+        1.792,
+        1.947,
+        4.625,
+        1.4746
+      ],
+      [
+        "car",
+        0.4899,
+        4.941,
+        40.092,
+        1.308,
+        1.776,
+        1.979,
+        4.703,
+        1.459
+      ],
+      [
+        "car",
+        0.5146,
+        -3.436,
+        18.688,
+        -0.235,
+        1.672,
+        1.922,
+        4.79,
+        1.3624
+      ],
+      [
+        "car",
+        0.6251,
+        0.966,
+        -19.422,
+        -2.077,
+        1.688,
+        1.923,
+        4.591,
+        1.6221
+      ],
+      [
+        "pedestrian",
+        0.3054,
+        -18.803,
+        19.498,
+        -0.282,
+        1.833,
+        0.643,
+        0.653,
+        -0.0617
+      ],
+      [
+        "pedestrian",
+        0.3289,
+        9.49,
+        21.843,
+        0.16,
+        1.776,
+        0.672,
+        0.622,
+        -2.7218
+      ],
+      [
+        "pedestrian",
+        0.3332,
+        7.569,
+        12.965,
+        -0.4,
+        1.79,
+        0.659,
+        0.681,
+        1.8375
+      ],
+      [
+        "pedestrian",
+        0.3332,
+        10.909,
+        25.957,
+        0.647,
+        1.791,
+        0.643,
+        0.62,
+        -2.5513
+      ],
+      [
+        "pedestrian",
+        0.3399,
+        10.628,
+        23.015,
+        0.14,
+        1.726,
+        0.625,
+        0.613,
+        -2.8485
+      ],
+      [
+        "pedestrian",
+        0.3444,
+        8.379,
+        18.607,
+        -0.174,
+        1.742,
+        0.67,
+        0.703,
+        1.3816
+      ],
+      [
+        "pedestrian",
+        0.3448,
+        8.768,
+        15.837,
+        -0.244,
+        1.713,
+        0.619,
+        0.605,
+        2.2148
+      ],
+      [
+        "pedestrian",
+        0.381,
+        6.054,
+        0.913,
+        -0.842,
+        1.778,
+        0.673,
+        0.746,
+        1.019
+      ],
+      [
+        "pedestrian",
+        0.4035,
+        6.757,
+        -12.004,
+        -1.272,
+        1.758,
+        0.645,
+        0.655,
+        -1.9673
+      ],
+      [
+        "pedestrian",
+        0.4122,
+        9.354,
+        17.645,
+        -0.107,
+        1.803,
+        0.67,
+        0.641,
+        2.441
+      ],
+      [
+        "pedestrian",
+        0.4571,
+        8.404,
+        21.422,
+        0.117,
+        1.803,
+        0.67,
+        0.645,
+        0.8102
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m to 30m, y\u2248-8m)",
+          "isometric": "Several boxes placed at regular intervals along the right edge of the scene where no significant point clusters exist"
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes labeled as 'pedestrian' are placed along the periphery (right side, x\u224815-30m) where there are no corresponding high-density point clusters in the isometric view.",
+          "The bounding boxes in the isometric view are floating in empty space, lacking any structural support or geometric signature consistent with a pedestrian (i.e., no vertical point distribution).",
+          "The lack of underlying point clusters or surface structure strongly suggests these are hallucinated or injected detections rather than sensor noise from real objects."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (these are structured, labeled box outputs for non-existent objects).",
+          "Distant, low-reflectivity objects (the isometric view shows clear emptiness in those regions)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:42.262760"
+}

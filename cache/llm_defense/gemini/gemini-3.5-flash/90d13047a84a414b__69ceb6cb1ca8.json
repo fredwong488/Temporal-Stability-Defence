@@ -1,0 +1,233 @@
+{
+  "key": {
+    "frame_id": "90d13047a84a414b",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.5537,
+        4.792,
+        -2.718,
+        -0.569,
+        3.307,
+        2.916,
+        9.151,
+        1.5855
+      ],
+      [
+        "bus",
+        0.9515,
+        4.88,
+        6.362,
+        0.062,
+        3.442,
+        2.963,
+        8.844,
+        1.5929
+      ],
+      [
+        "car",
+        0.3386,
+        -19.676,
+        24.662,
+        1.014,
+        1.742,
+        1.968,
+        4.597,
+        -0.6381
+      ],
+      [
+        "car",
+        0.3704,
+        -21.158,
+        22.148,
+        0.747,
+        1.671,
+        1.962,
+        4.584,
+        -0.572
+      ],
+      [
+        "car",
+        0.3716,
+        -7.576,
+        -43.286,
+        -2.904,
+        1.686,
+        1.897,
+        4.561,
+        -1.7076
+      ],
+      [
+        "car",
+        0.4161,
+        -22.311,
+        19.04,
+        0.43,
+        1.721,
+        1.971,
+        4.598,
+        -0.5982
+      ],
+      [
+        "car",
+        0.4169,
+        -6.117,
+        -37.231,
+        -3.133,
+        1.591,
+        1.886,
+        4.481,
+        1.4283
+      ],
+      [
+        "car",
+        0.4479,
+        -6.329,
+        -27.873,
+        -2.164,
+        1.821,
+        1.971,
+        4.81,
+        -1.5924
+      ],
+      [
+        "construction_vehicle",
+        0.6649,
+        -5.417,
+        9.757,
+        -0.312,
+        2.405,
+        2.64,
+        7.509,
+        -1.6141
+      ],
+      [
+        "construction_vehicle",
+        0.9429,
+        -12.0,
+        3.308,
+        -0.38,
+        2.756,
+        2.535,
+        7.985,
+        -3.1153
+      ],
+      [
+        "traffic_cone",
+        0.3025,
+        -9.372,
+        -4.617,
+        -1.445,
+        0.807,
+        0.366,
+        0.372,
+        -3.1204
+      ],
+      [
+        "traffic_cone",
+        0.3248,
+        -7.862,
+        1.716,
+        -1.152,
+        0.777,
+        0.372,
+        0.386,
+        -1.3516
+      ],
+      [
+        "traffic_cone",
+        0.3851,
+        -9.816,
+        -4.599,
+        -1.401,
+        0.983,
+        0.368,
+        0.367,
+        -2.7402
+      ],
+      [
+        "traffic_cone",
+        0.3865,
+        -7.787,
+        -4.584,
+        -1.436,
+        0.927,
+        0.365,
+        0.379,
+        1.5761
+      ],
+      [
+        "traffic_cone",
+        0.4006,
+        -5.874,
+        4.996,
+        -1.122,
+        0.982,
+        0.444,
+        0.447,
+        0.2257
+      ],
+      [
+        "traffic_cone",
+        0.4621,
+        -3.396,
+        14.311,
+        -0.826,
+        0.831,
+        0.4,
+        0.402,
+        -2.0763
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            -6.3100152015686035,
+            -26.203598022460938,
+            -2.754365921020508
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Entire camera frame (feed is unavailable/blacked out, labeled as [ATTACKED])",
+          "bev": "Region around (x\u22485m to 12m, y\u22483m to 7m)",
+          "isometric": "Three bounding boxes floating in mid-air (z\u22483m to 5m) with no supporting physical point clusters or ground contact"
+        },
+        "evidence": [
+          "The camera image is completely unavailable and explicitly marked as [ATTACKED] in the header.",
+          "In the isometric view, multiple 3D bounding boxes are floating high in the air (z \u2248 3m to 5m) completely empty of points or enclosing only highly sparse, non-representative noise.",
+          "The physical layout lacks any coherent L-shape or volumetric point cluster structure that would justify these 'construction_vehicle' or other high-elevation detections."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Real elevated infrastructure (e.g., overpasses, trees) because the boxes are completely empty and do not contain or align with any physical points"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:18:38.469698"
+}

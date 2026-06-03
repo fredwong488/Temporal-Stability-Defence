@@ -1,0 +1,425 @@
+{
+  "key": {
+    "frame_id": "1b9da358a570452b",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bicycle",
+        0.3202,
+        11.632,
+        -8.39,
+        -0.369,
+        1.427,
+        0.619,
+        1.711,
+        -1.6908
+      ],
+      [
+        "bus",
+        0.3295,
+        -28.889,
+        50.375,
+        3.798,
+        3.805,
+        2.856,
+        12.369,
+        2.5111
+      ],
+      [
+        "bus",
+        0.3832,
+        7.906,
+        -28.277,
+        -1.708,
+        3.482,
+        2.844,
+        11.502,
+        -1.6306
+      ],
+      [
+        "bus",
+        0.5559,
+        5.087,
+        15.162,
+        0.597,
+        3.418,
+        3.029,
+        7.805,
+        1.6522
+      ],
+      [
+        "bus",
+        0.843,
+        4.768,
+        6.691,
+        -0.004,
+        3.407,
+        2.901,
+        10.839,
+        1.5148
+      ],
+      [
+        "car",
+        0.3044,
+        14.483,
+        1.783,
+        -1.165,
+        1.83,
+        2.028,
+        4.797,
+        -3.0015
+      ],
+      [
+        "car",
+        0.3045,
+        45.27,
+        -8.694,
+        -0.832,
+        1.774,
+        2.007,
+        4.54,
+        -0.0694
+      ],
+      [
+        "car",
+        0.3186,
+        14.862,
+        3.936,
+        -1.087,
+        1.616,
+        1.882,
+        4.512,
+        -3.0211
+      ],
+      [
+        "car",
+        0.3351,
+        8.053,
+        -47.81,
+        -3.213,
+        1.69,
+        1.963,
+        4.589,
+        -3.1095
+      ],
+      [
+        "car",
+        0.3367,
+        26.865,
+        0.44,
+        -1.503,
+        1.899,
+        2.048,
+        4.656,
+        3.1087
+      ],
+      [
+        "car",
+        0.3482,
+        15.18,
+        -0.543,
+        -1.286,
+        1.622,
+        1.837,
+        4.481,
+        0.0971
+      ],
+      [
+        "car",
+        0.3798,
+        -6.649,
+        -18.473,
+        -2.016,
+        1.832,
+        2.034,
+        5.002,
+        1.6102
+      ],
+      [
+        "car",
+        0.4127,
+        45.532,
+        -5.928,
+        -0.961,
+        1.763,
+        1.992,
+        4.558,
+        -0.0322
+      ],
+      [
+        "car",
+        0.4168,
+        28.558,
+        -11.013,
+        -1.587,
+        1.753,
+        2.02,
+        4.468,
+        3.1007
+      ],
+      [
+        "car",
+        0.438,
+        27.801,
+        -8.288,
+        -1.777,
+        1.719,
+        2.031,
+        4.551,
+        -3.1395
+      ],
+      [
+        "car",
+        0.4414,
+        -28.696,
+        18.171,
+        0.067,
+        1.559,
+        1.92,
+        4.531,
+        -1.0903
+      ],
+      [
+        "car",
+        0.4468,
+        28.305,
+        -2.761,
+        -1.507,
+        1.847,
+        1.992,
+        4.51,
+        0.1155
+      ],
+      [
+        "car",
+        0.4817,
+        16.81,
+        -17.269,
+        -1.885,
+        1.774,
+        2.044,
+        4.695,
+        3.1153
+      ],
+      [
+        "car",
+        0.5057,
+        16.361,
+        -14.702,
+        -1.847,
+        1.758,
+        2.036,
+        4.682,
+        -3.084
+      ],
+      [
+        "car",
+        0.5504,
+        -7.823,
+        -36.913,
+        -2.725,
+        1.844,
+        1.992,
+        4.819,
+        -1.4754
+      ],
+      [
+        "car",
+        0.6074,
+        16.655,
+        -6.4,
+        -1.735,
+        1.665,
+        1.973,
+        4.517,
+        -3.123
+      ],
+      [
+        "car",
+        0.6669,
+        15.952,
+        -11.85,
+        -1.813,
+        1.68,
+        1.97,
+        4.536,
+        -3.0524
+      ],
+      [
+        "car",
+        0.6791,
+        17.137,
+        -3.488,
+        -1.61,
+        1.822,
+        2.042,
+        4.581,
+        -3.0904
+      ],
+      [
+        "car",
+        0.7541,
+        16.172,
+        -9.109,
+        -1.651,
+        1.77,
+        2.071,
+        4.795,
+        -3.0558
+      ],
+      [
+        "construction_vehicle",
+        0.6999,
+        -5.332,
+        18.625,
+        -0.028,
+        2.378,
+        2.702,
+        7.472,
+        -1.6179
+      ],
+      [
+        "construction_vehicle",
+        0.962,
+        -11.385,
+        12.111,
+        0.02,
+        2.006,
+        2.442,
+        7.568,
+        3.1032
+      ],
+      [
+        "truck",
+        0.3309,
+        14.901,
+        1.805,
+        -1.291,
+        1.937,
+        2.129,
+        5.621,
+        -2.9949
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 69,
+          "reinjected_centroid": [
+            15.770994186401367,
+            -3.2595055103302,
+            -1.8361653089523315
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 95,
+          "reinjected_centroid": [
+            -6.173791408538818,
+            -17.03443145751953,
+            -2.201714038848877
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 28,
+          "reinjected_centroid": [
+            14.150270462036133,
+            -11.825356483459473,
+            -2.263976812362671
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 31,
+          "reinjected_centroid": [
+            14.747458457946777,
+            -14.382891654968262,
+            -2.0777947902679443
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 9,
+          "reinjected_centroid": [
+            -8.037668228149414,
+            -34.98401641845703,
+            -2.7927372455596924
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 67,
+          "reinjected_centroid": [
+            15.533117294311523,
+            -6.233315944671631,
+            -1.9340670108795166
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 23,
+          "reinjected_centroid": [
+            15.188777923583984,
+            -16.884523391723633,
+            -2.3104376792907715
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 23,
+          "reinjected_centroid": [
+            15.400482177734375,
+            -19.368127822875977,
+            -2.3249096870422363
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 66,
+          "reinjected_centroid": [
+            15.001141548156738,
+            -8.82211685180664,
+            -1.8639776706695557
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Region spanning x from -5m to 30m, y from -4m to -8m",
+          "isometric": "Numerous stacked, empty 3D bounding boxes printed in grid-like patterns at the bottom region (negative y, y < -6m) with absolutely no matching point cloud clusters."
+        },
+        "evidence": [
+          "In the isometric view, there are dozens of duplicated and empty cuboid detections (resembling a grid of boxes) at the bottom-right (y < -6m) where there are no LiDAR points present.",
+          "The BEV view shows overlapping and disjointed detections (such as multiple overlapping bus predictions) attempting to fit a single real cluster, alongside spurious predictions extending off-screen."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Class duplication due to NMS failure"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:18:16.730785"
+}

@@ -1,0 +1,208 @@
+{
+  "key": {
+    "frame_id": "38f2e770d37b48d1",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3331,
+        14.767,
+        -5.989,
+        -1.23,
+        0.962,
+        3.173,
+        0.541,
+        2.7473
+      ],
+      [
+        "bicycle",
+        0.4189,
+        2.8,
+        8.29,
+        -0.58,
+        1.7,
+        0.73,
+        1.689,
+        0.1568
+      ],
+      [
+        "car",
+        0.3567,
+        -5.853,
+        0.269,
+        -1.344,
+        1.559,
+        1.878,
+        4.353,
+        1.5842
+      ],
+      [
+        "car",
+        0.4929,
+        21.828,
+        21.498,
+        1.187,
+        1.673,
+        1.969,
+        4.667,
+        -3.0077
+      ],
+      [
+        "car",
+        0.6951,
+        3.031,
+        21.21,
+        0.252,
+        1.615,
+        1.932,
+        4.537,
+        -0.0818
+      ],
+      [
+        "car",
+        0.8448,
+        -3.343,
+        0.475,
+        -1.167,
+        1.546,
+        1.898,
+        4.646,
+        1.609
+      ],
+      [
+        "motorcycle",
+        0.4631,
+        -1.193,
+        7.741,
+        -0.754,
+        1.6,
+        0.72,
+        1.948,
+        1.3799
+      ],
+      [
+        "pedestrian",
+        0.3144,
+        4.509,
+        6.516,
+        -0.558,
+        1.732,
+        0.691,
+        0.813,
+        0.8327
+      ],
+      [
+        "pedestrian",
+        0.3572,
+        -1.27,
+        7.027,
+        -0.734,
+        1.75,
+        0.686,
+        0.753,
+        2.3278
+      ],
+      [
+        "pedestrian",
+        0.3934,
+        -2.83,
+        8.314,
+        -0.753,
+        1.695,
+        0.672,
+        0.751,
+        1.9925
+      ],
+      [
+        "trailer",
+        0.9269,
+        -3.164,
+        -16.009,
+        -0.374,
+        4.286,
+        2.786,
+        15.043,
+        1.6262
+      ],
+      [
+        "truck",
+        0.5839,
+        -0.173,
+        -7.995,
+        -0.972,
+        2.531,
+        2.144,
+        4.794,
+        1.5533
+      ],
+      [
+        "truck",
+        0.881,
+        -3.41,
+        -7.785,
+        -0.358,
+        4.034,
+        2.658,
+        6.131,
+        1.6299
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.173497200012207,
+            0.7039229869842529,
+            -1.8313605785369873
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 74,
+          "reinjected_centroid": [
+            2.89622163772583,
+            20.576274871826172,
+            -0.1818636655807495
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "Not available",
+          "bev": "Region around (x\u22487m to 9m, y\u2248-5m to 4m)",
+          "isometric": "Several bounding boxes labeled as 'pedestrian' and 'bicycle' are placed in areas with zero underlying LiDAR point density."
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes ('pedestrian 0.39', 'pedestrian 0.36', 'bicycle 0.42', and 'pedestrian 0.31') exist in the mid-range of the BEV and isometric views without enveloping any corresponding point clusters.",
+          "There is a complete lack of 3D physical structure or ground-plane-supported points inside these predicted boxes."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Low-reflectivity objects (which would still show some physical returns at this close range of 7-9m)"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:11:39.099337"
+}

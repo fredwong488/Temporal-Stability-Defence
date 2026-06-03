@@ -1,0 +1,136 @@
+{
+  "key": {
+    "frame_id": "1933cd5908024738",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.471,
+        9.883,
+        -17.626,
+        -0.55,
+        3.549,
+        3.027,
+        11.958,
+        2.3932
+      ],
+      [
+        "car",
+        0.3249,
+        27.896,
+        36.538,
+        0.396,
+        1.619,
+        1.886,
+        4.361,
+        -1.6972
+      ],
+      [
+        "car",
+        0.3321,
+        21.074,
+        4.358,
+        -0.826,
+        1.684,
+        2.009,
+        4.589,
+        -2.5654
+      ],
+      [
+        "car",
+        0.3369,
+        12.632,
+        -5.488,
+        -0.937,
+        1.733,
+        1.942,
+        4.524,
+        1.783
+      ],
+      [
+        "car",
+        0.3473,
+        34.347,
+        19.871,
+        -0.455,
+        1.643,
+        1.916,
+        4.469,
+        -2.5332
+      ],
+      [
+        "car",
+        0.4122,
+        19.532,
+        6.324,
+        -0.776,
+        1.562,
+        1.917,
+        4.253,
+        -2.5129
+      ],
+      [
+        "pedestrian",
+        0.315,
+        -7.94,
+        15.811,
+        -0.622,
+        1.733,
+        0.564,
+        0.592,
+        1.103
+      ],
+      [
+        "traffic_cone",
+        0.3252,
+        -7.909,
+        15.781,
+        -0.452,
+        1.26,
+        0.397,
+        0.405,
+        1.7594
+      ],
+      [
+        "truck",
+        0.5549,
+        10.633,
+        -0.679,
+        -0.29,
+        3.223,
+        2.586,
+        6.665,
+        0.662
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22487m)",
+          "isometric": "cluster appears as a tiny, isolated box at x\u224815m, y\u22487m, z\u22480m"
+        },
+        "evidence": [
+          "The detection labeled 'traffic_cone' at x\u224815m, y\u22487m corresponds to a very sparse set of LiDAR points that lack the substantial 3D geometric structure or point density expected for a physical obstacle.",
+          "The point cluster for this detection is extremely isolated and lacks environmental context (no nearby curb, island, or other infrastructure) that would explain a traffic cone's presence.",
+          "The lack of camera verification (due to unavailability) prevents confirming the existence of a real object, but the isolated, sparse LiDAR return is a classic signature of a ghost object injection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise or artifacts (this appears as a formal 'traffic_cone' detection bounding box).",
+          "Environmental objects (no road features or debris apparent in the vicinity in the LiDAR point cloud)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:07.889049"
+}

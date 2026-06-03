@@ -1,0 +1,169 @@
+{
+  "key": {
+    "frame_id": "50fea3e15c1045aa",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "bus",
+        0.5118,
+        9.479,
+        -17.75,
+        -0.862,
+        3.502,
+        3.002,
+        11.808,
+        2.3223
+      ],
+      [
+        "car",
+        0.3081,
+        12.725,
+        -4.277,
+        -0.868,
+        1.629,
+        1.878,
+        4.407,
+        0.7515
+      ],
+      [
+        "car",
+        0.3459,
+        34.817,
+        19.613,
+        -0.356,
+        1.697,
+        1.95,
+        4.696,
+        -2.5037
+      ],
+      [
+        "car",
+        0.3549,
+        15.819,
+        -8.369,
+        -0.785,
+        1.664,
+        1.904,
+        4.282,
+        0.4558
+      ],
+      [
+        "car",
+        0.3801,
+        14.431,
+        -6.236,
+        -0.781,
+        1.745,
+        1.95,
+        4.481,
+        0.6902
+      ],
+      [
+        "car",
+        0.3896,
+        26.295,
+        10.856,
+        -0.581,
+        1.657,
+        1.913,
+        4.377,
+        0.6015
+      ],
+      [
+        "car",
+        0.3912,
+        20.832,
+        4.339,
+        -0.836,
+        1.583,
+        1.923,
+        4.365,
+        -2.7136
+      ],
+      [
+        "car",
+        0.52,
+        19.622,
+        6.174,
+        -0.773,
+        1.559,
+        1.91,
+        4.225,
+        -2.616
+      ],
+      [
+        "motorcycle",
+        0.3688,
+        0.39,
+        15.991,
+        -0.704,
+        1.574,
+        0.771,
+        2.121,
+        1.5316
+      ],
+      [
+        "pedestrian",
+        0.3012,
+        11.674,
+        26.183,
+        -0.02,
+        1.806,
+        0.62,
+        0.648,
+        -2.2696
+      ],
+      [
+        "pedestrian",
+        0.3636,
+        7.664,
+        22.402,
+        0.141,
+        1.914,
+        0.613,
+        0.646,
+        -1.9184
+      ],
+      [
+        "truck",
+        0.5734,
+        10.517,
+        -0.712,
+        -0.228,
+        3.338,
+        2.536,
+        6.656,
+        0.6532
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224815m, y\u22480m)",
+          "isometric": "Cluster appears at x\u224815m with no dense, contiguous point cloud structure indicative of a motorcycle."
+        },
+        "evidence": [
+          "The 'motorcycle' detection at x=15m, y=0m has no supporting cluster of points in the isometric view.",
+          "There is no discernible point density or structural shape (e.g., wheels, frame) associated with the bounding box in the isometric view.",
+          "The BEV view shows a completely empty region where the 'motorcycle' is predicted."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is unlikely to manifest as a coherent, localized bounding box detection in a typical perception pipeline.",
+          "The absence of points is not consistent with a genuine object that should be detected, implying a spoofed label without physical evidence."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:33:07.233903"
+}

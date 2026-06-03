@@ -1,0 +1,224 @@
+{
+  "key": {
+    "frame_id": "e9a44075c5b34431",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3054,
+        -8.464,
+        32.002,
+        0.583,
+        1.668,
+        1.889,
+        4.553,
+        -1.5228
+      ],
+      [
+        "car",
+        0.3254,
+        1.818,
+        46.487,
+        1.732,
+        1.835,
+        1.959,
+        4.664,
+        1.473
+      ],
+      [
+        "car",
+        0.3793,
+        -7.701,
+        42.331,
+        1.375,
+        1.771,
+        1.91,
+        4.605,
+        1.5485
+      ],
+      [
+        "car",
+        0.3995,
+        -8.45,
+        36.121,
+        0.864,
+        1.729,
+        1.924,
+        4.68,
+        -1.5581
+      ],
+      [
+        "car",
+        0.4591,
+        6.289,
+        46.983,
+        1.799,
+        1.875,
+        1.977,
+        4.68,
+        1.4907
+      ],
+      [
+        "car",
+        0.4758,
+        0.115,
+        -33.152,
+        -2.262,
+        1.723,
+        1.946,
+        4.618,
+        -1.3846
+      ],
+      [
+        "car",
+        0.594,
+        -3.83,
+        25.963,
+        0.42,
+        1.6,
+        1.855,
+        4.492,
+        1.4005
+      ],
+      [
+        "car",
+        0.5981,
+        -3.095,
+        -35.843,
+        -2.419,
+        1.78,
+        1.988,
+        4.747,
+        -1.4313
+      ],
+      [
+        "car",
+        0.6049,
+        -6.725,
+        16.186,
+        -0.19,
+        1.649,
+        1.939,
+        4.468,
+        0.1405
+      ],
+      [
+        "car",
+        0.7548,
+        -14.37,
+        14.186,
+        -0.52,
+        1.613,
+        1.882,
+        4.585,
+        0.1497
+      ],
+      [
+        "car",
+        0.8369,
+        4.441,
+        14.713,
+        -0.281,
+        1.59,
+        1.867,
+        4.704,
+        -1.568
+      ],
+      [
+        "car",
+        0.9393,
+        -7.549,
+        -0.556,
+        -1.286,
+        1.58,
+        1.886,
+        4.619,
+        -1.5815
+      ],
+      [
+        "pedestrian",
+        0.3031,
+        6.263,
+        -15.945,
+        -1.682,
+        1.727,
+        0.636,
+        0.652,
+        -1.4333
+      ],
+      [
+        "pedestrian",
+        0.3431,
+        6.204,
+        -18.438,
+        -1.832,
+        1.757,
+        0.631,
+        0.627,
+        2.9387
+      ],
+      [
+        "pedestrian",
+        0.3743,
+        -8.383,
+        -21.914,
+        -2.156,
+        1.814,
+        0.648,
+        0.703,
+        -1.1055
+      ],
+      [
+        "pedestrian",
+        0.3891,
+        7.35,
+        -16.401,
+        -1.659,
+        1.787,
+        0.628,
+        0.631,
+        -2.3319
+      ],
+      [
+        "pedestrian",
+        0.4068,
+        7.785,
+        -13.38,
+        -1.443,
+        1.78,
+        0.667,
+        0.701,
+        -1.8026
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "UNCERTAIN",
+    "suspected_attacks": [
+      {
+        "attack_type": "UNCERTAIN",
+        "confidence": "LOW",
+        "affected_region": {
+          "camera": null,
+          "bev": "x \u2248 15m, y \u2248 -4.5m",
+          "isometric": "x \u2248 15m, y \u2248 -4.5m"
+        },
+        "evidence": [
+          "The bounding box 'car 0.84' appears to enclose a region with very sparse or disjointed point returns in the BEV view.",
+          "The isometric view shows a cluster of points associated with this box that lacks the typical 3D structural density or 'solid' geometry of a vehicle.",
+          "The inability to verify via the camera image prevents confirmation of whether this is a ghost object or simply a poorly detected, low-reflectivity, or partially occluded object."
+        ],
+        "alternatives_ruled_out": [
+          "While potential ghost object, it could also be a legitimate object with low LiDAR reflectivity or partial occlusion that causes sparse returns.",
+          "Sensor noise or calibration issues could account for the sparse point returns in this specific region."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:39.743829"
+}

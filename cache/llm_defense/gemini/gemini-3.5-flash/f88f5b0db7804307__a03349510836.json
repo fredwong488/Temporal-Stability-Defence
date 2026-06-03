@@ -1,0 +1,256 @@
+{
+  "key": {
+    "frame_id": "f88f5b0db7804307",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.3225,
+        13.463,
+        -9.317,
+        -1.617,
+        0.958,
+        3.161,
+        0.491,
+        2.7869
+      ],
+      [
+        "barrier",
+        0.3366,
+        14.801,
+        -5.972,
+        -1.306,
+        0.96,
+        3.192,
+        0.538,
+        2.8022
+      ],
+      [
+        "bus",
+        0.4149,
+        30.372,
+        16.617,
+        1.827,
+        3.435,
+        3.034,
+        12.135,
+        -0.0925
+      ],
+      [
+        "bus",
+        0.5782,
+        -5.73,
+        38.436,
+        2.021,
+        3.329,
+        3.018,
+        11.393,
+        1.1073
+      ],
+      [
+        "car",
+        0.323,
+        -26.82,
+        31.116,
+        -0.859,
+        1.669,
+        1.948,
+        4.569,
+        3.0805
+      ],
+      [
+        "car",
+        0.3269,
+        48.602,
+        22.112,
+        1.353,
+        1.872,
+        1.996,
+        4.929,
+        0.1575
+      ],
+      [
+        "car",
+        0.4758,
+        13.39,
+        19.854,
+        0.532,
+        1.571,
+        1.87,
+        4.559,
+        -0.0116
+      ],
+      [
+        "car",
+        0.8426,
+        -3.351,
+        0.444,
+        -1.17,
+        1.503,
+        1.838,
+        4.551,
+        1.6249
+      ],
+      [
+        "pedestrian",
+        0.3869,
+        -8.203,
+        9.23,
+        -0.571,
+        1.811,
+        0.647,
+        0.698,
+        1.3058
+      ],
+      [
+        "pedestrian",
+        0.4011,
+        -6.321,
+        9.086,
+        -0.553,
+        1.784,
+        0.705,
+        0.72,
+        1.5481
+      ],
+      [
+        "pedestrian",
+        0.4096,
+        -10.963,
+        8.68,
+        -0.722,
+        1.819,
+        0.659,
+        0.711,
+        1.7527
+      ],
+      [
+        "pedestrian",
+        0.4602,
+        -7.567,
+        7.492,
+        -0.616,
+        1.836,
+        0.7,
+        0.752,
+        0.9023
+      ],
+      [
+        "trailer",
+        0.3295,
+        30.803,
+        16.578,
+        1.48,
+        4.148,
+        3.025,
+        17.153,
+        -0.0657
+      ],
+      [
+        "trailer",
+        0.3539,
+        5.219,
+        41.334,
+        1.966,
+        3.678,
+        3.437,
+        6.217,
+        -1.5533
+      ],
+      [
+        "trailer",
+        0.9367,
+        -3.139,
+        -16.044,
+        -0.377,
+        4.212,
+        2.779,
+        15.214,
+        1.6291
+      ],
+      [
+        "truck",
+        0.4563,
+        -2.559,
+        20.646,
+        0.217,
+        1.875,
+        2.078,
+        5.492,
+        -0.0628
+      ],
+      [
+        "truck",
+        0.6029,
+        -0.094,
+        -8.089,
+        -1.069,
+        2.464,
+        2.183,
+        4.842,
+        1.6105
+      ],
+      [
+        "truck",
+        0.8912,
+        -3.413,
+        -7.782,
+        -0.313,
+        4.004,
+        2.624,
+        6.041,
+        1.6308
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.239135265350342,
+            0.6676092743873596,
+            -1.7540504932403564
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224821m, y\u22483m)",
+          "isometric": "Multiple floating boxes in mid-air (e.g., at x\u224821m, y\u22483m, z\u22482m and others at high elevation) with extremely sparse or non-existent underlying point clusters."
+        },
+        "evidence": [
+          "In the isometric view, there are several predicted bounding boxes (including 'truck 0.46' at x\u224821m) that float high above the ground plane (z > 1m) without any supporting physical structures or substantial LiDAR point clusters.",
+          "The bounding boxes in BEV do not correspond to any typical vehicle structures, and there is an absence of physical L-shapes or dense clusters representing real vehicles.",
+          "There are no corresponding physical shadows/occlusion patterns behind these floating boxes, which violates basic LiDAR physical invariants."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Ground reflections",
+          "Distant real vehicles",
+          "Low-reflectivity surfaces"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:05:46.125989"
+}

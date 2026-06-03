@@ -1,0 +1,200 @@
+{
+  "key": {
+    "frame_id": "ea288be4b4f74fe4",
+    "sequence_id": "6f83169d067343658251f72e1dd17dbc",
+    "predictions": [
+      [
+        "barrier",
+        0.354,
+        14.821,
+        -5.903,
+        -1.279,
+        0.985,
+        3.243,
+        0.591,
+        2.8211
+      ],
+      [
+        "bicycle",
+        0.3155,
+        -0.185,
+        8.478,
+        -0.65,
+        1.761,
+        0.74,
+        1.636,
+        3.0973
+      ],
+      [
+        "car",
+        0.3188,
+        19.857,
+        20.671,
+        1.047,
+        1.664,
+        1.879,
+        4.418,
+        0.102
+      ],
+      [
+        "car",
+        0.8902,
+        -3.309,
+        0.498,
+        -1.214,
+        1.515,
+        1.873,
+        4.617,
+        1.6234
+      ],
+      [
+        "pedestrian",
+        0.3444,
+        -2.815,
+        8.936,
+        -0.472,
+        1.762,
+        0.666,
+        0.764,
+        -1.3255
+      ],
+      [
+        "pedestrian",
+        0.3705,
+        -0.226,
+        8.552,
+        -0.648,
+        1.738,
+        0.696,
+        0.849,
+        -2.8382
+      ],
+      [
+        "pedestrian",
+        0.3838,
+        -6.754,
+        8.119,
+        -0.517,
+        1.764,
+        0.677,
+        0.75,
+        1.3808
+      ],
+      [
+        "pedestrian",
+        0.4163,
+        1.3,
+        6.934,
+        -0.677,
+        1.776,
+        0.714,
+        0.815,
+        2.7943
+      ],
+      [
+        "pedestrian",
+        0.4332,
+        -4.367,
+        7.118,
+        -0.794,
+        1.725,
+        0.631,
+        0.653,
+        0.9505
+      ],
+      [
+        "pedestrian",
+        0.4859,
+        -4.604,
+        8.49,
+        -0.662,
+        1.765,
+        0.676,
+        0.701,
+        -0.2527
+      ],
+      [
+        "trailer",
+        0.9341,
+        -3.145,
+        -15.784,
+        -0.38,
+        4.19,
+        2.78,
+        14.525,
+        1.6292
+      ],
+      [
+        "truck",
+        0.6615,
+        -0.099,
+        -8.134,
+        -1.089,
+        2.471,
+        2.234,
+        4.94,
+        1.6084
+      ],
+      [
+        "truck",
+        0.8808,
+        -3.408,
+        -7.743,
+        -0.352,
+        3.972,
+        2.663,
+        6.338,
+        1.6271
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            -5.514341831207275,
+            0.7377207279205322,
+            -1.8768426179885864
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "unknown (camera image not available)",
+          "bev": "x \u2248 7m to 10m, y \u2248 -2m to 7m",
+          "isometric": "five cuboids labeled as pedestrians at z \u2248 -1m to 1m without corresponding 3D physical point clusters"
+        },
+        "evidence": [
+          "Multiple pedestrian detections (pedestrian 0.38, 0.49, 0.34, 0.37, 0.42) are placed in a semi-circular arc with no underlying dense 3D point clusters.",
+          "The bounding boxes envelop completely empty space or single sparse LiDAR returns that lack any vertical 3D structure characteristic of pedestrians.",
+          "There are no physical shadows (occlusion voids) cast behind these alleged pedestrian objects."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Low-reflectivity clothing",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:10:52.229672"
+}

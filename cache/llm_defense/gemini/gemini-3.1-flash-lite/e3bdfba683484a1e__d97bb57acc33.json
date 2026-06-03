@@ -1,0 +1,201 @@
+{
+  "key": {
+    "frame_id": "e3bdfba683484a1e",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.364,
+        -3.818,
+        40.129,
+        0.741,
+        1.658,
+        1.888,
+        4.476,
+        -1.6511
+      ],
+      [
+        "car",
+        0.3907,
+        22.533,
+        -5.922,
+        -1.116,
+        1.616,
+        1.961,
+        4.463,
+        -0.0701
+      ],
+      [
+        "car",
+        0.5006,
+        0.78,
+        -27.039,
+        -1.329,
+        1.686,
+        1.949,
+        4.517,
+        1.7441
+      ],
+      [
+        "car",
+        0.7884,
+        4.488,
+        27.311,
+        -0.071,
+        1.533,
+        1.82,
+        4.37,
+        1.6127
+      ],
+      [
+        "car",
+        0.8707,
+        -3.947,
+        -6.214,
+        -1.256,
+        1.604,
+        1.82,
+        4.486,
+        -1.5538
+      ],
+      [
+        "car",
+        0.8937,
+        -7.547,
+        11.972,
+        -0.674,
+        1.48,
+        1.87,
+        4.66,
+        -1.5729
+      ],
+      [
+        "pedestrian",
+        0.3115,
+        6.5,
+        -1.741,
+        -0.949,
+        1.781,
+        0.664,
+        0.725,
+        -1.3163
+      ],
+      [
+        "pedestrian",
+        0.3293,
+        8.42,
+        -1.675,
+        -1.05,
+        1.745,
+        0.616,
+        0.574,
+        -2.9138
+      ],
+      [
+        "pedestrian",
+        0.3365,
+        -12.32,
+        18.988,
+        -0.122,
+        1.763,
+        0.641,
+        0.655,
+        0.0116
+      ],
+      [
+        "pedestrian",
+        0.355,
+        7.42,
+        -2.334,
+        -0.997,
+        1.779,
+        0.638,
+        0.643,
+        2.4974
+      ],
+      [
+        "pedestrian",
+        0.3655,
+        6.521,
+        -4.169,
+        -1.138,
+        1.754,
+        0.649,
+        0.652,
+        2.1003
+      ],
+      [
+        "pedestrian",
+        0.3785,
+        -8.193,
+        -9.256,
+        -1.011,
+        1.81,
+        0.648,
+        0.72,
+        -1.4836
+      ],
+      [
+        "pedestrian",
+        0.3958,
+        6.853,
+        -7.166,
+        -1.147,
+        1.746,
+        0.658,
+        0.75,
+        1.4716
+      ],
+      [
+        "pedestrian",
+        0.4764,
+        6.691,
+        -14.866,
+        -1.17,
+        1.742,
+        0.629,
+        0.707,
+        2.9268
+      ],
+      [
+        "pedestrian",
+        0.5104,
+        7.493,
+        -3.535,
+        -1.055,
+        1.75,
+        0.627,
+        0.624,
+        2.6724
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u22480-6m, y\u2248-4 to -8m)",
+          "isometric": "Multiple small bounding boxes near the ego vehicle floating in space or lacking significant point cluster density"
+        },
+        "evidence": [
+          "Presence of multiple 'pedestrian' detections in the immediate vicinity (x=0-6m, y=-4 to -8m) without a clear, coherent point cluster structure consistent with human morphology.",
+          "The isometric view reveals these detection boxes are isolated, small, and lack the vertical extent or solid surface returns typical of pedestrians, suggesting injected LiDAR points.",
+          "The high concentration of small detections in such a localized area is a signature of LiDAR point injection spoofing attacks."
+        ],
+        "alternatives_ruled_out": [
+          "These clusters are too structured in terms of bounding box classification but lack the underlying point cloud geometry to be considered natural noise or reflections from small stationary objects like curbs or traffic cones."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:29:43.398011"
+}

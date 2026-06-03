@@ -1,0 +1,310 @@
+{
+  "key": {
+    "frame_id": "8a18e14a780d43c6",
+    "sequence_id": "325cef682f064c55a255f2625c533b75",
+    "predictions": [
+      [
+        "car",
+        0.309,
+        -0.085,
+        -14.29,
+        -0.655,
+        1.781,
+        1.929,
+        4.761,
+        2.383
+      ],
+      [
+        "car",
+        0.3131,
+        30.22,
+        6.821,
+        -0.451,
+        1.631,
+        1.938,
+        4.441,
+        3.0187
+      ],
+      [
+        "car",
+        0.3188,
+        11.849,
+        -16.234,
+        -0.256,
+        1.926,
+        2.109,
+        5.059,
+        2.3832
+      ],
+      [
+        "car",
+        0.3232,
+        20.65,
+        -1.838,
+        0.2,
+        1.93,
+        2.094,
+        4.873,
+        2.8217
+      ],
+      [
+        "car",
+        0.3244,
+        28.872,
+        -6.059,
+        0.233,
+        1.73,
+        1.953,
+        4.514,
+        -0.0353
+      ],
+      [
+        "car",
+        0.3292,
+        30.194,
+        3.456,
+        -0.098,
+        1.675,
+        1.95,
+        4.384,
+        3.0812
+      ],
+      [
+        "car",
+        0.3338,
+        -21.583,
+        -19.041,
+        -1.238,
+        1.684,
+        1.93,
+        4.392,
+        0.1392
+      ],
+      [
+        "car",
+        0.3564,
+        -5.237,
+        -19.604,
+        -0.799,
+        1.613,
+        1.921,
+        4.71,
+        2.3889
+      ],
+      [
+        "car",
+        0.377,
+        3.712,
+        -13.099,
+        -0.67,
+        1.904,
+        2.02,
+        4.944,
+        2.3557
+      ],
+      [
+        "car",
+        0.3891,
+        3.392,
+        19.249,
+        -0.256,
+        1.673,
+        1.917,
+        4.588,
+        -2.1572
+      ],
+      [
+        "car",
+        0.4087,
+        -5.967,
+        -32.218,
+        0.454,
+        1.55,
+        1.879,
+        4.423,
+        2.3525
+      ],
+      [
+        "car",
+        0.4163,
+        -8.71,
+        -33.434,
+        0.636,
+        1.643,
+        1.943,
+        4.598,
+        2.328
+      ],
+      [
+        "car",
+        0.4415,
+        -10.162,
+        -24.511,
+        -0.379,
+        1.587,
+        1.872,
+        4.41,
+        2.3563
+      ],
+      [
+        "car",
+        0.4828,
+        -13.388,
+        -28.345,
+        -0.28,
+        1.738,
+        1.916,
+        4.537,
+        2.2921
+      ],
+      [
+        "car",
+        0.5135,
+        5.264,
+        11.0,
+        -0.889,
+        1.586,
+        1.871,
+        4.409,
+        -2.5234
+      ],
+      [
+        "car",
+        0.6582,
+        21.439,
+        7.131,
+        -0.08,
+        1.768,
+        1.968,
+        4.724,
+        -0.1161
+      ],
+      [
+        "pedestrian",
+        0.3247,
+        -14.738,
+        -7.725,
+        -1.311,
+        1.794,
+        0.663,
+        0.719,
+        -2.1074
+      ],
+      [
+        "truck",
+        0.3146,
+        5.054,
+        -19.914,
+        -0.273,
+        1.969,
+        2.131,
+        5.45,
+        2.8022
+      ],
+      [
+        "truck",
+        0.6609,
+        10.25,
+        0.368,
+        -0.878,
+        2.006,
+        2.17,
+        5.846,
+        3.0997
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            4.6786932945251465,
+            10.151678085327148,
+            -1.3816826343536377
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 6,
+          "reinjected_centroid": [
+            31.424156188964844,
+            6.222209930419922,
+            -0.7117341160774231
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 28,
+          "reinjected_centroid": [
+            18.985897064208984,
+            -1.4376624822616577,
+            -0.1277455985546112
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 89,
+          "reinjected_centroid": [
+            11.230610847473145,
+            -15.100635528564453,
+            -0.42948442697525024
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 200,
+          "reinjected_centroid": [
+            3.7206881046295166,
+            -12.196704864501953,
+            -1.1656988859176636
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 36,
+          "reinjected_centroid": [
+            20.344831466674805,
+            6.836702346801758,
+            -0.2536594569683075
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224817m, y\u22480m)",
+          "isometric": "Small dense cluster at x\u224817m, y\u22480m with no support or structure"
+        },
+        "evidence": [
+          "A small, high-intensity cluster of LiDAR points exists at x\u224817m, y\u22480m with no discernable physical surface or L-shape structure indicative of a real vehicle.",
+          "The cluster is spatially isolated in the isometric view without any points on the ground plane beneath it, inconsistent with a legitimate stationary object.",
+          "The detection box 'car 0.39' is placed over this sparse, unsupported cluster, which is a classic signature of a LiDAR injection attack designed to trick detectors into seeing ghost objects."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise: The cluster density and specific location at mid-range are characteristic of malicious point injection rather than random atmospheric noise.",
+          "Reflections: No nearby surface exists to explain a multi-path reflection or 'ghosting' from a real object."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:40:12.932871"
+}

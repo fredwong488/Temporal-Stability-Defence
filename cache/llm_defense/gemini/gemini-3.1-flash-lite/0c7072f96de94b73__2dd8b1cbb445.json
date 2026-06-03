@@ -1,0 +1,213 @@
+{
+  "key": {
+    "frame_id": "0c7072f96de94b73",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.4458,
+        -5.458,
+        30.921,
+        1.309,
+        1.726,
+        1.985,
+        4.766,
+        -1.6994
+      ],
+      [
+        "car",
+        0.7129,
+        1.073,
+        -20.064,
+        -2.362,
+        1.64,
+        1.923,
+        4.57,
+        1.7047
+      ],
+      [
+        "car",
+        0.8241,
+        -4.116,
+        7.019,
+        -0.597,
+        1.763,
+        1.927,
+        4.592,
+        -1.5707
+      ],
+      [
+        "construction_vehicle",
+        0.3834,
+        -9.043,
+        -31.876,
+        -2.294,
+        2.263,
+        1.584,
+        3.654,
+        -1.5154
+      ],
+      [
+        "motorcycle",
+        0.4612,
+        13.418,
+        6.818,
+        0.271,
+        1.448,
+        0.928,
+        2.156,
+        -2.9289
+      ],
+      [
+        "pedestrian",
+        0.3047,
+        -10.605,
+        -5.357,
+        -1.309,
+        1.8,
+        0.619,
+        0.757,
+        -1.949
+      ],
+      [
+        "pedestrian",
+        0.3223,
+        7.163,
+        -16.516,
+        -1.781,
+        1.757,
+        0.637,
+        0.668,
+        -1.9502
+      ],
+      [
+        "pedestrian",
+        0.3251,
+        7.009,
+        6.572,
+        -0.566,
+        1.762,
+        0.677,
+        0.739,
+        1.7268
+      ],
+      [
+        "pedestrian",
+        0.3366,
+        -20.592,
+        4.145,
+        -1.115,
+        1.775,
+        0.64,
+        0.645,
+        0.6684
+      ],
+      [
+        "pedestrian",
+        0.3436,
+        8.605,
+        16.044,
+        0.107,
+        1.789,
+        0.691,
+        0.698,
+        2.5874
+      ],
+      [
+        "pedestrian",
+        0.3517,
+        -18.922,
+        14.614,
+        0.02,
+        1.779,
+        0.67,
+        0.677,
+        1.9524
+      ],
+      [
+        "pedestrian",
+        0.439,
+        7.663,
+        15.612,
+        0.107,
+        1.785,
+        0.671,
+        0.699,
+        1.2858
+      ],
+      [
+        "pedestrian",
+        0.4549,
+        7.689,
+        12.52,
+        -0.159,
+        1.798,
+        0.713,
+        0.725,
+        -0.0808
+      ],
+      [
+        "pedestrian",
+        0.489,
+        9.045,
+        13.299,
+        0.009,
+        1.816,
+        0.718,
+        0.681,
+        2.6551
+      ],
+      [
+        "pedestrian",
+        0.5551,
+        8.468,
+        11.523,
+        -0.189,
+        1.783,
+        0.709,
+        0.744,
+        1.8438
+      ],
+      [
+        "truck",
+        0.326,
+        6.934,
+        39.083,
+        2.093,
+        3.496,
+        2.819,
+        8.483,
+        -3.1018
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "MEDIUM",
+        "affected_region": {
+          "camera": "null",
+          "bev": "(x\u22487, y\u22483)",
+          "isometric": "Cluster labeled 'car 0.82' is small and lacks the structural density/shape of a vehicle"
+        },
+        "evidence": [
+          "The cluster labeled 'car 0.82' at (x\u22487, y\u22483) consists of very few points and lacks the characteristic 'L-shape' or dense surface structure expected of a car in this view.",
+          "The cluster appears as a sparse, somewhat isolated collection of points that does not form a coherent 3D object, suggesting a potential ghost object injection.",
+          "Given the inability to verify with the camera, the structural weakness of the cluster in the isometric view strongly points to a ghost object rather than a valid vehicle detection."
+        ],
+        "alternatives_ruled_out": [
+          "Natural sensor noise (the box placement indicates a deliberate, albeit sparse, detection triggering on specific points).",
+          "Distant object occlusion (it is very close to the ego vehicle)."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:28:50.203239"
+}

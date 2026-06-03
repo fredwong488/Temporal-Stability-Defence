@@ -1,0 +1,236 @@
+{
+  "key": {
+    "frame_id": "8da24e64233f4230",
+    "sequence_id": "cc8c0bf57f984915a77078b10eb33198",
+    "predictions": [
+      [
+        "barrier",
+        0.3042,
+        7.371,
+        -3.522,
+        -1.489,
+        1.044,
+        2.629,
+        0.69,
+        3.0206
+      ],
+      [
+        "barrier",
+        0.3297,
+        8.365,
+        5.206,
+        -1.211,
+        1.217,
+        1.903,
+        0.643,
+        3.0379
+      ],
+      [
+        "barrier",
+        0.3312,
+        9.419,
+        3.672,
+        -1.281,
+        1.231,
+        2.027,
+        0.678,
+        3.0698
+      ],
+      [
+        "barrier",
+        0.3369,
+        8.595,
+        9.156,
+        -0.995,
+        1.196,
+        1.922,
+        0.647,
+        3.0917
+      ],
+      [
+        "barrier",
+        0.353,
+        8.464,
+        6.833,
+        -1.111,
+        1.155,
+        1.898,
+        0.638,
+        3.0848
+      ],
+      [
+        "barrier",
+        0.3624,
+        8.693,
+        10.96,
+        -0.993,
+        1.172,
+        1.965,
+        0.638,
+        3.1002
+      ],
+      [
+        "barrier",
+        0.3882,
+        6.889,
+        -10.811,
+        -1.6,
+        1.091,
+        1.952,
+        0.607,
+        -3.1245
+      ],
+      [
+        "barrier",
+        0.4171,
+        6.966,
+        -8.452,
+        -1.515,
+        1.131,
+        1.959,
+        0.6,
+        3.1415
+      ],
+      [
+        "car",
+        0.5531,
+        -1.957,
+        28.366,
+        0.023,
+        1.742,
+        1.919,
+        4.522,
+        1.7294
+      ],
+      [
+        "car",
+        0.6201,
+        7.158,
+        18.656,
+        -0.358,
+        1.628,
+        1.828,
+        4.421,
+        1.487
+      ],
+      [
+        "construction_vehicle",
+        0.3109,
+        1.037,
+        46.541,
+        1.288,
+        2.348,
+        2.088,
+        4.732,
+        1.4316
+      ],
+      [
+        "pedestrian",
+        0.3133,
+        -2.491,
+        -4.63,
+        -1.228,
+        1.861,
+        0.703,
+        0.748,
+        2.4024
+      ],
+      [
+        "pedestrian",
+        0.3145,
+        21.629,
+        18.849,
+        -0.403,
+        1.727,
+        0.572,
+        0.564,
+        -0.2018
+      ],
+      [
+        "pedestrian",
+        0.3352,
+        22.699,
+        18.124,
+        -0.38,
+        1.772,
+        0.577,
+        0.54,
+        2.7938
+      ],
+      [
+        "pedestrian",
+        0.3395,
+        25.896,
+        6.063,
+        -0.985,
+        1.787,
+        0.607,
+        0.625,
+        -1.9234
+      ],
+      [
+        "pedestrian",
+        0.3476,
+        22.194,
+        16.654,
+        -0.489,
+        1.749,
+        0.616,
+        0.601,
+        1.5518
+      ],
+      [
+        "truck",
+        0.5372,
+        9.491,
+        34.772,
+        0.437,
+        1.945,
+        1.983,
+        5.108,
+        1.3866
+      ],
+      [
+        "truck",
+        0.7777,
+        -4.594,
+        -6.373,
+        -0.417,
+        3.417,
+        2.988,
+        10.598,
+        1.5815
+      ]
+    ],
+    "is_attacked": false,
+    "attack_metadata": {},
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": "not applicable (camera image not available)",
+          "bev": "(x\u224828m, y\u22482m) and (x\u224818m, y\u2248-7m)",
+          "isometric": "Bounding boxes (e.g., labeled car 0.55 at x\u224828m, y\u22482m and car 0.62 at x\u224818m, y\u2248-7m) are completely empty, with car 0.55 additionally floating in mid-air with zero underlying or enclosing point cloud returns."
+        },
+        "evidence": [
+          "Multiple 3D bounding boxes (car 0.55, car 0.62) are predicted in regions with absolutely no LiDAR points.",
+          "The isometric view confirms that the box at x\u224828m, y\u22482m is elevated/floating in mid-air with no physical support or point returns.",
+          "There are no physical structures or occlusion shadows corresponding to these detected vehicles."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant low-reflectivity objects",
+          "Ground reflections"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-02T23:57:12.150714"
+}

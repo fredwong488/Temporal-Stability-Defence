@@ -1,0 +1,229 @@
+{
+  "key": {
+    "frame_id": "9529064d4bf04c51",
+    "sequence_id": "fcbccedd61424f1b85dcbf8f897f9754",
+    "predictions": [
+      [
+        "car",
+        0.3034,
+        15.774,
+        31.121,
+        0.79,
+        1.684,
+        1.933,
+        4.528,
+        -1.3363
+      ],
+      [
+        "car",
+        0.3178,
+        21.203,
+        12.277,
+        0.841,
+        1.784,
+        1.96,
+        4.561,
+        -1.5568
+      ],
+      [
+        "car",
+        0.3384,
+        12.437,
+        44.504,
+        1.684,
+        1.815,
+        2.051,
+        4.75,
+        3.0432
+      ],
+      [
+        "car",
+        0.4514,
+        -20.432,
+        -6.173,
+        -1.839,
+        1.72,
+        1.943,
+        4.517,
+        0.1712
+      ],
+      [
+        "car",
+        0.4519,
+        16.585,
+        12.077,
+        0.167,
+        1.65,
+        1.883,
+        4.403,
+        1.5985
+      ],
+      [
+        "car",
+        0.4936,
+        -8.828,
+        15.142,
+        -0.668,
+        1.65,
+        1.89,
+        4.72,
+        -1.6637
+      ],
+      [
+        "car",
+        0.5745,
+        -21.831,
+        -0.971,
+        -1.935,
+        1.615,
+        1.913,
+        4.519,
+        -2.9546
+      ],
+      [
+        "car",
+        0.6232,
+        12.469,
+        12.39,
+        -0.027,
+        1.629,
+        1.889,
+        4.5,
+        1.5675
+      ],
+      [
+        "car",
+        0.6316,
+        -0.436,
+        13.55,
+        -0.598,
+        1.633,
+        1.858,
+        4.436,
+        1.5641
+      ],
+      [
+        "car",
+        0.7225,
+        5.881,
+        26.648,
+        0.203,
+        1.579,
+        1.852,
+        4.534,
+        1.5074
+      ],
+      [
+        "car",
+        0.7824,
+        -9.183,
+        8.954,
+        -0.958,
+        1.523,
+        1.836,
+        4.562,
+        1.5905
+      ],
+      [
+        "car",
+        0.8162,
+        -7.731,
+        -20.74,
+        -2.069,
+        1.666,
+        1.91,
+        4.626,
+        -1.6063
+      ],
+      [
+        "car",
+        0.9121,
+        -6.095,
+        2.132,
+        -1.193,
+        1.479,
+        1.84,
+        4.576,
+        -2.1485
+      ],
+      [
+        "car",
+        0.9335,
+        4.244,
+        -5.388,
+        -1.262,
+        1.498,
+        1.875,
+        4.797,
+        1.5657
+      ],
+      [
+        "pedestrian",
+        0.3014,
+        8.751,
+        21.314,
+        0.108,
+        1.756,
+        0.677,
+        0.718,
+        2.3248
+      ],
+      [
+        "pedestrian",
+        0.3966,
+        8.369,
+        1.206,
+        -0.653,
+        1.748,
+        0.664,
+        0.722,
+        2.317
+      ],
+      [
+        "traffic_cone",
+        0.361,
+        -7.971,
+        22.937,
+        -0.486,
+        1.251,
+        0.388,
+        0.387,
+        2.6023
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "GhostObject",
+      "ghost_cloud_path": "eval_pipeline/attacks/ghost_object/traces/ghost_cloud_car.npy",
+      "n_injected": 279,
+      "n_occluded": 112
+    },
+    "backend": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224812m, y\u22480.5m)",
+          "isometric": "cluster appears as a small, isolated, and dense concentration of points with no underlying ground structure or physical surface continuity"
+        },
+        "evidence": [
+          "Presence of a high-confidence bounding box (car 0.63) around a small, isolated cluster of points.",
+          "The isometric view confirms the cluster lacks any vertical structure or physical volume consistent with a vehicle; it appears as a sparse 'floating' or disconnected artifact.",
+          "There is no evidence of an occluded 'shadow' behind the cluster, which is a physical invariant for real opaque objects."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise is ruled out by the concentration and the specific detector activation.",
+          "Standard object detection is ruled out by the lack of physical 3D volume in the isometric view."
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:31:14.760352"
+}

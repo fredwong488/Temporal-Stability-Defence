@@ -1,0 +1,306 @@
+{
+  "key": {
+    "frame_id": "0969b57089e84cff",
+    "sequence_id": "bebf5f5b2a674631ab5c88fd1aa9e87a",
+    "predictions": [
+      [
+        "bus",
+        0.916,
+        4.441,
+        -21.38,
+        -1.164,
+        3.569,
+        3.074,
+        12.448,
+        1.573
+      ],
+      [
+        "car",
+        0.3486,
+        16.847,
+        47.21,
+        0.482,
+        1.701,
+        1.962,
+        4.586,
+        3.1314
+      ],
+      [
+        "car",
+        0.3845,
+        15.811,
+        -15.047,
+        -1.964,
+        1.701,
+        1.964,
+        4.585,
+        3.129
+      ],
+      [
+        "car",
+        0.3876,
+        -24.556,
+        -2.321,
+        -0.763,
+        1.688,
+        1.942,
+        4.61,
+        2.6299
+      ],
+      [
+        "car",
+        0.4082,
+        -2.862,
+        24.777,
+        0.464,
+        1.763,
+        1.954,
+        4.814,
+        -1.6354
+      ],
+      [
+        "car",
+        0.5691,
+        15.614,
+        -18.005,
+        -1.945,
+        1.775,
+        2.004,
+        4.824,
+        2.9607
+      ],
+      [
+        "car",
+        0.6017,
+        16.555,
+        -11.836,
+        -1.906,
+        1.642,
+        1.926,
+        4.578,
+        -3.1353
+      ],
+      [
+        "car",
+        0.6639,
+        17.288,
+        -8.401,
+        -1.806,
+        1.772,
+        1.967,
+        4.7,
+        -0.0259
+      ],
+      [
+        "construction_vehicle",
+        0.9249,
+        -5.758,
+        -16.064,
+        -1.193,
+        2.426,
+        2.42,
+        7.036,
+        -1.6247
+      ],
+      [
+        "traffic_cone",
+        0.3004,
+        -5.892,
+        0.033,
+        -1.285,
+        0.715,
+        0.386,
+        0.405,
+        1.9476
+      ],
+      [
+        "traffic_cone",
+        0.3135,
+        -8.601,
+        -0.197,
+        -1.118,
+        0.89,
+        0.37,
+        0.391,
+        1.7787
+      ],
+      [
+        "traffic_cone",
+        0.3209,
+        -5.474,
+        24.012,
+        0.151,
+        1.224,
+        0.411,
+        0.42,
+        1.8025
+      ],
+      [
+        "traffic_cone",
+        0.3365,
+        -7.67,
+        0.058,
+        -1.235,
+        0.759,
+        0.361,
+        0.365,
+        1.8167
+      ],
+      [
+        "traffic_cone",
+        0.3434,
+        -4.105,
+        -2.44,
+        -1.49,
+        0.748,
+        0.389,
+        0.403,
+        1.5309
+      ],
+      [
+        "traffic_cone",
+        0.4867,
+        -3.693,
+        -6.685,
+        -1.64,
+        0.754,
+        0.373,
+        0.376,
+        1.6207
+      ],
+      [
+        "trailer",
+        0.3519,
+        -11.513,
+        16.415,
+        1.065,
+        3.527,
+        2.188,
+        2.583,
+        -1.3055
+      ],
+      [
+        "trailer",
+        0.5608,
+        -12.922,
+        -41.692,
+        1.743,
+        4.127,
+        2.871,
+        13.483,
+        1.567
+      ]
+    ],
+    "is_attacked": true,
+    "attack_metadata": {
+      "attack": "ORA",
+      "budget": 200,
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "removed_per_obj": [
+        {
+          "label_type": "car",
+          "n_removed": 30,
+          "reinjected_centroid": [
+            14.335073471069336,
+            -14.497414588928223,
+            -2.268371105194092
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 49,
+          "reinjected_centroid": [
+            16.731735229492188,
+            -11.23832893371582,
+            -2.3058078289031982
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 80,
+          "reinjected_centroid": [
+            15.915115356445312,
+            -7.9656243324279785,
+            -2.0300817489624023
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 22,
+          "reinjected_centroid": [
+            14.565722465515137,
+            -17.504201889038086,
+            -2.1634676456451416
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 142,
+          "reinjected_centroid": [
+            -21.080097198486328,
+            -0.7431108951568604,
+            -0.5591798424720764
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 25,
+          "reinjected_centroid": [
+            26.55466079711914,
+            -2.9029340744018555,
+            -2.0037636756896973
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 50,
+          "reinjected_centroid": [
+            -22.949939727783203,
+            -3.6434860229492188,
+            -1.1671329736709595
+          ]
+        },
+        {
+          "label_type": "car",
+          "n_removed": 26,
+          "reinjected_centroid": [
+            -28.271568298339844,
+            -15.698296546936035,
+            -1.0456111431121826
+          ]
+        }
+      ]
+    },
+    "backend": "gemini",
+    "model": "gemini-3.5-flash",
+    "prompt_hash": "a7bd0aa9f278"
+  },
+  "response": {
+    "verdict": "ATTACK_SUSPECTED",
+    "suspected_attacks": [
+      {
+        "attack_type": "GHOST_OBJECT",
+        "confidence": "HIGH",
+        "affected_region": {
+          "camera": null,
+          "bev": "(x\u224825m, y\u22483m)",
+          "isometric": "Bounding box for 'car' at x\u224825m, y\u22483m, z\u22481m is placed around a flat vertical segment of points representing a wall or fence, completely lacking the physical volume, width, or depth of a real vehicle."
+        },
+        "evidence": [
+          "A 'car' prediction with 41% confidence is generated at x\u224825m, y\u22483m.",
+          "The isometric view shows that the points inside this box form a flat, vertical line belonging to background infrastructure/wall, with no horizontal L-shape or interior volume typical of a vehicle.",
+          "There is no physical occlusion shadow behind the box that would correspond to a real car of that volume."
+        ],
+        "alternatives_ruled_out": [
+          "Sensor noise",
+          "Distant real object"
+        ]
+      }
+    ]
+  },
+  "ts": "2026-06-03T00:19:21.777892"
+}
