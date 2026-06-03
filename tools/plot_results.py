@@ -137,16 +137,23 @@ def _load_jsonl(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
             }
             rows_frame.append(frame_row)
 
-            # Collect spoofed-cluster centroids from attack_metadata (ORA only).
-            # Each entry has a "reinjected_centroid" [x, y, z] when n_removed > 0.
+            # Collect spoofed-cluster centroids from attack_metadata.
+            # ORA: nested in removed_per_obj with "reinjected_centroid".
+            # GhostObject: top-level "injected_centroid" + "n_injected".
             spoofed_centroids: list[tuple[float, float, float, int]] = []
             total_n_removed = 0
-            for obj in (d.get("attack_metadata") or {}).get("removed_per_obj") or []:
+            attack_meta = d.get("attack_metadata") or {}
+            for obj in attack_meta.get("removed_per_obj") or []:
                 rc = obj.get("reinjected_centroid")
                 nr = obj.get("n_removed") or 0
                 total_n_removed += nr
                 if rc and len(rc) == 3:
                     spoofed_centroids.append((float(rc[0]), float(rc[1]), float(rc[2]), int(nr)))
+            ic = attack_meta.get("injected_centroid")
+            ni = attack_meta.get("n_injected") or 0
+            if ic and len(ic) == 3:
+                total_n_removed += ni
+                spoofed_centroids.append((float(ic[0]), float(ic[1]), float(ic[2]), int(ni)))
             frame_row["total_n_removed"] = total_n_removed if total_n_removed else None
 
             for cd in meta.get("cluster_details") or []:

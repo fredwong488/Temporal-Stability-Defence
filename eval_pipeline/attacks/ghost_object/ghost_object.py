@@ -47,6 +47,7 @@ class GhostObjectAttack(BaseAttack):
         ghost_cloud_path: str | pathlib.Path = "eval_pipeline/attacks/ghost_object/traces/",
         ghost_cloud_file: str = "ghost_cloud_car.npy",
         noise_model: SpoofingNoiseModel | None = None,
+        debug: bool = False,
     ) -> None:
         path = pathlib.Path(ghost_cloud_path) / ghost_cloud_file
         if not path.exists():
@@ -62,6 +63,7 @@ class GhostObjectAttack(BaseAttack):
         self._ghost_pts = raw
         self._cloud_path = str(path)
         self.noise_model = noise_model
+        self.debug = debug
 
     @property
     def modality(self) -> str:
@@ -103,14 +105,19 @@ class GhostObjectAttack(BaseAttack):
         )
 
         new_lidar = np.concatenate([frame.lidar[~occluded], ghost], axis=0)
+        metadata: dict = {
+            "attack": "GhostObject",
+            "ghost_cloud_path": self._cloud_path,
+            "n_injected": len(ghost),
+            "n_occluded": int(occluded.sum()),
+            "injected_centroid": ghost[:, :3].mean(axis=0).tolist(),
+        }
+        if self.debug:
+            metadata["injected_xyz"] = ghost[:, :3].tolist()
+
         return frame.with_lidar(
             new_lidar,
             is_attacked=True,
             attacked_modalities=frozenset({"lidar"}),
-            attack_metadata={
-                "attack": "GhostObject",
-                "ghost_cloud_path": self._cloud_path,
-                "n_injected": len(ghost),
-                "n_occluded": int(occluded.sum()),
-            },
+            attack_metadata=metadata,
         )
