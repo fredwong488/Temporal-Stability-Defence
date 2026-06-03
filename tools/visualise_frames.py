@@ -778,6 +778,14 @@ def draw_radial_jitter_panel(
                     markersize=9, markeredgewidth=2, zorder=5)
             has_reinjected = True
 
+    # Ghost object injected centroid (top-level in attack_metadata)
+    ic = (attack_metadata or {}).get("injected_centroid")
+    if ic and len(ic) == 3:
+        rpx, rpy = _to_bev_pt(ic[0], ic[1], dataset_type)
+        ax.plot(rpx, rpy, "x", color="#f59e0b",
+                markersize=9, markeredgewidth=2, zorder=5)
+        has_reinjected = True
+
     # Axes styling
     x_pad = max(20.0, (roi_max[0] - roi_min[0]) * 0.5)
     y_pad = max(20.0, (roi_max[1] - roi_min[1]) * 0.5)
