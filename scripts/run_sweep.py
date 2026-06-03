@@ -171,13 +171,15 @@ def extract_defense_effectiveness_row(
     sweep_param: str,
     sweep_val: float | int,
 ) -> dict:
-    """Extract defense F1, precision and recall into a flat dict for the CSV."""
+    """Extract defense F1, precision, recall, TPR and FPR into a flat dict for the CSV."""
     de = summary.get("defense_effectiveness", {})
     return {
         sweep_param: sweep_val,
         "detection_f1": de.get("f1", float("nan")),
         "detection_precision": de.get("precision", float("nan")),
         "detection_recall": de.get("recall", float("nan")),
+        "tpr": de.get("tpr", float("nan")),
+        "fpr": de.get("fpr", float("nan")),
     }
 
 
@@ -248,10 +250,12 @@ def log_summary_metrics(
     if "detection_rate" or "defense_effectiveness" in metric_types:
         de = summary.get("defense_effectiveness", {})
         logging.info(
-            "  Detection  F1=%.3f  precision=%.3f  recall=%.3f",
+            "  Detection  F1=%.3f  precision=%.3f  recall=%.3f  TPR=%.3f  FPR=%.3f",
             de.get("f1", float("nan")),
             de.get("precision", float("nan")),
             de.get("recall", float("nan")),
+            de.get("tpr", float("nan")),
+            de.get("fpr", float("nan")),
         )
 
     if "clustering_quality" in metric_types:
@@ -275,11 +279,11 @@ def log_summary_metrics(
     if "llm_attack_type_accuracy" in metric_types:
         lata = summary.get("llm_attack_type_accuracy", {})
         logging.info(
-            "  LLM type accuracy  type_accuracy=%.3f  correct=%s/%s",
+            "  LLM type accuracy  type_accuracy=%.3f  correct=%s/%s  incorrect=%s",
             lata.get("type_accuracy", float("nan")),
             lata.get("n_correct_type", "?"),
-            lata.get("n_incorrect_type", "?"),
             lata.get("n_tp_detected", "?"),
+            lata.get("n_incorrect_type", "?"),
         )
 
 
@@ -917,7 +921,7 @@ def main() -> None:
 
     # Defense effectiveness → CSV
     if "detection_rate" or "defense_effectiveness" in args.metric_types and defense_effectiveness_rows:
-        fieldnames = [args.sweep_param, "detection_f1", "detection_precision", "detection_recall"]
+        fieldnames = [args.sweep_param, "detection_f1", "detection_precision", "detection_recall", "tpr", "fpr"]
         out_path = run_dir / f"sweep_{sweep_tag}_defense_effectiveness.csv"
         with open(out_path, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -932,6 +936,8 @@ def main() -> None:
                 f"{row['detection_f1']:.4f}",
                 f"{row['detection_precision']:.4f}",
                 f"{row['detection_recall']:.4f}",
+                f"{row['tpr']:.4f}",
+                f"{row['fpr']:.4f}",
             ]))
 
     # Clustering quality → CSV
