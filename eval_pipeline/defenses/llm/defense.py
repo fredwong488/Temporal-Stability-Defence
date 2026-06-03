@@ -18,6 +18,8 @@ import threading
 import time
 from collections import deque
 from typing import Literal
+import numpy as np
+import dataclasses
 
 
 class _RateLimiter:
@@ -77,6 +79,9 @@ class LLMDefense(BaseDefense):
         roi_forward: float = 50.0,
         roi_side: float = 20.0,
         roi_rear: float = 50.0,
+        ego_front: float = 2.0,
+        ego_rear: float = 2.0,
+        ego_side: float = 1.4,
         api_key_env: str | None = None,
         requests_per_minute: int | None = 200,
     ) -> None:
@@ -87,6 +92,9 @@ class LLMDefense(BaseDefense):
         self._render_dpi = render_dpi
         self._roi_min = (-roi_rear, -roi_side)
         self._roi_max = (roi_forward, roi_side)
+        self._ego_front = ego_front
+        self._ego_rear = ego_rear
+        self._ego_side = ego_side
 
         prompt_file = pathlib.Path(prompt_path)
         if not prompt_file.exists():
@@ -148,8 +156,17 @@ class LLMDefense(BaseDefense):
         if raw is None:
             if self._rate_limiter is not None:
                 self._rate_limiter.acquire()
+
+            render_frame = frame
+            if frame.lidar is not None and len(frame.lidar):
+                from eval_pipeline.defenses._multiframe_common import remove_ego_box
+                filtered = remove_ego_box(
+                    frame.lidar, self._ego_front, self._ego_rear, self._ego_side,
+                )
+                render_frame = dataclasses.replace(frame, lidar=filtered)
+
             images = render_three_views(
-                frame, predictions,
+                render_frame, predictions,
                 roi_min=self._roi_min,
                 roi_max=self._roi_max,
                 dpi=self._render_dpi,

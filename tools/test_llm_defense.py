@@ -239,6 +239,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--roi-forward", type=float, default=50.0, help="ROI forward extent in metres (default: 50.0)")
     p.add_argument("--roi-side", type=float, default=20.0, help="ROI lateral half-width in metres (default: 20.0)")
     p.add_argument("--roi-rear", type=float, default=50.0, help="ROI rear extent in metres (default: 50.0)")
+    p.add_argument("--ego-front", type=float, default=2.0, help="Ego-box forward extent in metres (default: 2.0)")
+    p.add_argument("--ego-rear", type=float, default=2.0, help="Ego-box rear extent in metres (default: 2.0)")
+    p.add_argument("--ego-side", type=float, default=1.4, help="Ego-box half-width in metres (default: 1.4)")
     p.add_argument("--render-dpi", type=int, default=150, help="DPI for rendered view images (default: 150)")
     return p.parse_args()
 
@@ -304,6 +307,9 @@ def main() -> None:
         roi_forward=args.roi_forward,
         roi_side=args.roi_side,
         roi_rear=args.roi_rear,
+        ego_front=args.ego_front,
+        ego_rear=args.ego_rear,
+        ego_side=args.ego_side,
         render_dpi=args.render_dpi,
     )
     print(f"Defense : {defense.name}")
@@ -317,7 +323,10 @@ def main() -> None:
         frame = attack.apply(clean_frame)
         predictions = detector.predict(frame) if detector is not None else []
         frame = frame.with_predictions(predictions)
-        views = render_three_views(frame, predictions=predictions, roi_min=roi_min, roi_max=roi_max, dpi=args.render_dpi)
+        from eval_pipeline.defenses._multiframe_common import remove_ego_box
+        import dataclasses
+        render_frame = dataclasses.replace(frame, lidar=remove_ego_box(frame.lidar, args.ego_front, args.ego_rear, args.ego_side))
+        views = render_three_views(render_frame, predictions=predictions, roi_min=roi_min, roi_max=roi_max, dpi=args.render_dpi)
         for view_name, png_bytes in views.items():
             png_path = out_dir / f"frame_{idx:02d}_{view_name}.png"
             png_path.write_bytes(png_bytes)

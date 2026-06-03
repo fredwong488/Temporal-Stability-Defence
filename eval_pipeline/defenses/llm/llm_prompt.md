@@ -9,7 +9,7 @@ paired sensory data from a single timestep of an autonomous vehicle:
 3. An **isometric 3D view of the LiDAR point cloud** with the predicted 3D
    bounding boxes drawn as oriented cuboids.
 
-The ego vehicle is at the origin of the LiDAR coordinate frame. 
+The ego vehicle is at the origin of the LiDAR coordinate frame, and hence there is a region near the origin with no points
 The axis convention for both lidar point cloud views is:
 - **+x: forward** (direction of travel)
 - **+y: left**
