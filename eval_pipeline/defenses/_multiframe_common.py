@@ -80,7 +80,15 @@ def patchwork_ground_segment(
         params.uprightness_thr = uprightness_thr
     params.verbose = False
 
-    ppp = pypatchworkpp.patchworkpp(params)
+    import os
+    with open(os.devnull, "w") as _devnull:
+        _old_fd = os.dup(1)
+        os.dup2(_devnull.fileno(), 1)
+        try:
+            ppp = pypatchworkpp.patchworkpp(params)
+        finally:
+            os.dup2(_old_fd, 1)
+            os.close(_old_fd)
     ppp.estimateGround(xyzw.astype(np.float32))
 
     ground_idx = np.asarray(ppp.getGroundIndices(), dtype=int)

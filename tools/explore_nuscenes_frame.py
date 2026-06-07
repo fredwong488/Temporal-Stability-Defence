@@ -61,6 +61,9 @@ def main():
     parser.add_argument("--patchworkpp", action="store_true",
                         help="Run Patchwork++ ground segmentation; colour ground grey, "
                              "non-ground by z (viridis)")
+    parser.add_argument("--sensor-height", type=float, default=-1.84,
+                        help="Sensor height above ground (m) passed to Patchwork++ "
+                             "(default: 1.84, NuScenes LIDAR_TOP)")
     args = parser.parse_args()
 
     from nuscenes.nuscenes import NuScenes
@@ -193,9 +196,26 @@ def main():
     if args.patchworkpp:
         import pypatchworkpp
         params = pypatchworkpp.Parameters()
+        params.sensor_height = args.sensor_height
         params.verbose = False
-        ppp = pypatchworkpp.patchworkpp(params)
-        ppp.estimateGround(pts[:, :4].astype(np.float32))
+        with open(os.devnull, "w") as _devnull:
+            _old_fd = os.dup(1)
+            os.dup2(_devnull.fileno(), 1)
+            try:
+                ppp = pypatchworkpp.patchworkpp(params)
+            finally:
+                os.dup2(_old_fd, 1)
+                os.close(_old_fd)
+        if args.ego:
+            # Apply only the rotation component of sensor→ego to level the
+            # point cloud without shifting the origin away from the sensor.
+            # Patchwork++ computes elevation angles relative to the origin,
+            # so the origin must remain at the sensor, not move to ground level.
+            xyz_level = (T_s2e[:3, :3] @ pts[:, :3].astype(np.float64).T).T.astype(np.float32)
+            patchwork_input = np.hstack([xyz_level, pts[:, 3:4].astype(np.float32)])
+        else:
+            patchwork_input = pts[:, :4].astype(np.float32)
+        ppp.estimateGround(patchwork_input)
         ground_idx    = np.asarray(ppp.getGroundIndices(),    dtype=int)
         nonground_idx = np.asarray(ppp.getNongroundIndices(), dtype=int)
         print(f"Patchwork++: {len(ground_idx):,} ground  |  {len(nonground_idx):,} non-ground")
