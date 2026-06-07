@@ -489,15 +489,16 @@ class RadialJitterDefense(BaseDefense):
         s2e = frame.nuscenes_sensor_to_ego.astype(np.float64)
 
         if self.ground_method == "patchwork":
-            # Level to ego frame for ground segmentation, but retain sensor-frame
-            # points: the cache and all downstream compensation use sensor-frame
-            # coordinates, so we only use the ego-frame array to call Patchwork++
-            # and then select surviving rows from the original sensor-frame array.
-            xyz_ego = (s2e[:3, :3] @ xyz.T + s2e[:3, 3:4]).T
+            # Apply only the rotation part of s2e to gravity-level the points
+            # (ground lies at z ≈ -sensor_height in this frame, matching the
+            # sensor_height parameter).  The full translation is not needed for
+            # ground segmentation and is not applied here.  Downstream caching
+            # and ego-compensation continue to use the original sensor-frame xyz.
+            xyz_leveled = (s2e[:3, :3] @ xyz.T).T
             intensity = frame.lidar[:, 3:4].astype(np.float64)
-            xyzw_ego = np.concatenate([xyz_ego, intensity], axis=1).astype(np.float32)
+            xyzw_leveled = np.concatenate([xyz_leveled, intensity], axis=1).astype(np.float32)
             _, nonground_idx = patchwork_ground_segment(
-                xyzw_ego,
+                xyzw_leveled,
                 self.patchwork_sensor_height,
                 self.patchwork_num_iter,
                 self.patchwork_uprightness_thr,

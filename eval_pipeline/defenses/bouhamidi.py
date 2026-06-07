@@ -184,8 +184,10 @@ class BouhamidiDefense(BaseDefense):
         xyz_sensor = frame.lidar[:, :3].astype(np.float64)
         intensity = frame.lidar[:, 3:4].astype(np.float64)
         s2e = frame.nuscenes_sensor_to_ego.astype(np.float64)
-        # Rotate + translate into ego (gravity-aligned, x-forward, y-left, z-up)
+        # Full ego transform for spherical coordinates and ROI (x-forward, y-left, z-up).
         xyz_ego = (s2e[:3, :3] @ xyz_sensor.T + s2e[:3, 3:4]).T  # (N, 3)
+        # Rotation-only levelling for Patchwork++ (ground at z ≈ -sensor_height).
+        xyz_leveled = (s2e[:3, :3] @ xyz_sensor.T).T  # (N, 3)
 
         # ------------------------------------------------------------------ #
         #  2.  Spherical coordinates + ROI mask                               #
@@ -223,12 +225,15 @@ class BouhamidiDefense(BaseDefense):
         theta_roi = theta[roi_mask]
         phi_roi = phi[roi_mask]
 
-        xyzw_roi = np.concatenate([xyz_roi, intensity_roi], axis=1).astype(np.float32)
+        # Pass rotation-levelled points to Patchwork++ (ground at z ≈ -sensor_height).
+        xyzw_leveled_roi = np.concatenate(
+            [xyz_leveled[roi_mask], intensity_roi], axis=1
+        ).astype(np.float32)
 
         # ------------------------------------------------------------------ #
         #  3.  Ground / non-ground segmentation (Patchwork++)                 #
         # ------------------------------------------------------------------ #
-        ground_idx, nonground_idx = self._ground_segment(xyzw_roi)
+        ground_idx, nonground_idx = self._ground_segment(xyzw_leveled_roi)
 
         # ------------------------------------------------------------------ #
         #  4.  Grid binning                                                   #
