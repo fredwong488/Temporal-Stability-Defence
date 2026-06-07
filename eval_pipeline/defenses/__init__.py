@@ -4,6 +4,7 @@ from .fsd import FSDDefense
 from .carlo import CARLODefense
 from .radial_jitter import RadialJitterDefense
 from .wasserstein_anisotropy import WassersteinAnisotropyDefense
+from .bouhamidi import BouhamidiDefense
 
 __all__ = [
     "VoidRegionDefense",
@@ -12,4 +13,5 @@ __all__ = [
     "CARLODefense",
     "RadialJitterDefense",
     "WassersteinAnisotropyDefense",
+    "BouhamidiDefense",
 ]
