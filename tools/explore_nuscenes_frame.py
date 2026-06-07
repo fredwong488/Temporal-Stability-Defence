@@ -7,6 +7,7 @@ front-camera image (shown in browser).  Useful for confirming axis conventions.
 Usage:
     pixi run python tools/explore_nuscenes_frame.py
     pixi run python tools/explore_nuscenes_frame.py --scene 1 --sample 2
+    pixi run python tools/explore_nuscenes_frame.py --patchworkpp
 """
 
 from __future__ import annotations
@@ -57,6 +58,9 @@ def main():
                         help="Downsample point cloud to this many points for speed")
     parser.add_argument("--ego", action="store_true",
                         help="Plot in ego-vehicle frame instead of LiDAR sensor frame")
+    parser.add_argument("--patchworkpp", action="store_true",
+                        help="Run Patchwork++ ground segmentation; colour ground grey, "
+                             "non-ground by z (viridis)")
     args = parser.parse_args()
 
     from nuscenes.nuscenes import NuScenes
@@ -186,20 +190,54 @@ def main():
 
     fig = go.Figure()
 
-    # Points coloured by z
-    fig.add_trace(
-        go.Scatter3d(
-            x=x, y=y, z=z,
-            mode="markers",
-            marker=dict(size=1, color=z, colorscale="Viridis",
-                        cmin=float(z.min()), cmax=float(z.max()),
-                        colorbar=dict(title="z (m)", thickness=12,
-                                      x=SCENE_X_END - 0.01, xanchor="right",
-                                      len=0.75)),
-            name="LiDAR",
-            hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra></extra>",
+    if args.patchworkpp:
+        import pypatchworkpp
+        params = pypatchworkpp.Parameters()
+        params.verbose = False
+        ppp = pypatchworkpp.patchworkpp(params)
+        ppp.estimateGround(pts[:, :4].astype(np.float32))
+        ground_idx    = np.asarray(ppp.getGroundIndices(),    dtype=int)
+        nonground_idx = np.asarray(ppp.getNongroundIndices(), dtype=int)
+        print(f"Patchwork++: {len(ground_idx):,} ground  |  {len(nonground_idx):,} non-ground")
+
+        fig.add_trace(
+            go.Scatter3d(
+                x=x[ground_idx], y=y[ground_idx], z=z[ground_idx],
+                mode="markers",
+                marker=dict(size=1, color="lightgray"),
+                name="ground",
+                hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra>ground</extra>",
+            )
         )
-    )
+        zng = z[nonground_idx]
+        fig.add_trace(
+            go.Scatter3d(
+                x=x[nonground_idx], y=y[nonground_idx], z=zng,
+                mode="markers",
+                marker=dict(size=1, color=zng, colorscale="Viridis",
+                            cmin=float(zng.min()), cmax=float(zng.max()),
+                            colorbar=dict(title="z (m)", thickness=12,
+                                          x=SCENE_X_END - 0.01, xanchor="right",
+                                          len=0.75)),
+                name="non-ground",
+                hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra>non-ground</extra>",
+            )
+        )
+    else:
+        # Points coloured by z
+        fig.add_trace(
+            go.Scatter3d(
+                x=x, y=y, z=z,
+                mode="markers",
+                marker=dict(size=1, color=z, colorscale="Viridis",
+                            cmin=float(z.min()), cmax=float(z.max()),
+                            colorbar=dict(title="z (m)", thickness=12,
+                                          x=SCENE_X_END - 0.01, xanchor="right",
+                                          len=0.75)),
+                name="LiDAR",
+                hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra></extra>",
+            )
+        )
 
     # GT annotation centroids
     if ann_xs:
