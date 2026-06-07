@@ -33,6 +33,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import dbm
 import json
 import logging
 import pathlib
@@ -351,8 +352,9 @@ def main() -> None:
     parser.add_argument("--results-dir", default=DEFAULT_RESULTS_DIR)
     parser.add_argument(
         "--precomputed-cache-dir", default=None, metavar="DIR",
-        help="Directory for the shared precomputed cache. Uses defense_sweep_shared.pkl "
-             "inside that directory. Defaults to run_dir/shared_cache.pkl if not set.",
+        help="Directory for the shared precomputed cache. Uses defense_sweep_shared "
+             "inside that directory (falling back to single_run). "
+             "Defaults to run_dir/shared_cache if not set.",
     )
     parser.add_argument("--notes", default=None)
     parser.add_argument("--writeable-cache", action="store_true", default=False,
@@ -366,11 +368,11 @@ def main() -> None:
     run_dir.mkdir(parents=True, exist_ok=True)
 
     if args.precomputed_cache_dir is not None:
-        _sweep_cache = pathlib.Path(args.precomputed_cache_dir) / "defense_sweep_shared.pkl"
-        _eval_cache = pathlib.Path(args.precomputed_cache_dir) / "single_run.pkl"
-        shared_cache_path = str(_sweep_cache if _sweep_cache.exists() else _eval_cache)
+        _sweep_cache = str(pathlib.Path(args.precomputed_cache_dir) / "defense_sweep_shared")
+        _eval_cache = str(pathlib.Path(args.precomputed_cache_dir) / "single_run")
+        shared_cache_path = _sweep_cache if dbm.whichdb(_sweep_cache) is not None else _eval_cache
     else:
-        shared_cache_path = str(run_dir / "shared_cache.pkl")
+        shared_cache_path = str(run_dir / "shared_cache")
 
     # Dataset params
     dataset_type = args.dataset
