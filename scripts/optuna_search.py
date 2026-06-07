@@ -165,6 +165,7 @@ def build_objective(
     min_unattacked_frames: int,
     min_attacked_frames: int,
     objective_mode: str,
+    read_only_cache: bool,
 ):
     def objective(trial: optuna.Trial):
         if objective_mode in ("defense_effectiveness", "pacts_effectiveness"):
@@ -200,6 +201,7 @@ def build_objective(
             pred_label_score_threshold=pred_label_score_threshold,
             min_unattacked_frames=min_unattacked_frames,
             min_attacked_frames=min_attacked_frames,
+            read_only_cache=read_only_cache,
         )
         summary = run_experiment(config, desc=f"trial {trial.number}")
 
@@ -353,6 +355,8 @@ def main() -> None:
              "inside that directory. Defaults to run_dir/shared_cache.pkl if not set.",
     )
     parser.add_argument("--notes", default=None)
+    parser.add_argument("--writeable-cache", action="store_true", default=False,
+                        help="Allow the shared cache to be written to during the run (default: read-only).")
 
     args = parser.parse_args()
 
@@ -525,6 +529,7 @@ def main() -> None:
         min_unattacked_frames=args.min_unattacked_frames,
         min_attacked_frames=args.min_attacked_frames,
         objective_mode=args.objective,
+        read_only_cache=not args.writeable_cache,
     )
 
     study.optimize(objective, n_trials=remaining, show_progress_bar=True)
