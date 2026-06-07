@@ -16,6 +16,8 @@ from .common import (
     compute_clustering_quality_metrics,
     compute_pacts_effectiveness,
     compute_llm_attack_type_accuracy,
+    _NUSCENES_IOU_THRESHOLDS,
+    compute_detection_rate,
 )
 
 from .kitti_metrics import (
@@ -38,6 +40,8 @@ __all__ = [
     "compute_clustering_quality_metrics",
     "compute_pacts_effectiveness",
     "compute_llm_attack_type_accuracy",
+    "_NUSCENES_IOU_THRESHOLDS",
+    "compute_detection_rate",
     # kitti
     "N_SAMPLE_PTS",
     "DIFFICULTIES",

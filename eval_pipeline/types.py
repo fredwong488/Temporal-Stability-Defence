@@ -201,6 +201,41 @@ class EvalResults:
             "map_degradation": degradation,
         }
 
+    def detection_rate(self, iou_thresholds: dict[str, float] | None = None) -> dict:
+        """Frame-level detection-rate drop: recall on clean vs attacked lidar.
+
+        Compares how many GT objects are detected before and after the attack,
+        micro-averaged across all attacked frames that carry GT labels.  Works
+        for any dataset (KITTI or NuScenes); NuScenes inter-sweeps with no
+        annotations are automatically excluded.
+
+        Parameters
+        ----------
+        iou_thresholds
+            Per-class 3D-IoU matching threshold.  Pass
+            ``_NUSCENES_IOU_THRESHOLDS`` for NuScenes or the KITTI
+            ``iou_thresholds`` dict from ``ExperimentConfig``.  Falls back to
+            0.5 for unrecognised classes.
+
+        Returns
+        -------
+        Dict with one entry per class plus ``"overall"``, each containing
+        ``detection_rate_clean``, ``detection_rate_attacked``, ``absolute_drop``,
+        ``relative_drop``, ``total_gt``, ``total_clean_tp``,
+        ``total_attacked_tp``, ``n_frames``.
+        Empty dict when no qualifying attacked frames exist.
+        """
+        from .metrics import compute_detection_rate
+
+        has_data = any(
+            r.is_attacked and r.attacked_predictions is not None and r.labels
+            for r in self.frame_results
+        )
+        if not has_data:
+            return {}
+
+        return compute_detection_rate(self.frame_results, iou_thresholds=iou_thresholds)
+
     def defense_effectiveness(self) -> dict:
         """Compute TPR, FPR, precision, recall, F1 for the defense.
 

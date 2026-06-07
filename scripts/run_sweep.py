@@ -183,6 +183,28 @@ def extract_defense_effectiveness_row(
     }
 
 
+def extract_detection_rate_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+    classes: list[str],
+) -> dict:
+    """Extract detection-rate drop into a flat dict for the CSV.
+
+    Columns: overall + per-class clean/attacked/absolute_drop/relative_drop.
+    """
+    dr = summary.get("detection_rate", {})
+    row: dict = {sweep_param: sweep_val}
+    for key in ["overall"] + classes:
+        entry = dr.get(key, {})
+        prefix = f"{key}_" if key != "overall" else ""
+        row[f"{prefix}detection_rate_clean"] = entry.get("detection_rate_clean", float("nan"))
+        row[f"{prefix}detection_rate_attacked"] = entry.get("detection_rate_attacked", float("nan"))
+        row[f"{prefix}absolute_drop"] = entry.get("absolute_drop", float("nan"))
+        row[f"{prefix}relative_drop"] = entry.get("relative_drop", float("nan"))
+    return row
+
+
 def extract_clustering_quality_row(
     summary: dict,
     sweep_param: str,
@@ -247,7 +269,17 @@ def log_summary_metrics(
             )
             logging.info("  %s AP  %s", cls, values)
 
-    if "detection_rate" or "defense_effectiveness" in metric_types:
+    if "detection_rate" in metric_types:
+        overall = summary.get("detection_rate", {}).get("overall", {})
+        logging.info(
+            "  DetRate  clean=%.3f  attacked=%.3f  abs_drop=%.3f  rel_drop=%.1f%%",
+            overall.get("detection_rate_clean", float("nan")),
+            overall.get("detection_rate_attacked", float("nan")),
+            overall.get("absolute_drop", float("nan")),
+            (overall.get("relative_drop", float("nan")) or 0.0) * 100,
+        )
+
+    if "defense_effectiveness" in metric_types:
         de = summary.get("defense_effectiveness", {})
         logging.info(
             "  Detection  F1=%.3f  precision=%.3f  recall=%.3f  TPR=%.3f  FPR=%.3f",
@@ -492,9 +524,10 @@ def main() -> None:
                         choices=sorted(VALID_METRIC_TYPES), metavar="METRIC",
                         help=(
                             "Metric types to compute: "
-                            "ap (Average Precision → CSV), "
-                            "pr (Precision-Recall curves → JSON), "
-                            "recall_iou (Recall vs IoU → JSON), "
+                            "ap (Average Precision → CSV, KITTI only), "
+                            "pr (Precision-Recall curves → JSON, KITTI only), "
+                            "recall_iou (Recall vs IoU → JSON, KITTI only), "
+                            "detection_rate (recall drop clean→attacked vs GT → CSV, all datasets), "
                             "defense_effectiveness (defense F1/precision/recall → CSV), "
                             "pacts_effectiveness (PACTS cluster-level F1/precision/recall → CSV)"
                         ))
@@ -679,6 +712,7 @@ def main() -> None:
     ap_rows: list[dict] = []
     pr_all: list[dict] = []
     recall_iou_all: list[dict] = []
+    detection_rate_rows: list[dict] = []
     defense_effectiveness_rows: list[dict] = []
     clustering_quality_rows: list[dict] = []
     pacts_effectiveness_rows: list[dict] = []
@@ -868,7 +902,12 @@ def main() -> None:
                 },
             })
 
-        if "detection_rate" or "defense_effectiveness" in args.metric_types:
+        if "detection_rate" in args.metric_types:
+            detection_rate_rows.append(
+                extract_detection_rate_row(summary, args.sweep_param, val, args.classes)
+            )
+
+        if "defense_effectiveness" in args.metric_types:
             defense_effectiveness_rows.append(extract_defense_effectiveness_row(summary, args.sweep_param, val))
 
         if "clustering_quality" in args.metric_types:
@@ -923,8 +962,33 @@ def main() -> None:
         logging.info("Recall-IoU curves written to %s", riou_path)
         print(f"\nRecall-IoU: {riou_path}")
 
+    # Detection rate → CSV
+    if "detection_rate" in args.metric_types and detection_rate_rows:
+        dr_fieldnames = [args.sweep_param]
+        for key in ["overall"] + args.classes:
+            prefix = f"{key}_" if key != "overall" else ""
+            dr_fieldnames += [
+                f"{prefix}detection_rate_clean",
+                f"{prefix}detection_rate_attacked",
+                f"{prefix}absolute_drop",
+                f"{prefix}relative_drop",
+            ]
+        out_path = run_dir / f"sweep_{sweep_tag}_detection_rate.csv"
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=dr_fieldnames)
+            writer.writeheader()
+            writer.writerows(detection_rate_rows)
+        logging.info("Detection rate CSV written to %s", out_path)
+        print(f"\nDetection rate: {out_path}")
+        print(",".join(dr_fieldnames))
+        for row in detection_rate_rows:
+            vals = [str(row[args.sweep_param])] + [
+                f"{row.get(col, float('nan')):.4f}" for col in dr_fieldnames[1:]
+            ]
+            print(",".join(vals))
+
     # Defense effectiveness → CSV
-    if "detection_rate" or "defense_effectiveness" in args.metric_types and defense_effectiveness_rows:
+    if "defense_effectiveness" in args.metric_types and defense_effectiveness_rows:
         fieldnames = [args.sweep_param, "detection_f1", "detection_precision", "detection_recall", "tpr", "fpr"]
         out_path = run_dir / f"sweep_{sweep_tag}_defense_effectiveness.csv"
         with open(out_path, "w", newline="") as f:

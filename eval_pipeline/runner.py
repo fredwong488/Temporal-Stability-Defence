@@ -267,6 +267,31 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:
                 for cls in classes
             }
 
+        if "detection_rate" in metric_types:
+            from .metrics import _NUSCENES_IOU_THRESHOLDS
+            iou_thr = (
+                _NUSCENES_IOU_THRESHOLDS
+                if config.dataset_type == "nuscenes"
+                else config.iou_thresholds
+            )
+            summary["detection_rate"] = eval_results.detection_rate(
+                iou_thresholds=iou_thr
+            )
+            if summary["detection_rate"]:
+                overall = summary["detection_rate"].get("overall", {})
+                logger.info(
+                    "Detection rate  clean=%.3f  attacked=%.3f  abs_drop=%.3f  rel_drop=%.1f%%",
+                    overall.get("detection_rate_clean", float("nan")),
+                    overall.get("detection_rate_attacked", float("nan")),
+                    overall.get("absolute_drop", float("nan")),
+                    overall.get("relative_drop", float("nan")) * 100,
+                )
+            else:
+                logger.info(
+                    "Detection-rate metric: no qualifying attacked frames with GT labels "
+                    "(check that the dataset has annotations and the attack is applied)."
+                )
+
     if config.defense_type:
         summary["defense_effectiveness"] = eval_results.defense_effectiveness()
         summary["clustering_quality"] = eval_results.clustering_quality()

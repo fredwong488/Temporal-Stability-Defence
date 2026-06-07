@@ -7,6 +7,7 @@ Includes:
   - 3D IoU via oriented BEV polygon intersection (compute_iou_3d)
   - Greedy per-frame detection matching (_match_frame)
   - Defense binary classification metrics (compute_defense_metrics)
+  - Frame-level detection-rate drop (compute_detection_rate)
 """
 
 from __future__ import annotations
@@ -469,3 +470,183 @@ def compute_llm_attack_type_accuracy(
         "n_incorrect_type": n_incorrect_type,
         "type_accuracy": type_accuracy,
     }
+
+
+# ---------------------------------------------------------------------------
+# Detection-rate drop (dataset-agnostic, designed for NuScenes)
+# ---------------------------------------------------------------------------
+
+# Per-class 3D-IoU thresholds matching the NuScenes detection task convention.
+# Vehicle-sized classes use 0.5, small objects use lighter thresholds so that
+# compute_iou_3d (BEV polygon × height overlap) is not excessively harsh.
+_NUSCENES_IOU_THRESHOLDS: dict[str, float] = {
+    "car": 0.5,
+    "truck": 0.5,
+    "bus": 0.5,
+    "trailer": 0.5,
+    "construction_vehicle": 0.5,
+    "motorcycle": 0.3,
+    "bicycle": 0.3,
+    "pedestrian": 0.25,
+    "traffic_cone": 0.25,
+    "barrier": 0.25,
+}
+
+
+def _detection_rate_one_class(
+    frame_results: list[FrameResult],
+    class_name: str,
+    iou_threshold: float,
+    score_threshold: float | None,
+) -> dict:
+    """Return detection-rate stats for a single class over all qualifying frames.
+
+    Qualifying frames: is_attacked=True, attacked_predictions is not None,
+    labels non-empty.
+
+    Returns dict with:
+      detection_rate_clean, detection_rate_attacked, absolute_drop,
+      relative_drop, total_gt, total_clean_tp, total_attacked_tp, n_frames.
+    """
+    total_gt = 0
+    total_clean_tp = 0
+    total_attacked_tp = 0
+    n_frames = 0
+
+    for fr in frame_results:
+        if not fr.is_attacked:
+            continue
+        if fr.attacked_predictions is None:
+            continue
+        if not fr.labels:
+            continue
+        if not any(lbl.type == class_name for lbl in fr.labels):
+            continue
+
+        n_frames += 1
+
+        _, n_gt_clean = _match_frame(
+            fr.clean_predictions, fr.labels, class_name, iou_threshold,
+            score_threshold=score_threshold,
+        )
+        clean_tps = sum(
+            1 for _, is_tp in _match_frame(
+                fr.clean_predictions, fr.labels, class_name, iou_threshold,
+                score_threshold=score_threshold,
+            )[0]
+            if is_tp
+        )
+
+        _, n_gt_att = _match_frame(
+            fr.attacked_predictions, fr.labels, class_name, iou_threshold,
+            score_threshold=score_threshold,
+        )
+        attacked_tps = sum(
+            1 for _, is_tp in _match_frame(
+                fr.attacked_predictions, fr.labels, class_name, iou_threshold,
+                score_threshold=score_threshold,
+            )[0]
+            if is_tp
+        )
+
+        total_gt += n_gt_clean        # n_gt is the same regardless of predictions
+        total_clean_tp += clean_tps
+        total_attacked_tp += attacked_tps
+
+    dr_clean = total_clean_tp / total_gt if total_gt > 0 else 0.0
+    dr_attacked = total_attacked_tp / total_gt if total_gt > 0 else 0.0
+    abs_drop = dr_clean - dr_attacked
+    rel_drop = abs_drop / dr_clean if dr_clean > 0.0 else 0.0
+
+    return {
+        "detection_rate_clean": dr_clean,
+        "detection_rate_attacked": dr_attacked,
+        "absolute_drop": abs_drop,
+        "relative_drop": rel_drop,
+        "total_gt": total_gt,
+        "total_clean_tp": total_clean_tp,
+        "total_attacked_tp": total_attacked_tp,
+        "n_frames": n_frames,
+    }
+
+
+def compute_detection_rate(
+    frame_results: list[FrameResult],
+    iou_thresholds: dict[str, float] | None = None,
+    classes: list[str] | None = None,
+    default_iou: float = 0.5,
+    score_threshold: float | None = None,
+) -> dict:
+    """Frame-level detection-rate drop: clean recall vs attacked recall against GT.
+
+    Only attacked frames that have ground-truth labels are included (NuScenes
+    inter-sweeps without annotations are automatically excluded).
+
+    Parameters
+    ----------
+    iou_thresholds
+        Per-class IoU matching threshold.  Falls back to ``default_iou`` for any
+        class not in the dict.  Pass ``_NUSCENES_IOU_THRESHOLDS`` for NuScenes or
+        the KITTI ``iou_thresholds`` dict from ``ExperimentConfig``.
+    classes
+        Classes to evaluate.  When None, derived from labels in qualifying frames.
+    default_iou
+        Fallback IoU threshold for classes not in ``iou_thresholds``.
+    score_threshold
+        Minimum detection score for a prediction to count.
+
+    Returns
+    -------
+    Dict with one key per class (plus ``"overall"``), each mapping to::
+
+        {
+          "detection_rate_clean": float,    # micro-avg recall on clean lidar
+          "detection_rate_attacked": float, # micro-avg recall on attacked lidar
+          "absolute_drop": float,           # clean − attacked
+          "relative_drop": float,           # drop / clean  (0 when clean=0)
+          "total_gt": int,
+          "total_clean_tp": int,
+          "total_attacked_tp": int,
+          "n_frames": int,
+        }
+
+    Returns an empty dict when no qualifying frames exist.
+    """
+    qualifying = [
+        fr for fr in frame_results
+        if fr.is_attacked and fr.attacked_predictions is not None and fr.labels
+    ]
+    if not qualifying:
+        return {}
+
+    if classes is None:
+        classes = sorted({lbl.type for fr in qualifying for lbl in fr.labels})
+
+    thresholds = iou_thresholds or {}
+    result: dict = {}
+
+    for cls in classes:
+        iou_thr = thresholds.get(cls, default_iou)
+        result[cls] = _detection_rate_one_class(
+            frame_results, cls, iou_thr, score_threshold
+        )
+
+    # Overall micro-average across all classes
+    total_gt = sum(result[cls]["total_gt"] for cls in result)
+    total_clean_tp = sum(result[cls]["total_clean_tp"] for cls in result)
+    total_attacked_tp = sum(result[cls]["total_attacked_tp"] for cls in result)
+    dr_clean = total_clean_tp / total_gt if total_gt > 0 else 0.0
+    dr_attacked = total_attacked_tp / total_gt if total_gt > 0 else 0.0
+    abs_drop = dr_clean - dr_attacked
+    result["overall"] = {
+        "detection_rate_clean": dr_clean,
+        "detection_rate_attacked": dr_attacked,
+        "absolute_drop": abs_drop,
+        "relative_drop": abs_drop / dr_clean if dr_clean > 0.0 else 0.0,
+        "total_gt": total_gt,
+        "total_clean_tp": total_clean_tp,
+        "total_attacked_tp": total_attacked_tp,
+        "n_frames": sum(result[cls]["n_frames"] for cls in classes),
+    }
+
+    return result
