@@ -55,6 +55,7 @@ from scipy.spatial import cKDTree
 
 from ..base import BaseDefense
 from ..types import DetectionResult, Frame, FrameHistory
+from ._multiframe_common import patchwork_ground_segment
 
 if TYPE_CHECKING:
     pass
@@ -93,13 +94,15 @@ class BouhamidiDefense(BaseDefense):
         If True, zero out the outermost row/column of each inconsistency
         grid before counting groups.  Default: True.
     patchwork_sensor_height : float
-        ``sensor_height`` parameter passed to Patchwork++.  In the levelled
-        ego frame the sensor is at z = 0 (the ground is below it by the
-        vehicle's chassis height, ≈ 0 in the levelled frame).  Default: 0.0.
-    patchwork_num_iter : int
-        Number of Patchwork++ iterations.  Default: 3.
-    patchwork_uprightness_thr : float
-        Uprightness threshold for Patchwork++.  Default: 0.707.
+        ``sensor_height`` parameter passed to Patchwork++.  In the NuScenes
+        levelled ego frame the LIDAR_TOP is mounted ≈ 1.84 m above ground.
+        Default: 1.84.
+    patchwork_num_iter : int or None
+        Number of Patchwork++ iterations.  If ``None`` (default), the
+        Patchwork++ library default is used.
+    patchwork_uprightness_thr : float or None
+        Uprightness threshold for Patchwork++.  If ``None`` (default), the
+        Patchwork++ library default is used.
     """
 
     # --------------------------------------------------------------------- #
@@ -119,9 +122,9 @@ class BouhamidiDefense(BaseDefense):
         filter_neighbor_threshold: int = 35,
         filter_radius: float = 0.25,
         ignore_boundary: bool = True,
-        patchwork_sensor_height: float = 0.0,
-        patchwork_num_iter: int = 3,
-        patchwork_uprightness_thr: float = 0.707,
+        patchwork_sensor_height: float = 1.84,
+        patchwork_num_iter: int | None = None,
+        patchwork_uprightness_thr: float | None = None,
     ) -> None:
         self.theta_min = theta_min
         self.theta_max = theta_max
@@ -157,21 +160,12 @@ class BouhamidiDefense(BaseDefense):
         ground_idx : np.ndarray of int
         nonground_idx : np.ndarray of int
         """
-        import pypatchworkpp  # lazy import — avoids hard dep at module load time
-
-        params = pypatchworkpp.Parameters()
-        params.sensor_height = self.patchwork_sensor_height
-        params.num_iter = self.patchwork_num_iter
-        params.uprightness_thr = self.patchwork_uprightness_thr
-        # Suppress per-frame verbose output
-        params.verbose = False
-
-        ppp = pypatchworkpp.patchworkpp(params)
-        ppp.estimateGround(xyzw.astype(np.float32))
-
-        ground_idx = ppp.getGroundIndices()
-        nonground_idx = ppp.getNongroundIndices()
-        return np.asarray(ground_idx, dtype=int), np.asarray(nonground_idx, dtype=int)
+        return patchwork_ground_segment(
+            xyzw,
+            self.patchwork_sensor_height,
+            self.patchwork_num_iter,
+            self.patchwork_uprightness_thr,
+        )
 
     # --------------------------------------------------------------------- #
     #  Main detect                                                            #

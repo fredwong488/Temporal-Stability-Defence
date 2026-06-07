@@ -70,6 +70,7 @@ from ..base import BaseDefense
 from ..types import DetectionResult, Frame, FrameHistory
 from ._multiframe_common import (
     associate_cluster_chain,
+    patchwork_ground_segment,
     remove_ego_box,
 )
 
@@ -166,6 +167,26 @@ class RadialJitterDefense(BaseDefense):
         a cluster is large enough to split it under 3-D clustering but the
         object is coherent in the horizontal plane.  Applies to both DBSCAN
         and HDBSCAN.
+    ground_method
+        How to remove ground points before clustering.  ``"zcut"`` (default)
+        drops all points whose z-coordinate in the level ego frame is at or
+        below ``ground_z_max`` (fast, no external dependency).  ``"patchwork"``
+        uses Patchwork++ (region-wise plane fitting) for more accurate ground
+        segmentation on slopes, curbs, and varying terrain.  Requires the
+        ``pypatchworkpp`` package.
+    patchwork_sensor_height
+        Sensor height above the ground plane (metres) passed to Patchwork++.
+        In the NuScenes levelled ego frame the LIDAR_TOP is mounted ≈ 1.84 m
+        above ground.  Only used when ``ground_method="patchwork"``.
+    patchwork_num_iter
+        Number of Patchwork++ ground-estimation iterations.  If ``None``
+        (default), the Patchwork++ library default is used.  Only used
+        when ``ground_method="patchwork"``.
+    patchwork_uprightness_thr
+        Uprightness threshold for Patchwork++: candidate planes whose normal
+        has a dot-product with +z below this value are rejected.  If ``None``
+        (default), the Patchwork++ library default is used.  Only used
+        when ``ground_method="patchwork"``.
     """
 
     def __init__(
@@ -193,6 +214,10 @@ class RadialJitterDefense(BaseDefense):
         cluster_on_bev: bool = False,
         clusterer: Literal["dbscan", "hdbscan"] = "dbscan",
         hdbscan_min_cluster_size: int = 10,
+        ground_method: Literal["zcut", "patchwork"] = "zcut",
+        patchwork_sensor_height: float = 1.84,
+        patchwork_num_iter: int | None = None,
+        patchwork_uprightness_thr: float | None = None,
         debug: bool = False,
         defense_frame_hook: Callable[[Frame, "DetectionResult", list[np.ndarray]], None] | None = None,
     ) -> None:
@@ -219,6 +244,10 @@ class RadialJitterDefense(BaseDefense):
         self.cluster_on_bev = cluster_on_bev
         self.clusterer = clusterer
         self.hdbscan_min_cluster_size = hdbscan_min_cluster_size
+        self.ground_method = ground_method
+        self.patchwork_sensor_height = patchwork_sensor_height
+        self.patchwork_num_iter = patchwork_num_iter
+        self.patchwork_uprightness_thr = patchwork_uprightness_thr
         self.debug = debug
         self._defense_frame_hook = defense_frame_hook
         # Maps (frame_id, is_attacked) → (xyz_filt, labels, cluster_pts, centroids)
@@ -455,12 +484,31 @@ class RadialJitterDefense(BaseDefense):
             return self._dbscan_cache[key]
 
         xyz = frame.lidar[:, :3].astype(np.float64)
-        # Compute z in the level ego frame (ground is at z≈0 regardless of sensor tilt)
         if frame.nuscenes_sensor_to_ego is None:
             raise ValueError(f"nuscenes_sensor_to_ego missing from frame {frame.frame_id}")
         s2e = frame.nuscenes_sensor_to_ego.astype(np.float64)
-        z_ego = s2e[2, :3] @ xyz.T + s2e[2, 3]
-        xyz = xyz[z_ego > self.ground_z_max]
+
+        if self.ground_method == "patchwork":
+            # Level to ego frame for ground segmentation, but retain sensor-frame
+            # points: the cache and all downstream compensation use sensor-frame
+            # coordinates, so we only use the ego-frame array to call Patchwork++
+            # and then select surviving rows from the original sensor-frame array.
+            xyz_ego = (s2e[:3, :3] @ xyz.T + s2e[:3, 3:4]).T
+            intensity = frame.lidar[:, 3:4].astype(np.float64)
+            xyzw_ego = np.concatenate([xyz_ego, intensity], axis=1).astype(np.float32)
+            _, nonground_idx = patchwork_ground_segment(
+                xyzw_ego,
+                self.patchwork_sensor_height,
+                self.patchwork_num_iter,
+                self.patchwork_uprightness_thr,
+            )
+            xyz = xyz[nonground_idx]
+        else:
+            # Compute z in the level ego frame (ground is at z≈0 regardless of
+            # sensor tilt).
+            z_ego = s2e[2, :3] @ xyz.T + s2e[2, 3]
+            xyz = xyz[z_ego > self.ground_z_max]
+
         xyz_filt = remove_ego_box(
             xyz,
             self.ego_front, self.ego_rear, self.ego_side,

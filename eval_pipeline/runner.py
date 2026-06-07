@@ -123,6 +123,7 @@ def _defense_registry() -> dict[str, type]:
         "carlo": CARLODefense,
         "radial_jitter": RadialJitterDefense,
         "radial_jitter_bev": functools.partial(RadialJitterDefense, cluster_on_bev=True),   # For backwards compatibility
+        "radial_jitter_patchwork": functools.partial(RadialJitterDefense, ground_method="patchwork"),
         "wasserstein": WassersteinAnisotropyDefense,
         "llm": LLMDefense,
         "bouhamidi": BouhamidiDefense,

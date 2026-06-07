@@ -37,6 +37,57 @@ def remove_ego_box(
     return xyz[~in_box]
 
 
+def patchwork_ground_segment(
+    xyzw: np.ndarray,
+    sensor_height: float | None = None,
+    num_iter: int | None = None,
+    uprightness_thr: float | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Segment ``xyzw`` (N×4, XYZI, gravity-levelled) into ground / non-ground.
+
+    Parameters
+    ----------
+    xyzw
+        (N, 4) float32 array in the gravity-aligned (ego) frame so that
+        ground lies at z ≈ 0.
+    sensor_height
+        Patchwork++ ``sensor_height`` parameter.  In the levelled ego frame
+        the sensor is at its mounting height above the ground plane.
+        If ``None``, the Patchwork++ default is used.
+    num_iter
+        Number of Patchwork++ ground-estimation iterations.
+        If ``None``, the Patchwork++ default is used.
+    uprightness_thr
+        Uprightness threshold: planes with normal dot-product with +z below
+        this value are rejected as non-ground.
+        If ``None``, the Patchwork++ default is used.
+
+    Returns
+    -------
+    ground_idx : np.ndarray of int
+        Indices into ``xyzw`` of ground points.
+    nonground_idx : np.ndarray of int
+        Indices into ``xyzw`` of non-ground points.
+    """
+    import pypatchworkpp  # lazy import — avoids hard dep at module load time
+
+    params = pypatchworkpp.Parameters()
+    if sensor_height is not None:
+        params.sensor_height = sensor_height
+    if num_iter is not None:
+        params.num_iter = num_iter
+    if uprightness_thr is not None:
+        params.uprightness_thr = uprightness_thr
+    params.verbose = False
+
+    ppp = pypatchworkpp.patchworkpp(params)
+    ppp.estimateGround(xyzw.astype(np.float32))
+
+    ground_idx = np.asarray(ppp.getGroundIndices(), dtype=int)
+    nonground_idx = np.asarray(ppp.getNongroundIndices(), dtype=int)
+    return ground_idx, nonground_idx
+
+
 def compensate_history(
     current_frame: Frame,
     hist: deque[Frame],
