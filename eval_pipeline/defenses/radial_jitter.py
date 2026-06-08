@@ -67,7 +67,7 @@ import numpy as np
 from sklearn.cluster import DBSCAN, HDBSCAN
 
 from ..base import BaseDefense
-from ..types import DetectionResult, Frame, FrameHistory
+from ..types import DetectionResult, Frame, FrameHistory, Prediction
 from ._multiframe_common import (
     associate_cluster_chain,
     patchwork_ground_segment,
@@ -218,6 +218,7 @@ class RadialJitterDefense(BaseDefense):
         patchwork_sensor_height: float = 1.84,
         patchwork_num_iter: int | None = None,
         patchwork_uprightness_thr: float | None = None,
+        use_predictions: bool = False,
         debug: bool = False,
         defense_frame_hook: Callable[[Frame, "DetectionResult", list[np.ndarray]], None] | None = None,
     ) -> None:
@@ -248,6 +249,7 @@ class RadialJitterDefense(BaseDefense):
         self.patchwork_sensor_height = patchwork_sensor_height
         self.patchwork_num_iter = patchwork_num_iter
         self.patchwork_uprightness_thr = patchwork_uprightness_thr
+        self.use_predictions = use_predictions
         self.debug = debug
         self._defense_frame_hook = defense_frame_hook
         # Maps (frame_id, is_attacked) → (xyz_filt, labels, cluster_pts, centroids)
@@ -514,36 +516,94 @@ class RadialJitterDefense(BaseDefense):
             xyz,
             self.ego_front, self.ego_rear, self.ego_side,
         )
-        if len(xyz_filt) >= self.dbscan_min_samples:
-            cluster_input = xyz_filt[:, :2] if self.cluster_on_bev else xyz_filt
-            if self.clusterer == "hdbscan":
-                labels = HDBSCAN(
-                    min_cluster_size=self.hdbscan_min_cluster_size,
-                    min_samples=self.dbscan_min_samples,
-                    n_jobs=1,
-                    copy=False,
-                ).fit_predict(cluster_input)
-            else:
-                labels = DBSCAN(
-                    eps=self.dbscan_eps,
-                    min_samples=self.dbscan_min_samples,
-                    n_jobs=1,
-                ).fit_predict(cluster_input)
-        else:
-            labels = np.full(len(xyz_filt), -1, dtype=int)
-
-        unique = sorted(l for l in set(labels) if l != -1)
-        if unique:
-            cluster_pts = [xyz_filt[labels == l] for l in unique]
-            centroids = np.array(
-                [p.mean(axis=0) for p in cluster_pts], dtype=np.float32
+        if self.use_predictions:
+            labels, cluster_pts, centroids = self._cluster_from_predictions(
+                xyz_filt, frame.predictions
             )
         else:
-            cluster_pts = []
-            centroids = np.empty((0, 3), dtype=np.float32)
+            if len(xyz_filt) >= self.dbscan_min_samples:
+                cluster_input = xyz_filt[:, :2] if self.cluster_on_bev else xyz_filt
+                if self.clusterer == "hdbscan":
+                    labels = HDBSCAN(
+                        min_cluster_size=self.hdbscan_min_cluster_size,
+                        min_samples=self.dbscan_min_samples,
+                        n_jobs=1,
+                        copy=False,
+                    ).fit_predict(cluster_input)
+                else:
+                    labels = DBSCAN(
+                        eps=self.dbscan_eps,
+                        min_samples=self.dbscan_min_samples,
+                        n_jobs=1,
+                    ).fit_predict(cluster_input)
+            else:
+                labels = np.full(len(xyz_filt), -1, dtype=int)
+
+            unique = sorted(l for l in set(labels) if l != -1)
+            if unique:
+                cluster_pts = [xyz_filt[labels == l] for l in unique]
+                centroids = np.array(
+                    [p.mean(axis=0) for p in cluster_pts], dtype=np.float32
+                )
+            else:
+                cluster_pts = []
+                centroids = np.empty((0, 3), dtype=np.float32)
 
         self._dbscan_cache[key] = (xyz_filt, labels, cluster_pts, centroids)
         return xyz_filt, labels, cluster_pts, centroids
+
+    def _cluster_from_predictions(
+        self,
+        xyz_filt: np.ndarray,
+        predictions: list[Prediction],
+    ) -> tuple[np.ndarray, list[np.ndarray], np.ndarray]:
+        """Assign points to clusters using predicted 3-D bounding boxes.
+
+        Points are tested against each box in order; the first matching box
+        wins (no double-assignment).  Boxes with no assigned points are
+        silently dropped.  Returns (labels, cluster_pts, centroids) with the
+        same contract as the DBSCAN path: labels are 0-based cluster indices,
+        -1 for unassigned points.
+
+        Both xyz_filt and the predictions are expected to be in the sensor
+        (velodyne) frame, which is the convention used throughout this class.
+        """
+        labels = np.full(len(xyz_filt), -1, dtype=int)
+        cluster_pts: list[np.ndarray] = []
+        centroids_list: list[np.ndarray] = []
+        cluster_idx = 0
+
+        for pred in predictions:
+            dx = xyz_filt[:, 0] - pred.x
+            dy = xyz_filt[:, 1] - pred.y
+            dz = xyz_filt[:, 2] - pred.z
+
+            cos_r = np.cos(-pred.rotation_y)
+            sin_r = np.sin(-pred.rotation_y)
+            lx = cos_r * dx - sin_r * dy
+            ly = sin_r * dx + cos_r * dy
+
+            inside = (
+                (np.abs(lx) <= pred.length / 2)
+                & (np.abs(ly) <= pred.width / 2)
+                & (np.abs(dz) <= pred.height / 2)
+            )
+            assign = inside & (labels == -1)
+            if not assign.any():
+                continue
+
+            labels[assign] = cluster_idx
+            pts = xyz_filt[assign]
+            cluster_pts.append(pts)
+            centroids_list.append(pts.mean(axis=0))
+            cluster_idx += 1
+
+        centroids = (
+            np.array(centroids_list, dtype=np.float32)
+            if centroids_list
+            else np.empty((0, 3), dtype=np.float32)
+        )
+        return labels, cluster_pts, centroids
 
     def _compute_sigma_point(
         self,
