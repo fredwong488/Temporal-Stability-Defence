@@ -16,7 +16,7 @@ Usage (run from the project root):
         --output-dir /tmp/llm_defense_test
 
     # Optional overrides:
-    --backend gemini          # or qwen
+    --backend gemini
     --prompt-path notes/llm_prompts.md
     --cache-dir cache/llm_defense
     --force-refresh           # ignore cached LLM responses
@@ -201,7 +201,7 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--backend",
-        choices=["gemini", "qwen"],
+        choices=["gemini"],
         default="gemini",
         help="LLM backend (default: gemini)",
     )

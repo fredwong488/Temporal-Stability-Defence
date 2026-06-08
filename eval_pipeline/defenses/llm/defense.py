@@ -6,8 +6,7 @@ Multi-modal LLM-based adversarial attack defense.
 Sends three rendered views (BEV LiDAR, isometric LiDAR, camera) to a
 vision-language model and maps the structured response to a DetectionResult.
 
-Supported backends: 'gemini' (Gemini 3 Flash via google-genai),
-                    'qwen' (Qwen 3-VL via DashScope / OpenAI-compatible API).
+Supported backends: 'gemini' (Gemini 3 Flash via google-genai)
 """
 
 from __future__ import annotations
@@ -60,7 +59,6 @@ _CONFIDENCE_MAP = {
 
 _DEFAULT_MODELS = {
     "gemini": "gemini-3.1-flash-lite",
-    "qwen": "qwen3-vl-plus",
 }
 
 
@@ -118,7 +116,7 @@ class LLMDefense(BaseDefense):
             from .backends.gemini import GeminiBackend
             self._backend = GeminiBackend(model=self._model, **kwargs)
         else:
-            raise ValueError(f"Unknown LLM backend: {backend!r}. Choose 'gemini' or 'qwen'.")
+            raise ValueError(f"Unknown LLM backend: {backend!r}. Choose only 'gemini' supported for now.")
 
     @property
     def async_detect(self) -> bool:
