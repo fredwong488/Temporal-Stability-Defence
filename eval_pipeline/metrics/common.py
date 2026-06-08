@@ -491,6 +491,7 @@ def compute_llm_cost_metrics(frame_results: list[FrameResult]) -> dict:
     """
     input_tokens: list[float] = []
     output_tokens: list[float] = []
+    thoughts_tokens: list[float] = []
     elapsed_api: list[float] = []
 
     for fr in frame_results:
@@ -506,6 +507,8 @@ def compute_llm_cost_metrics(frame_results: list[FrameResult]) -> dict:
                 input_tokens.append(float(token_usage["input_tokens"]))
             if "output_tokens" in token_usage:
                 output_tokens.append(float(token_usage["output_tokens"]))
+            if "thoughts_token_count" in token_usage and token_usage["thoughts_token_count"] is not None:
+                thoughts_tokens.append(float(token_usage["thoughts_token_count"]))
 
         if not meta.get("cache_hit", False) and "elapsed_s" in meta:
             elapsed_api.append(float(meta["elapsed_s"]))
@@ -524,7 +527,7 @@ def compute_llm_cost_metrics(frame_results: list[FrameResult]) -> dict:
         }
 
     result: dict = {"n_frames": len(input_tokens), "n_api_frames": len(elapsed_api)}
-    for key, vals in [("input_tokens", input_tokens), ("output_tokens", output_tokens), ("elapsed_s", elapsed_api)]:
+    for key, vals in [("input_tokens", input_tokens), ("output_tokens", output_tokens), ("thoughts_token_count", thoughts_tokens), ("elapsed_s", elapsed_api)]:
         stats = _stats(vals)
         for stat, val in stats.items():
             result[f"{key}_{stat}"] = val

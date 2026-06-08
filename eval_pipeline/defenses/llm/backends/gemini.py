@@ -82,5 +82,6 @@ class GeminiBackend(LLMBackend):
                 "input_tokens": usage.prompt_token_count,
                 "output_tokens": usage.candidates_token_count,
                 "total_tokens": usage.total_token_count,
+                "thoughts_token_count": usage.thoughts_token_count,
             }
         return json.loads(response.text), token_info
