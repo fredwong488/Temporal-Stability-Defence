@@ -473,6 +473,66 @@ def compute_llm_attack_type_accuracy(
 
 
 # ---------------------------------------------------------------------------
+# LLM cost metrics (LLMDefense only)
+# ---------------------------------------------------------------------------
+
+def compute_llm_cost_metrics(frame_results: list[FrameResult]) -> dict:
+    """Compute mean, median, and std for input_tokens, output_tokens, elapsed_s.
+
+    Only frames that carry LLM metadata (``"verdict"`` or ``"error"`` key) are
+    included.  Cache hits (``cache_hit=True``) are excluded from elapsed_s
+    because they do not represent real API latency, but are included in token
+    counts (tokens were consumed on the original request).
+
+    Returns dict with keys:
+      input_tokens_{mean,median,std}, output_tokens_{mean,median,std},
+      elapsed_s_{mean,median,std}, n_frames, n_api_frames (non-cache-hit count).
+    Returns empty dict when no qualifying frames exist.
+    """
+    input_tokens: list[float] = []
+    output_tokens: list[float] = []
+    elapsed_api: list[float] = []
+
+    for fr in frame_results:
+        if fr.defense_result is None:
+            continue
+        meta = fr.defense_result.metadata
+        if "verdict" not in meta and "error" not in meta:
+            continue
+
+        token_usage = meta.get("token_usage")
+        if token_usage is not None:
+            if "input_tokens" in token_usage:
+                input_tokens.append(float(token_usage["input_tokens"]))
+            if "output_tokens" in token_usage:
+                output_tokens.append(float(token_usage["output_tokens"]))
+
+        if not meta.get("cache_hit", False) and "elapsed_s" in meta:
+            elapsed_api.append(float(meta["elapsed_s"]))
+
+    if not input_tokens and not output_tokens and not elapsed_api:
+        return {}
+
+    def _stats(vals: list[float]) -> dict:
+        if not vals:
+            return {"mean": None, "median": None, "std": None}
+        arr = np.array(vals)
+        return {
+            "mean": float(np.mean(arr)),
+            "median": float(np.median(arr)),
+            "std": float(np.std(arr)),
+        }
+
+    result: dict = {"n_frames": len(input_tokens), "n_api_frames": len(elapsed_api)}
+    for key, vals in [("input_tokens", input_tokens), ("output_tokens", output_tokens), ("elapsed_s", elapsed_api)]:
+        stats = _stats(vals)
+        for stat, val in stats.items():
+            result[f"{key}_{stat}"] = val
+
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Detection-rate drop (dataset-agnostic, designed for NuScenes)
 # ---------------------------------------------------------------------------
 

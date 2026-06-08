@@ -59,7 +59,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness", "llm_attack_type_accuracy"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness", "llm_attack_type_accuracy", "llm_cost_metrics"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
@@ -255,6 +255,22 @@ def extract_llm_attack_type_accuracy_row(
     }
 
 
+def extract_llm_cost_metrics_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+) -> dict:
+    """Extract LLM cost stats (mean/median/std for tokens and latency) into a flat dict for the CSV."""
+    lcm = summary.get("llm_cost_metrics", {})
+    row: dict = {sweep_param: sweep_val}
+    for field in ("input_tokens", "output_tokens", "elapsed_s"):
+        for stat in ("mean", "median", "std"):
+            row[f"{field}_{stat}"] = lcm.get(f"{field}_{stat}", float("nan"))
+    row["n_frames"] = lcm.get("n_frames", float("nan"))
+    row["n_api_frames"] = lcm.get("n_api_frames", float("nan"))
+    return row
+
+
 def log_summary_metrics(
     summary: dict,
     metric_types: list[str],
@@ -318,6 +334,20 @@ def log_summary_metrics(
             lata.get("n_correct_type", "?"),
             lata.get("n_tp_detected", "?"),
             lata.get("n_incorrect_type", "?"),
+        )
+
+    if "llm_cost_metrics" in metric_types:
+        lcm = summary.get("llm_cost_metrics", {})
+        logging.info(
+            "  LLM cost  in_tok=%.0f±%.0f  out_tok=%.0f±%.0f  elapsed_s=%.2f±%.2f  n=%s  n_api=%s",
+            lcm.get("input_tokens_mean", float("nan")),
+            lcm.get("input_tokens_std", float("nan")),
+            lcm.get("output_tokens_mean", float("nan")),
+            lcm.get("output_tokens_std", float("nan")),
+            lcm.get("elapsed_s_mean", float("nan")),
+            lcm.get("elapsed_s_std", float("nan")),
+            lcm.get("n_frames", "?"),
+            lcm.get("n_api_frames", "?"),
         )
 
 
@@ -531,7 +561,8 @@ def main() -> None:
                             "recall_iou (Recall vs IoU → JSON, KITTI only), "
                             "detection_rate (recall drop clean→attacked vs GT → CSV, all datasets), "
                             "defense_effectiveness (defense F1/precision/recall → CSV), "
-                            "pacts_effectiveness (PACTS cluster-level F1/precision/recall → CSV)"
+                            "pacts_effectiveness (PACTS cluster-level F1/precision/recall → CSV), "
+                            "llm_cost_metrics (LLM token and latency stats → CSV)"
                         ))
     parser.add_argument("--confidence-threshold", type=float, default=0.3,
                         help="Confidence threshold used for recall_iou metric and detector scoring")
@@ -740,6 +771,7 @@ def main() -> None:
     clustering_quality_rows: list[dict] = []
     pacts_effectiveness_rows: list[dict] = []
     llm_attack_type_accuracy_rows: list[dict] = []
+    llm_cost_metrics_rows: list[dict] = []
 
     base_attack_params: dict = {"target_types": args.classes} if args.attack and args.attack == "ora" else {}
     base_attack_params.update(extra_attack_params)
@@ -961,6 +993,9 @@ def main() -> None:
         if "llm_attack_type_accuracy" in args.metric_types:
             llm_attack_type_accuracy_rows.append(extract_llm_attack_type_accuracy_row(summary, args.sweep_param, val))
 
+        if "llm_cost_metrics" in args.metric_types:
+            llm_cost_metrics_rows.append(extract_llm_cost_metrics_row(summary, args.sweep_param, val))
+
         log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
 
     sweep_tag = f"{args.sweep_target}_{args.sweep_param}"
@@ -1112,6 +1147,30 @@ def main() -> None:
                 str(row["n_incorrect_type"]),
                 f"{row['type_accuracy']:.4f}",
             ]))
+
+    # LLM cost metrics → CSV
+    if "llm_cost_metrics" in args.metric_types and llm_cost_metrics_rows:
+        _cost_fields = [
+            f"{field}_{stat}"
+            for field in ("input_tokens", "output_tokens", "elapsed_s")
+            for stat in ("mean", "median", "std")
+        ]
+        fieldnames = [args.sweep_param] + _cost_fields + ["n_frames", "n_api_frames"]
+        out_path = run_dir / f"sweep_{sweep_tag}_llm_cost_metrics.csv"
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(llm_cost_metrics_rows)
+        logging.info("LLM cost metrics CSV written to %s", out_path)
+        print(f"\nLLM cost metrics: {out_path}")
+        print(",".join(fieldnames))
+        for row in llm_cost_metrics_rows:
+            num_vals = [
+                f"{row.get(col, float('nan')):.2f}" if col not in ("n_frames", "n_api_frames")
+                else str(row.get(col, ""))
+                for col in fieldnames[1:]
+            ]
+            print(",".join([str(row[args.sweep_param])] + num_vals))
 
     end_time = datetime.now()
     logging.info(f"Start time: {start_time}")

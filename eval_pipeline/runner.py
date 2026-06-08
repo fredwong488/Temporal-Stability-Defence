@@ -304,6 +304,7 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:  
             summary["pacts_effectiveness"] = eval_results.pacts_effectiveness()
         if config.defense_type == "llm":
             summary["llm_attack_type_accuracy"] = eval_results.llm_attack_type_accuracy()
+            summary["llm_cost_metrics"] = eval_results.llm_cost_metrics()
 
     # Optionally save results to disk
     if config.output_dir:
