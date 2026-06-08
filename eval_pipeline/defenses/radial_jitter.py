@@ -187,6 +187,17 @@ class RadialJitterDefense(BaseDefense):
         has a dot-product with +z below this value are rejected.  If ``None``
         (default), the Patchwork++ library default is used.  Only used
         when ``ground_method="patchwork"``.
+    use_predictions
+        If ``True``, skip DBSCAN/HDBSCAN and instead derive clusters from the
+        detector predictions attached to each frame (``frame.predictions``).
+        Each predicted bounding box becomes one cluster: points are assigned to
+        the first box whose oriented extent they fall within (first-match wins
+        on overlap).  Boxes with no points inside are dropped.  Ground removal
+        and ego-box exclusion still apply before the assignment.  Requires
+        ``frame.predictions`` to be populated on both the current frame and all
+        history frames; ``dbscan_eps``, ``dbscan_min_samples``, ``clusterer``,
+        ``hdbscan_min_cluster_size``, and ``cluster_on_bev`` are ignored when
+        this flag is set.
     """
 
     def __init__(

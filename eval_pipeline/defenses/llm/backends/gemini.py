@@ -15,8 +15,18 @@ logging.getLogger("google_genai").setLevel(logging.WARNING)
 load_dotenv()
 
 from .base import LLMBackend
+from google.genai import types as genai_types
+from eval_pipeline.defenses.llm.schema import LLMVerdict
 
 _DEFAULT_MODEL = "gemini-3.1-flash-lite"
+
+_THINKING_EFFORT_MAPPING = [
+    genai_types.ThinkingLevel.MINIMAL,
+    genai_types.ThinkingLevel.LOW,
+    genai_types.ThinkingLevel.MEDIUM,
+    genai_types.ThinkingLevel.HIGH,
+]
+
 
 
 class GeminiBackend(LLMBackend):
@@ -41,9 +51,13 @@ class GeminiBackend(LLMBackend):
         self.model = model or _DEFAULT_MODEL
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=16))
-    def query(self, images: dict[str, bytes], prompt: str) -> dict:
-        from google.genai import types as genai_types
-        from eval_pipeline.defenses.llm.schema import LLMVerdict
+    def query(
+        self,
+        images: dict[str, bytes],
+        prompt: str,
+        thinking_effort: int | None = None
+    ) -> tuple[dict, dict | None]:
+
 
         image_parts = [
             genai_types.Part.from_bytes(data=images["bev"], mime_type="image/png"),
@@ -58,7 +72,7 @@ class GeminiBackend(LLMBackend):
                 response_mime_type="application/json",
                 response_schema=LLMVerdict,
                 media_resolution=genai_types.MediaResolution.MEDIA_RESOLUTION_MEDIUM,
-                thinking_config=genai_types.ThinkingConfig(thinking_budget=200),
+                thinking_config=genai_types.ThinkingConfig(thinking_level=_THINKING_EFFORT_MAPPING[thinking_effort]),
             ),
         )
         usage = response.usage_metadata

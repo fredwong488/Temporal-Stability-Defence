@@ -15,6 +15,7 @@ class LLMBackend(abc.ABC):
         self,
         images: dict[str, bytes],
         prompt: str,
+        thinking_effort: int | None = None
     ) -> tuple[dict, dict | None]:
         """Send images + prompt to the LLM; return (response_dict, token_info).
 
@@ -22,6 +23,7 @@ class LLMBackend(abc.ABC):
         ----------
         images : dict with keys 'bev', 'isometric', 'camera' — PNG bytes.
         prompt : the system + user prompt string.
+        thinking_effort: thinking effort of the llm, mapped to each backends own tiers. 0 = lowest thinking level
 
         Returns
         -------

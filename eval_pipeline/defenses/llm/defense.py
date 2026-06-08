@@ -69,13 +69,14 @@ class LLMDefense(BaseDefense):
 
     def __init__(
         self,
-        backend: Literal["gemini", "qwen"] = "gemini",
+        backend: Literal["gemini"] = "gemini",
         model: str | None = None,
         prompt_path: str = "eval_pipeline/defenses/llm/llm_prompt.md",
         cache_dir: str = "cache/llm_defense",
         force_refresh: bool = False,
         attack_threshold: Literal["any", "high_conf"] = "any",
         render_dpi: int = 150,
+        thinking_effort: int = 1,
         roi_forward: float = 50.0,
         roi_side: float = 20.0,
         roi_rear: float = 50.0,
@@ -90,6 +91,7 @@ class LLMDefense(BaseDefense):
         self._force_refresh = force_refresh
         self._attack_threshold = attack_threshold
         self._render_dpi = render_dpi
+        self._thinking_effort = thinking_effort
         self._roi_min = (-roi_rear, -roi_side)
         self._roi_max = (roi_forward, roi_side)
         self._ego_front = ego_front
@@ -115,9 +117,6 @@ class LLMDefense(BaseDefense):
         if backend == "gemini":
             from .backends.gemini import GeminiBackend
             self._backend = GeminiBackend(model=self._model, **kwargs)
-        elif backend == "qwen":
-            from .backends.qwen import QwenBackend
-            self._backend = QwenBackend(model=self._model, **kwargs)
         else:
             raise ValueError(f"Unknown LLM backend: {backend!r}. Choose 'gemini' or 'qwen'.")
 
@@ -172,7 +171,7 @@ class LLMDefense(BaseDefense):
                 roi_max=self._roi_max,
                 dpi=self._render_dpi,
             )
-            raw, token_info = self._backend.query(images, self._prompt)
+            raw, token_info = self._backend.query(images, self._prompt, self._thinking_effort)
             self._cache.save(cache_key, raw)
 
         elapsed_s = time.perf_counter() - t0
