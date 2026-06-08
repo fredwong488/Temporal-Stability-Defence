@@ -1,3 +1,4 @@
+from .baseline import BaselineDefense
 from .void_region import VoidRegionDefense
 from .tc2 import TC2Defense
 from .fsd import FSDDefense
@@ -7,6 +8,7 @@ from .wasserstein_anisotropy import WassersteinAnisotropyDefense
 from .bouhamidi import BouhamidiDefense
 
 __all__ = [
+    "BaselineDefense",
     "VoidRegionDefense",
     "TC2Defense",
     "FSDDefense",
