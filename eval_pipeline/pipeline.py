@@ -10,7 +10,9 @@ import dataclasses
 import dbm
 import itertools
 import logging
+import os
 import pathlib
+import pickle
 import shelve
 from collections import deque
 from concurrent.futures import Future, ThreadPoolExecutor
@@ -139,6 +141,14 @@ class EvalPipeline:
         attacked frames per scene; remaining attacked frames are skipped
         entirely.  If None (default), all attacked frames are processed.
         Only effective in scene-granularity mode.
+    checkpoint_path
+        Path stem for checkpoint sidecars written at each scene boundary.
+        Two files are created: ``<stem>.ckpt.pkl`` (atomic metadata) and
+        ``<stem>.frames.pkl`` (append-only FrameResult stream).  If the
+        ``.ckpt.pkl`` sidecar already exists when the pipeline starts, the
+        run resumes from the last completed scene.  Only supported for
+        scene-granularity datasets with synchronous defenses.  Pass None
+        (default) to disable checkpointing.
     """
 
     def __init__(
@@ -163,6 +173,7 @@ class EvalPipeline:
         skip_attacked_frames_per_scene: int = 0,
         max_unattacked_frames_per_scene: int | None = None,
         max_attacked_frames_per_scene: int | None = None,
+        checkpoint_path: str | None = None,
     ) -> None:
         self.dataset = dataset
         self.attack = attack
@@ -186,6 +197,10 @@ class EvalPipeline:
 
         self._granularity: str = _DATASET_GRANULARITY.get(type(dataset).__name__, "frame")
         self._scene_plan: dict[str, _SceneAttackPlan] | None = None
+
+        # Checkpoint support
+        self._checkpoint_path: str | None = checkpoint_path
+        self._ckpt_stream: object = None  # open file handle for the .frames.pkl stream
 
         # Precomputed cache: opened lazily via shelve so frames are read/written
         # one at a time rather than loading the entire dict into memory.
@@ -220,6 +235,20 @@ class EvalPipeline:
 
     def run(self) -> EvalResults:
         """Execute the pipeline over all frames and return aggregated results."""
+        # Validate checkpoint support before doing any work.
+        _checkpointing = self._checkpoint_path is not None
+        if _checkpointing:
+            if self._granularity != "scene":
+                raise NotImplementedError(
+                    "Checkpointing is only supported for scene-granularity datasets "
+                    "(e.g. NuScenes). Pass checkpoint_path=None for KITTI / frame-mode."
+                )
+            if self.defense is not None and self.defense.async_detect:
+                raise NotImplementedError(
+                    "Checkpointing is not supported with async defenses (async_detect=True). "
+                    "Pass checkpoint_path=None or use a synchronous defense."
+                )
+
         max_window = self.defense.temporal_window if self.defense else 1
         # Two parallel histories: clean (pre-attack) and dirty (post-attack).
         # Sized to temporal_window - 1 so the defense sees prior frames only.
@@ -227,7 +256,17 @@ class EvalPipeline:
         dirty_history: deque[Frame] = deque(maxlen=max(0, max_window - 1))
         last_sequence_id: str | None = None
 
-        frame_results: list[FrameResult] = []
+        # Restore from checkpoint if one exists.
+        resume_start_index = 0
+        if _checkpointing:
+            resume_start_index, restored = self._load_checkpoint()
+        else:
+            restored = []
+
+        frame_results: list[FrameResult] = restored
+        # These track frames in the current scene that haven't been checkpointed yet.
+        _scene_pending: list[FrameResult] = []
+
         defense_futures: list[Future | None] = []  # parallel to frame_results; None = sync
         executor: ThreadPoolExecutor | None = (
             ThreadPoolExecutor()
@@ -262,8 +301,17 @@ class EvalPipeline:
         else:
             scene_lengths = {}
 
-        frame_iter = itertools.islice(self.dataset, self.max_frames)
-        total = self.max_frames if self.max_frames is not None else len(self.dataset)
+        frame_iter = self._make_frame_iter(resume_start_index)
+        if self.max_frames is not None:
+            remaining = self.max_frames - resume_start_index
+            frame_iter = itertools.islice(frame_iter, max(0, remaining))
+        _dataset_len = len(self.dataset) if hasattr(self.dataset, "__len__") else None
+        total = (
+            (self.max_frames if self.max_frames is not None else _dataset_len)
+        )
+        if total is not None:
+            total = max(0, total - resume_start_index)
+        absolute_index = resume_start_index
         for frame in tqdm(frame_iter, desc=self.desc, unit="frame", total=total):
             n += 1
             logger.debug("Processing frame %s", frame.frame_id)
@@ -271,6 +319,18 @@ class EvalPipeline:
             # Reset history at scene boundaries so temporal defenses never read
             # across a discontinuity between unrelated scenes.
             if frame.sequence_id != last_sequence_id:
+                # Write a checkpoint at every scene boundary (after the first).
+                # At this point all FrameResults in _scene_pending belong to the
+                # just-finished scene and the history deques are about to be cleared,
+                # so no lidar or defense state needs to be persisted.
+                if _checkpointing and absolute_index > resume_start_index and _scene_pending:
+                    self._write_checkpoint(
+                        next_frame_index=absolute_index,
+                        new_records=_scene_pending,
+                        frame_count=len(frame_results),
+                    )
+                    _scene_pending = []
+
                 clean_history.clear()
                 dirty_history.clear()
                 if self.defense is not None:
@@ -281,6 +341,8 @@ class EvalPipeline:
                 last_sequence_id = frame.sequence_id
             else:
                 frame_index_in_scene += 1
+
+            absolute_index += 1
 
             # Determine per-frame attack decision.
             # Scene mode: use precomputed plan (bool).
@@ -446,7 +508,7 @@ class EvalPipeline:
             else:
                 attack_start_index = None
 
-            frame_results.append(FrameResult(
+            fr = FrameResult(
                 frame_id=frame.frame_id,
                 labels=frame.labels,
                 is_attacked=current_frame.is_attacked,
@@ -459,7 +521,18 @@ class EvalPipeline:
                 scene_length=sl,
                 attack_start_index=attack_start_index,
                 attack_start_frame_id=None,  # filled in below
-            ))
+            )
+            frame_results.append(fr)
+            if _checkpointing:
+                _scene_pending.append(fr)
+
+        # Write final checkpoint for the last scene (no subsequent boundary triggers it).
+        if _checkpointing and _scene_pending:
+            self._write_checkpoint(
+                next_frame_index=absolute_index,
+                new_records=_scene_pending,
+                frame_count=len(frame_results),
+            )
 
         # Resolve async defense futures and attach results back to frame_results.
         if executor is not None:
@@ -504,6 +577,112 @@ class EvalPipeline:
             frame_results=frame_results,
             attack_types=self.attack.attack_types if self.attack is not None else frozenset(),
         )
+
+    # ------------------------------------------------------------------
+    # Checkpoint helpers
+    # ------------------------------------------------------------------
+
+    def _ckpt_meta_path(self) -> pathlib.Path:
+        return pathlib.Path(self._checkpoint_path + ".ckpt.pkl")
+
+    def _ckpt_stream_path(self) -> pathlib.Path:
+        return pathlib.Path(self._checkpoint_path + ".frames.pkl")
+
+    def _load_checkpoint(self) -> tuple[int, list]:
+        """Load checkpoint meta and restore frame_results from the stream.
+
+        Returns (resume_start_index, frame_results).  If no checkpoint exists,
+        returns (0, []).
+        """
+        meta_path = self._ckpt_meta_path()
+        stream_path = self._ckpt_stream_path()
+        if not meta_path.exists():
+            return 0, []
+        with open(meta_path, "rb") as f:
+            meta = pickle.load(f)
+        next_frame_index: int = meta["next_frame_index"]
+        frame_count: int = meta["frame_count"]
+        frames_offset: int = meta["frames_offset"]
+        frame_results: list = []
+        if stream_path.exists() and frame_count > 0:
+            with open(stream_path, "rb") as f:
+                for _ in range(frame_count):
+                    try:
+                        frame_results.append(pickle.load(f))
+                    except (EOFError, pickle.UnpicklingError):
+                        break
+            if len(frame_results) != frame_count:
+                logger.warning(
+                    "Checkpoint stream truncated: expected %d records, got %d. "
+                    "Resume index (%d) may be ahead of restored frame_results — "
+                    "rerun from scratch if results look incomplete.",
+                    frame_count, len(frame_results), next_frame_index,
+                )
+        # Truncate the stream to the last durably-written position so that a
+        # subsequent checkpoint write appends cleanly.
+        if stream_path.exists():
+            with open(stream_path, "r+b") as f:
+                f.truncate(frames_offset)
+        logger.info(
+            "Resuming from checkpoint: %d frames restored, next dataset index %d",
+            len(frame_results), next_frame_index,
+        )
+        return next_frame_index, frame_results
+
+    def _write_checkpoint(
+        self,
+        next_frame_index: int,
+        new_records: list,
+        frame_count: int,
+    ) -> None:
+        """Append new_records to the stream and atomically update the meta."""
+        stream_path = self._ckpt_stream_path()
+        meta_path = self._ckpt_meta_path()
+        stream_path.parent.mkdir(parents=True, exist_ok=True)
+        # Append new records to the stream.
+        with open(stream_path, "ab") as f:
+            for rec in new_records:
+                pickle.dump(rec, f)
+            f.flush()
+            os.fsync(f.fileno())
+            offset = f.tell()
+        # Atomically replace the meta file.
+        tmp = meta_path.with_suffix(".tmp")
+        with open(tmp, "wb") as f:
+            pickle.dump(
+                {
+                    "next_frame_index": next_frame_index,
+                    "frame_count": frame_count,
+                    "frames_offset": offset,
+                },
+                f,
+            )
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, meta_path)
+        logger.debug(
+            "Checkpoint written: next_index=%d  total_frames=%d  offset=%d",
+            next_frame_index, frame_count, offset,
+        )
+
+    def cleanup_checkpoint(self) -> None:
+        """Delete checkpoint sidecars after a successful run."""
+        if self._checkpoint_path is None:
+            return
+        for path in (self._ckpt_meta_path(), self._ckpt_stream_path()):
+            try:
+                path.unlink()
+            except FileNotFoundError:
+                pass
+
+    def _make_frame_iter(self, start_index: int):
+        """Return an iterator over dataset frames starting at start_index."""
+        if start_index == 0:
+            return iter(self.dataset)
+        if hasattr(self.dataset, "__getitem__") and hasattr(self.dataset, "__len__"):
+            end = len(self.dataset)
+            return (self.dataset[i] for i in range(start_index, end))
+        return itertools.islice(iter(self.dataset), start_index, None)
 
     # ------------------------------------------------------------------
     # Internal helpers

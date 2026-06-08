@@ -146,6 +146,11 @@ class ExperimentConfig:
     use_predicted_labels: bool = False
     pred_label_score_threshold: float = 0.5
 
+    # Resumeable checkpointing (scene-granularity + synchronous defenses only).
+    # Path stem for checkpoint sidecars (<stem>.ckpt.pkl, <stem>.frames.pkl).
+    # Set by run_sweep; None disables checkpointing.
+    checkpoint_path: str | None = None
+
     # ---------------------------------------------------------------------------
     # Constructors
     # ---------------------------------------------------------------------------

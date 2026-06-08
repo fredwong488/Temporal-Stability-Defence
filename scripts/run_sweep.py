@@ -131,6 +131,7 @@ def run_single(
     pred_label_score_threshold: float = 0.5,
     min_unattacked_frames: int = 6,     # defaulted to 6 to suit jitter defense
     min_attacked_frames: int = 6,       # defaulted to 6 to suit jitter defense
+    checkpoint_path: str | None = None,
 ) -> dict:
     """Run one experiment and return the summary dict."""
 
@@ -158,6 +159,7 @@ def run_single(
         pred_label_score_threshold=pred_label_score_threshold,
         min_unattacked_frames=min_unattacked_frames,
         min_attacked_frames=min_attacked_frames,
+        checkpoint_path=checkpoint_path,
     )
     return run_experiment(config, desc=desc)
 
@@ -537,6 +539,17 @@ def main() -> None:
     parser.add_argument("--results-dir", type=str, default=DEFAULT_RESULTS_DIR,
                         help="Base directory for outputs; each run is saved under a "
                              "timestamped subdirectory")
+    parser.add_argument(
+        "--run-dir", type=str, default=None, metavar="DIR",
+        help=(
+            "Explicit run directory to write (or resume) results into.  "
+            "If the directory already exists the run is resumed: completed "
+            "experiments (whose <name>.json is present) are skipped and the "
+            "partial experiment is continued from its last scene checkpoint.  "
+            "When omitted, a fresh timestamped subdirectory under --results-dir "
+            "is created."
+        ),
+    )
     parser.add_argument("--save-frames", action="store_true", default=False,
                         help="Save per-frame JSONL alongside each experiment's results JSON")
     parser.add_argument(
@@ -644,8 +657,16 @@ def main() -> None:
             sweep_values = [int(v) for v in sweep_values]
 
     timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    run_dir = pathlib.Path(args.results_dir) / timestamp
-    run_dir.mkdir(parents=True, exist_ok=True)
+    if args.run_dir is not None:
+        run_dir = pathlib.Path(args.run_dir)
+        resuming = run_dir.exists()
+        run_dir.mkdir(parents=True, exist_ok=True)
+        if resuming:
+            logging.info("Resuming existing run dir: %s", run_dir)
+    else:
+        run_dir = pathlib.Path(args.results_dir) / timestamp
+        run_dir.mkdir(parents=True, exist_ok=True)
+        resuming = False
 
     detector_params: dict = {}
     if args.detector is not None:
@@ -728,71 +749,82 @@ def main() -> None:
     base_defense_params: dict = {}
     base_defense_params.update(extra_defense_params)
 
-    write_sweep_metadata(
-        run_dir=run_dir,
-        timestamp=timestamp,
-        notes=args.notes,
-        cmd_args=sys.argv,
-        sweep_target=args.sweep_target,
-        sweep_param=args.sweep_param,
-        sweep_values=sweep_values,
-        base_attack_params=base_attack_params,
-        base_defense_params=base_defense_params,
-        attack_noise_preset=args.attack_noise_preset,
-        dataset_type=dataset_type,
-        dataset_params=dataset_params,
-        attack_type=args.attack,
-        defense_type=args.defense,
-        detector_type=args.detector,
-        detector_params=detector_params,
-        metric_types=args.metric_types,
-        difficulties=args.difficulties,
-        confidence_threshold=args.confidence_threshold,
-        attack_fraction=args.attack_fraction,
-        attack_fraction_seed=args.attack_fraction_seed,
-        use_cached_attacks=args.use_cached_attacks,
-        use_predicted_labels=args.use_predicted_labels,
-        pred_label_score_threshold=args.pred_label_score_threshold,
-        min_unattacked_frames=args.min_unattacked_frames,
-        min_attacked_frames=args.min_attacked_frames,
-        save_frame_results=args.save_frames,
-        precomputed_cache_dir=args.precomputed_cache_dir,
-    )
-
-    if not is_sweep:
-        # -----------------------------------------------------------------------
-        # Single evaluation run
-        # -----------------------------------------------------------------------
-        summary = run_single(
-            attack_type=args.attack,
-            attack_params=base_attack_params,
-            defense_type=args.defense,
-            defense_params=base_defense_params,
-            detector_type=args.detector,
-            detector_params=detector_params,
-            classes=args.classes,
-            difficulties=args.difficulties,
-            metric_types=args.metric_types,
-            confidence_threshold=args.confidence_threshold,
-            output_dir=str(run_dir),
-            experiment_name="single_run",
-            attack_fraction=args.attack_fraction,
-            attack_fraction_seed=args.attack_fraction_seed,
-            save_frame_results=args.save_frames,
+    if not resuming:
+        write_sweep_metadata(
+            run_dir=run_dir,
+            timestamp=timestamp,
+            notes=args.notes,
+            cmd_args=sys.argv,
+            sweep_target=args.sweep_target,
+            sweep_param=args.sweep_param,
+            sweep_values=sweep_values,
+            base_attack_params=base_attack_params,
+            base_defense_params=base_defense_params,
+            attack_noise_preset=args.attack_noise_preset,
             dataset_type=dataset_type,
             dataset_params=dataset_params,
-            precomputed_cache_path=(
-                str(pathlib.Path(args.precomputed_cache_dir) / "single_run")
-                if args.precomputed_cache_dir else None
-            ),
-            read_only_cache= not args.writeable_cache,
+            attack_type=args.attack,
+            defense_type=args.defense,
+            detector_type=args.detector,
+            detector_params=detector_params,
+            metric_types=args.metric_types,
+            difficulties=args.difficulties,
+            confidence_threshold=args.confidence_threshold,
+            attack_fraction=args.attack_fraction,
+            attack_fraction_seed=args.attack_fraction_seed,
             use_cached_attacks=args.use_cached_attacks,
             use_predicted_labels=args.use_predicted_labels,
             pred_label_score_threshold=args.pred_label_score_threshold,
             min_unattacked_frames=args.min_unattacked_frames,
             min_attacked_frames=args.min_attacked_frames,
-            desc="single run",
+            save_frame_results=args.save_frames,
+            precomputed_cache_dir=args.precomputed_cache_dir,
         )
+    else:
+        logging.info("Skipping metadata write (resuming existing run dir)")
+
+    if not is_sweep:
+        # -----------------------------------------------------------------------
+        # Single evaluation run
+        # -----------------------------------------------------------------------
+        _experiment_name = "single_run"
+        _result_json = run_dir / f"{_experiment_name}.json"
+        if resuming and _result_json.exists():
+            logging.info("Skipping %s (already complete)", _experiment_name)
+            with open(_result_json) as _f:
+                summary = json.load(_f)
+        else:
+            summary = run_single(
+                attack_type=args.attack,
+                attack_params=base_attack_params,
+                defense_type=args.defense,
+                defense_params=base_defense_params,
+                detector_type=args.detector,
+                detector_params=detector_params,
+                classes=args.classes,
+                difficulties=args.difficulties,
+                metric_types=args.metric_types,
+                confidence_threshold=args.confidence_threshold,
+                output_dir=str(run_dir),
+                experiment_name=_experiment_name,
+                attack_fraction=args.attack_fraction,
+                attack_fraction_seed=args.attack_fraction_seed,
+                save_frame_results=args.save_frames,
+                dataset_type=dataset_type,
+                dataset_params=dataset_params,
+                precomputed_cache_path=(
+                    str(pathlib.Path(args.precomputed_cache_dir) / _experiment_name)
+                    if args.precomputed_cache_dir else None
+                ),
+                read_only_cache=not args.writeable_cache,
+                use_cached_attacks=args.use_cached_attacks,
+                use_predicted_labels=args.use_predicted_labels,
+                pred_label_score_threshold=args.pred_label_score_threshold,
+                min_unattacked_frames=args.min_unattacked_frames,
+                min_attacked_frames=args.min_attacked_frames,
+                desc="single run",
+                checkpoint_path=str(run_dir / _experiment_name),
+            )
 
         log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
 
@@ -852,33 +884,41 @@ def main() -> None:
                     pathlib.Path(args.precomputed_cache_dir) / f"{args.sweep_param}_{val_str}"
                 )
 
-        summary = run_single(
-            attack_type=active_attack_type,
-            attack_params=attack_params,
-            defense_type=args.defense,
-            defense_params=defense_params,
-            detector_type=args.detector,
-            detector_params=detector_params,
-            classes=args.classes,
-            difficulties=args.difficulties,
-            metric_types=args.metric_types,
-            confidence_threshold=args.confidence_threshold,
-            output_dir=str(run_dir),
-            experiment_name=experiment_name,
-            attack_fraction=args.attack_fraction,
-            attack_fraction_seed=args.attack_fraction_seed,
-            save_frame_results=args.save_frames,
-            desc="no_attack (baseline)" if is_baseline else f"{args.sweep_param}={val}",
-            dataset_type=dataset_type,
-            dataset_params=dataset_params,
-            precomputed_cache_path=val_cache_path,
-            read_only_cache= not args.writeable_cache,
-            use_cached_attacks=False if is_baseline else args.use_cached_attacks,
-            use_predicted_labels=args.use_predicted_labels,
-            pred_label_score_threshold=args.pred_label_score_threshold,
-            min_unattacked_frames=args.min_unattacked_frames,
-            min_attacked_frames=args.min_attacked_frames,
-        )
+        # Two-level resume: skip completed experiments whose results JSON is present.
+        _result_json = run_dir / f"{experiment_name}.json"
+        if resuming and _result_json.exists():
+            logging.info("Skipping %s (already complete)", experiment_name)
+            with open(_result_json) as _f:
+                summary = json.load(_f)
+        else:
+            summary = run_single(
+                attack_type=active_attack_type,
+                attack_params=attack_params,
+                defense_type=args.defense,
+                defense_params=defense_params,
+                detector_type=args.detector,
+                detector_params=detector_params,
+                classes=args.classes,
+                difficulties=args.difficulties,
+                metric_types=args.metric_types,
+                confidence_threshold=args.confidence_threshold,
+                output_dir=str(run_dir),
+                experiment_name=experiment_name,
+                attack_fraction=args.attack_fraction,
+                attack_fraction_seed=args.attack_fraction_seed,
+                save_frame_results=args.save_frames,
+                desc="no_attack (baseline)" if is_baseline else f"{args.sweep_param}={val}",
+                dataset_type=dataset_type,
+                dataset_params=dataset_params,
+                precomputed_cache_path=val_cache_path,
+                read_only_cache=not args.writeable_cache,
+                use_cached_attacks=False if is_baseline else args.use_cached_attacks,
+                use_predicted_labels=args.use_predicted_labels,
+                pred_label_score_threshold=args.pred_label_score_threshold,
+                min_unattacked_frames=args.min_unattacked_frames,
+                min_attacked_frames=args.min_attacked_frames,
+                checkpoint_path=str(run_dir / experiment_name),
+            )
 
         if "ap" in args.metric_types:
             ap_rows.append(extract_ap_row(summary, args.sweep_param, val, args.classes, args.difficulties))

@@ -197,6 +197,7 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
         pred_label_score_threshold=config.pred_label_score_threshold,
         min_unattacked_frames=config.min_unattacked_frames,
         min_attacked_frames=config.min_attacked_frames,
+        checkpoint_path=config.checkpoint_path,
     )
 
 
@@ -204,7 +205,7 @@ def build_pipeline(config: ExperimentConfig, desc: str = "Frames") -> EvalPipeli
 # Experiment runner
 # ---------------------------------------------------------------------------
 
-def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:
+def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:  # noqa: C901
     """Run a full experiment and return a JSON-serialisable results dict.
 
     Which metrics are computed is controlled by config.metric_types:
@@ -216,6 +217,7 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:
         desc = f"Budget {config.attack_params.get('budget', '?')}" if config.attack_type else "Frames"
     pipeline = build_pipeline(config, desc=desc)
     eval_results = pipeline.run()
+    # Keep a reference so cleanup_checkpoint() can be called after saving results.
 
     summary: dict = {
         "experiment_name": config.experiment_name,
@@ -318,6 +320,10 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:
                 for fr in eval_results.frame_results:
                     f.write(json.dumps(_serialise_frame_result(fr)) + "\n")
             logger.info("Per-frame results saved to %s", frames_path)
+
+        # Results JSON is the authoritative completion marker — delete checkpoint
+        # sidecars now that the experiment has finished successfully.
+        pipeline.cleanup_checkpoint()
 
     return summary
 
