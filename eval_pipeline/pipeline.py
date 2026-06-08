@@ -275,7 +275,8 @@ class EvalPipeline:
         )
         n = 0
         live_run_frames = []
-        live_attack_rerun = 0
+        live_attack_rerun_no_lidar = 0  # cache hit but lidar missing (old cache format)
+        live_attack_rerun_not_use_cache = 0  # use_cached_attacks=False
         frame_index_in_scene = 0
         n_unattacked_in_scene = 0
         n_attacked_in_scene = 0
@@ -452,7 +453,7 @@ class EvalPipeline:
                                 )
                                 if self.detector is not None:
                                     attacked_preds = self.detector.predict(attacked_frame)
-                                live_attack_rerun += 1
+                                live_attack_rerun_no_lidar += 1
                         else:
                             # Re-run the attack live for a fresh lidar and fresh
                             # predictions; the new result is not saved to cache.
@@ -461,7 +462,7 @@ class EvalPipeline:
                             )
                             if self.detector is not None:
                                 attacked_preds = self.detector.predict(attacked_frame)
-                            live_attack_rerun += 1
+                            live_attack_rerun_not_use_cache += 1
             else:
                 # -------------------------------------------------------
                 # No cache configured: run everything live.
@@ -549,13 +550,22 @@ class EvalPipeline:
         if self._cache is None:
             logger.info("Pipeline complete: %d frames processed live (no precomputed cache).", n)
         else:
-            logger.info(
-                "Pipeline complete: %d frames processed. %d cache misses ran fully live "
-                "(%s). %d cache hits re-ran attack live (use_cached_attacks=False).",
-                n, len(live_run_frames),
-                "written to cache" if self._cache_writable else "discarded",
-                live_attack_rerun,
-            )
+            parts = [
+                f"{n} frames processed",
+                f"{len(live_run_frames)} cache misses ran fully live "
+                f"({'written to cache' if self._cache_writable else 'discarded'})",
+            ]
+            if live_attack_rerun_no_lidar:
+                parts.append(
+                    f"{live_attack_rerun_no_lidar} cache hits re-ran attack live "
+                    f"(cached lidar missing — old cache format)"
+                )
+            if live_attack_rerun_not_use_cache:
+                parts.append(
+                    f"{live_attack_rerun_not_use_cache} cache hits re-ran attack live "
+                    f"(use_cached_attacks=False)"
+                )
+            logger.info("Pipeline complete: %s.", "; ".join(parts))
 
         self._close_cache()
 
