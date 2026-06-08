@@ -552,6 +552,8 @@ def main() -> None:
     )
     parser.add_argument("--save-frames", action="store_true", default=False,
                         help="Save per-frame JSONL alongside each experiment's results JSON")
+    parser.add_argument("--no-checkpoint", action="store_true", default=False,
+                        help="Disable scene-level checkpointing (required for async defenses)")
     parser.add_argument(
         "--precomputed-cache-dir", type=str, default=None, metavar="DIR",
         help=(
@@ -823,7 +825,7 @@ def main() -> None:
                 min_unattacked_frames=args.min_unattacked_frames,
                 min_attacked_frames=args.min_attacked_frames,
                 desc="single run",
-                checkpoint_path=str(run_dir / _experiment_name),
+                checkpoint_path=None if args.no_checkpoint else str(run_dir / _experiment_name),
             )
 
         log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
@@ -917,7 +919,7 @@ def main() -> None:
                 pred_label_score_threshold=args.pred_label_score_threshold,
                 min_unattacked_frames=args.min_unattacked_frames,
                 min_attacked_frames=args.min_attacked_frames,
-                checkpoint_path=str(run_dir / experiment_name),
+                checkpoint_path=None if args.no_checkpoint else str(run_dir / experiment_name),
             )
 
         if "ap" in args.metric_types:
