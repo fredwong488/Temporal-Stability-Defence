@@ -1,0 +1,79 @@
+{
+  "notes": "Evaluate llm defense gemini on mini_train ora keyframes only extended roi thinking 0",
+  "git_commit": "6818c55fe56b5a459b9c79f9426d530ce898add4",
+  "timestamp": "2026-06-08-18-44-35",
+  "cmd_args": [
+    "scripts/run_sweep.py",
+    "--dataset",
+    "nuscenes",
+    "--nuscenes-split",
+    "mini_train",
+    "--nuscenes-keyframes-only",
+    "--attack",
+    "ora",
+    "--attack-fraction",
+    "1.0",
+    "--defense",
+    "llm",
+    "--detector",
+    "pointpillars_nuscenes",
+    "--metric-types",
+    "defense_effectiveness",
+    "llm_attack_type_accuracy",
+    "--precomputed-cache-dir",
+    "precomputed/nuscenes-minitrain-pointpillars-ora-withnoise-b200-1.0-fixed_reinject_dist",
+    "--use-cached-attacks",
+    "--save-frames",
+    "--use-predicted-labels",
+    "--defense-params",
+    "thinking_effort=0",
+    "--notes",
+    "Evaluate llm defense gemini on mini_train ora keyframes only extended roi thinking 0"
+  ],
+  "precomputed_cache_dir": "precomputed/nuscenes-minitrain-pointpillars-ora-withnoise-b200-1.0-fixed_reinject_dist",
+  "sweep": null,
+  "dataset_type": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_train",
+    "keyframes_only": true
+  },
+  "attack_type": "ora",
+  "attack_params": {
+    "target_types": [
+      "car",
+      "pedestrian",
+      "bicycle"
+    ],
+    "noise_preset": "worst_case"
+  },
+  "attack_fraction": 1.0,
+  "attack_fraction_seed": 0,
+  "min_unattacked_frames": 6,
+  "min_attacked_frames": 6,
+  "detector_type": "pointpillars_nuscenes",
+  "detector_params": {
+    "score_threshold": 0.3
+  },
+  "defense_type": "llm",
+  "defense_params": {
+    "thinking_effort": 0
+  },
+  "metric_types": [
+    "defense_effectiveness",
+    "llm_attack_type_accuracy"
+  ],
+  "difficulties": [
+    "Easy",
+    "Moderate",
+    "Hard"
+  ],
+  "recall_iou_confidence_threshold": 0.3,
+  "save_frame_results": true,
+  "read_only_cache": true,
+  "use_cached_attacks": true,
+  "use_predicted_labels": true,
+  "pred_label_score_threshold": 0.5,
+  "checkpoint_path": null
+}
