@@ -151,6 +151,7 @@ class LLMDefense(BaseDefense):
             if raw is not None:
                 cache_hit = True
 
+        t_query: float | None = None
         if raw is None:
             if self._rate_limiter is not None:
                 self._rate_limiter.acquire()
@@ -169,18 +170,22 @@ class LLMDefense(BaseDefense):
                 roi_max=self._roi_max,
                 dpi=self._render_dpi,
             )
+
+            t_query = time.perf_counter()
             raw, token_info = self._backend.query(images, self._prompt, self._thinking_effort)
             self._cache.save(cache_key, raw)
 
-        elapsed_s = time.perf_counter() - t0
+        t_end = time.perf_counter()
+        total_elapsed_s = t_end - t0
+        query_elapsed_s = t_end - t_query if t_query is not None else 0.0
 
-        return self._parse(raw, cache_hit, elapsed_s, token_info)
+        return self._parse(raw, cache_hit, total_elapsed_s, query_elapsed_s, token_info)
 
-    def _parse(self, raw: dict, cache_hit: bool, elapsed_s: float, token_info: dict | None = None) -> DetectionResult:
+    def _parse(self, raw: dict, cache_hit: bool, total_elapsed_s: float, query_elapsed_s: float, token_info: dict | None = None) -> DetectionResult:
         try:
             verdict_obj = LLMVerdict.model_validate(raw)
         except Exception:
-            metadata: dict = {"error": "Failed to parse LLM response", "raw_response": raw, "cache_hit": cache_hit, "elapsed_s": elapsed_s}
+            metadata: dict = {"error": "Failed to parse LLM response", "raw_response": raw, "cache_hit": cache_hit, "total_elapsed_s": total_elapsed_s, "query_elapsed_s": query_elapsed_s}
             if token_info is not None:
                 metadata["token_usage"] = token_info
             return DetectionResult(
@@ -214,7 +219,8 @@ class LLMDefense(BaseDefense):
             "backend": self._backend_name,
             "model": self._model,
             "cache_hit": cache_hit,
-            "elapsed_s": elapsed_s,
+            "total_elapsed_s": total_elapsed_s,
+            "query_elapsed_s": query_elapsed_s,
             "raw_response": raw,
         }
         if token_info is not None:

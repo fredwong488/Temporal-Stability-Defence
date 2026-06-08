@@ -316,11 +316,11 @@ class EvalResults:
         return compute_llm_attack_type_accuracy(self.frame_results, self.attack_types)
 
     def llm_cost_metrics(self) -> dict:
-        """Mean, median, and std for input_tokens, output_tokens, and elapsed_s.
+        """Mean, median, and std for input_tokens, output_tokens, total_elapsed_s, query_elapsed_s.
 
-        Cache-hit frames are excluded from elapsed_s (no real API latency) but
-        included in token counts.  Returns empty dict when no LLM metadata is
-        present.
+        ``query_elapsed_s`` is 0 for cache hits; ``total_elapsed_s`` covers full
+        wall time including rendering.  Returns empty dict when no LLM metadata
+        is present.
         """
         from .metrics import compute_llm_cost_metrics
 

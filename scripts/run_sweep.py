@@ -263,7 +263,7 @@ def extract_llm_cost_metrics_row(
     """Extract LLM cost stats (mean/median/std for tokens and latency) into a flat dict for the CSV."""
     lcm = summary.get("llm_cost_metrics", {})
     row: dict = {sweep_param: sweep_val}
-    for field in ("input_tokens", "output_tokens", "thoughts_token_count", "elapsed_s"):
+    for field in ("input_tokens", "output_tokens", "thoughts_token_count", "total_elapsed_s", "query_elapsed_s"):
         for stat in ("mean", "median", "std"):
             row[f"{field}_{stat}"] = lcm.get(f"{field}_{stat}", float("nan"))
     row["n_frames"] = lcm.get("n_frames", float("nan"))
@@ -339,7 +339,7 @@ def log_summary_metrics(
     if "llm_cost_metrics" in metric_types:
         lcm = summary.get("llm_cost_metrics", {})
         logging.info(
-            "  LLM cost  in_tok=%.0f(med=%.0f)±%.0f  out_tok=%.0f(med=%.0f)±%.0f  think_tok=%.0f(med=%.0f)±%.0f  elapsed_s=%.2f(med=%.2f)±%.2f  n=%s  n_api=%s",
+            "  LLM cost  in_tok=%.0f(med=%.0f)±%.0f  out_tok=%.0f(med=%.0f)±%.0f  think_tok=%.0f(med=%.0f)±%.0f  total_s=%.2f(med=%.2f)±%.2f  query_s=%.2f(med=%.2f)±%.2f  n=%s  n_api=%s",
             lcm.get("input_tokens_mean", float("nan")),
             lcm.get("input_tokens_median", float("nan")),
             lcm.get("input_tokens_std", float("nan")),
@@ -349,9 +349,12 @@ def log_summary_metrics(
             lcm.get("thoughts_token_count_mean", float("nan")),
             lcm.get("thoughts_token_count_median", float("nan")),
             lcm.get("thoughts_token_count_std", float("nan")),
-            lcm.get("elapsed_s_mean", float("nan")),
-            lcm.get("elapsed_s_median", float("nan")),
-            lcm.get("elapsed_s_std", float("nan")),
+            lcm.get("total_elapsed_s_mean", float("nan")),
+            lcm.get("total_elapsed_s_median", float("nan")),
+            lcm.get("total_elapsed_s_std", float("nan")),
+            lcm.get("query_elapsed_s_mean", float("nan")),
+            lcm.get("query_elapsed_s_median", float("nan")),
+            lcm.get("query_elapsed_s_std", float("nan")),
             lcm.get("n_frames", "?"),
             lcm.get("n_api_frames", "?"),
         )
@@ -1158,7 +1161,7 @@ def main() -> None:
     if "llm_cost_metrics" in args.metric_types and llm_cost_metrics_rows:
         _cost_fields = [
             f"{field}_{stat}"
-            for field in ("input_tokens", "output_tokens", "thoughts_token_count", "elapsed_s")
+            for field in ("input_tokens", "output_tokens", "thoughts_token_count", "total_elapsed_s", "query_elapsed_s")
             for stat in ("mean", "median", "std")
         ]
         fieldnames = [args.sweep_param] + _cost_fields + ["n_frames", "n_api_frames"]
