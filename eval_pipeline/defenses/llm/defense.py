@@ -147,6 +147,7 @@ class LLMDefense(BaseDefense):
         )
 
         cache_hit = False
+        token_info: dict | None = None
         raw: dict | None = None
         if not self._force_refresh:
             raw = self._cache.load(cache_key)
@@ -171,21 +172,24 @@ class LLMDefense(BaseDefense):
                 roi_max=self._roi_max,
                 dpi=self._render_dpi,
             )
-            raw = self._backend.query(images, self._prompt)
+            raw, token_info = self._backend.query(images, self._prompt)
             self._cache.save(cache_key, raw)
 
         elapsed_s = time.perf_counter() - t0
 
-        return self._parse(raw, cache_hit, elapsed_s)
+        return self._parse(raw, cache_hit, elapsed_s, token_info)
 
-    def _parse(self, raw: dict, cache_hit: bool, elapsed_s: float) -> DetectionResult:
+    def _parse(self, raw: dict, cache_hit: bool, elapsed_s: float, token_info: dict | None = None) -> DetectionResult:
         try:
             verdict_obj = LLMVerdict.model_validate(raw)
         except Exception:
+            metadata: dict = {"error": "Failed to parse LLM response", "raw_response": raw, "cache_hit": cache_hit, "elapsed_s": elapsed_s}
+            if token_info is not None:
+                metadata["token_usage"] = token_info
             return DetectionResult(
                 is_attack_detected=False,
                 confidence=0.0,
-                metadata={"error": "Failed to parse LLM response", "raw_response": raw, "cache_hit": cache_hit, "elapsed_s": elapsed_s},
+                metadata=metadata,
             )
 
         verdict = verdict_obj.verdict
@@ -216,6 +220,8 @@ class LLMDefense(BaseDefense):
             "elapsed_s": elapsed_s,
             "raw_response": raw,
         }
+        if token_info is not None:
+            metadata["token_usage"] = token_info
 
         if verdict_obj.suspected_attacks:
             metadata["suspected_attacks"] = [

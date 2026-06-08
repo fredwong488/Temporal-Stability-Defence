@@ -61,4 +61,12 @@ class GeminiBackend(LLMBackend):
                 thinking_config=genai_types.ThinkingConfig(thinking_budget=200),
             ),
         )
-        return json.loads(response.text)
+        usage = response.usage_metadata
+        token_info: dict | None = None
+        if usage is not None:
+            token_info = {
+                "input_tokens": usage.prompt_token_count,
+                "output_tokens": usage.candidates_token_count,
+                "total_tokens": usage.total_token_count,
+            }
+        return json.loads(response.text), token_info
