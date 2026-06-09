@@ -43,6 +43,24 @@ Notes
    artificially empty (θ, φ) cells, causing systematic false-positive
    removal detections on every frame.  The paper's spherical ROI bounds
    (θ_max = 1.9 cuts the near-field blind spot) serve this purpose instead.
+
+Sensor / grid resolution
+------------------------
+The paper's default grid (θ_step = 0.017 rad ≈ 1°, φ_step = 0.0087 rad ≈ 0.5°) is
+tuned for the **KITTI Velodyne HDL-64E** (64 beams, ~0.4° vertical resolution), where
+the frontal ROI is near-fully occupied and any empty cell is a genuine hole.
+
+NuScenes uses a **Velodyne HDL-32E** (32 beams, ~1.33° vertical spacing).  With ~14
+ground-hitting beams spread across 19 one-degree θ-bins, most cells are empty on every
+*benign* frame — yielding hundreds of empty cells that trivially exceed the scene
+threshold of 5 and producing FPR ≈ 1.0.
+
+The defaults in this class are therefore coarsened for NuScenes:
+    * theta_step = 0.04 rad (≈ 2.3°, ~1.7× the 1.33° HDL-32E beam spacing)
+    * phi_step   = 0.02 rad (≈ 1.15°)
+
+This restores near-full benign occupancy so only genuine holes register.  To reproduce
+the paper's KITTI results, pass ``theta_step=0.017, phi_step=0.0087`` explicitly.
 """
 
 from __future__ import annotations
@@ -73,14 +91,18 @@ class BouhamidiDefense(BaseDefense):
     theta_max : float
         Maximum polar angle in radians.  Default: 1.9 rad.
     theta_step : float
-        Grid step in the polar direction.  Default: 0.017 rad (≈ 1°).
+        Grid step in the polar direction.  Default: 0.04 rad (≈ 2.3°), coarsened from
+        the paper's 0.017 rad (≈ 1°) to match the NuScenes HDL-32E beam spacing of
+        ~1.33°.  Pass ``theta_step=0.017`` to reproduce the paper's KITTI settings.
     phi_min : float
         Minimum azimuth in radians (negative = left of forward).
         Default: −0.5 rad.
     phi_max : float
         Maximum azimuth in radians.  Default: 0.5 rad.
     phi_step : float
-        Grid step in the azimuth direction.  Default: 0.0087 rad (≈ 0.5°).
+        Grid step in the azimuth direction.  Default: 0.02 rad (≈ 1.15°), coarsened
+        from the paper's 0.0087 rad (≈ 0.5°) for NuScenes HDL-32E azimuthal sparsity.
+        Pass ``phi_step=0.0087`` to reproduce the paper's KITTI settings.
     scene_threshold : int
         Minimum number of inconsistent (θ, φ) cell groups required to flag
         an attack at the scene level.  Default: 5.
@@ -115,10 +137,10 @@ class BouhamidiDefense(BaseDefense):
         *,
         theta_min: float = math.pi / 2,
         theta_max: float = 1.9,
-        theta_step: float = 0.017,
+        theta_step: float = 0.04,
         phi_min: float = -0.5,
         phi_max: float = 0.5,
-        phi_step: float = 0.0087,
+        phi_step: float = 0.02,
         scene_threshold: int = 5,
         filter_neighbor_threshold: int = 35,
         filter_radius: float = 0.25,
