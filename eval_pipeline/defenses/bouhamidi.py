@@ -14,8 +14,9 @@ https://hal.science/hal-05294984v1
 
 Algorithm (Section III, Table I)
 ---------------------------------
-1.  Level the point cloud to the gravity-aligned ego frame via
-    ``frame.nuscenes_sensor_to_ego`` so that the ground lies at z ≈ 0.
+1.  Apply the rotation-only part of ``frame.nuscenes_sensor_to_ego`` to level the
+    point cloud (ground at z ≈ −sensor_height).  The sensor origin is kept so that
+    each beam maps cleanly to its elevation angle θ.
 2.  Convert points to spherical coordinates (r, polar θ, azimuth φ) and
     restrict to the frontal ROI:
         θ ∈ [θ_min, θ_max]   (polar angle from +z; larger ↔ closer to ground)
@@ -35,32 +36,38 @@ Algorithm (Section III, Table I)
 
 Notes
 -----
-*  NuScenes only.  The spherical ROI assumes a gravity-aligned frame;
-   the raw sensor on NuScenes is tilted, so we must level via
-   ``nuscenes_sensor_to_ego`` before the spherical transform.  If that
-   transform is missing, a ``ValueError`` is raised.
+*  NuScenes only.  The raw sensor on NuScenes is tilted, so the rotation-only
+   part of ``nuscenes_sensor_to_ego`` is applied to level the frame before the
+   spherical transform.  If the transform is missing, a ``ValueError`` is raised.
 *  No ego-box removal.  Carving out points near the origin would create
    artificially empty (θ, φ) cells, causing systematic false-positive
    removal detections on every frame.  The paper's spherical ROI bounds
    (θ_max = 1.9 cuts the near-field blind spot) serve this purpose instead.
 
+Spherical coordinate origin
+---------------------------
+The paper computes (r, θ, φ) from the **LiDAR sensor origin** so that θ maps
+directly to each beam's elevation angle — the premise of the (θ, φ) grid.
+Applying the full sensor→ego translation (not just rotation) shifts the origin
+to ego body height (z ≈ ground level), which makes ``arccos(z/r) ≈ π/2`` for
+every ground point regardless of range.  All ground bins then collapse into the
+first θ-row, leaving every other row empty and producing FPR ≈ 1.0 from the
+removal branch.  This implementation therefore applies rotation-only levelling
+(no ego translation) for both Patchwork++ and the spherical computation.
+
 Sensor / grid resolution
 ------------------------
-The paper's default grid (θ_step = 0.017 rad ≈ 1°, φ_step = 0.0087 rad ≈ 0.5°) is
-tuned for the **KITTI Velodyne HDL-64E** (64 beams, ~0.4° vertical resolution), where
-the frontal ROI is near-fully occupied and any empty cell is a genuine hole.
+The paper's default grid (θ_step = 0.017 rad ≈ 1°, φ_step = 0.0087 rad ≈ 0.5°)
+is tuned for the **KITTI Velodyne HDL-64E** (64 beams, ~0.4° vertical resolution),
+where the frontal ROI is near-fully occupied and any empty cell is a genuine hole.
 
-NuScenes uses a **Velodyne HDL-32E** (32 beams, ~1.33° vertical spacing).  With ~14
-ground-hitting beams spread across 19 one-degree θ-bins, most cells are empty on every
-*benign* frame — yielding hundreds of empty cells that trivially exceed the scene
-threshold of 5 and producing FPR ≈ 1.0.
-
-The defaults in this class are therefore coarsened for NuScenes:
+NuScenes uses a **Velodyne HDL-32E** (32 beams, ~1.33° vertical spacing).  The 1°
+θ-step is narrower than the beam spacing, so ~25% of θ-bins are empty on every
+benign frame — hundreds of empty cells that trivially exceed the scene threshold.
+The defaults are therefore coarsened for NuScenes:
     * theta_step = 0.04 rad (≈ 2.3°, ~1.7× the 1.33° HDL-32E beam spacing)
     * phi_step   = 0.02 rad (≈ 1.15°)
-
-This restores near-full benign occupancy so only genuine holes register.  To reproduce
-the paper's KITTI results, pass ``theta_step=0.017, phi_step=0.0087`` explicitly.
+To reproduce the paper's KITTI settings pass ``theta_step=0.017, phi_step=0.0087``.
 """
 
 from __future__ import annotations
@@ -209,21 +216,25 @@ class BouhamidiDefense(BaseDefense):
         xyz_sensor = frame.lidar[:, :3].astype(np.float64)
         intensity = frame.lidar[:, 3:4].astype(np.float64)
         s2e = frame.nuscenes_sensor_to_ego.astype(np.float64)
-        # Full ego transform for spherical coordinates and ROI (x-forward, y-left, z-up).
-        xyz_ego = (s2e[:3, :3] @ xyz_sensor.T + s2e[:3, 3:4]).T  # (N, 3)
-        # Rotation-only levelling for Patchwork++ (ground at z ≈ -sensor_height).
+        # Rotation-only levelling: gravity-aligned, sensor-centered (ground at z ≈ -sensor_height).
+        # Used for BOTH Patchwork++ and the spherical (r, θ, φ) computation.
+        # The paper computes (r, θ, φ) from the LiDAR sensor origin — θ then maps cleanly to
+        # each beam's elevation angle, which is the premise of the (θ, φ) grid.
+        # Using the full ego translation instead puts the origin at ground level, making
+        # arccos(z/r) ≈ π/2 for all ground points regardless of range → all ground bins into
+        # the first θ-row, leaving every other row empty and triggering systematic removal FPs.
         xyz_leveled = (s2e[:3, :3] @ xyz_sensor.T).T  # (N, 3)
 
         # ------------------------------------------------------------------ #
         #  2.  Spherical coordinates + ROI mask                               #
         # ------------------------------------------------------------------ #
         _t0 = time.perf_counter()
-        r = np.linalg.norm(xyz_ego, axis=1)
+        r = np.linalg.norm(xyz_leveled, axis=1)
         # Guard against origin-point division-by-zero
         r_safe = np.where(r > 0, r, 1e-9)
 
-        theta = np.arccos(np.clip(xyz_ego[:, 2] / r_safe, -1.0, 1.0))  # polar from +z
-        phi = np.arctan2(xyz_ego[:, 1], xyz_ego[:, 0])                  # azimuth
+        theta = np.arccos(np.clip(xyz_leveled[:, 2] / r_safe, -1.0, 1.0))  # polar from +z
+        phi = np.arctan2(xyz_leveled[:, 1], xyz_leveled[:, 0])              # azimuth
 
         roi_mask = (
             (theta >= self.theta_min) & (theta <= self.theta_max)
@@ -246,14 +257,14 @@ class BouhamidiDefense(BaseDefense):
                 },
             )
 
-        xyz_roi = xyz_ego[roi_mask]
+        xyz_roi = xyz_leveled[roi_mask]
         intensity_roi = intensity[roi_mask]
         theta_roi = theta[roi_mask]
         phi_roi = phi[roi_mask]
 
-        # Pass rotation-levelled points to Patchwork++ (ground at z ≈ -sensor_height).
+        # Pass levelled ROI points to Patchwork++ (ground at z ≈ -sensor_height).
         xyzw_leveled_roi = np.concatenate(
-            [xyz_leveled[roi_mask], intensity_roi], axis=1
+            [xyz_roi, intensity_roi], axis=1
         ).astype(np.float32)
         _elapsed_spherical_roi_s = time.perf_counter() - _t0
 
