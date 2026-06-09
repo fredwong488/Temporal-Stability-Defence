@@ -317,6 +317,8 @@ def main() -> None:
                         help="Restrict NuScenes run to these scene names (e.g. scene-0061 scene-0103)")
     parser.add_argument("--nuscenes-keyframes-only", action="store_true", default=False,
                         help="Yield only annotated keyframes (2 Hz) instead of all sweeps (~20 Hz)")
+    parser.add_argument("--nuscenes-num-scenes", type=int, default=None, metavar="N",
+                        help="Use the first N scenes from the NuScenes split (default: all)")
 
     # Components (all optional, but at least one required)
     parser.add_argument("--attack", type=str, default=None,
@@ -551,6 +553,10 @@ def main() -> None:
         dataset_params["split"] = args.nuscenes_split
         if args.nuscenes_scene_names is not None:
             dataset_params["scene_names"] = args.nuscenes_scene_names
+        elif args.nuscenes_num_scenes is not None:
+            from nuscenes.utils.splits import create_splits_scenes
+            _all_scenes = create_splits_scenes()[args.nuscenes_split]
+            dataset_params["scene_names"] = _all_scenes[: args.nuscenes_num_scenes]
         if args.nuscenes_keyframes_only:
             dataset_params["keyframes_only"] = True
     elif dataset_type == "kitti":
@@ -573,6 +579,8 @@ def main() -> None:
                      args.nuscenes_root, args.nuscenes_version, args.nuscenes_split)
         if args.nuscenes_scene_names:
             logging.info("Scenes       : %s", args.nuscenes_scene_names)
+        elif args.nuscenes_num_scenes is not None:
+            logging.info("Num scenes   : %d (first from %s)", args.nuscenes_num_scenes, args.nuscenes_split)
     logging.info("Attack       : %s", args.attack or "(none)")
     if args.attack and args.attack_fraction < 1.0:
         logging.info("Atk fraction : %.2f (seed=%d)", args.attack_fraction, args.attack_fraction_seed)
