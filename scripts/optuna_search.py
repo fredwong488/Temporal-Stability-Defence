@@ -420,7 +420,9 @@ def main() -> None:
         classes = ["Car", "Pedestrian", "Cyclist"]
 
     # Attack params
-    attack_params: dict = {"target_types": classes}
+    attack_params: dict = {}
+    if args.attack == "ora":
+        attack_params["target_types"] = classes
     if args.attack_noise_preset != "none":
         from eval_pipeline.utils.spoofing_noise import SpoofingNoiseModel
         attack_params["noise_model"] = SpoofingNoiseModel.from_preset(
