@@ -219,7 +219,7 @@ class BouhamidiDefense(BaseDefense):
                     "removal_detected": False,
                     "insertion_groups": 0,
                     "removal_groups": 0,
-                    "insertion_points_xyz": np.empty((0, 3), dtype=np.float32),
+                    "insertion_points_xyz": [],
                     "removal_cell_indices": [],
                 },
             )
@@ -261,7 +261,7 @@ class BouhamidiDefense(BaseDefense):
                     "removal_detected": False,
                     "insertion_groups": 0,
                     "removal_groups": 0,
-                    "insertion_points_xyz": np.empty((0, 3), dtype=np.float32),
+                    "insertion_points_xyz": [],
                     "removal_cell_indices": [],
                 },
             )
@@ -361,7 +361,7 @@ class BouhamidiDefense(BaseDefense):
                 "removal_detected": bool(removal_detected),
                 "insertion_groups": int(insertion_groups),
                 "removal_groups": int(removal_groups),
-                "insertion_points_xyz": surviving_insertion_pts,
+                "insertion_points_xyz": surviving_insertion_pts.tolist(),
                 "removal_cell_indices": removal_cell_indices,
                 "elapsed_s": {
                     "spherical_roi": _elapsed_spherical_roi_s,
