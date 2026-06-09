@@ -139,6 +139,7 @@ def run_single(
     attack_fraction: float = 1.0,
     attack_fraction_seed: int = 0,
     save_frame_results: bool = False,
+    verbose_frame_results: bool = False,
     desc: str | None = None,
     dataset_type: str = "kitti",
     dataset_params: dict | None = None,
@@ -170,6 +171,7 @@ def run_single(
         attack_fraction=attack_fraction,
         attack_fraction_seed=attack_fraction_seed,
         save_frame_results=save_frame_results,
+        verbose_frame_results=verbose_frame_results,
         precomputed_cache_path=precomputed_cache_path,
         read_only_cache=read_only_cache,
         use_cached_attacks=use_cached_attacks,
@@ -215,6 +217,7 @@ def write_sweep_metadata(
     min_unattacked_frames: int,
     min_attacked_frames: int,
     save_frame_results: bool,
+    verbose_frame_results: bool,
     precomputed_cache_dir: str | None,
 ) -> None:
     try:
@@ -254,6 +257,7 @@ def write_sweep_metadata(
         min_unattacked_frames=min_unattacked_frames,
         min_attacked_frames=min_attacked_frames,
         save_frame_results=save_frame_results,
+        verbose_frame_results=verbose_frame_results,
     )
     config_dict = rep_config.to_dict()
 
@@ -399,8 +403,20 @@ def main() -> None:
     )
     parser.add_argument("--save-frames", action="store_true", default=False,
                         help="Save per-frame JSONL alongside each experiment's results JSON")
+    parser.add_argument("--verbose-frames", action="store_true", default=False,
+                        help="Include full prediction lists in per-frame JSONL (default: counts only)")
     parser.add_argument("--no-checkpoint", action="store_true", default=False,
                         help="Disable scene-level checkpointing (required for async defenses)")
+    parser.add_argument(
+        "--checkpoint-dir", type=str, default="/vol/bitbucket/cyw122/FYP/experiment_pipeline/checkpoints", metavar="DIR",
+        help=(
+            "Base directory for scene-level checkpoint files. A timestamped subdirectory "
+            "mirroring the run-dir structure is created beneath it, e.g. "
+            "<checkpoint-dir>/<timestamp>/<experiment>. "
+            "Defaults to <run-dir> (checkpoints co-located with results). "
+            "Set to a fast/large scratch volume to keep results separate from bulky pickle files."
+        ),
+    )
     parser.add_argument(
         "--precomputed-cache-dir", type=str, default=None, metavar="DIR",
         help=(
@@ -517,6 +533,11 @@ def main() -> None:
         run_dir.mkdir(parents=True, exist_ok=True)
         resuming = False
 
+    checkpoint_run_dir = (pathlib.Path(args.checkpoint_dir) / timestamp) if args.checkpoint_dir else run_dir
+    if args.checkpoint_dir:
+        checkpoint_run_dir.mkdir(parents=True, exist_ok=True)
+        logging.info("Checkpoint dir: %s", checkpoint_run_dir)
+
     detector_params: dict = {}
     if args.detector is not None:
         detector_params["score_threshold"] = args.confidence_threshold
@@ -629,6 +650,7 @@ def main() -> None:
             min_unattacked_frames=args.min_unattacked_frames,
             min_attacked_frames=args.min_attacked_frames,
             save_frame_results=args.save_frames,
+            verbose_frame_results=args.verbose_frames,
             precomputed_cache_dir=args.precomputed_cache_dir,
         )
     else:
@@ -661,6 +683,7 @@ def main() -> None:
                 attack_fraction=args.attack_fraction,
                 attack_fraction_seed=args.attack_fraction_seed,
                 save_frame_results=args.save_frames,
+                verbose_frame_results=args.verbose_frames,
                 dataset_type=dataset_type,
                 dataset_params=dataset_params,
                 precomputed_cache_path=(
@@ -674,7 +697,7 @@ def main() -> None:
                 min_unattacked_frames=args.min_unattacked_frames,
                 min_attacked_frames=args.min_attacked_frames,
                 desc="single run",
-                checkpoint_path=None if args.no_checkpoint else str(run_dir / _experiment_name),
+                checkpoint_path=None if args.no_checkpoint else str(checkpoint_run_dir / _experiment_name),
             )
 
         log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
@@ -758,6 +781,7 @@ def main() -> None:
                 attack_fraction=args.attack_fraction,
                 attack_fraction_seed=args.attack_fraction_seed,
                 save_frame_results=args.save_frames,
+                verbose_frame_results=args.verbose_frames,
                 desc="no_attack (baseline)" if is_baseline else f"{args.sweep_param}={val}",
                 dataset_type=dataset_type,
                 dataset_params=dataset_params,
@@ -768,7 +792,7 @@ def main() -> None:
                 pred_label_score_threshold=args.pred_label_score_threshold,
                 min_unattacked_frames=args.min_unattacked_frames,
                 min_attacked_frames=args.min_attacked_frames,
-                checkpoint_path=None if args.no_checkpoint else str(run_dir / experiment_name),
+                checkpoint_path=None if args.no_checkpoint else str(checkpoint_run_dir / experiment_name),
             )
 
         if "ap" in args.metric_types:

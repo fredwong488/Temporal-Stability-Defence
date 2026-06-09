@@ -125,6 +125,7 @@ class ExperimentConfig:
     output_dir: str = "results"
     experiment_name: str = "default"
     save_frame_results: bool = False   # write per-frame JSONL alongside results JSON
+    verbose_frame_results: bool = False  # include full prediction lists in JSONL; when False, stores counts only
 
     # Precomputed cache
     # Path to a shelve-backed cache of FrameCacheEntry objects.

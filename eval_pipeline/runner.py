@@ -53,7 +53,7 @@ def _serialise_prediction(p: Prediction) -> dict:
     }
 
 
-def _serialise_frame_result(fr: FrameResult) -> dict:
+def _serialise_frame_result(fr: FrameResult, verbose: bool = False) -> dict:
     result: dict = {
         "frame_id": fr.frame_id,
         "sequence_id": fr.sequence_id,
@@ -63,12 +63,18 @@ def _serialise_frame_result(fr: FrameResult) -> dict:
         "attack_start_frame_id": fr.attack_start_frame_id,
         "is_attacked": fr.is_attacked,
         "attack_metadata": fr.attack_metadata,
-        "clean_predictions": [_serialise_prediction(p) for p in fr.clean_predictions],
-        "attacked_predictions": (
+    }
+    if verbose:
+        result["clean_predictions"] = [_serialise_prediction(p) for p in fr.clean_predictions]
+        result["attacked_predictions"] = (
             [_serialise_prediction(p) for p in fr.attacked_predictions]
             if fr.attacked_predictions is not None else None
-        ),
-    }
+        )
+    else:
+        result["clean_predictions_count"] = len(fr.clean_predictions)
+        result["attacked_predictions_count"] = (
+            len(fr.attacked_predictions) if fr.attacked_predictions is not None else None
+        )
     if fr.defense_result is not None:
         result["defense_result"] = {
             "is_attack_detected": fr.defense_result.is_attack_detected,
@@ -338,7 +344,7 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:  
             frames_path = out_dir / f"{config.experiment_name}_frames.jsonl"
             with open(frames_path, "w") as f:
                 for fr in eval_results.frame_results:
-                    f.write(json.dumps(_serialise_frame_result(fr)) + "\n")
+                    f.write(json.dumps(_serialise_frame_result(fr, verbose=config.verbose_frame_results)) + "\n")
             logger.info("Per-frame results saved to %s", frames_path)
 
         # Results JSON is the authoritative completion marker — delete checkpoint
@@ -380,6 +386,8 @@ def main() -> None:
     parser.add_argument("--output-dir", type=str, default="results")
     parser.add_argument("--save-frames", action="store_true", default=False,
                         help="Save per-frame JSONL alongside results JSON for visualisation")
+    parser.add_argument("--verbose-frames", action="store_true", default=False,
+                        help="Include full prediction lists in per-frame JSONL (default: counts only)")
     parser.add_argument("--use-predicted-labels", action="store_true", default=False,
                         help="Use clean detector predictions as attack labels instead of "
                              "ground-truth annotations. Use for datasets where not every "
@@ -417,6 +425,8 @@ def main() -> None:
         overrides["attack_params"] = {**config.attack_params, "budget": args.budget}
     if args.save_frames:
         overrides["save_frame_results"] = True
+    if args.verbose_frames:
+        overrides["verbose_frame_results"] = True
     if args.use_predicted_labels:
         overrides["use_predicted_labels"] = True
     if args.pred_label_score_threshold is not None:
