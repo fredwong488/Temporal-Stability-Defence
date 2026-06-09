@@ -119,6 +119,31 @@ def _suggest_params_clustering(trial: optuna.Trial, clusterer: str) -> dict:
     return params
 
 
+def _suggest_params_predictions(trial: optuna.Trial, base_defense_params: dict) -> dict:
+    """Search space for use predictions"""
+    use_point    = base_defense_params.get("use_point",    True)
+    use_centroid = base_defense_params.get("use_centroid", True)
+    force_or     = (not use_point) or (not use_centroid)
+
+    params: dict = {
+        "temporal_window":        trial.suggest_int  ("temporal_window",        6,   14),
+        "motion_tolerance":       trial.suggest_float("motion_tolerance",      0.3,  3.0),
+        "min_frames_associated":  trial.suggest_int  ("min_frames_associated",  2,   13),
+        "min_points_per_cluster": trial.suggest_int  ("min_points_per_cluster", 5,   30),
+        "flag_condition": "or" if force_or else trial.suggest_categorical("flag_condition", ["and", "or"]),
+    }
+
+    if use_centroid:
+        params["centroid_threshold"] = trial.suggest_float("centroid_threshold", 0.1, 1.0)
+        params["centroid_method"] = trial.suggest_categorical("centroid_method", ["linear_velocity", "first_diff"])
+    if use_point:
+        params["icp_max_correspondence_dist"] = trial.suggest_float("icp_max_correspondence_dist", 0.1, 1)
+        params["point_threshold"] = trial.suggest_float("point_threshold", 0.03, 0.25)
+    if trial.number == 0:
+        logging.info("Search space (trial 0): %s", trial.distributions)
+    return params
+
+
 def _suggest_params_defense(trial: optuna.Trial, base_defense_params: dict) -> dict:
     """Search space for defense_effectiveness (Phase 2): thresholds and flag_condition only.
 
@@ -149,6 +174,7 @@ def _suggest_params_defense(trial: optuna.Trial, base_defense_params: dict) -> d
 def build_objective(
     base_defense_params: dict,
     clusterer: str,
+    use_predictions: bool,
     attack_type: str | None,
     attack_params: dict,
     attack_fraction: float,
@@ -169,7 +195,9 @@ def build_objective(
     read_only_cache: bool,
 ):
     def objective(trial: optuna.Trial):
-        if objective_mode in ("defense_effectiveness", "pacts_effectiveness"):
+        if objective_mode == "defense_effectiveness" and use_predictions:
+            trial_params = _suggest_params_predictions(trial, base_defense_params)
+        elif objective_mode in ("defense_effectiveness", "pacts_effectiveness"):
             trial_params = _suggest_params_defense(trial, base_defense_params)
         else:
             trial_params = _suggest_params_clustering(trial, clusterer)
@@ -399,11 +427,13 @@ def main() -> None:
 
     base_defense_params = _parse_kv_params(args.defense_params)
     clusterer = base_defense_params.get("clusterer")
-    if clusterer not in ("dbscan", "hdbscan"):
+    use_predictions = bool(base_defense_params.get("use_predictions", False))
+    if not use_predictions and clusterer not in ("dbscan", "hdbscan"):
         raise ValueError(
             "clusterer must be provided via --defense-params (e.g. clusterer=dbscan or "
             "clusterer=hdbscan). It is required to select the correct search space: "
-            "DBSCAN searches dbscan_eps; HDBSCAN searches hdbscan_min_cluster_size instead."
+            "DBSCAN searches dbscan_eps; HDBSCAN searches hdbscan_min_cluster_size instead. "
+            "Pass use_predictions=True to use the predictions-based search space instead."
         )
 
     logging.info("Clusterer: %s", clusterer)
@@ -514,6 +544,7 @@ def main() -> None:
     objective = build_objective(
         base_defense_params=base_defense_params,
         clusterer=clusterer,
+        use_predictions=use_predictions,
         attack_type=args.attack,
         attack_params=attack_params,
         attack_fraction=args.attack_fraction,
