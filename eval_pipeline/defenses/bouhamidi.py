@@ -337,7 +337,7 @@ class BouhamidiDefense(BaseDefense):
         insertion_groups = len(surviving_insertion_cells)
 
         # 6c. Removal: count flagged cells (after boundary ignore)
-        removal_cell_indices = list(zip(*np.where(removal_cells))) if removal_cells.any() else []
+        removal_cell_indices = [(int(r), int(c)) for r, c in zip(*np.where(removal_cells))] if removal_cells.any() else []
         removal_groups = len(removal_cell_indices)
         _elapsed_postprocess_s = time.perf_counter() - _t0
 
