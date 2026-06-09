@@ -13,6 +13,15 @@ def points_in_box_bev(
     rewritten to accept ``Prediction.corners_velo`` (8, 3) instead of a
     NuScenes ``Box`` object.
 
+    IMPORTANT — detector compatibility
+    ----------------------------------
+    The in-plane edge selection below (corners 0, 3, 1) assumes the corner
+    ordering produced by ``PointPillarsDetector._box_to_corners`` (and its
+    subclass ``PointPillarsNuScenesDetector`` / ``PointRCNNDetector``), where
+    corner 0 = (-l, -w, -h), corner 1 is its +length neighbour and corner 3 is
+    its +width neighbour. TC2 must therefore be paired with a pointpillars-family
+    detector.
+
     Parameters
     ----------
     corners_velo : (8, 3) box corners in sensor/velodyne frame.

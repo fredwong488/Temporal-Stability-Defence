@@ -51,6 +51,13 @@ logger = logging.getLogger(__name__)
 class TC2Defense(BaseDefense):
     """Temporal Consistency Check defense using MotionNet.
 
+    Detector requirement
+    ---------------------
+    Must be paired with a **pointpillars-family detector** (``pointpillars``,
+    ``pointpillars_nuscenes``, or ``pointrcnn``). The in-box test in
+    ``box_utils.points_in_box_bev`` relies on the corner ordering produced by
+    ``PointPillarsDetector._box_to_corners``. See ``box_utils.py`` for details.
+
     Parameters
     ----------
     model_path
