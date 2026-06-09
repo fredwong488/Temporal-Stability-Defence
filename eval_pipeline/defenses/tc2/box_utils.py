@@ -22,11 +22,17 @@ def points_in_box_bev(
     -------
     mask : (N,) boolean array — True if point is inside the BEV footprint.
     """
-    corners = corners_velo.T  # (3, 8) — matches NuScenes Box.corners() layout
+    corners = corners_velo.T  # (3, 8)
 
+    # NOTE: corners_velo uses PointPillarsDetector._box_to_corners ordering, NOT
+    # the NuScenes Box.corners() ordering that TC2's original indices (0, 4, 1)
+    # assumed. In that layout, corner 0 = (-l, -w, -h) and its two in-plane
+    # neighbours are corner 1 (length, +l) and corner 3 (width, +w); corner 4 is
+    # the *vertical* neighbour (+h), so picking it would collapse the in-plane
+    # width edge to (0, 0) and accept an infinite slab along the width axis.
     p1 = corners[:2, 0]
-    p_x = corners[:2, 4]
-    p_y = corners[:2, 1]
+    p_x = corners[:2, 3]   # width edge  (corner 3 - corner 0)
+    p_y = corners[:2, 1]   # length edge (corner 1 - corner 0)
 
     i = p_x - p1
     j = p_y - p1

@@ -60,10 +60,14 @@ class TC2Defense(BaseDefense):
     device
         PyTorch device string, e.g. ``"cuda"`` or ``"cpu"``.
     nsweeps_back
-        Number of past sweeps to feed into MotionNet (default 20).
+        Depth of clean history required (default 36). The defense feeds 5
+        stride-(frame_skip+1) sweeps whose newest frame sits 20 sweeps before
+        the audited current frame, so it needs 20 + 4*(frame_skip+1) = 36 prior
+        frames. See ``_prepare_sweeps`` for the exact selection.
     frame_skip
         Subsampling factor: take every (frame_skip+1)-th sweep.
-        With nsweeps_back=20 and frame_skip=3, 5 sweeps are used.
+        With frame_skip=3 the 5 input sweeps are spaced 4 raw sweeps apart,
+        matching the original 3D-TC2 input cadence.
     voxel_size
         (vx, vy, vz) BEV cell dimensions in metres.
     bev_extents
@@ -92,7 +96,7 @@ class TC2Defense(BaseDefense):
         model_path: str = "models/merl/motionnet_MGDA.pth",
         net: str = "MotionNetMGDA",
         device: str = "cuda",
-        nsweeps_back: int = 20,
+        nsweeps_back: int = 36,
         frame_skip: int = 3,
         voxel_size: tuple[float, float, float] = (0.25, 0.25, 0.4),
         bev_extents: tuple[tuple[float, float], ...] = (
@@ -120,6 +124,16 @@ class TC2Defense(BaseDefense):
         self.use_motion_state_masking = use_motion_state_masking
         self.target_classes = tuple(target_classes)
         self.history_source = history_source
+
+        # Forecast horizon, in raw sweeps, from the newest input frame to the
+        # audited current frame. Fixed at MotionNet's out_seq_len (20) so that
+        # the prediction step read back is disp_pred[-1] (the 20th / last future
+        # step) — exactly what the original 3D-TC2 compares (TC2.py:841). This is
+        # the model's maximum horizon; it cannot be exceeded without retraining.
+        self._forecast_gap = 20
+        # MotionNet's STPN (two Conv3D (3,1,1) layers) consumes the seq dim
+        # 5 -> 3 -> 1, so it requires exactly 5 input sweeps.
+        self._n_input_sweeps = 5
 
         self._model = None  # lazy-loaded on first call
 
@@ -195,11 +209,12 @@ class TC2Defense(BaseDefense):
             disp_pred = disp_pred * weight_map
 
         # Use the prediction step that corresponds to t=0 (current time).
-        # MotionNet's reference is the most recent past sweep at t = -(frame_skip+1).
+        # MotionNet's reference is the newest input sweep at t = -self._forecast_gap.
         # After use_adj_frame_pred accumulation, disp_pred[i] is the cumulative
         # displacement from the reference to t_ref + (i+1) sweeps.
-        # For t=0: t_ref + (i+1) = 0  →  i = frame_skip.
-        last_disp = disp_pred[self.frame_skip]  # (H, W, 2)
+        # For t=0: t_ref + (i+1) = 0  →  i = self._forecast_gap - 1 (= 19),
+        # i.e. disp_pred[-1] — the last future step, as in the original (TC2.py:841).
+        last_disp = disp_pred[self._forecast_gap - 1]  # (H, W, 2)
         cat_pred_logits = cat_pred_raw.cpu().numpy()  # (5, H, W)
 
         from .core import run_tc2_check
@@ -256,16 +271,24 @@ class TC2Defense(BaseDefense):
     def _prepare_sweeps(self, current_frame: Frame, hist: deque[Frame]) -> list[np.ndarray]:
         """Return a list of past point clouds transformed into the current sensor frame.
 
-        Takes the most recent nsweeps_back frames from hist, subsamples by
-        frame_skip. The current frame is intentionally excluded: MotionNet's
-        reference is the most recent past sweep (t = -frame_skip-1 sweeps), and
-        disp_pred[frame_skip] then corresponds to the prediction for t=0
-        (current time), which is compared against current detector boxes.
+        Selects 5 stride-(frame_skip+1) sweeps whose *newest* frame sits exactly
+        ``self._forecast_gap`` (20) raw sweeps before the audited current frame.
+        With frame_skip=3 the chosen offsets are t = -36, -32, -28, -24, -20
+        (returned oldest-first). The current frame is intentionally excluded.
+
+        This matches the original 3D-TC2 operating point: MotionNet forecasts 20
+        single-sweep steps from its newest input (here t=-20), so disp_pred[-1]
+        (= disp_pred[19], read in ``detect``) lands on t=0 — the same last-step
+        prediction the paper compares (TC2.py:841), now aligned to the live frame
+        for causal use. The forecast horizon is therefore ~1 s, as in the paper,
+        rather than the ~0.2 s of the previous t=-4 reference.
         """
-        past_frames = list(hist)[-self.nsweeps_back:]  # most recent nsweeps_back, oldest first
-        # Subsample past frames: indices 0, frame_skip+1, 2*(frame_skip+1), ... (oldest first)
-        indices = list(range(0, len(past_frames), self.frame_skip + 1))
-        selected = [past_frames[i] for i in indices]
+        hist_list = list(hist)  # oldest-first; hist_list[-k] is the frame at t = -k sweeps
+        stride = self.frame_skip + 1
+        # Newest input at -forecast_gap, then striding back: e.g. [20, 24, 28, 32, 36].
+        offsets = [self._forecast_gap + stride * k for k in range(self._n_input_sweeps)]
+        # Oldest-first selection: [-36, -32, -28, -24, -20].
+        selected = [hist_list[-o] for o in reversed(offsets)]
 
         cur_ego_inv = np.linalg.inv(current_frame.nuscenes_ego_pose.astype(np.float64))
         sweep_lidar: list[np.ndarray] = []
