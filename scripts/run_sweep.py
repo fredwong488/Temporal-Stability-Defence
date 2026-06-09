@@ -29,7 +29,6 @@ Usage
 from __future__ import annotations
 
 import argparse
-import csv
 from datetime import datetime
 import json
 import logging
@@ -43,6 +42,25 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 from eval_pipeline.config import ExperimentConfig
 from eval_pipeline.runner import run_experiment
+from scripts.sweep_metrics import (
+    extract_ap_row,
+    extract_detection_rate_row,
+    extract_defense_effectiveness_row,
+    extract_clustering_quality_row,
+    extract_pacts_effectiveness_row,
+    extract_llm_attack_type_accuracy_row,
+    extract_llm_cost_metrics_row,
+    extract_timing_metrics_row,
+    log_summary_metrics,
+    write_ap_csv,
+    write_detection_rate_csv,
+    write_defense_effectiveness_csv,
+    write_clustering_quality_csv,
+    write_pacts_effectiveness_csv,
+    write_llm_attack_type_accuracy_csv,
+    write_llm_cost_metrics_csv,
+    write_timing_metrics_csv,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
@@ -162,243 +180,6 @@ def run_single(
         checkpoint_path=checkpoint_path,
     )
     return run_experiment(config, desc=desc)
-
-
-# ---------------------------------------------------------------------------
-# Per-metric extractors
-# ---------------------------------------------------------------------------
-
-def extract_defense_effectiveness_row(
-    summary: dict,
-    sweep_param: str,
-    sweep_val: float | int,
-) -> dict:
-    """Extract defense F1, precision, recall, TPR and FPR into a flat dict for the CSV."""
-    de = summary.get("defense_effectiveness", {})
-    return {
-        sweep_param: sweep_val,
-        "detection_f1": de.get("f1", float("nan")),
-        "detection_precision": de.get("precision", float("nan")),
-        "detection_recall": de.get("recall", float("nan")),
-        "tpr": de.get("tpr", float("nan")),
-        "fpr": de.get("fpr", float("nan")),
-    }
-
-
-def extract_detection_rate_row(
-    summary: dict,
-    sweep_param: str,
-    sweep_val: float | int,
-    classes: list[str],
-) -> dict:
-    """Extract detection-rate drop into a flat dict for the CSV.
-
-    Columns: overall + per-class clean/attacked/absolute_drop/relative_drop.
-    """
-    dr = summary.get("detection_rate", {})
-    row: dict = {sweep_param: sweep_val}
-    for key in ["overall"] + classes:
-        entry = dr.get(key, {})
-        prefix = f"{key}_" if key != "overall" else ""
-        row[f"{prefix}detection_rate_clean"] = entry.get("detection_rate_clean", float("nan"))
-        row[f"{prefix}detection_rate_attacked"] = entry.get("detection_rate_attacked", float("nan"))
-        row[f"{prefix}absolute_drop"] = entry.get("absolute_drop", float("nan"))
-        row[f"{prefix}relative_drop"] = entry.get("relative_drop", float("nan"))
-    return row
-
-
-def extract_clustering_quality_row(
-    summary: dict,
-    sweep_param: str,
-    sweep_val: float | int,
-) -> dict:
-    """Extract clustering-quality F1 scores into a flat dict for the CSV."""
-    cq = summary.get("clustering_quality", {})
-    return {
-        sweep_param: sweep_val,
-        "spoofed_f1": cq.get("spoofed_f1", float("nan")),
-        "pred_f1": cq.get("pred_f1", float("nan")),
-        "precision": cq.get("precision", float("nan")),
-        "spoofed_recall": cq.get("spoofed_recall", float("nan")),
-        "pred_recall": cq.get("pred_recall", float("nan")),
-    }
-
-
-def extract_pacts_effectiveness_row(
-    summary: dict,
-    sweep_param: str,
-    sweep_val: float | int,
-) -> dict:
-    """Extract PACTS effectiveness F1, precision and recall into a flat dict for the CSV."""
-    pe = summary.get("pacts_effectiveness", {})
-    return {
-        sweep_param: sweep_val,
-        "pacts_f1": pe.get("f1", float("nan")),
-        "pacts_precision": pe.get("precision", float("nan")),
-        "pacts_recall": pe.get("recall", float("nan")),
-    }
-
-
-def extract_llm_attack_type_accuracy_row(
-    summary: dict,
-    sweep_param: str,
-    sweep_val: float | int,
-) -> dict:
-    """Extract LLM attack-type accuracy into a flat dict for the CSV."""
-    lata = summary.get("llm_attack_type_accuracy", {})
-    return {
-        sweep_param: sweep_val,
-        "n_tp_detected": lata.get("n_tp_detected", float("nan")),
-        "n_correct_type": lata.get("n_correct_type", float("nan")),
-        "n_incorrect_type": lata.get("n_incorrect_type", float("nan")),
-        "type_accuracy": lata.get("type_accuracy", float("nan")),
-    }
-
-
-def extract_llm_cost_metrics_row(
-    summary: dict,
-    sweep_param: str,
-    sweep_val: float | int,
-) -> dict:
-    """Extract LLM token stats (mean/median/std) into a flat dict for the CSV."""
-    lcm = summary.get("llm_cost_metrics", {})
-    row: dict = {sweep_param: sweep_val}
-    for field in ("input_tokens", "output_tokens", "thoughts_token_count"):
-        for stat in ("mean", "median", "std"):
-            row[f"{field}_{stat}"] = lcm.get(f"{field}_{stat}", float("nan"))
-    row["n_frames"] = lcm.get("n_frames", float("nan"))
-    row["n_api_frames"] = lcm.get("n_api_frames", float("nan"))
-    return row
-
-
-def extract_timing_metrics_row(
-    summary: dict,
-    sweep_param: str,
-    sweep_val: float | int,
-) -> dict:
-    """Flatten timing_metrics nested stats into a flat dict for the CSV.
-
-    Keys are ``<timing_key>_<stat>`` (e.g. ``total_mean``, ``query_median``).
-    """
-    tm = summary.get("timing_metrics", {})
-    row: dict = {sweep_param: sweep_val, "n_frames": tm.get("n_frames", float("nan"))}
-    for key, stats in tm.items():
-        if key == "n_frames" or not isinstance(stats, dict):
-            continue
-        for stat in ("mean", "median", "std"):
-            row[f"{key}_{stat}"] = stats.get(stat, float("nan"))
-    return row
-
-
-def log_summary_metrics(
-    summary: dict,
-    metric_types: list[str],
-    classes: list[str],
-    difficulties: list[str],
-) -> None:
-    """Log a one-line summary for each requested metric type."""
-    if "ap" in metric_types:
-        attacked_map = summary.get("attack_effectiveness", {}).get("attacked_map", {})
-        for cls in classes:
-            cls_ap = attacked_map.get(cls, {})
-            values = "  ".join(
-                f"{d}={cls_ap.get(d, float('nan')):.2f}" for d in difficulties
-            )
-            logging.info("  %s AP  %s", cls, values)
-
-    if "detection_rate" in metric_types:
-        overall = summary.get("detection_rate", {}).get("overall", {})
-        logging.info(
-            "  DetRate  clean=%.3f  attacked=%.3f  abs_drop=%.3f  rel_drop=%.1f%%",
-            overall.get("detection_rate_clean", float("nan")),
-            overall.get("detection_rate_attacked", float("nan")),
-            overall.get("absolute_drop", float("nan")),
-            (overall.get("relative_drop", float("nan")) or 0.0) * 100,
-        )
-
-    if "defense_effectiveness" in metric_types:
-        de = summary.get("defense_effectiveness", {})
-        logging.info(
-            "  Detection  F1=%.3f  precision=%.3f  recall=%.3f  TPR=%.3f  FPR=%.3f",
-            de.get("f1", float("nan")),
-            de.get("precision", float("nan")),
-            de.get("recall", float("nan")),
-            de.get("tpr", float("nan")),
-            de.get("fpr", float("nan")),
-        )
-
-    if "clustering_quality" in metric_types:
-        cq = summary.get("clustering_quality", {})
-        logging.info(
-            "  Clustering  spoofed_f1=%.3f  pred_f1=%.3f  precision=%.3f",
-            cq.get("spoofed_f1", float("nan")),
-            cq.get("pred_f1", float("nan")),
-            cq.get("precision", float("nan")),
-        )
-
-    if "pacts_effectiveness" in metric_types:
-        pe = summary.get("pacts_effectiveness", {})
-        logging.info(
-            "  PACTS  F1=%.3f  precision=%.3f  recall=%.3f",
-            pe.get("f1", float("nan")),
-            pe.get("precision", float("nan")),
-            pe.get("recall", float("nan")),
-        )
-
-    if "llm_attack_type_accuracy" in metric_types:
-        lata = summary.get("llm_attack_type_accuracy", {})
-        logging.info(
-            "  LLM type accuracy  type_accuracy=%.3f  correct=%s/%s  incorrect=%s",
-            lata.get("type_accuracy", float("nan")),
-            lata.get("n_correct_type", "?"),
-            lata.get("n_tp_detected", "?"),
-            lata.get("n_incorrect_type", "?"),
-        )
-
-    if "llm_cost_metrics" in metric_types:
-        lcm = summary.get("llm_cost_metrics", {})
-        logging.info(
-            "  LLM cost  in_tok=%.0f(med=%.0f)±%.0f  out_tok=%.0f(med=%.0f)±%.0f  think_tok=%.0f(med=%.0f)±%.0f  n=%s  n_api=%s",
-            lcm.get("input_tokens_mean", float("nan")),
-            lcm.get("input_tokens_median", float("nan")),
-            lcm.get("input_tokens_std", float("nan")),
-            lcm.get("output_tokens_mean", float("nan")),
-            lcm.get("output_tokens_median", float("nan")),
-            lcm.get("output_tokens_std", float("nan")),
-            lcm.get("thoughts_token_count_mean", float("nan")),
-            lcm.get("thoughts_token_count_median", float("nan")),
-            lcm.get("thoughts_token_count_std", float("nan")),
-            lcm.get("n_frames", "?"),
-            lcm.get("n_api_frames", "?"),
-        )
-
-    if "timing_metrics" in metric_types:
-        tm = summary.get("timing_metrics", {})
-        total = tm.get("total", {})
-        logging.info(
-            "  Timing  total=%.3f(med=%.3f)±%.3f s  n=%s",
-            total.get("mean", float("nan")),
-            total.get("median", float("nan")),
-            total.get("std", float("nan")),
-            tm.get("n_frames", "?"),
-        )
-
-
-def extract_ap_row(
-    summary: dict,
-    sweep_param: str,
-    sweep_val: float | int,
-    classes: list[str],
-    difficulties: list[str],
-) -> dict:
-    """Extract AP floats for each class/difficulty into a flat dict for the CSV."""
-    attacked_map = summary.get("attack_effectiveness", {}).get("attacked_map", {})
-    row: dict = {sweep_param: sweep_val}
-    for cls in classes:
-        cls_ap = attacked_map.get(cls, {})
-        for diff in difficulties:
-            row[f"{cls.lower()}_ap_{diff.lower()}"] = cls_ap.get(diff, float("nan"))
-    return row
 
 
 # ---------------------------------------------------------------------------
@@ -1038,28 +819,8 @@ def main() -> None:
 
     sweep_tag = f"{args.sweep_target}_{args.sweep_param}"
 
-    # AP → CSV
     if "ap" in args.metric_types and ap_rows:
-        fieldnames = [args.sweep_param] + [
-            f"{cls.lower()}_ap_{d.lower()}"
-            for cls in args.classes
-            for d in args.difficulties
-        ]
-        out_path = run_dir / f"sweep_{sweep_tag}_ap.csv"
-        with open(out_path, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(ap_rows)
-        logging.info("AP CSV written to %s", out_path)
-        print(f"\nAP results: {out_path}")
-        print(",".join(fieldnames))
-        for row in ap_rows:
-            vals = [str(row[args.sweep_param])] + [
-                f"{row[f'{cls.lower()}_ap_{d.lower()}']:.4f}"
-                for cls in args.classes
-                for d in args.difficulties
-            ]
-            print(",".join(vals))
+        write_ap_csv(run_dir, sweep_tag, args.sweep_param, ap_rows, args.classes, args.difficulties)
 
     # PR curves → JSON
     if "pr" in args.metric_types and pr_all:
@@ -1077,161 +838,26 @@ def main() -> None:
         logging.info("Recall-IoU curves written to %s", riou_path)
         print(f"\nRecall-IoU: {riou_path}")
 
-    # Detection rate → CSV
     if "detection_rate" in args.metric_types and detection_rate_rows:
-        dr_fieldnames = [args.sweep_param]
-        for key in ["overall"] + args.classes:
-            prefix = f"{key}_" if key != "overall" else ""
-            dr_fieldnames += [
-                f"{prefix}detection_rate_clean",
-                f"{prefix}detection_rate_attacked",
-                f"{prefix}absolute_drop",
-                f"{prefix}relative_drop",
-            ]
-        out_path = run_dir / f"sweep_{sweep_tag}_detection_rate.csv"
-        with open(out_path, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=dr_fieldnames)
-            writer.writeheader()
-            writer.writerows(detection_rate_rows)
-        logging.info("Detection rate CSV written to %s", out_path)
-        print(f"\nDetection rate: {out_path}")
-        print(",".join(dr_fieldnames))
-        for row in detection_rate_rows:
-            vals = [str(row[args.sweep_param])] + [
-                f"{row.get(col, float('nan')):.4f}" for col in dr_fieldnames[1:]
-            ]
-            print(",".join(vals))
+        write_detection_rate_csv(run_dir, sweep_tag, args.sweep_param, detection_rate_rows, args.classes)
 
-    # Defense effectiveness → CSV
     if "defense_effectiveness" in args.metric_types and defense_effectiveness_rows:
-        fieldnames = [args.sweep_param, "detection_f1", "detection_precision", "detection_recall", "tpr", "fpr"]
-        out_path = run_dir / f"sweep_{sweep_tag}_defense_effectiveness.csv"
-        with open(out_path, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(defense_effectiveness_rows)
-        logging.info("Defense effectiveness CSV written to %s", out_path)
-        print(f"\nDefense effectiveness: {out_path}")
-        print(",".join(fieldnames))
-        for row in defense_effectiveness_rows:
-            print(",".join([
-                str(row[args.sweep_param]),
-                f"{row['detection_f1']:.4f}",
-                f"{row['detection_precision']:.4f}",
-                f"{row['detection_recall']:.4f}",
-                f"{row['tpr']:.4f}",
-                f"{row['fpr']:.4f}",
-            ]))
+        write_defense_effectiveness_csv(run_dir, sweep_tag, args.sweep_param, defense_effectiveness_rows)
 
-    # Clustering quality → CSV
     if "clustering_quality" in args.metric_types and clustering_quality_rows:
-        fieldnames = [
-            args.sweep_param,
-            "spoofed_f1", "pred_f1", "precision", "spoofed_recall", "pred_recall",
-        ]
-        out_path = run_dir / f"sweep_{sweep_tag}_clustering_quality.csv"
-        with open(out_path, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(clustering_quality_rows)
-        logging.info("Clustering quality CSV written to %s", out_path)
-        print(f"\nClustering quality: {out_path}")
-        print(",".join(fieldnames))
-        for row in clustering_quality_rows:
-            print(",".join([
-                str(row[args.sweep_param]),
-                f"{row['spoofed_f1']:.4f}",
-                f"{row['pred_f1']:.4f}",
-                f"{row['precision']:.4f}",
-                f"{row['spoofed_recall']:.4f}",
-                f"{row['pred_recall']:.4f}",
-            ]))
+        write_clustering_quality_csv(run_dir, sweep_tag, args.sweep_param, clustering_quality_rows)
 
-    # PACTS effectiveness → CSV
     if "pacts_effectiveness" in args.metric_types and pacts_effectiveness_rows:
-        fieldnames = [args.sweep_param, "pacts_f1", "pacts_precision", "pacts_recall"]
-        out_path = run_dir / f"sweep_{sweep_tag}_pacts_effectiveness.csv"
-        with open(out_path, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(pacts_effectiveness_rows)
-        logging.info("PACTS effectiveness CSV written to %s", out_path)
-        print(f"\nPACTS effectiveness: {out_path}")
-        print(",".join(fieldnames))
-        for row in pacts_effectiveness_rows:
-            print(",".join([
-                str(row[args.sweep_param]),
-                f"{row['pacts_f1']:.4f}",
-                f"{row['pacts_precision']:.4f}",
-                f"{row['pacts_recall']:.4f}",
-            ]))
+        write_pacts_effectiveness_csv(run_dir, sweep_tag, args.sweep_param, pacts_effectiveness_rows)
 
-    # LLM attack-type accuracy → CSV
     if "llm_attack_type_accuracy" in args.metric_types and llm_attack_type_accuracy_rows:
-        fieldnames = [args.sweep_param, "n_tp_detected", "n_correct_type", "n_incorrect_type", "type_accuracy"]
-        out_path = run_dir / f"sweep_{sweep_tag}_llm_attack_type_accuracy.csv"
-        with open(out_path, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(llm_attack_type_accuracy_rows)
-        logging.info("LLM attack-type accuracy CSV written to %s", out_path)
-        print(f"\nLLM attack-type accuracy: {out_path}")
-        print(",".join(fieldnames))
-        for row in llm_attack_type_accuracy_rows:
-            print(",".join([
-                str(row[args.sweep_param]),
-                str(row["n_tp_detected"]),
-                str(row["n_correct_type"]),
-                str(row["n_incorrect_type"]),
-                f"{row['type_accuracy']:.4f}",
-            ]))
+        write_llm_attack_type_accuracy_csv(run_dir, sweep_tag, args.sweep_param, llm_attack_type_accuracy_rows)
 
-    # LLM cost metrics → CSV
     if "llm_cost_metrics" in args.metric_types and llm_cost_metrics_rows:
-        _cost_fields = [
-            f"{field}_{stat}"
-            for field in ("input_tokens", "output_tokens", "thoughts_token_count")
-            for stat in ("mean", "median", "std")
-        ]
-        fieldnames = [args.sweep_param] + _cost_fields + ["n_frames", "n_api_frames"]
-        out_path = run_dir / f"sweep_{sweep_tag}_llm_cost_metrics.csv"
-        with open(out_path, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(llm_cost_metrics_rows)
-        logging.info("LLM cost metrics CSV written to %s", out_path)
-        print(f"\nLLM cost metrics: {out_path}")
-        print(",".join(fieldnames))
-        for row in llm_cost_metrics_rows:
-            num_vals = [
-                f"{row.get(col, float('nan')):.2f}" if col not in ("n_frames", "n_api_frames")
-                else str(row.get(col, ""))
-                for col in fieldnames[1:]
-            ]
-            print(",".join([str(row[args.sweep_param])] + num_vals))
+        write_llm_cost_metrics_csv(run_dir, sweep_tag, args.sweep_param, llm_cost_metrics_rows)
 
-    # Timing metrics → CSV
     if "timing_metrics" in args.metric_types and timing_metrics_rows:
-        # Discover all timing keys dynamically (consistent across rows for same defense)
-        timing_keys = sorted(
-            k for k in timing_metrics_rows[0] if k not in (args.sweep_param, "n_frames")
-        )
-        fieldnames = [args.sweep_param] + timing_keys + ["n_frames"]
-        out_path = run_dir / f"sweep_{sweep_tag}_timing_metrics.csv"
-        with open(out_path, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
-            writer.writeheader()
-            writer.writerows(timing_metrics_rows)
-        logging.info("Timing metrics CSV written to %s", out_path)
-        print(f"\nTiming metrics: {out_path}")
-        print(",".join(fieldnames))
-        for row in timing_metrics_rows:
-            num_vals = [
-                f"{row.get(col, float('nan')):.4f}" if col != "n_frames"
-                else str(row.get(col, ""))
-                for col in fieldnames[1:]
-            ]
-            print(",".join([str(row[args.sweep_param])] + num_vals))
+        write_timing_metrics_csv(run_dir, sweep_tag, args.sweep_param, timing_metrics_rows)
 
     end_time = datetime.now()
     logging.info(f"Start time: {start_time}")
