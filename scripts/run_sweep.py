@@ -148,8 +148,8 @@ def run_single(
     use_cached_attacks: bool = False,
     use_predicted_labels: bool = False,
     pred_label_score_threshold: float = 0.5,
-    min_unattacked_frames: int = 6,     # defaulted to 6 to suit jitter defense
-    min_attacked_frames: int = 6,       # defaulted to 6 to suit jitter defense
+    min_unattacked_frames: int = 36,     # defaulted to 6 to suit jitter defense
+    min_attacked_frames: int = 36,       # defaulted to 6 to suit jitter defense
     checkpoint_path: str | None = None,
 ) -> dict:
     """Run one experiment and return the summary dict."""
