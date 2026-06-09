@@ -626,7 +626,7 @@ def main() -> None:
     if not resuming:
         write_sweep_metadata(
             run_dir=run_dir,
-            timestamp=timestamp,
+            timestamp=run_name,
             notes=args.notes,
             cmd_args=sys.argv,
             sweep_target=args.sweep_target,
