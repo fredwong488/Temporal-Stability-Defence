@@ -195,6 +195,9 @@ class EvalPipeline:
         self.desc = desc
         self._clean_pred_cache: dict[str, list[Prediction]] = {}
 
+        from .attacks.ora import ORAAttack
+        self._is_ora_attack: bool = isinstance(attack, ORAAttack)
+
         self._granularity: str = _DATASET_GRANULARITY.get(type(dataset).__name__, "frame")
         self._scene_plan: dict[str, _SceneAttackPlan] | None = None
 
@@ -514,10 +517,18 @@ class EvalPipeline:
             else:
                 attack_start_index = None
 
+            _is_attacked = current_frame.is_attacked
+            if (
+                self._is_ora_attack
+                and _is_attacked
+                and current_frame.attack_metadata.get("n_removed", 0) == 0
+            ):
+                _is_attacked = False
+
             fr = FrameResult(
                 frame_id=frame.frame_id,
                 labels=frame.labels,
-                is_attacked=current_frame.is_attacked,
+                is_attacked=_is_attacked,
                 attack_metadata=current_frame.attack_metadata,
                 clean_predictions=clean_preds,
                 attacked_predictions=attacked_preds,

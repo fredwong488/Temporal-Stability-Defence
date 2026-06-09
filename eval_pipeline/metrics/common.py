@@ -144,7 +144,7 @@ PREDICTION_MATCH_MARGIN = 0.5   # metres buffer added to BEV polygon for predict
 def compute_defense_metrics(frame_results: list[FrameResult]) -> dict:
     """Compute binary classification metrics for the defense.
 
-    Ground truth  : frame_result.is_attacked
+    Ground truth  : frame_result.is_attacked (ORA no-op frames have this set False at pipeline level)
     Prediction    : frame_result.defense_result.is_attack_detected
 
     Returns dict with tp, fp, tn, fn, tpr, fpr, accuracy, precision, recall, f1.
