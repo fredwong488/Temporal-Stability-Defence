@@ -393,14 +393,14 @@ def main() -> None:
                         help="Base directory for outputs; each run is saved under a "
                              "timestamped subdirectory")
     parser.add_argument(
-        "--run-dir", type=str, default=None, metavar="DIR",
+        "--run-name", type=str, default=None, metavar="NAME",
         help=(
-            "Explicit run directory to write (or resume) results into.  "
+            "Run name (timestamp) to write (or resume) results into.  "
+            "The run directory is <results-dir>/<run-name>.  "
             "If the directory already exists the run is resumed: completed "
             "experiments (whose <name>.json is present) are skipped and the "
             "partial experiment is continued from its last scene checkpoint.  "
-            "When omitted, a fresh timestamped subdirectory under --results-dir "
-            "is created."
+            "When omitted, a fresh timestamped name is generated."
         ),
     )
     parser.add_argument("--save-frames", action="store_true", default=False,
@@ -412,9 +412,8 @@ def main() -> None:
     parser.add_argument(
         "--checkpoint-dir", type=str, default="/vol/bitbucket/cyw122/FYP/experiment_pipeline/checkpoints", metavar="DIR",
         help=(
-            "Base directory for scene-level checkpoint files. A timestamped subdirectory "
-            "mirroring the run-dir structure is created beneath it, e.g. "
-            "<checkpoint-dir>/<timestamp>/<experiment>. "
+            "Base directory for scene-level checkpoint files. A subdirectory named after "
+            "the run name is created beneath it, e.g. <checkpoint-dir>/<run-name>/<experiment>. "
             "Defaults to <run-dir> (checkpoints co-located with results). "
             "Set to a fast/large scratch volume to keep results separate from bulky pickle files."
         ),
@@ -523,19 +522,14 @@ def main() -> None:
         if all(v == int(v) for v in sweep_values):
             sweep_values = [int(v) for v in sweep_values]
 
-    timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    if args.run_dir is not None:
-        run_dir = pathlib.Path(args.run_dir)
-        resuming = run_dir.exists()
-        run_dir.mkdir(parents=True, exist_ok=True)
-        if resuming:
-            logging.info("Resuming existing run dir: %s", run_dir)
-    else:
-        run_dir = pathlib.Path(args.results_dir) / timestamp
-        run_dir.mkdir(parents=True, exist_ok=True)
-        resuming = False
+    run_name = args.run_name if args.run_name is not None else datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    run_dir = pathlib.Path(args.results_dir) / run_name
+    resuming = run_dir.exists()
+    run_dir.mkdir(parents=True, exist_ok=True)
+    if resuming:
+        logging.info("Resuming existing run dir: %s", run_dir)
 
-    checkpoint_run_dir = (pathlib.Path(args.checkpoint_dir) / timestamp) if args.checkpoint_dir else run_dir
+    checkpoint_run_dir = (pathlib.Path(args.checkpoint_dir) / run_name) if args.checkpoint_dir else run_dir
     if args.checkpoint_dir:
         checkpoint_run_dir.mkdir(parents=True, exist_ok=True)
         logging.info("Checkpoint dir: %s", checkpoint_run_dir)
