@@ -315,6 +315,38 @@ class EvalResults:
 
         return compute_llm_attack_type_accuracy(self.frame_results, self.attack_types)
 
+    def roc_jitter(self, flag_condition: str = "or") -> dict:
+        """2-D ROC sweep for the radial-jitter defense.
+
+        Sweeps sigma_point and sigma_centroid thresholds independently over
+        equally-spaced quantiles of the observed values, then evaluates every
+        Cartesian product pair as a frame-level detector.
+
+        Parameters
+        ----------
+        flag_condition
+            ``"or"`` or ``"and"`` — mirrors the RadialJitterDefense parameter
+            of the same name.
+
+        Returns
+        -------
+        Dict with ``flag_condition``, ``n``, ``point_thresholds``,
+        ``centroid_thresholds``, and ``points`` (list of N² dicts each with
+        ``point_threshold``, ``centroid_threshold``, ``tp``, ``fp``, ``tn``,
+        ``fn``, ``tpr``, ``fpr``).  Empty dict when no qualifying frames exist.
+        """
+        from .metrics import compute_roc_jitter
+
+        has_data = any(
+            r.defense_result is not None
+            and r.defense_result.metadata.get("cluster_details") is not None
+            for r in self.frame_results
+        )
+        if not has_data:
+            return {}
+
+        return compute_roc_jitter(self.frame_results, flag_condition=flag_condition)
+
     def timing_metrics(self) -> dict:
         """Mean, median, std, and n for each key in ``metadata["elapsed_s"]``.
 

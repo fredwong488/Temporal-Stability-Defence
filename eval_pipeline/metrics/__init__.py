@@ -20,6 +20,7 @@ from .common import (
     compute_timing_metrics,
     _NUSCENES_IOU_THRESHOLDS,
     compute_detection_rate,
+    compute_roc_jitter,
 )
 
 from .kitti_metrics import (
@@ -46,6 +47,7 @@ __all__ = [
     "compute_timing_metrics",
     "_NUSCENES_IOU_THRESHOLDS",
     "compute_detection_rate",
+    "compute_roc_jitter",
     # kitti
     "N_SAMPLE_PTS",
     "DIFFICULTIES",

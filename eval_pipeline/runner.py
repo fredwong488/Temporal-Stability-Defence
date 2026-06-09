@@ -301,8 +301,26 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:  
         summary["defense_effectiveness"] = eval_results.defense_effectiveness()
         summary["clustering_quality"] = eval_results.clustering_quality()
         summary["timing_metrics"] = eval_results.timing_metrics()
-        if config.defense_type == "radial_jitter":
+        if (
+            "pacts_effectiveness" in config.metric_types
+            and config.defense_type.startswith("radial_jitter")
+        ):
             summary["pacts_effectiveness"] = eval_results.pacts_effectiveness()
+        if (
+            "roc_jitter" in config.metric_types
+            and config.defense_type.startswith("radial_jitter")
+        ):
+            roc = eval_results.roc_jitter(
+                flag_condition=config.defense_params.get("flag_condition", "or")
+            )
+            if roc and config.output_dir:
+                roc_path = (
+                    pathlib.Path(config.output_dir)
+                    / f"{config.experiment_name}_roc_jitter.json"
+                )
+                with open(roc_path, "w") as f:
+                    json.dump(roc, f, indent=2, default=str)
+                logger.info("ROC jitter data saved to %s", roc_path)
         if config.defense_type == "llm":
             summary["llm_attack_type_accuracy"] = eval_results.llm_attack_type_accuracy()
             summary["llm_cost_metrics"] = eval_results.llm_cost_metrics()

@@ -590,6 +590,143 @@ def compute_llm_cost_metrics(frame_results: list[FrameResult]) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# ROC curve for radial-jitter defense over a 2-D threshold grid
+# ---------------------------------------------------------------------------
+
+def compute_roc_jitter(
+    frame_results: list[FrameResult],
+    n: int = 50,
+    point_range: tuple[float, float] = (0.0, 0.15),
+    centroid_range: tuple[float, float] = (0.0, 1.0),
+    flag_condition: str = "or",
+) -> dict:
+    """2-D ROC sweep for the radial-jitter defense.
+
+    Builds candidate threshold axes from equally-spaced quantiles of the
+    observed sigma values (so bins concentrate where the data lives), then
+    evaluates every Cartesian product pair as a frame-level detector and
+    computes TPR / FPR.
+
+    Parameters
+    ----------
+    frame_results
+        Full list of FrameResult objects from an EvalPipeline run.
+    n
+        Number of threshold candidates per axis (N² operating points total).
+    point_range
+        (lo, hi) fallback linspace used when no sigma_point values are observed.
+    centroid_range
+        (lo, hi) fallback linspace used when no sigma_centroid values are observed.
+    flag_condition
+        ``"or"``  — frame detected if any cluster has sigma_point > t_p *or*
+                    sigma_centroid > t_c.
+        ``"and"`` — frame detected if any cluster has sigma_point > t_p *and*
+                    sigma_centroid > t_c.
+        None sigmas never trip a threshold (match the defense's own behavior).
+
+    Returns
+    -------
+    Dict with keys:
+        flag_condition, n,
+        point_thresholds   (list[float], length n),
+        centroid_thresholds (list[float], length n),
+        points             (list[dict] of length n²,
+                            each with point_threshold, centroid_threshold,
+                            tp, fp, tn, fn, tpr, fpr).
+    Empty dict when no qualifying frames are found.
+    """
+    qualifying = [
+        fr for fr in frame_results
+        if fr.defense_result is not None
+        and fr.defense_result.metadata.get("cluster_details") is not None
+    ]
+    if not qualifying:
+        return {}
+
+    # Pool observed sigma values from non-skipped clusters.
+    pool_point: list[float] = []
+    pool_centroid: list[float] = []
+    for fr in qualifying:
+        for cd in fr.defense_result.metadata["cluster_details"]:
+            sp = cd.get("sigma_point")
+            sc = cd.get("sigma_centroid")
+            if sp is not None:
+                pool_point.append(float(sp))
+            if sc is not None:
+                pool_centroid.append(float(sc))
+
+    q = np.linspace(0.0, 1.0, n)
+    point_thresholds: np.ndarray = (
+        np.quantile(pool_point, q)
+        if pool_point
+        else np.linspace(point_range[0], point_range[1], n)
+    )
+    centroid_thresholds: np.ndarray = (
+        np.quantile(pool_centroid, q)
+        if pool_centroid
+        else np.linspace(centroid_range[0], centroid_range[1], n)
+    )
+
+    n_attacked = sum(1 for fr in qualifying if fr.is_attacked)
+    n_clean = len(qualifying) - n_attacked
+
+    points: list[dict] = []
+    for t_p in point_thresholds:
+        for t_c in centroid_thresholds:
+            tp = fp = tn = fn = 0
+            for fr in qualifying:
+                detected = False
+                for cd in fr.defense_result.metadata["cluster_details"]:
+                    sp = cd.get("sigma_point")
+                    sc = cd.get("sigma_centroid")
+                    if sp is None and sc is None:
+                        continue
+                    if flag_condition == "and":
+                        cluster_flag = (
+                            (sp is not None and sp > t_p)
+                            and (sc is not None and sc > t_c)
+                        )
+                    else:
+                        cluster_flag = (
+                            (sp is not None and sp > t_p)
+                            or (sc is not None and sc > t_c)
+                        )
+                    if cluster_flag:
+                        detected = True
+                        break
+
+                if detected and fr.is_attacked:
+                    tp += 1
+                elif detected and not fr.is_attacked:
+                    fp += 1
+                elif not detected and fr.is_attacked:
+                    fn += 1
+                else:
+                    tn += 1
+
+            tpr = tp / n_attacked if n_attacked > 0 else 0.0
+            fpr = fp / n_clean if n_clean > 0 else 0.0
+            points.append({
+                "point_threshold": float(t_p),
+                "centroid_threshold": float(t_c),
+                "tp": tp,
+                "fp": fp,
+                "tn": tn,
+                "fn": fn,
+                "tpr": tpr,
+                "fpr": fpr,
+            })
+
+    return {
+        "flag_condition": flag_condition,
+        "n": n,
+        "point_thresholds": point_thresholds.tolist(),
+        "centroid_thresholds": centroid_thresholds.tolist(),
+        "points": points,
+    }
+
+
+# ---------------------------------------------------------------------------
 # Detection-rate drop (dataset-agnostic, designed for NuScenes)
 # ---------------------------------------------------------------------------
 

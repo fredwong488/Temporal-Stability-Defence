@@ -77,7 +77,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness", "llm_attack_type_accuracy", "llm_cost_metrics", "timing_metrics"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness", "roc_jitter", "llm_attack_type_accuracy", "llm_cost_metrics", "timing_metrics"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
@@ -376,6 +376,7 @@ def main() -> None:
                             "detection_rate (recall drop clean→attacked vs GT → CSV, all datasets), "
                             "defense_effectiveness (defense F1/precision/recall → CSV), "
                             "pacts_effectiveness (PACTS cluster-level F1/precision/recall → CSV), "
+                            "roc_jitter (radial-jitter 2-D ROC surface → per-experiment JSON), "
                             "llm_cost_metrics (LLM token stats → CSV), "
                             "timing_metrics (per-phase wall-clock stats for any defense → CSV)"
                         ))
