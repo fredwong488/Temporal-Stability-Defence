@@ -60,6 +60,7 @@ of how many frames back the chain extends.
 from __future__ import annotations
 
 import logging
+import time
 from collections import deque
 from typing import Callable, Literal
 
@@ -306,7 +307,10 @@ class RadialJitterDefense(BaseDefense):
 
         # Current frame: filter + DBSCAN (result cached so it's free next call as
         # a past frame).
+        _t0_total = time.perf_counter()
+        _t0_cluster = time.perf_counter()
         cur_xyz_filt, labels_cur, _, _ = self._get_or_cluster_frame(frame)
+        _elapsed_cluster_s = time.perf_counter() - _t0_cluster
 
         if len(cur_xyz_filt) == 0:
             return DetectionResult(
@@ -366,6 +370,8 @@ class RadialJitterDefense(BaseDefense):
         cluster_details: list[dict] = []
         n_tested = 0
         n_flagged = 0
+        _elapsed_sigma_centroid_s = 0.0
+        _elapsed_sigma_point_s = 0.0
 
         for lbl in unique_labels:
             pts_cur = cur_xyz_filt[labels_cur == lbl]
@@ -407,6 +413,7 @@ class RadialJitterDefense(BaseDefense):
             n_tested += 1
 
             # --- σ_centroid: captures δ_inter --------------------------------
+            _t0_sc = time.perf_counter()
             if self.use_centroid:
                 all_centroids = np.array(
                     [p.mean(axis=0) for p in valid_past] + [centroid_cur]
@@ -425,9 +432,12 @@ class RadialJitterDefense(BaseDefense):
                     sigma_centroid = float(np.std(np.diff(r_c)))
             else:
                 sigma_centroid = 0.0
+            _elapsed_sigma_centroid_s += time.perf_counter() - _t0_sc
 
-            # --- σ_point: captures δ_inner + δ_rand --------------------------
+            # --- σ_point: captures δ_inner  --------------------------
+            _t0_sp = time.perf_counter()
             sigma_point = self._compute_sigma_point(pts_cur, valid_past) if self.use_point else 0.0
+            _elapsed_sigma_point_s += time.perf_counter() - _t0_sp
 
             centroid_flagged = self.use_centroid and sigma_centroid > self.centroid_threshold
             point_flagged = self.use_point and sigma_point > self.point_threshold
@@ -458,6 +468,12 @@ class RadialJitterDefense(BaseDefense):
             "centroid_threshold": self.centroid_threshold,
             "point_threshold": self.point_threshold,
             "cluster_details": cluster_details,
+            "elapsed_s": {
+                "cluster": _elapsed_cluster_s,
+                "sigma_centroid": _elapsed_sigma_centroid_s,
+                "sigma_point": _elapsed_sigma_point_s,
+                "total": time.perf_counter() - _t0_total,
+            },
         }
         if self.debug:
             meta["xyz_filt"] = cur_xyz_filt

@@ -59,7 +59,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness", "llm_attack_type_accuracy", "llm_cost_metrics"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness", "llm_attack_type_accuracy", "llm_cost_metrics", "timing_metrics"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
@@ -260,14 +260,33 @@ def extract_llm_cost_metrics_row(
     sweep_param: str,
     sweep_val: float | int,
 ) -> dict:
-    """Extract LLM cost stats (mean/median/std for tokens and latency) into a flat dict for the CSV."""
+    """Extract LLM token stats (mean/median/std) into a flat dict for the CSV."""
     lcm = summary.get("llm_cost_metrics", {})
     row: dict = {sweep_param: sweep_val}
-    for field in ("input_tokens", "output_tokens", "thoughts_token_count", "total_elapsed_s", "query_elapsed_s"):
+    for field in ("input_tokens", "output_tokens", "thoughts_token_count"):
         for stat in ("mean", "median", "std"):
             row[f"{field}_{stat}"] = lcm.get(f"{field}_{stat}", float("nan"))
     row["n_frames"] = lcm.get("n_frames", float("nan"))
     row["n_api_frames"] = lcm.get("n_api_frames", float("nan"))
+    return row
+
+
+def extract_timing_metrics_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+) -> dict:
+    """Flatten timing_metrics nested stats into a flat dict for the CSV.
+
+    Keys are ``<timing_key>_<stat>`` (e.g. ``total_mean``, ``query_median``).
+    """
+    tm = summary.get("timing_metrics", {})
+    row: dict = {sweep_param: sweep_val, "n_frames": tm.get("n_frames", float("nan"))}
+    for key, stats in tm.items():
+        if key == "n_frames" or not isinstance(stats, dict):
+            continue
+        for stat in ("mean", "median", "std"):
+            row[f"{key}_{stat}"] = stats.get(stat, float("nan"))
     return row
 
 
@@ -339,7 +358,7 @@ def log_summary_metrics(
     if "llm_cost_metrics" in metric_types:
         lcm = summary.get("llm_cost_metrics", {})
         logging.info(
-            "  LLM cost  in_tok=%.0f(med=%.0f)±%.0f  out_tok=%.0f(med=%.0f)±%.0f  think_tok=%.0f(med=%.0f)±%.0f  total_s=%.2f(med=%.2f)±%.2f  query_s=%.2f(med=%.2f)±%.2f  n=%s  n_api=%s",
+            "  LLM cost  in_tok=%.0f(med=%.0f)±%.0f  out_tok=%.0f(med=%.0f)±%.0f  think_tok=%.0f(med=%.0f)±%.0f  n=%s  n_api=%s",
             lcm.get("input_tokens_mean", float("nan")),
             lcm.get("input_tokens_median", float("nan")),
             lcm.get("input_tokens_std", float("nan")),
@@ -349,14 +368,19 @@ def log_summary_metrics(
             lcm.get("thoughts_token_count_mean", float("nan")),
             lcm.get("thoughts_token_count_median", float("nan")),
             lcm.get("thoughts_token_count_std", float("nan")),
-            lcm.get("total_elapsed_s_mean", float("nan")),
-            lcm.get("total_elapsed_s_median", float("nan")),
-            lcm.get("total_elapsed_s_std", float("nan")),
-            lcm.get("query_elapsed_s_mean", float("nan")),
-            lcm.get("query_elapsed_s_median", float("nan")),
-            lcm.get("query_elapsed_s_std", float("nan")),
             lcm.get("n_frames", "?"),
             lcm.get("n_api_frames", "?"),
+        )
+
+    if "timing_metrics" in metric_types:
+        tm = summary.get("timing_metrics", {})
+        total = tm.get("total", {})
+        logging.info(
+            "  Timing  total=%.3f(med=%.3f)±%.3f s  n=%s",
+            total.get("mean", float("nan")),
+            total.get("median", float("nan")),
+            total.get("std", float("nan")),
+            tm.get("n_frames", "?"),
         )
 
 
@@ -571,7 +595,8 @@ def main() -> None:
                             "detection_rate (recall drop clean→attacked vs GT → CSV, all datasets), "
                             "defense_effectiveness (defense F1/precision/recall → CSV), "
                             "pacts_effectiveness (PACTS cluster-level F1/precision/recall → CSV), "
-                            "llm_cost_metrics (LLM token and latency stats → CSV)"
+                            "llm_cost_metrics (LLM token stats → CSV), "
+                            "timing_metrics (per-phase wall-clock stats for any defense → CSV)"
                         ))
     parser.add_argument("--confidence-threshold", type=float, default=0.3,
                         help="Confidence threshold used for recall_iou metric and detector scoring")
@@ -781,6 +806,7 @@ def main() -> None:
     pacts_effectiveness_rows: list[dict] = []
     llm_attack_type_accuracy_rows: list[dict] = []
     llm_cost_metrics_rows: list[dict] = []
+    timing_metrics_rows: list[dict] = []
 
     base_attack_params: dict = {"target_types": args.classes} if args.attack and args.attack == "ora" else {}
     base_attack_params.update(extra_attack_params)
@@ -1005,6 +1031,9 @@ def main() -> None:
         if "llm_cost_metrics" in args.metric_types:
             llm_cost_metrics_rows.append(extract_llm_cost_metrics_row(summary, args.sweep_param, val))
 
+        if "timing_metrics" in args.metric_types:
+            timing_metrics_rows.append(extract_timing_metrics_row(summary, args.sweep_param, val))
+
         log_summary_metrics(summary, args.metric_types, args.classes, args.difficulties)
 
     sweep_tag = f"{args.sweep_target}_{args.sweep_param}"
@@ -1161,7 +1190,7 @@ def main() -> None:
     if "llm_cost_metrics" in args.metric_types and llm_cost_metrics_rows:
         _cost_fields = [
             f"{field}_{stat}"
-            for field in ("input_tokens", "output_tokens", "thoughts_token_count", "total_elapsed_s", "query_elapsed_s")
+            for field in ("input_tokens", "output_tokens", "thoughts_token_count")
             for stat in ("mean", "median", "std")
         ]
         fieldnames = [args.sweep_param] + _cost_fields + ["n_frames", "n_api_frames"]
@@ -1176,6 +1205,29 @@ def main() -> None:
         for row in llm_cost_metrics_rows:
             num_vals = [
                 f"{row.get(col, float('nan')):.2f}" if col not in ("n_frames", "n_api_frames")
+                else str(row.get(col, ""))
+                for col in fieldnames[1:]
+            ]
+            print(",".join([str(row[args.sweep_param])] + num_vals))
+
+    # Timing metrics → CSV
+    if "timing_metrics" in args.metric_types and timing_metrics_rows:
+        # Discover all timing keys dynamically (consistent across rows for same defense)
+        timing_keys = sorted(
+            k for k in timing_metrics_rows[0] if k not in (args.sweep_param, "n_frames")
+        )
+        fieldnames = [args.sweep_param] + timing_keys + ["n_frames"]
+        out_path = run_dir / f"sweep_{sweep_tag}_timing_metrics.csv"
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(timing_metrics_rows)
+        logging.info("Timing metrics CSV written to %s", out_path)
+        print(f"\nTiming metrics: {out_path}")
+        print(",".join(fieldnames))
+        for row in timing_metrics_rows:
+            num_vals = [
+                f"{row.get(col, float('nan')):.4f}" if col != "n_frames"
                 else str(row.get(col, ""))
                 for col in fieldnames[1:]
             ]

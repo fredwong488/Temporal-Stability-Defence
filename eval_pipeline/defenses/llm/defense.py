@@ -185,7 +185,7 @@ class LLMDefense(BaseDefense):
         try:
             verdict_obj = LLMVerdict.model_validate(raw)
         except Exception:
-            metadata: dict = {"error": "Failed to parse LLM response", "raw_response": raw, "cache_hit": cache_hit, "total_elapsed_s": total_elapsed_s, "query_elapsed_s": query_elapsed_s}
+            metadata: dict = {"error": "Failed to parse LLM response", "raw_response": raw, "cache_hit": cache_hit, "elapsed_s": {"total": total_elapsed_s, "query": query_elapsed_s}}
             if token_info is not None:
                 metadata["token_usage"] = token_info
             return DetectionResult(
@@ -219,8 +219,7 @@ class LLMDefense(BaseDefense):
             "backend": self._backend_name,
             "model": self._model,
             "cache_hit": cache_hit,
-            "total_elapsed_s": total_elapsed_s,
-            "query_elapsed_s": query_elapsed_s,
+            "elapsed_s": {"total": total_elapsed_s, "query": query_elapsed_s},
             "raw_response": raw,
         }
         if token_info is not None:

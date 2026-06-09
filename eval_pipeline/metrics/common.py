@@ -473,27 +473,73 @@ def compute_llm_attack_type_accuracy(
 
 
 # ---------------------------------------------------------------------------
+# Generic timing metrics (all defenses)
+# ---------------------------------------------------------------------------
+
+def compute_timing_metrics(frame_results: list[FrameResult]) -> dict:
+    """Compute mean, median, and std for each key in ``metadata["elapsed_s"]``.
+
+    Works for any defense that stores timing under the ``"elapsed_s"`` dict in
+    its ``DetectionResult.metadata``.  All keys present across any frame are
+    included; frames missing a particular key contribute nothing to that key's
+    stats.
+
+    Returns dict with one sub-dict per timing key, each containing
+    ``{mean, median, std, n}``, plus a top-level ``n_frames`` count.
+    Returns empty dict when no qualifying frames exist.
+    """
+    from collections import defaultdict
+
+    buckets: dict[str, list[float]] = defaultdict(list)
+
+    for fr in frame_results:
+        if fr.defense_result is None:
+            continue
+        meta = fr.defense_result.metadata
+        if not meta:
+            continue
+        elapsed = meta.get("elapsed_s")
+        if not isinstance(elapsed, dict):
+            continue
+        for key, val in elapsed.items():
+            if val is not None:
+                buckets[key].append(float(val))
+
+    if not buckets:
+        return {}
+
+    result: dict = {"n_frames": max(len(v) for v in buckets.values())}
+    for key, vals in sorted(buckets.items()):
+        arr = np.array(vals)
+        result[key] = {
+            "mean": float(np.mean(arr)),
+            "median": float(np.median(arr)),
+            "std": float(np.std(arr)),
+            "n": len(vals),
+        }
+    return result
+
+
+# ---------------------------------------------------------------------------
 # LLM cost metrics (LLMDefense only)
 # ---------------------------------------------------------------------------
 
 def compute_llm_cost_metrics(frame_results: list[FrameResult]) -> dict:
-    """Compute mean, median, and std for input_tokens, output_tokens, total_elapsed_s, query_elapsed_s.
+    """Compute mean, median, and std for input_tokens, output_tokens, and
+    thoughts_token_count.  Also reports n_api_frames (frames where
+    ``elapsed_s["query"] > 0``, i.e. no cache hit).
 
     Only frames that carry LLM metadata (``"verdict"`` or ``"error"`` key) are
-    included.  ``query_elapsed_s`` is 0 for cache hits (no real API call was
-    made), while ``total_elapsed_s`` includes cache-lookup and rendering overhead.
-    ``n_api_frames`` counts frames where ``query_elapsed_s > 0``.
+    included.  For elapsed timings use ``compute_timing_metrics`` instead.
 
     Returns dict with keys:
       input_tokens_{mean,median,std}, output_tokens_{mean,median,std},
-      total_elapsed_s_{mean,median,std}, query_elapsed_s_{mean,median,std},
-      n_frames, n_api_frames.
+      thoughts_token_count_{mean,median,std}, n_frames, n_api_frames.
     Returns empty dict when no qualifying frames exist.
     """
     input_tokens: list[float] = []
     output_tokens: list[float] = []
     thoughts_tokens: list[float] = []
-    total_elapsed: list[float] = []
     query_elapsed: list[float] = []
 
     for fr in frame_results:
@@ -512,12 +558,11 @@ def compute_llm_cost_metrics(frame_results: list[FrameResult]) -> dict:
             if "thoughts_token_count" in token_usage and token_usage["thoughts_token_count"] is not None:
                 thoughts_tokens.append(float(token_usage["thoughts_token_count"]))
 
-        if "total_elapsed_s" in meta:
-            total_elapsed.append(float(meta["total_elapsed_s"]))
-        if "query_elapsed_s" in meta:
-            query_elapsed.append(float(meta["query_elapsed_s"]))
+        elapsed = meta.get("elapsed_s", {})
+        if "query" in elapsed:
+            query_elapsed.append(float(elapsed["query"]))
 
-    if not input_tokens and not output_tokens and not total_elapsed:
+    if not input_tokens and not output_tokens:
         return {}
 
     def _stats(vals: list[float]) -> dict:
@@ -536,8 +581,6 @@ def compute_llm_cost_metrics(frame_results: list[FrameResult]) -> dict:
         ("input_tokens", input_tokens),
         ("output_tokens", output_tokens),
         ("thoughts_token_count", thoughts_tokens),
-        ("total_elapsed_s", total_elapsed),
-        ("query_elapsed_s", query_elapsed),
     ]:
         stats = _stats(vals)
         for stat, val in stats.items():

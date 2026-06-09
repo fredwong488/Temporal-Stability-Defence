@@ -300,6 +300,7 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:  
     if config.defense_type:
         summary["defense_effectiveness"] = eval_results.defense_effectiveness()
         summary["clustering_quality"] = eval_results.clustering_quality()
+        summary["timing_metrics"] = eval_results.timing_metrics()
         if config.defense_type == "radial_jitter":
             summary["pacts_effectiveness"] = eval_results.pacts_effectiveness()
         if config.defense_type == "llm":

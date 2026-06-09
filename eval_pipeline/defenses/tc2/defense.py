@@ -35,6 +35,7 @@ Vehicle Perception.
 from __future__ import annotations
 
 import logging
+import time
 from collections import deque
 from typing import Literal
 
@@ -157,12 +158,21 @@ class TC2Defense(BaseDefense):
                 metadata={"reason": "no_predictions"},
             )
 
+        _t0_total = time.perf_counter()
+
         # Build past-sweep list in the current sensor frame
+        _t0 = time.perf_counter()
         sweep_lidar = self._prepare_sweeps(frame, hist)
+        _elapsed_prepare_sweeps_s = time.perf_counter() - _t0
 
         # Voxelise and run MotionNet
+        _t0 = time.perf_counter()
         bev_tensor, non_empty_map = self._build_bev(sweep_lidar)
+        _elapsed_build_bev_s = time.perf_counter() - _t0
+
+        _t0 = time.perf_counter()
         disp_pred, cat_pred_raw, motion_pred = self._run_model(bev_tensor)
+        _elapsed_run_model_s = time.perf_counter() - _t0
 
         # Optional masking (same as TC2.py:705-723)
         if self.use_adj_frame_pred:
@@ -193,6 +203,7 @@ class TC2Defense(BaseDefense):
         cat_pred_logits = cat_pred_raw.cpu().numpy()  # (5, H, W)
 
         from .core import run_tc2_check
+        _t0 = time.perf_counter()
         result = run_tc2_check(
             disp_pred=last_disp,
             cat_pred_logits=cat_pred_logits,
@@ -206,6 +217,8 @@ class TC2Defense(BaseDefense):
             target_classes=self.target_classes,
         )
 
+        _elapsed_tc2_check_s = time.perf_counter() - _t0
+
         is_attack = result.n_inconsistent > 0
         confidence = (result.n_inconsistent / result.n_boxes_in_roi
                       if result.n_boxes_in_roi > 0 else 0.0)
@@ -217,6 +230,13 @@ class TC2Defense(BaseDefense):
                 "n_boxes_in_roi": result.n_boxes_in_roi,
                 "n_inconsistent": result.n_inconsistent,
                 "history_source": self.history_source,
+                "elapsed_s": {
+                    "prepare_sweeps": _elapsed_prepare_sweeps_s,
+                    "build_bev": _elapsed_build_bev_s,
+                    "run_model": _elapsed_run_model_s,
+                    "tc2_check": _elapsed_tc2_check_s,
+                    "total": time.perf_counter() - _t0_total,
+                },
                 "per_box": [
                     {
                         "type": r.box_type,

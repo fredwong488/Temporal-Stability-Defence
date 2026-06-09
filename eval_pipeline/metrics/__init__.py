@@ -17,6 +17,7 @@ from .common import (
     compute_pacts_effectiveness,
     compute_llm_attack_type_accuracy,
     compute_llm_cost_metrics,
+    compute_timing_metrics,
     _NUSCENES_IOU_THRESHOLDS,
     compute_detection_rate,
 )
@@ -42,6 +43,7 @@ __all__ = [
     "compute_pacts_effectiveness",
     "compute_llm_attack_type_accuracy",
     "compute_llm_cost_metrics",
+    "compute_timing_metrics",
     "_NUSCENES_IOU_THRESHOLDS",
     "compute_detection_rate",
     # kitti

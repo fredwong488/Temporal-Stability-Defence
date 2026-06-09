@@ -277,6 +277,7 @@ class EvalPipeline:
         live_run_frames = []
         live_attack_rerun_no_lidar = 0  # cache hit but lidar missing (old cache format)
         live_attack_rerun_not_use_cache = 0  # use_cached_attacks=False
+        live_attack_rerun_not_cached = 0  # cache hit but entry.is_attacked=False, attack required
         frame_index_in_scene = 0
         n_unattacked_in_scene = 0
         n_attacked_in_scene = 0
@@ -462,7 +463,11 @@ class EvalPipeline:
                             )
                             if self.detector is not None:
                                 attacked_preds = self.detector.predict(attacked_frame)
-                            live_attack_rerun_not_use_cache += 1
+                            if not self.use_cached_attacks:
+                                live_attack_rerun_not_use_cache += 1
+                            else:
+                                # use_cached_attacks=True but cached entry was not attacked
+                                live_attack_rerun_not_cached += 1
             else:
                 # -------------------------------------------------------
                 # No cache configured: run everything live.
@@ -564,6 +569,11 @@ class EvalPipeline:
                 parts.append(
                     f"{live_attack_rerun_not_use_cache} cache hits re-ran attack live "
                     f"(use_cached_attacks=False)"
+                )
+            if live_attack_rerun_not_cached:
+                parts.append(
+                    f"{live_attack_rerun_not_cached} cache hits re-ran attack live "
+                    f"(cached entry was clean — scene plan required attack)"
                 )
             logger.info("Pipeline complete: %s.", "; ".join(parts))
 

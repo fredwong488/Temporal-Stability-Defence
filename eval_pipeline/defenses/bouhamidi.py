@@ -48,6 +48,7 @@ Notes
 from __future__ import annotations
 
 import math
+import time
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -172,6 +173,8 @@ class BouhamidiDefense(BaseDefense):
     # --------------------------------------------------------------------- #
 
     def detect(self, frame: Frame, history: FrameHistory) -> DetectionResult:
+        _t0_total = time.perf_counter()
+
         # ------------------------------------------------------------------ #
         #  1.  Level to gravity-aligned ego frame                             #
         # ------------------------------------------------------------------ #
@@ -192,6 +195,7 @@ class BouhamidiDefense(BaseDefense):
         # ------------------------------------------------------------------ #
         #  2.  Spherical coordinates + ROI mask                               #
         # ------------------------------------------------------------------ #
+        _t0 = time.perf_counter()
         r = np.linalg.norm(xyz_ego, axis=1)
         # Guard against origin-point division-by-zero
         r_safe = np.where(r > 0, r, 1e-9)
@@ -229,15 +233,19 @@ class BouhamidiDefense(BaseDefense):
         xyzw_leveled_roi = np.concatenate(
             [xyz_leveled[roi_mask], intensity_roi], axis=1
         ).astype(np.float32)
+        _elapsed_spherical_roi_s = time.perf_counter() - _t0
 
         # ------------------------------------------------------------------ #
         #  3.  Ground / non-ground segmentation (Patchwork++)                 #
         # ------------------------------------------------------------------ #
+        _t0 = time.perf_counter()
         ground_idx, nonground_idx = self._ground_segment(xyzw_leveled_roi)
+        _elapsed_ground_segment_s = time.perf_counter() - _t0
 
         # ------------------------------------------------------------------ #
         #  4.  Grid binning                                                   #
         # ------------------------------------------------------------------ #
+        _t0 = time.perf_counter()
         # Build edges: paper uses step = +0.017 for θ and +0.0087 for φ
         theta_edges = np.arange(self.theta_min, self.theta_max + self.theta_step, self.theta_step)
         phi_edges = np.arange(self.phi_min, self.phi_max + self.phi_step, self.phi_step)
@@ -281,10 +289,12 @@ class BouhamidiDefense(BaseDefense):
         # ------------------------------------------------------------------ #
         insertion_cells = ground_occ & nonground_occ         # both filled
         removal_cells = ~ground_occ & ~nonground_occ         # neither filled
+        _elapsed_grid_coherence_s = time.perf_counter() - _t0
 
         # ------------------------------------------------------------------ #
         #  6.  Post-processing                                                #
         # ------------------------------------------------------------------ #
+        _t0 = time.perf_counter()
         # 6a. Ignore boundary cells
         if self.ignore_boundary and M > 2 and N > 2:
             insertion_cells[[0, -1], :] = False
@@ -329,6 +339,7 @@ class BouhamidiDefense(BaseDefense):
         # 6c. Removal: count flagged cells (after boundary ignore)
         removal_cell_indices = list(zip(*np.where(removal_cells))) if removal_cells.any() else []
         removal_groups = len(removal_cell_indices)
+        _elapsed_postprocess_s = time.perf_counter() - _t0
 
         # ------------------------------------------------------------------ #
         #  7.  Scene-level decision                                           #
@@ -352,5 +363,12 @@ class BouhamidiDefense(BaseDefense):
                 "removal_groups": int(removal_groups),
                 "insertion_points_xyz": surviving_insertion_pts,
                 "removal_cell_indices": removal_cell_indices,
+                "elapsed_s": {
+                    "spherical_roi": _elapsed_spherical_roi_s,
+                    "ground_segment": _elapsed_ground_segment_s,
+                    "grid_coherence": _elapsed_grid_coherence_s,
+                    "postprocess": _elapsed_postprocess_s,
+                    "total": time.perf_counter() - _t0_total,
+                },
             },
         )
