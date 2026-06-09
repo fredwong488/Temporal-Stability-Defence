@@ -122,6 +122,7 @@ def _defense_registry() -> dict[str, type]:
     from .defenses.wasserstein_anisotropy import WassersteinAnisotropyDefense
     from .defenses.llm import LLMDefense
     from .defenses.bouhamidi import BouhamidiDefense
+    from .defenses.baseline import BaselineDefense
     return {
         "void_region": VoidRegionDefense,
         "tc2": TC2Defense,
@@ -133,6 +134,7 @@ def _defense_registry() -> dict[str, type]:
         "wasserstein": WassersteinAnisotropyDefense,
         "llm": LLMDefense,
         "bouhamidi": BouhamidiDefense,
+        "baseline": BaselineDefense
     }
 
 
