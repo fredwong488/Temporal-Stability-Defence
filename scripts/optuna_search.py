@@ -356,7 +356,9 @@ def main() -> None:
     parser.add_argument("--pred-label-score-threshold", type=float, default=0.5)
     parser.add_argument("--confidence-threshold", type=float, default=0.3)
 
-    # Fixed (non-searched) defense params
+    # Fixed attack / defense params
+    parser.add_argument("--attack-params", nargs="*", default=[], metavar="KEY=VALUE",
+                        help="Extra attack params passed directly to the attack (e.g. some_flag=True)")
     parser.add_argument("--defense-params", nargs="*", default=[], metavar="KEY=VALUE",
                         help="Fixed defense params not in the search space (e.g. use_point=False)")
 
@@ -419,11 +421,12 @@ def main() -> None:
 
     # Attack params
     attack_params: dict = {"target_types": classes}
-    if args.attack == "ora" and args.attack_noise_preset != "none":
+    if args.attack_noise_preset != "none":
         from eval_pipeline.utils.spoofing_noise import SpoofingNoiseModel
         attack_params["noise_model"] = SpoofingNoiseModel.from_preset(
             args.attack_noise_preset, seed=args.attack_fraction_seed
         )
+    attack_params.update(_parse_kv_params(args.attack_params))
 
     base_defense_params = _parse_kv_params(args.defense_params)
     clusterer = base_defense_params.get("clusterer")
