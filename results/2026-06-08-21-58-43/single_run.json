@@ -1,0 +1,94 @@
+{
+  "experiment_name": "single_run",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+      "version": "v1.0-mini",
+      "split": "mini_train",
+      "keyframes_only": true
+    },
+    "attack_type": "ghost",
+    "attack_params": {
+      "ghost_cloud_file": "ghost_cloud_car.npy",
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x78dcd42c5210>"
+    },
+    "attack_fraction": 1.0,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "llm",
+    "defense_params": {
+      "force_refresh": true,
+      "thinking_effort": 2
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "defense_effectiveness",
+      "llm_attack_type_accuracy"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-06-08-21-58-43",
+    "experiment_name": "single_run",
+    "save_frame_results": true,
+    "precomputed_cache_path": "precomputed/nuscenes-minitrain-pointpillars-ghost-1.0-fixed_reinject_dist/single_run",
+    "read_only_cache": false,
+    "use_cached_attacks": true,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5,
+    "checkpoint_path": null
+  },
+  "num_frames": 323,
+  "defense_effectiveness": {
+    "tp": 104,
+    "fp": 38,
+    "tn": 141,
+    "fn": 40,
+    "tpr": 0.7222222222222222,
+    "fpr": 0.2122905027932961,
+    "accuracy": 0.7585139318885449,
+    "precision": 0.7323943661971831,
+    "recall": 0.7222222222222222,
+    "f1": 0.7272727272727272
+  },
+  "clustering_quality": {},
+  "llm_attack_type_accuracy": {
+    "n_tp_detected": 104,
+    "n_correct_type": 93,
+    "n_incorrect_type": 11,
+    "type_accuracy": 0.8942307692307693
+  },
+  "llm_cost_metrics": {
+    "n_frames": 323,
+    "n_api_frames": 323,
+    "input_tokens_mean": 3404.0,
+    "input_tokens_median": 3404.0,
+    "input_tokens_std": 0.0,
+    "output_tokens_mean": 146.1764705882353,
+    "output_tokens_median": 22.0,
+    "output_tokens_std": 135.48014536058062,
+    "thoughts_token_count_mean": 757.4235807860262,
+    "thoughts_token_count_median": 746.0,
+    "thoughts_token_count_std": 260.2160834748082,
+    "total_elapsed_s_mean": 20.573272289089665,
+    "total_elapsed_s_median": 18.078077125999698,
+    "total_elapsed_s_std": 8.203919448703887,
+    "query_elapsed_s_mean": 7.637536580498443,
+    "query_elapsed_s_median": 5.151192353001534,
+    "query_elapsed_s_std": 6.87972781028412
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "notes": "Evaluate llm defense gemini on mini_train ghost cyl keyframes only extended roi thinking 2",
+  "git_commit": "814715eb3cd2b220cff185c627d71aa4c57f1e2e",
+  "timestamp": "2026-06-08-22-25-19",
+  "cmd_args": [
+    "scripts/run_sweep.py",
+    "--dataset",
+    "nuscenes",
+    "--nuscenes-split",
+    "mini_train",
+    "--nuscenes-keyframes-only",
+    "--attack",
+    "ghost",
+    "--attack-fraction",
+    "1.0",
+    "--defense",
+    "llm",
+    "--detector",
+    "pointpillars_nuscenes",
+    "--metric-types",
+    "defense_effectiveness",
+    "llm_attack_type_accuracy",
+    "--writeable-cache",
+    "--precomputed-cache-dir",
+    "precomputed/nuscenes-minitrain-pointpillars-ghost-1.0-fixed_reinject_dist",
+    "--use-cached-attacks",
+    "--save-frames",
+    "--use-predicted-labels",
+    "--no-checkpoint",
+    "--attack-params",
+    "ghost_cloud_file=ghost_cloud_cyl.npy",
+    "--defense-params",
+    "force_refresh=True",
+    "thinking_effort=2",
+    "--notes",
+    "Evaluate llm defense gemini on mini_train ghost cyl keyframes only extended roi thinking 2"
+  ],
+  "precomputed_cache_dir": "precomputed/nuscenes-minitrain-pointpillars-ghost-1.0-fixed_reinject_dist",
+  "sweep": null,
+  "dataset_type": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_train",
+    "keyframes_only": true
+  },
+  "attack_type": "ghost",
+  "attack_params": {
+    "ghost_cloud_file": "ghost_cloud_cyl.npy",
+    "noise_preset": "worst_case"
+  },
+  "attack_fraction": 1.0,
+  "attack_fraction_seed": 0,
+  "min_unattacked_frames": 6,
+  "min_attacked_frames": 6,
+  "detector_type": "pointpillars_nuscenes",
+  "detector_params": {
+    "score_threshold": 0.3
+  },
+  "defense_type": "llm",
+  "defense_params": {
+    "force_refresh": true,
+    "thinking_effort": 2
+  },
+  "metric_types": [
+    "defense_effectiveness",
+    "llm_attack_type_accuracy"
+  ],
+  "difficulties": [
+    "Easy",
+    "Moderate",
+    "Hard"
+  ],
+  "recall_iou_confidence_threshold": 0.3,
+  "save_frame_results": true,
+  "read_only_cache": true,
+  "use_cached_attacks": true,
+  "use_predicted_labels": true,
+  "pred_label_score_threshold": 0.5,
+  "checkpoint_path": null
+}

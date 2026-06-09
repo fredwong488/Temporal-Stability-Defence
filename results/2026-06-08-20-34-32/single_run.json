@@ -1,0 +1,96 @@
+{
+  "experiment_name": "single_run",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+      "version": "v1.0-mini",
+      "split": "mini_train",
+      "keyframes_only": true
+    },
+    "attack_type": "ora",
+    "attack_params": {
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x7b93d7067a90>"
+    },
+    "attack_fraction": 1.0,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "llm",
+    "defense_params": {
+      "force_refresh": true,
+      "thinking_effort": 1
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "defense_effectiveness",
+      "llm_attack_type_accuracy",
+      "llm_cost_metrics"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-06-08-20-34-32",
+    "experiment_name": "single_run",
+    "save_frame_results": true,
+    "precomputed_cache_path": "precomputed/nuscenes-minitrain-pointpillars-ora-withnoise-b200-1.0-fixed_reinject_dist/single_run",
+    "read_only_cache": true,
+    "use_cached_attacks": true,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5,
+    "checkpoint_path": null
+  },
+  "num_frames": 323,
+  "defense_effectiveness": {
+    "tp": 99,
+    "fp": 27,
+    "tn": 152,
+    "fn": 45,
+    "tpr": 0.6875,
+    "fpr": 0.15083798882681565,
+    "accuracy": 0.7770897832817337,
+    "precision": 0.7857142857142857,
+    "recall": 0.6875,
+    "f1": 0.7333333333333334
+  },
+  "clustering_quality": {},
+  "llm_attack_type_accuracy": {
+    "n_tp_detected": 99,
+    "n_correct_type": 0,
+    "n_incorrect_type": 99,
+    "type_accuracy": 0.0
+  },
+  "llm_cost_metrics": {
+    "n_frames": 323,
+    "n_api_frames": 323,
+    "input_tokens_mean": 3404.0,
+    "input_tokens_median": 3404.0,
+    "input_tokens_std": 0.0,
+    "output_tokens_mean": 190.78328173374612,
+    "output_tokens_median": 248.0,
+    "output_tokens_std": 135.13237209030797,
+    "thoughts_token_count_mean": 120.24148606811146,
+    "thoughts_token_count_median": 108.0,
+    "thoughts_token_count_std": 116.0175224847014,
+    "elapsed_s_mean": 20.737909832808043,
+    "elapsed_s_median": 19.220955664997746,
+    "elapsed_s_std": 6.261453401657889
+  }
+}

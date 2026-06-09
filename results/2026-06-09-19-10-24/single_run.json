@@ -1,0 +1,111 @@
+{
+  "experiment_name": "single_run",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-test",
+      "version": "v1.0-test",
+      "split": "test",
+      "scene_names": [
+        "scene-0077",
+        "scene-0078",
+        "scene-0079",
+        "scene-0080",
+        "scene-0081",
+        "scene-0082",
+        "scene-0083",
+        "scene-0084"
+      ]
+    },
+    "attack_type": "ghost",
+    "attack_params": {
+      "ghost_cloud_file": "ghost_cloud_car.npy",
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x73e22028a750>"
+    },
+    "attack_fraction": 1.0,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "tc2",
+    "defense_params": {
+      "history_source": "clean"
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "defense_effectiveness",
+      "timing_metrics"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-06-09-19-10-24",
+    "experiment_name": "single_run",
+    "save_frame_results": true,
+    "verbose_frame_results": false,
+    "precomputed_cache_path": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/precomputed/nuscenes-test-pointpillars-ghost-1.0/single_run",
+    "read_only_cache": false,
+    "use_cached_attacks": true,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5,
+    "checkpoint_path": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/checkpoints/2026-06-09-19-10-24/single_run"
+  },
+  "num_frames": 3069,
+  "defense_effectiveness": {
+    "tp": 1304,
+    "fp": 642,
+    "tn": 1102,
+    "fn": 21,
+    "tpr": 0.9841509433962264,
+    "fpr": 0.36811926605504586,
+    "accuracy": 0.7839687194525904,
+    "precision": 0.6700924974306269,
+    "recall": 0.9841509433962264,
+    "f1": 0.7973096912259248
+  },
+  "clustering_quality": {},
+  "timing_metrics": {
+    "n_frames": 2888,
+    "build_bev": {
+      "mean": 0.03561699995622911,
+      "median": 0.035546951497963164,
+      "std": 0.003372411189456577,
+      "n": 2888
+    },
+    "prepare_sweeps": {
+      "mean": 0.0025071701314715493,
+      "median": 0.002485113996954169,
+      "std": 0.00024783871853705235,
+      "n": 2888
+    },
+    "run_model": {
+      "mean": 0.011268943896637242,
+      "median": 0.010557599998719525,
+      "std": 0.02725369325264641,
+      "n": 2888
+    },
+    "tc2_check": {
+      "mean": 0.00440825540307165,
+      "median": 0.004343792999861762,
+      "std": 0.0008363873019066781,
+      "n": 2888
+    },
+    "total": {
+      "mean": 0.05808102101072918,
+      "median": 0.05732558700401569,
+      "std": 0.027813239774617336,
+      "n": 2888
+    }
+  }
+}
