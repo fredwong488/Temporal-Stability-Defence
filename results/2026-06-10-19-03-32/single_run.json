@@ -1,0 +1,178 @@
+{
+  "experiment_name": "single_run",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-test",
+      "version": "v1.0-test",
+      "split": "test",
+      "scene_names": [
+        "scene-0077",
+        "scene-0078",
+        "scene-0079",
+        "scene-0080",
+        "scene-0081",
+        "scene-0082",
+        "scene-0083",
+        "scene-0084",
+        "scene-0085",
+        "scene-0086",
+        "scene-0087",
+        "scene-0088",
+        "scene-0089",
+        "scene-0090",
+        "scene-0091",
+        "scene-0111",
+        "scene-0112",
+        "scene-0113",
+        "scene-0114",
+        "scene-0115",
+        "scene-0116",
+        "scene-0117",
+        "scene-0118",
+        "scene-0119",
+        "scene-0140",
+        "scene-0142",
+        "scene-0143",
+        "scene-0144",
+        "scene-0145",
+        "scene-0146",
+        "scene-0147",
+        "scene-0148",
+        "scene-0265",
+        "scene-0266",
+        "scene-0279",
+        "scene-0280",
+        "scene-0281",
+        "scene-0282",
+        "scene-0307",
+        "scene-0308",
+        "scene-0309",
+        "scene-0310",
+        "scene-0311",
+        "scene-0312",
+        "scene-0313",
+        "scene-0314",
+        "scene-0333",
+        "scene-0334",
+        "scene-0335",
+        "scene-0336",
+        "scene-0337",
+        "scene-0338",
+        "scene-0339",
+        "scene-0340",
+        "scene-0341",
+        "scene-0342",
+        "scene-0343",
+        "scene-0481",
+        "scene-0482",
+        "scene-0483",
+        "scene-0484",
+        "scene-0485",
+        "scene-0486",
+        "scene-0487",
+        "scene-0488",
+        "scene-0489",
+        "scene-0490",
+        "scene-0491",
+        "scene-0492",
+        "scene-0493",
+        "scene-0494",
+        "scene-0495",
+        "scene-0496",
+        "scene-0497",
+        "scene-0498"
+      ]
+    },
+    "attack_type": "ghost",
+    "attack_params": {
+      "ghost_cloud_file": "ghost_cloud_car.npy",
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x7e4e92d40450>"
+    },
+    "attack_fraction": 1.0,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "tc2",
+    "defense_params": {
+      "history_source": "dirty"
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "defense_effectiveness",
+      "timing_metrics"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-06-10-19-03-32",
+    "experiment_name": "single_run",
+    "save_frame_results": true,
+    "verbose_frame_results": false,
+    "precomputed_cache_path": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/precomputed/nuscenes-test-pointpillars-ghost-car-1.0/single_run",
+    "read_only_cache": false,
+    "use_cached_attacks": true,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5,
+    "checkpoint_path": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/checkpoints/2026-06-10-19-03-32/single_run"
+  },
+  "num_frames": 29036,
+  "defense_effectiveness": {
+    "tp": 4553,
+    "fp": 2402,
+    "tn": 13690,
+    "fn": 8391,
+    "tpr": 0.3517459826946848,
+    "fpr": 0.14926671638081035,
+    "accuracy": 0.6282890205262432,
+    "precision": 0.6546369518332135,
+    "recall": 0.3517459826946848,
+    "f1": 0.45761093522287555
+  },
+  "clustering_quality": {},
+  "timing_metrics": {
+    "n_frames": 26275,
+    "build_bev": {
+      "mean": 0.05157634635086058,
+      "median": 0.04911008299677633,
+      "std": 0.013458357046630997,
+      "n": 26275
+    },
+    "prepare_sweeps": {
+      "mean": 0.0032536908870394103,
+      "median": 0.002839494001818821,
+      "std": 0.0016458976087314436,
+      "n": 26275
+    },
+    "run_model": {
+      "mean": 0.010827161000572325,
+      "median": 0.010345867980504408,
+      "std": 0.0035878155917539274,
+      "n": 26275
+    },
+    "tc2_check": {
+      "mean": 0.004838510671839628,
+      "median": 0.004536141990683973,
+      "std": 0.0016846412827249302,
+      "n": 26275
+    },
+    "total": {
+      "mean": 0.07625172848705793,
+      "median": 0.0731617150013335,
+      "std": 0.01557904842623014,
+      "n": 26275
+    }
+  }
+}

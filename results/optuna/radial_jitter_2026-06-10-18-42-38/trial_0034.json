@@ -1,0 +1,118 @@
+{
+  "experiment_name": "trial_0034",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+      "version": "v1.0-mini",
+      "split": "mini_train"
+    },
+    "attack_type": "ghost",
+    "attack_params": {
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x7e47e48f6fd0>",
+      "ghost_cloud_file": "ghost_cloud_ped.npy"
+    },
+    "attack_fraction": 1.0,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "radial_jitter",
+    "defense_params": {
+      "use_point": true,
+      "use_centroid": true,
+      "use_predictions": true,
+      "ground_method": "patchwork",
+      "temporal_window": 13,
+      "motion_tolerance": 2.981744453243564,
+      "min_frames_associated": 10,
+      "min_points_per_cluster": 22,
+      "flag_condition": "or",
+      "centroid_threshold": 0.7254156523014779,
+      "centroid_method": "first_diff",
+      "icp_max_correspondence_dist": 0.8522765569866659,
+      "point_threshold": 0.06831354101050711
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "defense_effectiveness"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/optuna/radial_jitter_2026-06-10-18-42-38",
+    "experiment_name": "trial_0034",
+    "save_frame_results": false,
+    "verbose_frame_results": false,
+    "precomputed_cache_path": "precomputed/nuscenes-minitrain-pointpillars-ghost-ped-1.0-fixed_reinject_dist/single_run",
+    "read_only_cache": false,
+    "use_cached_attacks": true,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5,
+    "checkpoint_path": null
+  },
+  "num_frames": 3147,
+  "defense_effectiveness": {
+    "tp": 1330,
+    "fp": 1601,
+    "tn": 187,
+    "fn": 29,
+    "tpr": 0.9786607799852833,
+    "fpr": 0.895413870246085,
+    "accuracy": 0.4820463933905307,
+    "precision": 0.45377004435346296,
+    "recall": 0.9786607799852833,
+    "f1": 0.62004662004662
+  },
+  "clustering_quality": {
+    "spoofed_f1": 0.0,
+    "pred_f1": 0.4016991411949395,
+    "precision": 1.0,
+    "spoofed_recall": 0.0,
+    "pred_recall": 0.2513288652646175,
+    "matched_phantoms": 0,
+    "total_phantoms": 0,
+    "matched_predictions": 8700,
+    "total_predictions": 34616,
+    "matched_clusters": 8700,
+    "total_clusters": 8700
+  },
+  "timing_metrics": {
+    "n_frames": 3107,
+    "cluster": {
+      "mean": 0.008884733885460787,
+      "median": 0.00810956399072893,
+      "std": 0.0028055598829728927,
+      "n": 3107
+    },
+    "sigma_centroid": {
+      "mean": 0.0006691646403110744,
+      "median": 0.0005916189693380147,
+      "std": 0.0004792319870277575,
+      "n": 3107
+    },
+    "sigma_point": {
+      "mean": 0.058975323046144175,
+      "median": 0.03502114603179507,
+      "std": 0.06848409068112293,
+      "n": 3107
+    },
+    "total": {
+      "mean": 0.0730668432396803,
+      "median": 0.04946226900210604,
+      "std": 0.06974054964560657,
+      "n": 3107
+    }
+  }
+}
