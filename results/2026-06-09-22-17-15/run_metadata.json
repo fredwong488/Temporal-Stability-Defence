@@ -1,0 +1,88 @@
+{
+  "notes": "Evaluate bouhamidi attack fraction 1 on ghost car",
+  "git_commit": "dcdd29718cbc3d6ff997dfbce7fb897167fd6ed7",
+  "timestamp": "2026-06-09-22-17-15",
+  "cmd_args": [
+    "scripts/run_sweep.py",
+    "--dataset",
+    "nuscenes",
+    "--nuscenes-root",
+    "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-test",
+    "--nuscenes-version",
+    "v1.0-test",
+    "--nuscenes-split",
+    "test",
+    "--nuscenes-num-scenes",
+    "8",
+    "--attack",
+    "ghost",
+    "--attack-fraction",
+    "1.0",
+    "--defense",
+    "bouhamidi",
+    "--detector",
+    "pointpillars_nuscenes",
+    "--metric-types",
+    "defense_effectiveness",
+    "timing_metrics",
+    "--precomputed-cache-dir",
+    "/vol/bitbucket/cyw122/FYP/experiment_pipeline/precomputed/nuscenes-test-pointpillars-ghost-1.0",
+    "--use-cached-attacks",
+    "--save-frames",
+    "--use-predicted-labels",
+    "--attack-params",
+    "ghost_cloud_file=ghost_cloud_car.npy",
+    "--notes",
+    "Evaluate bouhamidi attack fraction 1 on ghost car"
+  ],
+  "precomputed_cache_dir": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/precomputed/nuscenes-test-pointpillars-ghost-1.0",
+  "sweep": null,
+  "dataset_type": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-test",
+    "version": "v1.0-test",
+    "split": "test",
+    "scene_names": [
+      "scene-0077",
+      "scene-0078",
+      "scene-0079",
+      "scene-0080",
+      "scene-0081",
+      "scene-0082",
+      "scene-0083",
+      "scene-0084"
+    ]
+  },
+  "attack_type": "ghost",
+  "attack_params": {
+    "ghost_cloud_file": "ghost_cloud_car.npy",
+    "noise_preset": "worst_case"
+  },
+  "attack_fraction": 1.0,
+  "attack_fraction_seed": 0,
+  "min_unattacked_frames": 6,
+  "min_attacked_frames": 6,
+  "detector_type": "pointpillars_nuscenes",
+  "detector_params": {
+    "score_threshold": 0.3
+  },
+  "defense_type": "bouhamidi",
+  "defense_params": {},
+  "metric_types": [
+    "defense_effectiveness",
+    "timing_metrics"
+  ],
+  "difficulties": [
+    "Easy",
+    "Moderate",
+    "Hard"
+  ],
+  "recall_iou_confidence_threshold": 0.3,
+  "save_frame_results": true,
+  "verbose_frame_results": false,
+  "read_only_cache": true,
+  "use_cached_attacks": true,
+  "use_predicted_labels": true,
+  "pred_label_score_threshold": 0.5,
+  "checkpoint_path": null
+}
