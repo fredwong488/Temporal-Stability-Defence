@@ -4,7 +4,7 @@ inspect_cache.py
 Summarise a precomputed pipeline cache (shelve-backed).
 
 Usage:
-    pixi run python tools/inspect_cache.py <cache> [--frame <frame_id>]
+    pixi run python tools/inspect_cache.py <cache> [--frame <frame_id>] [--stats]
 
 <cache> is the base path passed to --precomputed-cache-dir (no extension);
 shelve manages its own backing files alongside that path.
@@ -22,6 +22,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Inspect a precomputed pipeline cache file.")
     parser.add_argument("cache", help="Path to the .pkl cache file")
     parser.add_argument("--frame", help="Print full details for a specific frame_id")
+    parser.add_argument("--stats", action="store_true", help="Print only the summary stats, no per-frame listing")
     args = parser.parse_args()
 
     cache = shelve.open(args.cache, flag='r')
@@ -53,7 +54,7 @@ def main() -> None:
             print(f"  attacked_lidar     : shape={lidar.shape}, dtype={lidar.dtype}")
         else:
             print(f"  attacked_lidar     : None")
-    else:
+    elif not args.stats:
         # Print a one-line summary per frame
         print("\nframe_id                          | attacked | lidar | #clean | #attacked")
         print("-" * 75)
