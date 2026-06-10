@@ -8,6 +8,10 @@ Usage:
     pixi run python tools/explore_nuscenes_frame.py
     pixi run python tools/explore_nuscenes_frame.py --scene 1 --sample 2
     pixi run python tools/explore_nuscenes_frame.py --patchworkpp
+
+    # Load attacked lidar from a precomputed shelve cache:
+    pixi run python tools/explore_nuscenes_frame.py \\
+        --frame-id <frame_id> --cache /path/to/cache --attacked
 """
 
 from __future__ import annotations
@@ -44,11 +48,63 @@ def global_to_sensor(nusc, sd):
     return np.linalg.inv(sensor_to_global(nusc, sd))
 
 
+# Edges of a 3-D bounding box defined by corner index pairs.
+# corners_velo layout (OpenPCDet convention):
+#   0-3 bottom face (z low), 4-7 top face (z high), i+4 is directly above i.
+_BOX_EDGES = [
+    (0,1),(1,2),(2,3),(3,0),   # bottom face
+    (4,5),(5,6),(6,7),(7,4),   # top face
+    (0,4),(1,5),(2,6),(3,7),   # verticals
+]
+
+
+def _bbox_traces(preds, label: str, color: str, T_s2e=None):
+    """Return a list of Scatter3d traces (one per box) for a prediction list."""
+    import plotly.graph_objects as go
+    traces = []
+    for pred in preds:
+        corners = pred.corners_velo.copy()   # (8, 3) sensor frame
+        if T_s2e is not None:
+            ones = np.ones((8, 1))
+            corners = (T_s2e @ np.hstack([corners, ones]).T).T[:, :3]
+        xs, ys, zs = [], [], []
+        for a, b in _BOX_EDGES:
+            xs += [corners[a, 0], corners[b, 0], None]
+            ys += [corners[a, 1], corners[b, 1], None]
+            zs += [corners[a, 2], corners[b, 2], None]
+        cx, cy, cz = corners.mean(axis=0)
+        traces.append(go.Scatter3d(
+            x=xs, y=ys, z=zs,
+            mode="lines",
+            line=dict(color=color, width=2),
+            name=label,
+            legendgroup=label,
+            showlegend=len(traces) == 0,
+            hoverinfo="skip",
+        ))
+        traces.append(go.Scatter3d(
+            x=[cx], y=[cy], z=[cz],
+            mode="text",
+            text=[f"{pred.type} {pred.score:.2f}"],
+            textfont=dict(color=color, size=9),
+            name=label,
+            legendgroup=label,
+            showlegend=False,
+            hovertemplate=(
+                f"{pred.type} score={pred.score:.2f}<br>"
+                f"x={cx:.1f} y={cy:.1f} z={cz:.1f}<extra></extra>"
+            ),
+        ))
+    return traces
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataroot", default=DATAROOT)
+    parser.add_argument("--version", default=VERSION,
+                        help="NuScenes version string (default: v1.0-mini)")
     parser.add_argument("--scene",  type=int, default=0,
-                        help="Scene index (0-based) within the mini split")
+                        help="Scene index (0-based) within the split")
     parser.add_argument("--sample", type=int, default=0,
                         help="Sample (keyframe) index within the scene")
     parser.add_argument("--frame-id",
@@ -64,10 +120,21 @@ def main():
     parser.add_argument("--sensor-height", type=float, default=-1.84,
                         help="Sensor height above ground (m) passed to Patchwork++ "
                              "(default: 1.84, NuScenes LIDAR_TOP)")
+    parser.add_argument("--cache",
+                        help="Path stem of a shelve cache produced by EvalPipeline "
+                             "(e.g. /path/to/cache — without .db/.dir extension)")
+    parser.add_argument("--attacked", action="store_true",
+                        help="Show attacked lidar from the cache instead of clean lidar. "
+                             "Requires --cache and --frame-id.")
     args = parser.parse_args()
 
+    if args.attacked and not args.cache:
+        raise SystemExit("--attacked requires --cache")
+    if args.attacked and not args.frame_id:
+        raise SystemExit("--attacked requires --frame-id")
+
     from nuscenes.nuscenes import NuScenes
-    nusc = NuScenes(version=VERSION, dataroot=args.dataroot, verbose=False)
+    nusc = NuScenes(version=args.version, dataroot=args.dataroot, verbose=False)
 
     if args.frame_id:
         # Locate the sample_data record whose token starts with frame_id
@@ -126,8 +193,30 @@ def main():
     # ------------------------------------------------------------------ #
     # LiDAR point cloud in sensor frame
     # ------------------------------------------------------------------ #
-    pts_path = os.path.join(args.dataroot, lidar_sd["filename"])
-    pts = np.fromfile(pts_path, dtype=np.float32).reshape(-1, 5)[:, :4]  # x,y,z,intensity
+    cache_label = "clean"
+    entry = None
+    if args.cache:
+        import shelve
+        with shelve.open(args.cache, flag='r') as shelf:
+            entry = shelf.get(args.frame_id)
+        if entry is None:
+            raise SystemExit(f"frame_id '{args.frame_id}' not found in cache '{args.cache}'")
+        if args.attacked:
+            if entry.attacked_lidar is None:
+                raise SystemExit(
+                    f"Cache entry for '{args.frame_id}' has no attacked_lidar "
+                    f"(is_attacked={entry.is_attacked}). Was this frame actually attacked?"
+                )
+            pts = entry.attacked_lidar.astype(np.float32)
+            cache_label = "attacked"
+            print(f"Loaded attacked lidar from cache: {len(pts):,} points")
+        else:
+            pts_path = os.path.join(args.dataroot, lidar_sd["filename"])
+            pts = np.fromfile(pts_path, dtype=np.float32).reshape(-1, 5)[:, :4]
+            print(f"Cache found (is_attacked={entry.is_attacked}); showing clean lidar from disk.")
+    else:
+        pts_path = os.path.join(args.dataroot, lidar_sd["filename"])
+        pts = np.fromfile(pts_path, dtype=np.float32).reshape(-1, 5)[:, :4]  # x,y,z,intensity
 
     if len(pts) > args.max_pts:
         rng = np.random.default_rng(0)
@@ -164,6 +253,20 @@ def main():
         print(f"  {ann['category_name']:35s}  "
               f"sensor x={cs[0]:+7.2f} y={cs[1]:+7.2f}  |  "
               f"ego    x={ce[0]:+7.2f} y={ce[1]:+7.2f}")
+
+    # ------------------------------------------------------------------ #
+    # Cached predictions (clean always; attacked only when --attacked)
+    # ------------------------------------------------------------------ #
+    pred_traces = []
+    if args.cache and entry is not None:
+        _T_s2e = (T_g2e @ sensor_to_global(nusc, lidar_sd)) if args.ego else None
+        pred_traces += _bbox_traces(
+            entry.clean_predictions or [], "clean preds", "cyan", _T_s2e
+        )
+        if args.attacked and entry.attacked_predictions:
+            pred_traces += _bbox_traces(
+                entry.attacked_predictions, "attacked preds", "orange", _T_s2e
+            )
 
     # ------------------------------------------------------------------ #
     # Front-camera image (closest CAM_FRONT sweep by timestamp)
@@ -254,7 +357,7 @@ def main():
                             colorbar=dict(title="z (m)", thickness=12,
                                           x=SCENE_X_END - 0.01, xanchor="right",
                                           len=0.75)),
-                name="LiDAR",
+                name=f"LiDAR ({cache_label})",
                 hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra></extra>",
             )
         )
@@ -274,6 +377,9 @@ def main():
             )
         )
 
+    for t in pred_traces:
+        fig.add_trace(t)
+
     # Camera image pinned to paper coordinates on the right
     fig.add_layout_image(
         dict(source=img_src,
@@ -284,6 +390,9 @@ def main():
              layer="above"),
     )
 
+    lidar_panel_label = (
+        f"LiDAR point cloud ({cache_label}, {'ego' if args.ego else 'sensor'} frame)"
+    )
     fig.update_layout(
         title=f"NuScenes {scene['name']} — frame {lidar_sd['token'][:8]} "
               + (f"(keyframe {sample['token'][:8]})" if sample is not None
@@ -296,7 +405,7 @@ def main():
             aspectmode="data",
         ),
         annotations=[
-            dict(text=f"LiDAR point cloud ({'ego' if args.ego else 'sensor'} frame)",
+            dict(text=lidar_panel_label,
                  xref="paper", yref="paper",
                  x=SCENE_X_END / 2, y=1.0,
                  xanchor="center", yanchor="bottom",
