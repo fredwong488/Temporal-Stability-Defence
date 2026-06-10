@@ -252,9 +252,14 @@ class EvalPipeline:
                     "Pass checkpoint_path=None or use a synchronous defense."
                 )
 
-        max_window = self.defense.temporal_window if self.defense else 1
+        # History must satisfy both the defense's temporal window and the
+        # detector's sweep-accumulation depth (multi-sweep NuScenes models need
+        # ~9 past sweeps even with no temporal defense).
+        defense_window = self.defense.temporal_window if self.defense else 1
+        detector_sweeps = getattr(self.detector, "num_sweeps", 1) if self.detector else 1
+        max_window = max(defense_window, detector_sweeps)
         # Two parallel histories: clean (pre-attack) and dirty (post-attack).
-        # Sized to temporal_window - 1 so the defense sees prior frames only.
+        # Sized to max_window - 1 so each prediction sees prior frames only.
         clean_history: deque[Frame] = deque(maxlen=max(0, max_window - 1))
         dirty_history: deque[Frame] = deque(maxlen=max(0, max_window - 1))
         last_sequence_id: str | None = None
@@ -413,7 +418,7 @@ class EvalPipeline:
                 if entry is None:
                     live_run_frames.append(frame.frame_id)
                     clean_preds, attacked_frame, attacked_preds = self._run_live(
-                        frame, should_attack=do_attack
+                        frame, clean_history, dirty_history, should_attack=do_attack
                     )
                     if self._cache_writable:
                         self._cache[frame.frame_id] = FrameCacheEntry(
@@ -456,7 +461,7 @@ class EvalPipeline:
                                     self._get_attack_frame(frame, clean_preds)
                                 )
                                 if self.detector is not None:
-                                    attacked_preds = self.detector.predict(attacked_frame)
+                                    attacked_preds = self.detector.predict(attacked_frame, dirty_history)
                                 live_attack_rerun_no_lidar += 1
                         else:
                             # Re-run the attack live for a fresh lidar and fresh
@@ -465,7 +470,7 @@ class EvalPipeline:
                                 self._get_attack_frame(frame, clean_preds)
                             )
                             if self.detector is not None:
-                                attacked_preds = self.detector.predict(attacked_frame)
+                                attacked_preds = self.detector.predict(attacked_frame, dirty_history)
                             if not self.use_cached_attacks:
                                 live_attack_rerun_not_use_cache += 1
                             else:
@@ -476,7 +481,7 @@ class EvalPipeline:
                 # No cache configured: run everything live.
                 # -------------------------------------------------------
                 clean_preds, attacked_frame, attacked_preds = self._run_live(
-                    frame, should_attack=do_attack
+                    frame, clean_history, dirty_history, should_attack=do_attack
                 )
 
             # Stage 3: Defense — operates on what the vehicle actually received
@@ -760,6 +765,8 @@ class EvalPipeline:
     def _run_live(
         self,
         frame: Frame,
+        clean_history: deque[Frame],
+        dirty_history: deque[Frame],
         *,
         should_attack: bool | None = None,
     ) -> tuple[list[Prediction], Frame | None, list[Prediction] | None]:
@@ -769,8 +776,11 @@ class EvalPipeline:
 
         should_attack=None  → use per-frame RNG (frame-granularity mode).
         should_attack=bool  → use provided decision (scene-granularity mode).
+
+        clean_history / dirty_history supply past sweeps for multi-sweep
+        detectors: clean for the clean prediction, dirty for the attacked one.
         """
-        clean_preds = self._get_clean_preds(frame)
+        clean_preds = self._get_clean_preds(frame, clean_history)
 
         attacked_frame: Frame | None = None
         attacked_preds: list[Prediction] | None = None
@@ -785,16 +795,18 @@ class EvalPipeline:
                 self._get_attack_frame(frame, clean_preds)
             )
             if self.detector is not None:
-                attacked_preds = self.detector.predict(attacked_frame)
+                attacked_preds = self.detector.predict(attacked_frame, dirty_history)
 
         return clean_preds, attacked_frame, attacked_preds
 
-    def _get_clean_preds(self, frame: Frame) -> list[Prediction]:
+    def _get_clean_preds(
+        self, frame: Frame, clean_history: deque[Frame]
+    ) -> list[Prediction]:
         if self.detector is None:
             return []
         if self.cache_clean_preds and frame.frame_id in self._clean_pred_cache:
             return self._clean_pred_cache[frame.frame_id]
-        preds = self.detector.predict(frame)
+        preds = self.detector.predict(frame, clean_history)
         if self.cache_clean_preds:
             self._clean_pred_cache[frame.frame_id] = preds
         return preds

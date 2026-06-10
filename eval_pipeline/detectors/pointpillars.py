@@ -7,6 +7,7 @@ PointPillars detector backed by OpenPCDet.
 from __future__ import annotations
 
 import logging
+from collections.abc import Iterable
 from pathlib import Path
 
 import numpy as np
@@ -102,9 +103,21 @@ class PointPillarsDetector(BaseDetector):
             })
         return results
 
-    def predict(self, frame: Frame) -> list[Prediction]:
+    def _prepare_points(
+        self, frame: Frame, history: Iterable[Frame] | None = None
+    ) -> np.ndarray:
+        """Return the point array fed to inference for this frame.
+
+        Default is the frame's own lidar (single-sweep). Multi-sweep detectors
+        override this to accumulate past sweeps from ``history``.
+        """
+        return frame.lidar
+
+    def predict(
+        self, frame: Frame, history: Iterable[Frame] | None = None
+    ) -> list[Prediction]:
         """Run PointPillars on the frame and return filtered predictions."""
-        raw = self._run_inference(frame.lidar)
+        raw = self._run_inference(self._prepare_points(frame, history))
         predictions: list[Prediction] = []
         for r in raw:
             if r["score"] < self.score_threshold:

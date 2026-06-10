@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import abc
 from collections import deque
+from collections.abc import Iterable
 
 import numpy as np
 
@@ -52,8 +53,15 @@ class BaseDetector(abc.ABC):
     """Interface for 3D object detectors."""
 
     @abc.abstractmethod
-    def predict(self, frame: Frame) -> list[Prediction]:
-        """Run inference on a single frame and return predicted bounding boxes."""
+    def predict(
+        self, frame: Frame, history: Iterable[Frame] | None = None
+    ) -> list[Prediction]:
+        """Run inference on a single frame and return predicted bounding boxes.
+
+        ``history`` holds preceding frames (oldest-first) and is used by
+        multi-sweep detectors to accumulate past sweeps into the current frame.
+        Single-sweep detectors ignore it.
+        """
         ...
 
     def predict_batch(self, frames: list[Frame]) -> list[list[Prediction]]:
@@ -62,6 +70,15 @@ class BaseDetector(abc.ABC):
         Override for GPU-batched backends; default falls back to per-frame predict().
         """
         return [self.predict(f) for f in frames]
+
+    @property
+    def num_sweeps(self) -> int:
+        """Number of LiDAR sweeps (including current) the detector consumes.
+
+        1 = single-sweep. Multi-sweep detectors override this so the pipeline
+        sizes its frame history to supply enough past sweeps.
+        """
+        return 1
 
     @property
     def name(self) -> str:

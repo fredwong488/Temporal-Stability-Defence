@@ -294,6 +294,15 @@ class RadialJitterDefense(BaseDefense):
         hist: deque[Frame] = (
             history.clean if self.history_source == "clean" else history.dirty
         )
+        # Control the history length ourselves rather than trusting the caller to
+        # size it to exactly temporal_window - 1.  The deque is oldest-first, so
+        # keep the most recent temporal_window - 1 frames.  This keeps the defense
+        # invariant to an over-sized history (a longer window would otherwise add
+        # frames the σ statistics were never tuned for).
+        max_past = max(0, self._temporal_window - 1)
+        if len(hist) > max_past:
+            hist = deque(list(hist)[-max_past:])
+
         if len(hist) < self.min_history_frames:
             return DetectionResult(
                 is_attack_detected=False,

@@ -57,10 +57,10 @@ _PRESETS: dict[str, _LidarProfile] = {
     "worst_case_high_error": _LidarProfile("none",     0.0,  1,    inner_frame_std=0.30, inter_frame_std=0.70),
     "vlp16":                 _LidarProfile("none",     0.0,  0.985),
     "vlp32c":                _LidarProfile("none",     0.0,  0.829),
-    "os1_32":                _LidarProfile("uniform",  33.3, 0.438),
-    "helios":                _LidarProfile("gaussian",  1.5, 0.194),
-    "horizon":               _LidarProfile("uniform",  26.0, 0.799),
-    "l515":                  _LidarProfile("gaussian",  7.5, 0.001),
+    "os1_32":                _LidarProfile("uniform",  0.333, 0.438),
+    "helios":                _LidarProfile("gaussian", 0.015, 0.194),
+    "horizon":               _LidarProfile("uniform",  0.260, 0.799),
+    "l515":                  _LidarProfile("gaussian", 0.075, 0.001),
     "xt32":                  _LidarProfile("none",      0.0, 0.021),
 }
 
