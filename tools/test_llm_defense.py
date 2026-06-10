@@ -91,7 +91,8 @@ _FRAME_TEMPLATE = """\
   <h2>Frame {idx} &mdash; {frame_id}</h2>
   <p class="meta">Scene: {sequence_id} &nbsp;|&nbsp;
      is_attacked: {is_attacked} &nbsp;|&nbsp;
-     elapsed: {elapsed_s:.2f}s &nbsp;|&nbsp;
+     total_elapsed: {total_elapsed_s:.2f}s &nbsp;|&nbsp;
+     query_elapsed: {query_elapsed_s:.2f}s &nbsp;|&nbsp;
      cache_hit: {cache_hit}</p>
   <div class="views">
     <figure><img src="data:image/png;base64,{bev_b64}"><figcaption>BEV</figcaption></figure>
@@ -382,14 +383,17 @@ def main() -> None:
             f"  [{idx}] frame={frame.frame_id}  verdict={verdict}"
             f"  confidence={result.confidence:.2f}"
             f"  attack_detected={result.is_attack_detected}"
-            f"  cache_hit={result.metadata.get('cache_hit')}  elapsed={result.metadata.get('elapsed_s', 0):.2f}s"
+            f"  cache_hit={result.metadata.get('cache_hit')}"
+            f"  total={result.metadata.get('total_elapsed_s', 0):.2f}s"
+            f"  query={result.metadata.get('query_elapsed_s', 0):.2f}s"
         )
         frames_html_parts.append(_FRAME_TEMPLATE.format(
             idx=idx,
             frame_id=frame.frame_id,
             sequence_id=frame.sequence_id,
             is_attacked=frame.is_attacked,
-            elapsed_s=result.metadata.get("elapsed_s", 0),
+            total_elapsed_s=result.metadata.get("total_elapsed_s", 0),
+            query_elapsed_s=result.metadata.get("query_elapsed_s", 0),
             cache_hit=result.metadata.get("cache_hit", False),
             bev_b64=base64.b64encode(views["bev"]).decode(),
             iso_b64=base64.b64encode(views["isometric"]).decode(),

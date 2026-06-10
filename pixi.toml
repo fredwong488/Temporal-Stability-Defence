@@ -29,6 +29,7 @@ vd-nuscenes = {cmd = "python tools/visualise_frames.py --isometric --dataset-roo
 va = {cmd = "python tools/visualise_attack.py --attack ora --attack-params budget=200 --detector pointrcnn --show-boxes --isometric"}
 ff = {cmd = "python tools/filter_sort_frames.py results results_local/filtered_results"}
 sb = {cmd = "sbatch --partition a100 --gres=gpu:1 slurm_submit.sh"}
+scp = {cmd = "python tools/fetch_run_frames.py"}
 
 [system-requirements]
 cuda = "11.8"

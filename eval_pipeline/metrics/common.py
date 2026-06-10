@@ -24,7 +24,7 @@ from ..types import FrameResult, ObjectLabel, Prediction
 
 def _corners_to_bev_polygon(corners: np.ndarray) -> Polygon:
     """Convert (8, 3) corners_velo to a Shapely Polygon in the BEV (x, y) plane."""
-    pts = corners[:4, :2]  # (4, 2) — bottom face projected to xy
+    pts = corners[:, :2]  # (8, 2) — all corners projected to xy; ordering-independent
     centroid = pts.mean(axis=0)
     angles = np.arctan2(pts[:, 1] - centroid[1], pts[:, 0] - centroid[0])
     return Polygon(pts[np.argsort(angles)])

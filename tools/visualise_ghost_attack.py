@@ -125,14 +125,7 @@ def _evenly_spaced(items: list, n: int | None) -> list:
 def _load_goa_attack(attack_type: str):
     """Instantiate GhostObjectAttack for *attack_type*, or raise FileNotFoundError."""
     from eval_pipeline.attacks.ghost_object.ghost_object import GhostObjectAttack
-    npy_path = _GOA_TRACES_DIR / f"ghost_cloud_{attack_type}.npy"
-    if not npy_path.exists():
-        raise FileNotFoundError(
-            f"GOA ghost cloud not found: {npy_path}\n"
-            "Generate it with: pixi run python tools/visualise_ghost_attack.py "
-            f"--attack-type {attack_type} --ghost-cloud-output eval_pipeline/attacks/ghost_object/traces"
-        )
-    return GhostObjectAttack(ghost_cloud_path=npy_path)
+    return GhostObjectAttack(ghost_cloud_path=_GOA_TRACES_DIR, ghost_cloud_file=f"ghost_cloud_{attack_type}.npy")
 
 
 def _apply_goa(attack, clean: np.ndarray, frame_name: str) -> tuple[np.ndarray, np.ndarray]:
