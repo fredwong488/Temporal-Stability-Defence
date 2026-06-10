@@ -73,6 +73,38 @@ def extract_defense_effectiveness_row(
     }
 
 
+def extract_defense_effectiveness_filtered_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+) -> dict:
+    """Extract filtered defense F1, precision, recall, TPR and FPR into a flat dict."""
+    de = summary.get("defense_effectiveness_filtered", {})
+    return {
+        sweep_param: sweep_val,
+        "detection_f1": de.get("f1", float("nan")),
+        "detection_precision": de.get("precision", float("nan")),
+        "detection_recall": de.get("recall", float("nan")),
+        "tpr": de.get("tpr", float("nan")),
+        "fpr": de.get("fpr", float("nan")),
+    }
+
+
+def extract_attack_success_rate_row(
+    summary: dict,
+    sweep_param: str,
+    sweep_val: float | int,
+) -> dict:
+    """Extract attack success rate into a flat dict for the CSV."""
+    asr = summary.get("attack_success_rate", {})
+    return {
+        sweep_param: sweep_val,
+        "attack_success_rate": asr.get("attack_success_rate", float("nan")),
+        "n_successful": asr.get("n_successful", float("nan")),
+        "n_attacked_frames": asr.get("n_attacked_frames", float("nan")),
+    }
+
+
 def extract_clustering_quality_row(
     summary: dict,
     sweep_param: str,
@@ -199,6 +231,26 @@ def log_summary_metrics(
             de.get("recall", float("nan")),
             de.get("tpr", float("nan")),
             de.get("fpr", float("nan")),
+        )
+
+    if "defense_effectiveness_filtered" in metric_types:
+        de = summary.get("defense_effectiveness_filtered", {})
+        logging.info(
+            "  Detection (filtered)  F1=%.3f  precision=%.3f  recall=%.3f  TPR=%.3f  FPR=%.3f",
+            de.get("f1", float("nan")),
+            de.get("precision", float("nan")),
+            de.get("recall", float("nan")),
+            de.get("tpr", float("nan")),
+            de.get("fpr", float("nan")),
+        )
+
+    if "attack_success_rate" in metric_types:
+        asr = summary.get("attack_success_rate", {})
+        logging.info(
+            "  Attack success rate  %.3f  (%s/%s frames)",
+            asr.get("attack_success_rate", float("nan")),
+            asr.get("n_successful", "?"),
+            asr.get("n_attacked_frames", "?"),
         )
 
     if "clustering_quality" in metric_types:
@@ -346,6 +398,56 @@ def write_defense_effectiveness_csv(
             f"{row['detection_recall']:.4f}",
             f"{row['tpr']:.4f}",
             f"{row['fpr']:.4f}",
+        ]))
+
+
+def write_defense_effectiveness_filtered_csv(
+    run_dir: pathlib.Path,
+    sweep_tag: str,
+    sweep_param: str,
+    rows: list[dict],
+) -> None:
+    fieldnames = [sweep_param, "detection_f1", "detection_precision", "detection_recall", "tpr", "fpr"]
+    out_path = run_dir / f"sweep_{sweep_tag}_defense_effectiveness_filtered.csv"
+    with open(out_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    logging.info("Filtered defense effectiveness CSV written to %s", out_path)
+    print(f"\nDefense effectiveness (filtered): {out_path}")
+    print(",".join(fieldnames))
+    for row in rows:
+        print(",".join([
+            str(row[sweep_param]),
+            f"{row['detection_f1']:.4f}",
+            f"{row['detection_precision']:.4f}",
+            f"{row['detection_recall']:.4f}",
+            f"{row['tpr']:.4f}",
+            f"{row['fpr']:.4f}",
+        ]))
+
+
+def write_attack_success_rate_csv(
+    run_dir: pathlib.Path,
+    sweep_tag: str,
+    sweep_param: str,
+    rows: list[dict],
+) -> None:
+    fieldnames = [sweep_param, "attack_success_rate", "n_successful", "n_attacked_frames"]
+    out_path = run_dir / f"sweep_{sweep_tag}_attack_success_rate.csv"
+    with open(out_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    logging.info("Attack success rate CSV written to %s", out_path)
+    print(f"\nAttack success rate: {out_path}")
+    print(",".join(fieldnames))
+    for row in rows:
+        print(",".join([
+            str(row[sweep_param]),
+            f"{row['attack_success_rate']:.4f}",
+            str(row["n_successful"]),
+            str(row["n_attacked_frames"]),
         ]))
 
 

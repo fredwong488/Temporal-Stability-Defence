@@ -46,6 +46,8 @@ from scripts.sweep_metrics import (
     extract_ap_row,
     extract_detection_rate_row,
     extract_defense_effectiveness_row,
+    extract_defense_effectiveness_filtered_row,
+    extract_attack_success_rate_row,
     extract_clustering_quality_row,
     extract_pacts_effectiveness_row,
     extract_llm_attack_type_accuracy_row,
@@ -55,6 +57,8 @@ from scripts.sweep_metrics import (
     write_ap_csv,
     write_detection_rate_csv,
     write_defense_effectiveness_csv,
+    write_defense_effectiveness_filtered_csv,
+    write_attack_success_rate_csv,
     write_clustering_quality_csv,
     write_pacts_effectiveness_csv,
     write_llm_attack_type_accuracy_csv,
@@ -77,7 +81,7 @@ DEFAULT_METRIC_TYPES = ["ap"]
 DEFAULT_RESULTS_DIR = "results"
 DEFAULT_SPLIT = "val"
 
-VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "clustering_quality", "pacts_effectiveness", "roc_jitter", "llm_attack_type_accuracy", "llm_cost_metrics", "timing_metrics"}
+VALID_METRIC_TYPES = {"ap", "pr", "recall_iou", "detection_rate", "defense_effectiveness", "defense_effectiveness_filtered", "attack_success_rate", "clustering_quality", "pacts_effectiveness", "roc_jitter", "llm_attack_type_accuracy", "llm_cost_metrics", "timing_metrics"}
 VALID_DIFFICULTIES = {"Easy", "Moderate", "Hard"}
 VALID_SPLITS = {"train", "val", "test"}
 VALID_SWEEP_TARGETS = {"attack", "defense"}
@@ -381,6 +385,8 @@ def main() -> None:
                             "recall_iou (Recall vs IoU → JSON, KITTI only), "
                             "detection_rate (recall drop clean→attacked vs GT → CSV, all datasets), "
                             "defense_effectiveness (defense F1/precision/recall → CSV), "
+                            "defense_effectiveness_filtered (defense F1/precision/recall counting only successful attacks as attacked → CSV), "
+                            "attack_success_rate (fraction of attacked frames where the attack landed → CSV), "
                             "pacts_effectiveness (PACTS cluster-level F1/precision/recall → CSV), "
                             "roc_jitter (radial-jitter 2-D ROC surface → per-experiment JSON), "
                             "llm_cost_metrics (LLM token stats → CSV), "
@@ -607,6 +613,8 @@ def main() -> None:
     recall_iou_all: list[dict] = []
     detection_rate_rows: list[dict] = []
     defense_effectiveness_rows: list[dict] = []
+    defense_effectiveness_filtered_rows: list[dict] = []
+    attack_success_rate_rows: list[dict] = []
     clustering_quality_rows: list[dict] = []
     pacts_effectiveness_rows: list[dict] = []
     llm_attack_type_accuracy_rows: list[dict] = []
@@ -827,6 +835,12 @@ def main() -> None:
         if "defense_effectiveness" in args.metric_types:
             defense_effectiveness_rows.append(extract_defense_effectiveness_row(summary, args.sweep_param, val))
 
+        if "defense_effectiveness_filtered" in args.metric_types:
+            defense_effectiveness_filtered_rows.append(extract_defense_effectiveness_filtered_row(summary, args.sweep_param, val))
+
+        if "attack_success_rate" in args.metric_types:
+            attack_success_rate_rows.append(extract_attack_success_rate_row(summary, args.sweep_param, val))
+
         if "clustering_quality" in args.metric_types:
             clustering_quality_rows.append(extract_clustering_quality_row(summary, args.sweep_param, val))
 
@@ -870,6 +884,12 @@ def main() -> None:
 
     if "defense_effectiveness" in args.metric_types and defense_effectiveness_rows:
         write_defense_effectiveness_csv(run_dir, sweep_tag, args.sweep_param, defense_effectiveness_rows)
+
+    if "defense_effectiveness_filtered" in args.metric_types and defense_effectiveness_filtered_rows:
+        write_defense_effectiveness_filtered_csv(run_dir, sweep_tag, args.sweep_param, defense_effectiveness_filtered_rows)
+
+    if "attack_success_rate" in args.metric_types and attack_success_rate_rows:
+        write_attack_success_rate_csv(run_dir, sweep_tag, args.sweep_param, attack_success_rate_rows)
 
     if "clustering_quality" in args.metric_types and clustering_quality_rows:
         write_clustering_quality_csv(run_dir, sweep_tag, args.sweep_param, clustering_quality_rows)

@@ -608,6 +608,11 @@ class EvalPipeline:
                 if fr.attack_start_index is not None and fr.sequence_id in scene_onset_frame_id:
                     fr.attack_start_frame_id = scene_onset_frame_id[fr.sequence_id]
 
+        # Mark each frame as attack-successful or not (None if not attacked).
+        from .metrics import compute_attack_success
+        for fr in frame_results:
+            fr.attack_successful = compute_attack_success(fr)
+
         return EvalResults(
             frame_results=frame_results,
             attack_types=self.attack.attack_types if self.attack is not None else frozenset(),

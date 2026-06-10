@@ -160,6 +160,8 @@ class FrameResult:
     attack_start_index: int | None = None             # 0-indexed within scene; None if unattacked
     attack_start_frame_id: str | None = None          # frame_id of the first attacked frame
     attack_metadata: dict = dataclasses.field(default_factory=dict)
+    # Per-frame attack-success flag; None if not attacked or no attacked predictions.
+    attack_successful: bool | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -247,6 +249,32 @@ class EvalResults:
             return {}
 
         return compute_defense_metrics(self.frame_results)
+
+    def defense_effectiveness_filtered(self) -> dict:
+        """Defense TPR/FPR/F1 treating only successfully-attacked frames as attacked.
+
+        Attacked-but-unsuccessful frames are treated as benign.  Requires a
+        defense to have been configured (else returns empty dict).
+        """
+        from .metrics import compute_defense_metrics_filtered
+
+        if not any(r.defense_result is not None for r in self.frame_results):
+            return {}
+
+        return compute_defense_metrics_filtered(self.frame_results)
+
+    def attack_success_rate(self) -> dict:
+        """Fraction of attacked frames where the attack succeeded.
+
+        Reads the per-frame ``attack_successful`` flag.  Empty dict if no
+        attacked frames carry the flag.
+        """
+        from .metrics import compute_attack_success_rate
+
+        if not any(r.attack_successful is not None for r in self.frame_results):
+            return {}
+
+        return compute_attack_success_rate(self.frame_results)
 
     def clustering_quality(self) -> dict:
         """Compute spatial cluster-matching F1 scores for radial-jitter defenses.

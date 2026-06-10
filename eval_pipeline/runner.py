@@ -62,6 +62,7 @@ def _serialise_frame_result(fr: FrameResult, verbose: bool = False) -> dict:
         "attack_start_index": fr.attack_start_index,
         "attack_start_frame_id": fr.attack_start_frame_id,
         "is_attacked": fr.is_attacked,
+        "attack_successful": fr.attack_successful,
         "attack_metadata": fr.attack_metadata,
     }
     if verbose:
@@ -278,6 +279,17 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:  
                 for cls in classes
             }
 
+        if "attack_success_rate" in metric_types:
+            summary["attack_success_rate"] = eval_results.attack_success_rate()
+            if summary["attack_success_rate"]:
+                asr = summary["attack_success_rate"]
+                logger.info(
+                    "Attack success rate  %.3f  (%d/%d attacked frames)",
+                    asr.get("attack_success_rate", float("nan")),
+                    asr.get("n_successful", 0),
+                    asr.get("n_attacked_frames", 0),
+                )
+
         if "detection_rate" in metric_types:
             from .metrics import _NUSCENES_IOU_THRESHOLDS
             iou_thr = (
@@ -305,6 +317,7 @@ def run_experiment(config: ExperimentConfig, desc: str | None = None) -> dict:  
 
     if config.defense_type:
         summary["defense_effectiveness"] = eval_results.defense_effectiveness()
+        summary["defense_effectiveness_filtered"] = eval_results.defense_effectiveness_filtered()
         summary["clustering_quality"] = eval_results.clustering_quality()
         summary["timing_metrics"] = eval_results.timing_metrics()
         if (

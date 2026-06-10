@@ -141,23 +141,13 @@ SPOOF_DIST_THRESHOLD = 1  # metres — phantom match gate
 PREDICTION_MATCH_MARGIN = 0.5   # metres buffer added to BEV polygon for prediction match
 
 
-def compute_defense_metrics(frame_results: list[FrameResult]) -> dict:
-    """Compute binary classification metrics for the defense.
-
-    Ground truth  : frame_result.is_attacked (ORA no-op frames have this set False at pipeline level)
-    Prediction    : frame_result.defense_result.is_attack_detected
+def _defense_metrics_from_pairs(pairs: list[tuple[bool, bool]]) -> dict:
+    """Compute binary classification metrics from (actual, predicted) pairs.
 
     Returns dict with tp, fp, tn, fn, tpr, fpr, accuracy, precision, recall, f1.
-    Frames with no defense_result are skipped.
     """
     tp = fp = tn = fn = 0
-
-    for fr in frame_results:
-        if fr.defense_result is None:
-            continue
-        actual = fr.is_attacked
-        predicted = fr.defense_result.is_attack_detected
-
+    for actual, predicted in pairs:
         if actual and predicted:
             tp += 1
         elif not actual and predicted:
@@ -184,6 +174,127 @@ def compute_defense_metrics(frame_results: list[FrameResult]) -> dict:
         "precision": precision,
         "recall": recall,
         "f1": f1,
+    }
+
+
+def compute_defense_metrics(frame_results: list[FrameResult]) -> dict:
+    """Compute binary classification metrics for the defense.
+
+    Ground truth  : frame_result.is_attacked (ORA no-op frames have this set False at pipeline level)
+    Prediction    : frame_result.defense_result.is_attack_detected
+
+    Returns dict with tp, fp, tn, fn, tpr, fpr, accuracy, precision, recall, f1.
+    Frames with no defense_result are skipped.
+    """
+    pairs = [
+        (fr.is_attacked, fr.defense_result.is_attack_detected)
+        for fr in frame_results
+        if fr.defense_result is not None
+    ]
+    return _defense_metrics_from_pairs(pairs)
+
+
+def compute_defense_metrics_filtered(frame_results: list[FrameResult]) -> dict:
+    """Defense binary classification metrics treating only *successful* attacks as positive.
+
+    Identical to :func:`compute_defense_metrics`, except a frame counts as a true
+    attack (``actual = True``) only when both ``is_attacked`` and
+    ``attack_successful`` are True.  Attacked-but-unsuccessful frames are treated
+    as benign (``actual = False``): a defense flag on them is an FP, no flag a TN.
+
+    Frames with no defense_result are skipped.
+    """
+    pairs = [
+        (bool(fr.is_attacked and fr.attack_successful is True),
+         fr.defense_result.is_attack_detected)
+        for fr in frame_results
+        if fr.defense_result is not None
+    ]
+    return _defense_metrics_from_pairs(pairs)
+
+
+# ---------------------------------------------------------------------------
+# Attack success — per-frame success flag and rate
+# ---------------------------------------------------------------------------
+
+ATTACK_SUCCESS_IOU_THRESHOLD = 0.5  # ORA: clean->attacked 3D-IoU match gate
+
+
+def _ghost_attack_success(fr: FrameResult) -> bool:
+    """Ghost-object success: injected_centroid inside an attacked box but no clean box.
+
+    The injected centroid must land inside some ``attacked_predictions`` OBB and
+    inside *no* ``clean_predictions`` OBB, so the box is a genuinely new ghost
+    detection rather than a pre-existing one.
+    """
+    from ..defenses.carlo.geometry import points_in_obb
+
+    centroid = fr.attack_metadata.get("injected_centroid")
+    if centroid is None:
+        return False
+    pt = np.asarray(centroid, dtype=float).reshape(1, 3)
+
+    in_attacked = any(points_in_obb(pt, p)[0] for p in fr.attacked_predictions)
+    if not in_attacked:
+        return False
+    in_clean = any(points_in_obb(pt, p)[0] for p in fr.clean_predictions)
+    return not in_clean
+
+
+def _ora_attack_success(fr: FrameResult) -> bool:
+    """ORA success: a targeted clean prediction is removed or shifted.
+
+    Treats ``clean_predictions`` of the attack's ``target_types`` as ground truth
+    and matches each to ``attacked_predictions`` by 3D IoU.  The frame is
+    successful if at least one such clean box has no IoU >= threshold match in the
+    attacked predictions (covers both removal and shift).
+    """
+    targets = set(fr.attack_metadata.get("target_types", []))
+    clean_targets = [
+        c for c in fr.clean_predictions
+        if not targets or c.type in targets
+    ]
+    for c in clean_targets:
+        matched = any(
+            compute_iou_3d(c.corners_velo, a.corners_velo) >= ATTACK_SUCCESS_IOU_THRESHOLD
+            for a in fr.attacked_predictions
+        )
+        if not matched:
+            return True
+    return False
+
+
+def compute_attack_success(fr: FrameResult) -> bool | None:
+    """Per-frame attack success flag.
+
+    Returns None when the frame was not attacked or has no attacked predictions,
+    otherwise a bool per the attack-specific definition.
+    """
+    if not fr.is_attacked or fr.attacked_predictions is None:
+        return None
+    attack = fr.attack_metadata.get("attack")
+    if attack == "GhostObject":
+        return _ghost_attack_success(fr)
+    if attack == "ORA":
+        return _ora_attack_success(fr)
+    return None
+
+
+def compute_attack_success_rate(frame_results: list[FrameResult]) -> dict:
+    """Fraction of attacked frames where the attack succeeded.
+
+    Reads the persisted ``fr.attack_successful`` flag; frames where it is None
+    (not attacked / no attacked predictions) are excluded.  Empty dict if no
+    qualifying frames exist.
+    """
+    flags = [fr.attack_successful for fr in frame_results if fr.attack_successful is not None]
+    if not flags:
+        return {}
+    n_success = sum(1 for f in flags if f)
+    return {
+        "attack_success_rate": n_success / len(flags),
+        "n_successful": n_success,
+        "n_attacked_frames": len(flags),
     }
 
 
