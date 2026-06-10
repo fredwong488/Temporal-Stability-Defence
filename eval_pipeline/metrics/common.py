@@ -199,18 +199,41 @@ def compute_defense_metrics_filtered(frame_results: list[FrameResult]) -> dict:
 
     Identical to :func:`compute_defense_metrics`, except a frame counts as a true
     attack (``actual = True``) only when both ``is_attacked`` and
-    ``attack_successful`` are True.  Attacked-but-unsuccessful frames are treated
-    as benign (``actual = False``): a defense flag on them is an FP, no flag a TN.
+    ``attack_successful`` are True.  Attacked frames whose attack *failed*
+    (``is_attacked`` True, ``attack_successful is False``) are **excluded** from
+    the TP/FP/TN/FN tally entirely and counted separately under
+    ``n_failed_attacks`` — flagging them is neither rewarded nor penalised.
+    ``n_failed_attacks_detected`` counts how many of those the defense still
+    flagged, and ``failed_attack_detection_rate`` is the fraction flagged.
+
+    Clean frames and attacked frames with ``attack_successful is None`` (no
+    attacked predictions) keep their previous behaviour: ``actual = False``.
 
     Frames with no defense_result are skipped.
     """
-    pairs = [
-        (bool(fr.is_attacked and fr.attack_successful is True),
-         fr.defense_result.is_attack_detected)
-        for fr in frame_results
-        if fr.defense_result is not None
-    ]
-    return _defense_metrics_from_pairs(pairs)
+    pairs: list[tuple[bool, bool]] = []
+    n_failed_attacks = 0
+    n_failed_attacks_detected = 0
+    for fr in frame_results:
+        if fr.defense_result is None:
+            continue
+        if fr.is_attacked and fr.attack_successful is False:
+            n_failed_attacks += 1
+            if fr.defense_result.is_attack_detected:
+                n_failed_attacks_detected += 1
+            continue
+        pairs.append((
+            bool(fr.is_attacked and fr.attack_successful is True),
+            fr.defense_result.is_attack_detected,
+        ))
+
+    result = _defense_metrics_from_pairs(pairs)
+    result["n_failed_attacks"] = n_failed_attacks
+    result["n_failed_attacks_detected"] = n_failed_attacks_detected
+    result["failed_attack_detection_rate"] = (
+        n_failed_attacks_detected / n_failed_attacks if n_failed_attacks > 0 else 0.0
+    )
+    return result
 
 
 # ---------------------------------------------------------------------------
