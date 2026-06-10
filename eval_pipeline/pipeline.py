@@ -518,12 +518,11 @@ class EvalPipeline:
                 attack_start_index = None
 
             _is_attacked = current_frame.is_attacked
-            if (
-                self._is_ora_attack
-                and _is_attacked
-                and current_frame.attack_metadata.get("n_removed", 0) == 0
-            ):
-                _is_attacked = False
+            if self._is_ora_attack and _is_attacked:
+                _removed_per_obj = current_frame.attack_metadata.get("removed_per_obj", [])
+                _total_removed = sum(o.get("n_removed", 0) for o in _removed_per_obj)
+                if _total_removed == 0:
+                    _is_attacked = False
 
             fr = FrameResult(
                 frame_id=frame.frame_id,
