@@ -123,15 +123,10 @@ def main():
     parser.add_argument("--cache",
                         help="Path stem of a shelve cache produced by EvalPipeline "
                              "(e.g. /path/to/cache — without .db/.dir extension)")
-    parser.add_argument("--attacked", action="store_true",
-                        help="Show attacked lidar from the cache instead of clean lidar. "
-                             "Requires --cache and --frame-id.")
     args = parser.parse_args()
 
-    if args.attacked and not args.cache:
-        raise SystemExit("--attacked requires --cache")
-    if args.attacked and not args.frame_id:
-        raise SystemExit("--attacked requires --frame-id")
+    if args.cache and not args.frame_id:
+        raise SystemExit("--cache requires --frame-id")
 
     from nuscenes.nuscenes import NuScenes
     nusc = NuScenes(version=args.version, dataroot=args.dataroot, verbose=False)
@@ -191,48 +186,53 @@ def main():
     T_g2e = np.linalg.inv(make_transform(ep["translation"], ep["rotation"]))
 
     # ------------------------------------------------------------------ #
-    # LiDAR point cloud in sensor frame
+    # LiDAR point cloud(s) in sensor frame
     # ------------------------------------------------------------------ #
-    cache_label = "clean"
     entry = None
+    attacked_pts = None
     if args.cache:
         import shelve
         with shelve.open(args.cache, flag='r') as shelf:
             entry = shelf.get(args.frame_id)
         if entry is None:
             raise SystemExit(f"frame_id '{args.frame_id}' not found in cache '{args.cache}'")
-        if args.attacked:
-            if entry.attacked_lidar is None:
-                raise SystemExit(
-                    f"Cache entry for '{args.frame_id}' has no attacked_lidar "
-                    f"(is_attacked={entry.is_attacked}). Was this frame actually attacked?"
-                )
-            pts = entry.attacked_lidar.astype(np.float32)
-            cache_label = "attacked"
-            print(f"Loaded attacked lidar from cache: {len(pts):,} points")
+        if entry.attacked_lidar is not None:
+            attacked_pts = entry.attacked_lidar.astype(np.float32)
+            print(f"Loaded attacked lidar from cache: {len(attacked_pts):,} points  "
+                  f"(is_attacked={entry.is_attacked})")
         else:
-            pts_path = os.path.join(args.dataroot, lidar_sd["filename"])
-            pts = np.fromfile(pts_path, dtype=np.float32).reshape(-1, 5)[:, :4]
-            print(f"Cache found (is_attacked={entry.is_attacked}); showing clean lidar from disk.")
-    else:
-        pts_path = os.path.join(args.dataroot, lidar_sd["filename"])
-        pts = np.fromfile(pts_path, dtype=np.float32).reshape(-1, 5)[:, :4]  # x,y,z,intensity
+            print(f"Cache found but no attacked_lidar (is_attacked={entry.is_attacked})")
 
-    if len(pts) > args.max_pts:
-        rng = np.random.default_rng(0)
-        pts = pts[rng.choice(len(pts), args.max_pts, replace=False)]
+    pts_path = os.path.join(args.dataroot, lidar_sd["filename"])
+    pts = np.fromfile(pts_path, dtype=np.float32).reshape(-1, 5)[:, :4]  # x,y,z,intensity
 
-    x, y, z, intensity = pts[:, 0], pts[:, 1], pts[:, 2], pts[:, 3]
+    def _subsample(p):
+        if len(p) > args.max_pts:
+            rng = np.random.default_rng(0)
+            return p[rng.choice(len(p), args.max_pts, replace=False)]
+        return p
 
-    if args.ego:
-        T_s2e = T_g2e @ sensor_to_global(nusc, lidar_sd)
-        ones  = np.ones((len(pts), 1), dtype=np.float64)
-        pts_h = np.hstack([pts[:, :3].astype(np.float64), ones])  # (N, 4)
-        pts_e = (T_s2e @ pts_h.T).T                                # (N, 4)
-        x, y, z = pts_e[:, 0], pts_e[:, 1], pts_e[:, 2]
+    def _to_ego(p, T_s2e):
+        ones = np.ones((len(p), 1), dtype=np.float64)
+        return (T_s2e @ np.hstack([p[:, :3].astype(np.float64), ones]).T).T[:, :3]
 
-    print(f"Points : {len(pts):,}  |  x [{x.min():.1f}, {x.max():.1f}]"
+    T_s2e = (T_g2e @ sensor_to_global(nusc, lidar_sd)) if args.ego else None
+
+    pts = _subsample(pts)
+    x, y, z = pts[:, 0], pts[:, 1], pts[:, 2]
+    if T_s2e is not None:
+        x, y, z = _to_ego(pts, T_s2e).T
+
+    print(f"Clean  : {len(pts):,}  |  x [{x.min():.1f}, {x.max():.1f}]"
           f"  y [{y.min():.1f}, {y.max():.1f}]  z [{z.min():.1f}, {z.max():.1f}]")
+
+    if attacked_pts is not None:
+        attacked_pts = _subsample(attacked_pts)
+        ax, ay, az = attacked_pts[:, 0], attacked_pts[:, 1], attacked_pts[:, 2]
+        if T_s2e is not None:
+            ax, ay, az = _to_ego(attacked_pts, T_s2e).T
+        print(f"Attacked: {len(attacked_pts):,}  |  x [{ax.min():.1f}, {ax.max():.1f}]"
+              f"  y [{ay.min():.1f}, {ay.max():.1f}]  z [{az.min():.1f}, {az.max():.1f}]")
 
     # ------------------------------------------------------------------ #
     # GT annotations
@@ -255,17 +255,16 @@ def main():
               f"ego    x={ce[0]:+7.2f} y={ce[1]:+7.2f}")
 
     # ------------------------------------------------------------------ #
-    # Cached predictions (clean always; attacked only when --attacked)
+    # Cached predictions
     # ------------------------------------------------------------------ #
     pred_traces = []
-    if args.cache and entry is not None:
-        _T_s2e = (T_g2e @ sensor_to_global(nusc, lidar_sd)) if args.ego else None
+    if entry is not None:
         pred_traces += _bbox_traces(
-            entry.clean_predictions or [], "clean preds", "cyan", _T_s2e
+            entry.clean_predictions or [], "clean preds", "cyan", T_s2e
         )
-        if args.attacked and entry.attacked_predictions:
+        if entry.attacked_predictions:
             pred_traces += _bbox_traces(
-                entry.attacked_predictions, "attacked preds", "orange", _T_s2e
+                entry.attacked_predictions, "attacked preds", "orange", T_s2e
             )
 
     # ------------------------------------------------------------------ #
@@ -309,7 +308,7 @@ def main():
             finally:
                 os.dup2(_old_fd, 1)
                 os.close(_old_fd)
-        if args.ego:
+        if T_s2e is not None:
             # Apply only the rotation component of sensor→ego to level the
             # point cloud without shifting the origin away from the sensor.
             # Patchwork++ computes elevation angles relative to the origin,
@@ -328,7 +327,7 @@ def main():
                 x=x[ground_idx], y=y[ground_idx], z=z[ground_idx],
                 mode="markers",
                 marker=dict(size=1, color="lightgray"),
-                name="ground",
+                name="ground (clean)",
                 hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra>ground</extra>",
             )
         )
@@ -342,7 +341,7 @@ def main():
                             colorbar=dict(title="z (m)", thickness=12,
                                           x=SCENE_X_END - 0.01, xanchor="right",
                                           len=0.75)),
-                name="non-ground",
+                name="non-ground (clean)",
                 hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra>non-ground</extra>",
             )
         )
@@ -357,10 +356,20 @@ def main():
                             colorbar=dict(title="z (m)", thickness=12,
                                           x=SCENE_X_END - 0.01, xanchor="right",
                                           len=0.75)),
-                name=f"LiDAR ({cache_label})",
+                name="LiDAR (clean)",
                 hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra></extra>",
             )
         )
+        if attacked_pts is not None:
+            fig.add_trace(
+                go.Scatter3d(
+                    x=ax, y=ay, z=az,
+                    mode="markers",
+                    marker=dict(size=1, color="salmon", opacity=0.6),
+                    name="LiDAR (attacked)",
+                    hovertemplate="x=%{x:.2f} y=%{y:.2f} z=%{z:.2f}<extra></extra>",
+                )
+            )
 
     # GT annotation centroids
     if ann_xs:
@@ -390,9 +399,7 @@ def main():
              layer="above"),
     )
 
-    lidar_panel_label = (
-        f"LiDAR point cloud ({cache_label}, {'ego' if args.ego else 'sensor'} frame)"
-    )
+    lidar_panel_label = f"LiDAR point cloud ({'ego' if args.ego else 'sensor'} frame)"
     fig.update_layout(
         title=f"NuScenes {scene['name']} — frame {lidar_sd['token'][:8]} "
               + (f"(keyframe {sample['token'][:8]})" if sample is not None
@@ -424,8 +431,6 @@ def main():
     out = "nuscenes_frame_explore.html"
     fig.write_html(out, include_plotlyjs="cdn")
     print(f"\nSaved → {out}")
-    import webbrowser
-    webbrowser.open(out)
 
 
 if __name__ == "__main__":
