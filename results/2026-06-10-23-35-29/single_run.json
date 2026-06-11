@@ -1,0 +1,232 @@
+{
+  "experiment_name": "single_run",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+      "version": "v1.0-mini",
+      "split": "mini_train"
+    },
+    "attack_type": "ghost",
+    "attack_params": {
+      "ghost_cloud_file": "ghost_cloud_car.npy",
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x7f23bf08bdd0>"
+    },
+    "attack_fraction": 1.0,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "tc2",
+    "defense_params": {
+      "history_source": "clean"
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "defense_effectiveness",
+      "detection_rate",
+      "defense_effectiveness_filtered",
+      "attack_success_rate"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-06-10-23-35-29",
+    "experiment_name": "single_run",
+    "save_frame_results": true,
+    "verbose_frame_results": false,
+    "precomputed_cache_path": null,
+    "read_only_cache": true,
+    "use_cached_attacks": false,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5,
+    "checkpoint_path": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/checkpoints/2026-06-10-23-35-29/single_run"
+  },
+  "num_frames": 3147,
+  "attack_success_rate": {
+    "attack_success_rate": 0.9153789551140544,
+    "n_successful": 1244,
+    "n_attacked_frames": 1359
+  },
+  "detection_rate": {
+    "barrier": {
+      "detection_rate_clean": 0.19224422442244224,
+      "detection_rate_attacked": 0.19224422442244224,
+      "absolute_drop": 0.0,
+      "relative_drop": 0.0,
+      "total_gt": 1212,
+      "total_clean_tp": 233,
+      "total_attacked_tp": 233,
+      "n_frames": 61
+    },
+    "bicycle": {
+      "detection_rate_clean": 0.06666666666666667,
+      "detection_rate_attacked": 0.05714285714285714,
+      "absolute_drop": 0.009523809523809525,
+      "relative_drop": 0.14285714285714288,
+      "total_gt": 105,
+      "total_clean_tp": 7,
+      "total_attacked_tp": 6,
+      "n_frames": 54
+    },
+    "bus": {
+      "detection_rate_clean": 0.48,
+      "detection_rate_attacked": 0.48,
+      "absolute_drop": 0.0,
+      "relative_drop": 0.0,
+      "total_gt": 175,
+      "total_clean_tp": 84,
+      "total_attacked_tp": 84,
+      "n_frames": 128
+    },
+    "car": {
+      "detection_rate_clean": 0.5157933853586028,
+      "detection_rate_attacked": 0.5068747677443329,
+      "absolute_drop": 0.00891861761426982,
+      "relative_drop": 0.01729106628242081,
+      "total_gt": 2691,
+      "total_clean_tp": 1388,
+      "total_attacked_tp": 1364,
+      "n_frames": 140
+    },
+    "construction_vehicle": {
+      "detection_rate_clean": 0.6186440677966102,
+      "detection_rate_attacked": 0.6271186440677966,
+      "absolute_drop": -0.008474576271186418,
+      "relative_drop": -0.013698630136986264,
+      "total_gt": 118,
+      "total_clean_tp": 73,
+      "total_attacked_tp": 74,
+      "n_frames": 71
+    },
+    "motorcycle": {
+      "detection_rate_clean": 0.38666666666666666,
+      "detection_rate_attacked": 0.36,
+      "absolute_drop": 0.026666666666666672,
+      "relative_drop": 0.06896551724137932,
+      "total_gt": 75,
+      "total_clean_tp": 29,
+      "total_attacked_tp": 27,
+      "n_frames": 49
+    },
+    "pedestrian": {
+      "detection_rate_clean": 0.36024844720496896,
+      "detection_rate_attacked": 0.3579898362507058,
+      "absolute_drop": 0.0022586109542631627,
+      "relative_drop": 0.006269592476489124,
+      "total_gt": 1771,
+      "total_clean_tp": 638,
+      "total_attacked_tp": 634,
+      "n_frames": 126
+    },
+    "traffic_cone": {
+      "detection_rate_clean": 0.35288065843621397,
+      "detection_rate_attacked": 0.33024691358024694,
+      "absolute_drop": 0.02263374485596703,
+      "relative_drop": 0.06413994169096197,
+      "total_gt": 972,
+      "total_clean_tp": 343,
+      "total_attacked_tp": 321,
+      "n_frames": 84
+    },
+    "trailer": {
+      "detection_rate_clean": 0.7142857142857143,
+      "detection_rate_attacked": 0.7142857142857143,
+      "absolute_drop": 0.0,
+      "relative_drop": 0.0,
+      "total_gt": 49,
+      "total_clean_tp": 35,
+      "total_attacked_tp": 35,
+      "n_frames": 49
+    },
+    "truck": {
+      "detection_rate_clean": 0.45714285714285713,
+      "detection_rate_attacked": 0.45714285714285713,
+      "absolute_drop": 0.0,
+      "relative_drop": 0.0,
+      "total_gt": 280,
+      "total_clean_tp": 128,
+      "total_attacked_tp": 128,
+      "n_frames": 89
+    },
+    "overall": {
+      "detection_rate_clean": 0.39715359828141783,
+      "detection_rate_attacked": 0.390171858216971,
+      "absolute_drop": 0.006981740064446851,
+      "relative_drop": 0.01757944557133203,
+      "total_gt": 7448,
+      "total_clean_tp": 2958,
+      "total_attacked_tp": 2906,
+      "n_frames": 851
+    }
+  },
+  "defense_effectiveness": {
+    "tp": 1198,
+    "fp": 344,
+    "tn": 1444,
+    "fn": 161,
+    "tpr": 0.8815305371596762,
+    "fpr": 0.19239373601789708,
+    "accuracy": 0.8395297108357166,
+    "precision": 0.7769130998702983,
+    "recall": 0.8815305371596762,
+    "f1": 0.8259220958290244
+  },
+  "defense_effectiveness_filtered": {
+    "tp": 1145,
+    "fp": 397,
+    "tn": 1506,
+    "fn": 99,
+    "tpr": 0.9204180064308681,
+    "fpr": 0.20861797162375198,
+    "accuracy": 0.8423895773752781,
+    "precision": 0.7425421530479897,
+    "recall": 0.9204180064308681,
+    "f1": 0.8219669777458724
+  },
+  "clustering_quality": {},
+  "timing_metrics": {
+    "n_frames": 2859,
+    "build_bev": {
+      "mean": 0.041367881693189536,
+      "median": 0.042806650017155334,
+      "std": 0.007611429544087458,
+      "n": 2859
+    },
+    "prepare_sweeps": {
+      "mean": 0.002510993633293128,
+      "median": 0.0024703129893168807,
+      "std": 0.0005036798908312561,
+      "n": 2859
+    },
+    "run_model": {
+      "mean": 0.007625950589431476,
+      "median": 0.007390968006802723,
+      "std": 0.003423427457665905,
+      "n": 2859
+    },
+    "tc2_check": {
+      "mean": 0.0044729170107515445,
+      "median": 0.004385748994536698,
+      "std": 0.0010985814708268297,
+      "n": 2859
+    },
+    "total": {
+      "mean": 0.06075459551630524,
+      "median": 0.06203157699201256,
+      "std": 0.009648037108971217,
+      "n": 2859
+    }
+  }
+}
