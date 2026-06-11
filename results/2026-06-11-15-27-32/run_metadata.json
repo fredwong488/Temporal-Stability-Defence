@@ -1,0 +1,77 @@
+{
+  "notes": "3D-TC2 | clean history ghost cyl mini_train",
+  "git_commit": "40157175e655458725dc7bb66145a6021ce540f2",
+  "timestamp": "2026-06-11-15-27-32",
+  "cmd_args": [
+    "scripts/run_sweep.py",
+    "--dataset",
+    "nuscenes",
+    "--nuscenes-split",
+    "mini_train",
+    "--attack",
+    "ghost",
+    "--attack-fraction",
+    "1.0",
+    "--defense",
+    "tc2",
+    "--detector",
+    "pointpillars_nuscenes",
+    "--metric-types",
+    "defense_effectiveness",
+    "timing_metrics",
+    "defense_effectiveness_filtered",
+    "attack_success_rate",
+    "--save-frames",
+    "--use-predicted-labels",
+    "--attack-params",
+    "ghost_cloud_file=ghost_cloud_cyl.npy",
+    "--defense-params",
+    "history_source=clean",
+    "--notes",
+    "3D-TC2 | clean history ghost cyl mini_train"
+  ],
+  "precomputed_cache_dir": null,
+  "sweep": null,
+  "dataset_type": "nuscenes",
+  "dataset_params": {
+    "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-mini",
+    "version": "v1.0-mini",
+    "split": "mini_train"
+  },
+  "attack_type": "ghost",
+  "attack_params": {
+    "ghost_cloud_file": "ghost_cloud_cyl.npy",
+    "noise_preset": "worst_case"
+  },
+  "attack_fraction": 1.0,
+  "attack_fraction_seed": 0,
+  "min_unattacked_frames": 6,
+  "min_attacked_frames": 6,
+  "detector_type": "pointpillars_nuscenes",
+  "detector_params": {
+    "score_threshold": 0.3
+  },
+  "defense_type": "tc2",
+  "defense_params": {
+    "history_source": "clean"
+  },
+  "metric_types": [
+    "defense_effectiveness",
+    "timing_metrics",
+    "defense_effectiveness_filtered",
+    "attack_success_rate"
+  ],
+  "difficulties": [
+    "Easy",
+    "Moderate",
+    "Hard"
+  ],
+  "recall_iou_confidence_threshold": 0.3,
+  "save_frame_results": true,
+  "verbose_frame_results": false,
+  "read_only_cache": true,
+  "use_cached_attacks": false,
+  "use_predicted_labels": true,
+  "pred_label_score_threshold": 0.5,
+  "checkpoint_path": null
+}
