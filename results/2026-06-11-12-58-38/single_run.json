@@ -1,0 +1,204 @@
+{
+  "experiment_name": "single_run",
+  "config": {
+    "dataset_type": "nuscenes",
+    "dataset_params": {
+      "root": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/data/datasets/nuscenes-v1.0-test",
+      "version": "v1.0-test",
+      "split": "test",
+      "scene_names": [
+        "scene-0077",
+        "scene-0078",
+        "scene-0079",
+        "scene-0080",
+        "scene-0081",
+        "scene-0082",
+        "scene-0083",
+        "scene-0084",
+        "scene-0085",
+        "scene-0086",
+        "scene-0087",
+        "scene-0088",
+        "scene-0089",
+        "scene-0090",
+        "scene-0091",
+        "scene-0111",
+        "scene-0112",
+        "scene-0113",
+        "scene-0114",
+        "scene-0115",
+        "scene-0116",
+        "scene-0117",
+        "scene-0118",
+        "scene-0119",
+        "scene-0140",
+        "scene-0142",
+        "scene-0143",
+        "scene-0144",
+        "scene-0145",
+        "scene-0146",
+        "scene-0147",
+        "scene-0148",
+        "scene-0265",
+        "scene-0266",
+        "scene-0279",
+        "scene-0280",
+        "scene-0281",
+        "scene-0282",
+        "scene-0307",
+        "scene-0308",
+        "scene-0309",
+        "scene-0310",
+        "scene-0311",
+        "scene-0312",
+        "scene-0313",
+        "scene-0314",
+        "scene-0333",
+        "scene-0334",
+        "scene-0335",
+        "scene-0336",
+        "scene-0337",
+        "scene-0338",
+        "scene-0339",
+        "scene-0340",
+        "scene-0341",
+        "scene-0342",
+        "scene-0343",
+        "scene-0481",
+        "scene-0482",
+        "scene-0483",
+        "scene-0484",
+        "scene-0485",
+        "scene-0486",
+        "scene-0487",
+        "scene-0488",
+        "scene-0489",
+        "scene-0490",
+        "scene-0491",
+        "scene-0492",
+        "scene-0493",
+        "scene-0494",
+        "scene-0495",
+        "scene-0496",
+        "scene-0497",
+        "scene-0498"
+      ]
+    },
+    "attack_type": "ora",
+    "attack_params": {
+      "target_types": [
+        "car",
+        "pedestrian",
+        "bicycle"
+      ],
+      "noise_model": "<eval_pipeline.utils.spoofing_noise.SpoofingNoiseModel object at 0x78f9949d1750>"
+    },
+    "attack_fraction": 1.0,
+    "attack_fraction_seed": 0,
+    "min_unattacked_frames": 6,
+    "min_attacked_frames": 6,
+    "detector_type": "pointpillars_nuscenes",
+    "detector_params": {
+      "score_threshold": 0.3
+    },
+    "defense_type": "tc2",
+    "defense_params": {
+      "history_source": "dirty"
+    },
+    "iou_thresholds": {
+      "Car": 0.7,
+      "Pedestrian": 0.5,
+      "Cyclist": 0.5
+    },
+    "cache_clean_preds": true,
+    "metric_types": [
+      "defense_effectiveness",
+      "timing_metrics",
+      "defense_effectiveness_filtered",
+      "attack_success_rate"
+    ],
+    "difficulties": [
+      "Easy",
+      "Moderate",
+      "Hard"
+    ],
+    "recall_iou_confidence_threshold": 0.3,
+    "output_dir": "results/2026-06-11-12-58-38",
+    "experiment_name": "single_run",
+    "save_frame_results": true,
+    "verbose_frame_results": false,
+    "precomputed_cache_path": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/precomputed/nuscenes-test-pointpillars-ora-withnoise-b200-1.0-fixed_reinject_dist/single_run",
+    "read_only_cache": true,
+    "use_cached_attacks": true,
+    "use_predicted_labels": true,
+    "pred_label_score_threshold": 0.5,
+    "checkpoint_path": "/vol/bitbucket/cyw122/FYP/experiment_pipeline/checkpoints/2026-06-11-12-58-38/single_run"
+  },
+  "num_frames": 29036,
+  "attack_success_rate": {
+    "attack_success_rate": 0.9639891696750903,
+    "n_successful": 10681,
+    "n_attacked_frames": 11080
+  },
+  "defense_effectiveness": {
+    "tp": 3236,
+    "fp": 2238,
+    "tn": 15718,
+    "fn": 7844,
+    "tpr": 0.292057761732852,
+    "fpr": 0.12463800400980174,
+    "accuracy": 0.6527758644441383,
+    "precision": 0.5911582024113994,
+    "recall": 0.292057761732852,
+    "f1": 0.39096290926664246
+  },
+  "defense_effectiveness_filtered": {
+    "tp": 3199,
+    "fp": 2238,
+    "tn": 15718,
+    "fn": 7482,
+    "tpr": 0.2995037917797959,
+    "fpr": 0.12463800400980174,
+    "accuracy": 0.6605789712609561,
+    "precision": 0.5883759426154129,
+    "recall": 0.2995037917797959,
+    "f1": 0.3969475120982752,
+    "n_failed_attacks": 399,
+    "n_failed_attacks_detected": 37,
+    "failed_attack_detection_rate": 0.09273182957393483
+  },
+  "clustering_quality": {},
+  "timing_metrics": {
+    "n_frames": 26174,
+    "build_bev": {
+      "mean": 0.03982381580266817,
+      "median": 0.03833802349981852,
+      "std": 0.005859755667413918,
+      "n": 26174
+    },
+    "prepare_sweeps": {
+      "mean": 0.002877800420669755,
+      "median": 0.002756266010692343,
+      "std": 0.0005993570504699888,
+      "n": 26174
+    },
+    "run_model": {
+      "mean": 0.01797114556747338,
+      "median": 0.016649260505801067,
+      "std": 0.15594835558486322,
+      "n": 26174
+    },
+    "tc2_check": {
+      "mean": 0.003757223064212059,
+      "median": 0.003480532002868131,
+      "std": 0.0009186882832530933,
+      "n": 26174
+    },
+    "total": {
+      "mean": 0.07114932291172373,
+      "median": 0.06910435899044387,
+      "std": 0.15658381673509184,
+      "n": 26174
+    }
+  }
+}
