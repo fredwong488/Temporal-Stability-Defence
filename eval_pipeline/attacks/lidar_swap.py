@@ -16,6 +16,12 @@ from ..types import Frame
 
 _ATTACK_SUBDIR = "sweeps/LIDAR_TOP_ATTACK"
 
+_CENTROIDS: dict[str, tuple[float, float, float]] = {
+    "CAR": (-0.45, 11.56, -0.96),
+    "CYL": (-0.88,  9.15, -0.73),
+    "PED": (-1.01,  8.74, -0.74),
+}
+
 
 class LidarSwapAttack(BaseAttack):
     """Replace a frame's LiDAR with the precomputed attack sweep for the given class.
@@ -75,5 +81,6 @@ class LidarSwapAttack(BaseAttack):
                 "attack_class": self._class,
                 "source": str(attack_path),
                 "n_points": int(len(pts)),
+                "injected_centroid": _CENTROIDS[self._class],
             },
         )

@@ -296,7 +296,7 @@ def compute_attack_success(fr: FrameResult) -> bool | None:
     if not fr.is_attacked or fr.attacked_predictions is None:
         return None
     attack = fr.attack_metadata.get("attack")
-    if attack == "GhostObject":
+    if attack in ("GhostObject", "LidarSwap"):
         return _ghost_attack_success(fr)
     if attack == "ORA":
         return _ora_attack_success(fr)
