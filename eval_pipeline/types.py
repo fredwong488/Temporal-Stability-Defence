@@ -79,6 +79,7 @@ class Frame:
     kitti_calib: Calibration | None = None            # None for datasets without KITTI-style calib
     nuscenes_ego_pose: np.ndarray | None = None       # (4, 4) sensor-to-global; None for KITTI Object
     nuscenes_sensor_to_ego: np.ndarray | None = None  # (4, 4) sensor-to-ego (car) frame; None for KITTI Object
+    nuscenes_lidar_path: str | None = None             # absolute path to source .pcd.bin; None for non-nuScenes
     is_attacked: bool = False
     attacked_modalities: frozenset[str] = dataclasses.field(default_factory=frozenset)
     attack_metadata: dict = dataclasses.field(default_factory=dict)

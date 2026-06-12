@@ -290,4 +290,5 @@ class NuScenesDataset:
             kitti_calib=None,  # NuScenes has no KITTI-style calibration matrices
             nuscenes_ego_pose=ego_pose,
             nuscenes_sensor_to_ego=sensor_to_ego,
+            nuscenes_lidar_path=str(self.root / sd["filename"]),
         )
