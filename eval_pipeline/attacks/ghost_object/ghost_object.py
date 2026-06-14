@@ -17,6 +17,7 @@ from __future__ import annotations
 import pathlib
 
 import numpy as np
+from scipy.spatial import cKDTree
 
 from ...base import BaseAttack
 from ...types import Frame
@@ -47,6 +48,7 @@ class GhostObjectAttack(BaseAttack):
         ghost_cloud_path: str | pathlib.Path = "eval_pipeline/attacks/ghost_object/traces/",
         ghost_cloud_file: str = "ghost_cloud_car.npy",
         noise_model: SpoofingNoiseModel | None = None,
+        occlusion_angular_tol: float = 0.015,
         debug: bool = False,
     ) -> None:
         path = pathlib.Path(ghost_cloud_path) / ghost_cloud_file
@@ -63,6 +65,7 @@ class GhostObjectAttack(BaseAttack):
         self._ghost_pts = raw
         self._cloud_path = str(path)
         self.noise_model = noise_model
+        self.occlusion_angular_tol = occlusion_angular_tol
         self.debug = debug
 
     @property
@@ -86,23 +89,21 @@ class GhostObjectAttack(BaseAttack):
         if self.noise_model is not None:
             ghost = self.noise_model.apply(ghost)
 
-        # Angular bounding box of the ghost in sensor frame
+        # Per-beam occlusion: remove any real point whose beam direction (az, el)
+        # is within occlusion_angular_tol of a ghost point's beam direction.
+        # This is tighter than a rectangular bounding box — ground returns at azimuths
+        # or elevations not covered by an actual ghost beam are left intact.
         gx, gy, gz = ghost[:, 0], ghost[:, 1], ghost[:, 2]
-        gxy2 = gx ** 2 + gy ** 2
         g_az = np.arctan2(gy, gx)
-        g_el = np.arctan2(gz, np.sqrt(gxy2))
-        az_min, az_max = g_az.min(), g_az.max()
-        el_min, el_max = g_el.min(), g_el.max()
-        # Remove real points inside the angular box (both in front of and behind the ghost)
-        lx, ly, lz = frame.lidar[:, 0], frame.lidar[:, 1], frame.lidar[:, 2]
-        lxy2 = lx ** 2 + ly ** 2
-        l_az = np.arctan2(ly, lx)
-        l_el = np.arctan2(lz, np.sqrt(lxy2))
+        g_el = np.arctan2(gz, np.sqrt(gx ** 2 + gy ** 2))
 
-        occluded = (
-            (l_az >= az_min) & (l_az <= az_max)
-            & (l_el >= el_min) & (l_el <= el_max)
-        )
+        lx, ly, lz = frame.lidar[:, 0], frame.lidar[:, 1], frame.lidar[:, 2]
+        l_az = np.arctan2(ly, lx)
+        l_el = np.arctan2(lz, np.sqrt(lx ** 2 + ly ** 2))
+
+        tree = cKDTree(np.stack([g_az, g_el], axis=1))
+        dists, _ = tree.query(np.stack([l_az, l_el], axis=1), k=1)
+        occluded = dists < self.occlusion_angular_tol
 
         new_lidar = np.concatenate([frame.lidar[~occluded], ghost], axis=0)
         metadata: dict = {
